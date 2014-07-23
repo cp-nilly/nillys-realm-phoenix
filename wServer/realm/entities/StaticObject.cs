@@ -1,0 +1,100 @@
+﻿#region
+
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
+using db.data;
+
+#endregion
+
+namespace wServer.realm.entities
+{
+    public class StaticObject : Entity
+    {
+        //Stats
+        public StaticObject(short objType, int? life, bool stat, bool dying, bool hittestable)
+            : base(objType, IsInteractive(objType))
+        {
+            if (Vulnerable = life.HasValue)
+                HP = life.Value;
+            Dying = dying;
+            Static = stat;
+            Hittestable = hittestable;
+        }
+
+        public bool Vulnerable { get; private set; }
+        public bool Static { get; private set; }
+        public bool Hittestable { get; private set; }
+        public int HP { get; set; }
+        public bool Dying { get; private set; }
+
+        public static int? GetHP(XElement elem)
+        {
+            var n = elem.Element("MaxHitPoints");
+            if (n != null)
+                return Utils.FromString(n.Value);
+            return null;
+        }
+
+        static bool IsInteractive(short objType)
+        {
+            ObjectDesc desc;
+            if (XmlDatas.ObjectDescs.TryGetValue(objType, out desc))
+                return !(desc.Static && !desc.Enemy && !desc.EnemyOccupySquare);
+            else
+                return false;
+        }
+
+        protected override void ExportStats(IDictionary<StatsType, object> stats)
+        {
+            if (!Vulnerable)
+                stats[StatsType.HP] = int.MaxValue;
+            else
+                stats[StatsType.HP] = HP;
+            base.ExportStats(stats);
+        }
+
+        protected override void ImportStats(StatsType stats, object val)
+        {
+            if (stats == StatsType.HP) HP = (int) val;
+            base.ImportStats(stats, val);
+        }
+
+        protected bool CheckHP()
+        {
+            try
+            {
+                if (HP < 0)
+                {
+                    if (ObjectDesc != null &&
+                        (ObjectDesc.EnemyOccupySquare || ObjectDesc.OccupySquare))
+                        Owner.Obstacles[(int) (X - 0.5), (int) (Y - 0.5)] = 0;
+                    Owner.LeaveWorld(this);
+                    return false;
+                }
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Out.WriteLine("Crash halted - HP check error");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            return true;
+        }
+
+        public override void Tick(RealmTime time)
+        {
+            if (Vulnerable)
+            {
+                if (Dying)
+                {
+                    HP -= time.thisTickTimes;
+                    UpdateCount++;
+                }
+                CheckHP();
+            }
+
+            base.Tick(time);
+        }
+    }
+}
