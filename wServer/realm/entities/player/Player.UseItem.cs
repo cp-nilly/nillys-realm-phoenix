@@ -127,7 +127,7 @@ namespace wServer.realm.entities.player
                     UpdateCount++;
                 }
                 SaveToCharacter();
-                psr.Save();
+                //psr.Save();
             }
             if (container.SlotTypes[pkt.Slot.SlotId] != -1)
                 fames.UseAbility();

@@ -12,82 +12,64 @@ using wServer.svrPackets;
 
 #endregion
 
-namespace wServer
-{
-    internal static class Program
-    {
+namespace wServer {
+    internal static class Program {
         private static Socket svrSkt;
 
-        private static void HostPolicyServer()
-        {
-            try
-            {
+        private static void HostPolicyServer() {
+            try {
                 var listener = new TcpListener(IPAddress.Any, 843);
                 listener.Start();
                 listener.BeginAcceptTcpClient(ServePolicyFile, listener);
-            }
-            catch
-            {
+            } catch {
             }
         }
 
-        private static void Main(string[] args)
-        {
-			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-			svrSkt = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			svrSkt.Bind(new IPEndPoint(IPAddress.Any, 2050));
-			svrSkt.Listen(0xff);
-			svrSkt.BeginAccept(Listen, null);
-			Console.CancelKeyPress += (sender, e) =>
-			{
-				Console.WriteLine(@"Saving Please Wait...");
-				svrSkt.Close();
-				foreach (var i in RealmManager.Clients.Values.ToArray())
-				{
-					try
-					{
-						i.Player.SaveToCharacter();
-						i.Save();
-						i.Disconnect();
-					}
-					catch
-					{
-					}
-				}
-				Console.WriteLine(@"
-Closing...");
-				Thread.Sleep(500);
-				Environment.Exit(0);
-			};
+        private static void Main(string[] args) {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            svrSkt = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            svrSkt.Bind(new IPEndPoint(IPAddress.Any, 2050));
+            svrSkt.Listen(0xff);
+            svrSkt.BeginAccept(Listen, null);
+            Console.CancelKeyPress += (sender, e) => {
+                Console.WriteLine(@"Saving Please Wait...");
+                svrSkt.Close();
+                foreach (var i in RealmManager.Clients.Values.ToArray()) {
+                    try {
+                        //i.Player.SaveToCharacter();
+                        //i.Save();
+                        i.Disconnect();
+                    } catch {
+                    }
+                }
+                Console.WriteLine(@"Closing...");
+                Thread.Sleep(500);
+                Environment.Exit(0);
+            };
 
-			Console.WriteLine(@"Listening at port 2050...");
+            Console.WriteLine(@"Listening at port 2050...");
 
-			//new Thread(AutoBroadCastNews).Start();
-			new Thread(AutoSave).Start();
+            //new Thread(AutoBroadCastNews).Start();
+            new Thread(AutoSave).Start();
 
-			HostPolicyServer();
+            HostPolicyServer();
 
-			RealmManager.CoreTickLoop(); //Never returns
+            RealmManager.CoreTickLoop(); //Never returns
         }
 
-        private static void AutoSave()
-		{
-			foreach (var i in RealmManager.Clients.Values.ToArray()) {
-				i.Player.SaveToCharacter ();
-				i.Save ();
-			}
-			Thread.Sleep (15 * (60 * 1000));
-		}
+        private static void AutoSave() {
+            foreach (var i in RealmManager.Clients.Values.ToArray()) {
+                i.Player.SaveToCharacter();
+                i.Save();
+            }
+            Thread.Sleep(3000);
+        }
 
-        private static void AutoBroadCastNews()
-        {
+        private static void AutoBroadCastNews() {
             var news = File.ReadAllLines(@"news.txt");
-            while (true)
-            {
-                foreach (var i in RealmManager.Clients.Values.ToArray())
-                {
-                    i.SendPacket(new TextPacket
-                    {
+            while (true) {
+                foreach (var i in RealmManager.Clients.Values.ToArray()) {
+                    i.SendPacket(new TextPacket {
                         Name = "@*NEWS*",
                         Stars = -1,
                         BubbleTime = 0,
@@ -96,53 +78,40 @@ Closing...");
                         CleanText = news[new Random().Next(news.Length)]
                     });
                 }
-                Thread.Sleep(3*(60*1000));
+                Thread.Sleep(3 * (60 * 1000));
             }
         }
 
-        private static void ServePolicyFile(IAsyncResult ar)
-        {
+        private static void ServePolicyFile(IAsyncResult ar) {
             var cli = (ar.AsyncState as TcpListener).EndAcceptTcpClient(ar);
             (ar.AsyncState as TcpListener).BeginAcceptTcpClient(ServePolicyFile, ar.AsyncState);
-            try
-            {
+            try {
                 var s = cli.GetStream();
                 var rdr = new NReader(s);
                 var wtr = new NWriter(s);
-                if (rdr.ReadNullTerminatedString() == "<policy-file-request/>")
-                {
+                if (rdr.ReadNullTerminatedString() == "<policy-file-request/>") {
                     wtr.WriteNullTerminatedString(@"<cross-domain-policy>
      <allow-access-from domain=""*"" to-ports=""*"" />
 </cross-domain-policy>");
-                    wtr.Write((byte) '\r');
-                    wtr.Write((byte) '\n');
+                    wtr.Write((byte)'\r');
+                    wtr.Write((byte)'\n');
                 }
                 cli.Close();
-            }
-            catch
-            {
+            } catch {
             }
         }
 
-        private static void Listen(IAsyncResult ar)
-        {
+        private static void Listen(IAsyncResult ar) {
             Socket skt = null;
-            try
-            {
+            try {
                 skt = svrSkt.EndAccept(ar);
+            } catch (ObjectDisposedException) {
             }
-            catch (ObjectDisposedException)
-            {
-            }
-            try
-            {
+            try {
                 svrSkt.BeginAccept(Listen, null);
+            } catch (ObjectDisposedException) {
             }
-            catch (ObjectDisposedException)
-            {
-            }
-            if (skt != null)
-            {
+            if (skt != null) {
                 var psr = new ClientProcessor(skt);
                 psr.BeginProcess();
             }

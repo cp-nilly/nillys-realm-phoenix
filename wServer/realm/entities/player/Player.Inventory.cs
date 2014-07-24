@@ -93,14 +93,14 @@ namespace wServer.realm.entities.player
                 if (en1 is Player)
                 {
                     if (en1.Owner.Name == "Vault")
-                        (en1 as Player).Client.Save();
+                       // (en1 as Player).Client.Save();
                     (en1 as Player).CalcBoost();
                     (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
                 }
                 if (en2 is Player)
                 {
                     if (en2.Owner.Name == "Vault")
-                        (en2 as Player).Client.Save();
+                       // (en2 as Player).Client.Save();
                     (en2 as Player).CalcBoost();
                     (en2 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
                 }
@@ -186,7 +186,7 @@ namespace wServer.realm.entities.player
                     {
                         Result = 0
                     });
-                    (entity as Player).Client.Save();
+                    //(entity as Player).Client.Save();
                 }
 
                 if (Owner is Vault)

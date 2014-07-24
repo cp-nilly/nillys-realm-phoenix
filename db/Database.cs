@@ -38,13 +38,12 @@ namespace db
 
         public Database()
         {
-            	 _con = Testing
-	               ? new MySqlConnection( /* Testing = true; */
-					"Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;")
-	               : new MySqlConnection( /* Testing = false; */
-					"Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;");
-               _con.Open();
-
+            _con = Testing
+	            ? new MySqlConnection( /* Testing = true; */
+		        "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;")
+	            : new MySqlConnection( /* Testing = false; */
+		        "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;");
+            _con.Open();
         }
 
         public void Dispose()
@@ -130,7 +129,7 @@ AND characters.charId=death.chrId;";
                     Rank = 0
                 },
                 NameChosen = false,
-                NextCharSlotPrice = 5000,
+                NextCharSlotPrice = 1000,
                 VerifiedEmail = false,
                 Stats = new Stats
                 {
@@ -176,7 +175,7 @@ AND characters.charId=death.chrId;";
                         Fame = rdr.GetInt32("guildFame")
                     },
                     NameChosen = rdr.GetBoolean("namechosen"),
-                    NextCharSlotPrice = 5000,
+                    NextCharSlotPrice = 1000,
                     VerifiedEmail = true, //rdr.GetBoolean("verified")
                     Locked = Utils.StringListToIntList(rdr.GetString("locked").Split(',').ToList()),
                     Ignored = Utils.StringListToIntList(rdr.GetString("ignored").Split(',').ToList()),
@@ -264,7 +263,7 @@ AND characters.charId=death.chrId;";
                         Fame = rdr.GetInt32("guildFame")
                     },
                     NameChosen = rdr.GetBoolean("namechosen"),
-                    NextCharSlotPrice = 5000,
+                    NextCharSlotPrice = 1000,
                     VerifiedEmail = rdr.GetBoolean("verified"),
                     Locked = Utils.StringListToIntList(rdr.GetString("locked").Split(',').ToList()),
                     Ignored = Utils.StringListToIntList(rdr.GetString("ignored").Split(',').ToList()),
@@ -303,7 +302,7 @@ AND characters.charId=death.chrId;";
                         Fame = rdr.GetInt32("guildFame")
                     },
                     NameChosen = rdr.GetBoolean("namechosen"),
-                    NextCharSlotPrice = 5000,
+                    NextCharSlotPrice = 1000,
                     VerifiedEmail = rdr.GetBoolean("verified"),
                     Locked = Utils.StringListToIntList(rdr.GetString("locked").Split(',').ToList()),
                     Ignored = Utils.StringListToIntList(rdr.GetString("ignored").Split(',').ToList()),
@@ -887,9 +886,8 @@ VALUES(@accId, @chrId, @name, @objType, @tex1, @tex2, @items, @fame, @fameStats,
                     }
                 }
             }
-
-            return guildrankings.ToArray();
             cmd.Dispose();
+            return guildrankings.ToArray();
         }
 
 

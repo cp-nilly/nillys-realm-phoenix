@@ -270,6 +270,9 @@ namespace wServer
 
         public void Save()
         {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write("Saving {0}...\r\n", this.account.Name);
+            Console.ForegroundColor = ConsoleColor.Gray;
             try
             {
                 if (db != null)
@@ -840,7 +843,7 @@ namespace wServer
             {
                 if (Player != null)
                     Player.SaveToCharacter();
-                Save();
+                //Save();
                 RealmManager.Disconnect(this);
             }, PendingPriority.Destruction);
         }
@@ -851,7 +854,7 @@ namespace wServer
             {
                 if (Player != null)
                     Player.SaveToCharacter();
-                Save();
+                //Save();
                 RealmManager.Disconnect(this);
                 SendPacket(pkt);
             }, PendingPriority.Destruction);
