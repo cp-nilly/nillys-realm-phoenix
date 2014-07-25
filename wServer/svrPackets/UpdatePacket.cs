@@ -25,7 +25,7 @@ namespace wServer.svrPackets
         protected override void Read(ClientProcessor psr, NReader rdr)
         {
             Tiles = new TileData[rdr.ReadInt16()];
-            for (var i = 0; i < Tiles.Length; i++)
+            for (int i = 0; i < Tiles.Length; i++)
             {
                 Tiles[i] = new TileData
                 {
@@ -36,30 +36,30 @@ namespace wServer.svrPackets
             }
 
             NewObjects = new ObjectDef[rdr.ReadInt16()];
-            for (var i = 0; i < NewObjects.Length; i++)
+            for (int i = 0; i < NewObjects.Length; i++)
                 NewObjects[i] = ObjectDef.Read(rdr);
 
             RemovedObjectIds = new int[rdr.ReadInt16()];
-            for (var i = 0; i < RemovedObjectIds.Length; i++)
+            for (int i = 0; i < RemovedObjectIds.Length; i++)
                 RemovedObjectIds[i] = rdr.ReadInt32();
         }
 
         protected override void Write(ClientProcessor psr, NWriter wtr)
         {
             wtr.Write((short) Tiles.Length);
-            foreach (var i in Tiles)
+            foreach (TileData i in Tiles)
             {
                 wtr.Write(i.X);
                 wtr.Write(i.Y);
                 wtr.Write((byte) i.Tile);
             }
             wtr.Write((short) NewObjects.Length);
-            foreach (var i in NewObjects)
+            foreach (ObjectDef i in NewObjects)
             {
                 i.Write(wtr);
             }
             wtr.Write((short) RemovedObjectIds.Length);
-            foreach (var i in RemovedObjectIds)
+            foreach (int i in RemovedObjectIds)
             {
                 wtr.Write(i);
             }

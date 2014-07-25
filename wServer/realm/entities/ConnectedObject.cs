@@ -48,7 +48,7 @@ namespace wServer.realm.entities
 
         private static void Build(uint bits, ConnectionType type)
         {
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
                 if (!Infos.ContainsKey(bits))
                 {
                     Infos[bits] = Infos2[Tuple.Create(type, i*90)] = new ConnectionInfo(bits, type, i*90);
@@ -62,8 +62,8 @@ namespace wServer.realm.entities
         public static ConnectionInfo Compute(Func<int, int, bool> offset)
         {
             var z = new bool[3, 3];
-            for (var y = -1; y <= 1; y++)
-                for (var x = -1; x <= 1; x++)
+            for (int y = -1; y <= 1; y++)
+                for (int x = -1; x <= 1; x++)
                     z[x + 1, y + 1] = offset(x, y);
 
 

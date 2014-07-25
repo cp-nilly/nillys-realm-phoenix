@@ -36,8 +36,8 @@ namespace wServer.logic.attack
 
         protected override bool TickCore(RealmTime time)
         {
-            var dist = range;
-            var player = GetNearestEntity(ref dist, null);
+            float dist = range;
+            Entity player = GetNearestEntity(ref dist, null);
             if (player != null)
             {
                 var chr = Host as Character;
@@ -57,7 +57,7 @@ namespace wServer.logic.attack
 
                 chr.Owner.Timers.Add(new WorldTimer(1500, (world, t) =>
                 {
-                    var entity = Entity.Resolve(objType);
+                    Entity entity = Entity.Resolve(objType);
                     entity.Move(target.X, target.Y);
                     (entity as Enemy).Terrain = (chr as Enemy).Terrain;
                     world.EnterWorld(entity);

@@ -4,7 +4,6 @@ using System;
 using wServer.logic.attack;
 using wServer.logic.taunt;
 
-
 #endregion
 
 namespace wServer.logic
@@ -59,35 +58,34 @@ namespace wServer.logic
                 ))
             .Init(0x5035, Behaves("War Turret",
                 new RunBehaviors(
-                    Once.Instance(new SetKey(-1,0)),
-
-                    IfEqual.Instance(-1,0,
-                      new RunBehaviors(
-                        Cooldown.Instance(100, PetSimpleAttack.Instance(15, 0)),
-                        new QueuedBehavior(
-                          new SimpleTaunt("Charging..."),
-                          CooldownExact.Instance(8000),
-                          new SetKey(-1,1)
-                          )
-                      )),
-                    IfEqual.Instance(-1,1,
-                      new RunBehaviors(
-                        Flashing.Instance(100, 0xffffffff),
-                        new QueuedBehavior(
-                          new SimpleTaunt("Fire!"),
-                          PetMultiAttack.Instance(15, 20 * (float)Math.PI / 360, 5, 40 * (float)Math.PI / 180, 1),
-                          CooldownExact.Instance(400),
-                          PetMultiAttack.Instance(15, 20 * (float)Math.PI / 360, 5, 20 * (float)Math.PI / 180, 1),
-                          CooldownExact.Instance(400),
-                          PetMultiAttack.Instance(15, 20 * (float)Math.PI / 360, 5, 0, 1),
-                          CooldownExact.Instance(400),
-                          PetMultiAttack.Instance(15, 20 * (float)Math.PI / 360, 5, -20f * (float)Math.PI / 180, 1),
-                          CooldownExact.Instance(400),
-                          PetMultiAttack.Instance(15, 20 * (float)Math.PI / 360, 5, -40 * (float)Math.PI / 180, 1),
-                          CooldownExact.Instance(400),
-                          new SetKey(-1,0)
-                          )
-                        ))
+                    Once.Instance(new SetKey(-1, 0)),
+                    IfEqual.Instance(-1, 0,
+                        new RunBehaviors(
+                            Cooldown.Instance(100, PetSimpleAttack.Instance(15, 0)),
+                            new QueuedBehavior(
+                                new SimpleTaunt("Charging..."),
+                                CooldownExact.Instance(8000),
+                                new SetKey(-1, 1)
+                                )
+                            )),
+                    IfEqual.Instance(-1, 1,
+                        new RunBehaviors(
+                            Flashing.Instance(100, 0xffffffff),
+                            new QueuedBehavior(
+                                new SimpleTaunt("Fire!"),
+                                PetMultiAttack.Instance(15, 20*(float) Math.PI/360, 5, 40*(float) Math.PI/180, 1),
+                                CooldownExact.Instance(400),
+                                PetMultiAttack.Instance(15, 20*(float) Math.PI/360, 5, 20*(float) Math.PI/180, 1),
+                                CooldownExact.Instance(400),
+                                PetMultiAttack.Instance(15, 20*(float) Math.PI/360, 5, 0, 1),
+                                CooldownExact.Instance(400),
+                                PetMultiAttack.Instance(15, 20*(float) Math.PI/360, 5, -20f*(float) Math.PI/180, 1),
+                                CooldownExact.Instance(400),
+                                PetMultiAttack.Instance(15, 20*(float) Math.PI/360, 5, -40*(float) Math.PI/180, 1),
+                                CooldownExact.Instance(400),
+                                new SetKey(-1, 0)
+                                )
+                            ))
                     )
                 ))
             ;

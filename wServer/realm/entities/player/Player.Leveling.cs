@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using db.data;
 using wServer.svrPackets;
 
@@ -104,8 +105,8 @@ namespace wServer.realm.entities.player
 
         public int GetStars()
         {
-            var ret = 0;
-            foreach (var i in psr.Account.Stats.ClassStates)
+            int ret = 0;
+            foreach (ClassStats i in psr.Account.Stats.ClassStates)
             {
                 if (i.BestFame >= 2000) ret += 5;
                 else if (i.BestFame >= 800) ret += 4;
@@ -118,8 +119,8 @@ namespace wServer.realm.entities.player
 
         private float Dist(Entity a, Entity b)
         {
-            var dx = a.X - b.X;
-            var dy = a.Y - b.Y;
+            float dx = a.X - b.X;
+            float dy = a.Y - b.Y;
             return (float) Math.Sqrt(dx*dx + dy*dy);
         }
 
@@ -129,7 +130,7 @@ namespace wServer.realm.entities.player
             try
             {
                 float bestScore = 0;
-                foreach (var i in Owner.Quests.Values
+                foreach (Enemy i in Owner.Quests.Values
                     .OrderBy(quest => MathsUtils.DistSqr(quest.X, quest.Y, X, Y)))
                 {
                     if (i.ObjectDesc == null || !i.ObjectDesc.Quest) continue;
@@ -139,7 +140,7 @@ namespace wServer.realm.entities.player
 
                     if ((Level >= x.Item2 && Level <= x.Item3))
                     {
-                        var score = (20 - Math.Abs((i.ObjectDesc.Level ?? 0) - Level))*x.Item1 -
+                        float score = (20 - Math.Abs((i.ObjectDesc.Level ?? 0) - Level))*x.Item1 -
                                       //priority * level diff
                                       Dist(this, i)/100; //minus 1 for every 100 tile distance
                         if (score > bestScore)
@@ -160,7 +161,7 @@ namespace wServer.realm.entities.player
         {
             if (time.tickCount%500 == 0 || questEntity == null || questEntity.Owner == null)
             {
-                var newQuest = FindQuest();
+                Entity newQuest = FindQuest();
                 if (newQuest != null && newQuest != questEntity)
                 {
                     Owner.Timers.Add(new WorldTimer(100, (w, t) =>
@@ -177,7 +178,7 @@ namespace wServer.realm.entities.player
 
         private void CalculateFame()
         {
-            var newFame = 0;
+            int newFame = 0;
             if (Experience < 200*1000) newFame = Experience/1000;
             else newFame = 200 + (Experience - 200*1000)/1000;
             if (newFame != Fame)
@@ -190,7 +191,7 @@ namespace wServer.realm.entities.player
                 }, null);
                 Fame = newFame;
                 int newGoal;
-                var state = psr.Account.Stats.ClassStates.SingleOrDefault(_ => _.ObjectType == ObjectType);
+                ClassStats state = psr.Account.Stats.ClassStates.SingleOrDefault(_ => _.ObjectType == ObjectType);
                 if (state != null && state.BestFame > Fame)
                     newGoal = GetFameGoal(state.BestFame);
                 else
@@ -216,13 +217,13 @@ namespace wServer.realm.entities.player
             {
                 Level++;
                 ExperienceGoal = GetExpGoal(Level);
-                foreach (var i in XmlDatas.TypeToElement[ObjectType].Elements("LevelIncrease"))
+                foreach (XElement i in XmlDatas.TypeToElement[ObjectType].Elements("LevelIncrease"))
                 {
                     var rand = new Random();
-                    var min = int.Parse(i.Attribute("min").Value);
-                    var max = int.Parse(i.Attribute("max").Value) + 1;
-                    var limit = int.Parse(XmlDatas.TypeToElement[ObjectType].Element(i.Value).Attribute("max").Value);
-                    var idx = StatsManager.StatsNameToIndex(i.Value);
+                    int min = int.Parse(i.Attribute("min").Value);
+                    int max = int.Parse(i.Attribute("max").Value) + 1;
+                    int limit = int.Parse(XmlDatas.TypeToElement[ObjectType].Element(i.Value).Attribute("max").Value);
+                    int idx = StatsManager.StatsNameToIndex(i.Value);
                     Stats[idx] += rand.Next(min, max);
                     if (Stats[idx] > limit) Stats[idx] = limit;
                 }
@@ -232,7 +233,7 @@ namespace wServer.realm.entities.player
                 UpdateCount++;
 
                 if (Level == 20)
-                    foreach (var i in Owner.Players.Values)
+                    foreach (Player i in Owner.Players.Values)
                         i.SendInfo(Name + " achieved level 20");
                 questEntity = null;
                 return true;
@@ -254,7 +255,7 @@ namespace wServer.realm.entities.player
             {
                 Experience += exp;
                 UpdateCount++;
-                foreach (var i in Owner.PlayersCollision.HitTest(X, Y, 16))
+                foreach (Entity i in Owner.PlayersCollision.HitTest(X, Y, 16))
                 {
                     if (i != this)
                     {

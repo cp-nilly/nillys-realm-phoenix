@@ -13,25 +13,21 @@ namespace wServer.realm.entities.player
 {
     partial class Player
     {
+        private readonly bool[] inUse = new bool[12];
+        private readonly List<string> itemsNeeded = new List<string>();
         private readonly Dictionary<Player, int> potentialTrader = new Dictionary<Player, int>();
+        private ForgeList f = new ForgeList();
         private int itemnumber1;
         private int itemnumber2;
+        private bool[] itemresult;
+        private string name1;
+        private string name2;
+        public bool taking;
         private bool[] trade;
         private bool tradeAccepted;
         public Player tradeTarget;
         public static string items1 { get; set; }
         public static string items2 { get; set; }
-        string name1;
-        string name2;
-        public bool taking;
-        private bool[] itemresult;
-        List<string> itemsNeeded = new List<string>();
-        List<int> slotsInUse = new List<int>();
-        List<int> neededSlots = new List<int>();
-        List<string> itemsInUse = new List<string>();
-        Dictionary<int, int[]> usingSlots = new Dictionary<int, int[]>();
-        ForgeList f = new ForgeList();
-        bool[] inUse = new bool[12];
 
         public void RequestTrade(RealmTime time, RequestTradePacket pkt)
         {
@@ -40,7 +36,7 @@ namespace wServer.realm.entities.player
                 SendInfo("Unique name is required to trade with others!");
                 return;
             }
-            var target = Owner.GetUniqueNamedPlayer(pkt.Name);
+            Player target = Owner.GetUniqueNamedPlayer(pkt.Name);
             if (intake)
             {
                 SendError(target.Name + " is already trading!");
@@ -82,25 +78,27 @@ namespace wServer.realm.entities.player
                 taking = false;
 
                 var my = new TradeItem[Inventory.Length];
-                for (var i = 0; i < Inventory.Length; i++)
+                for (int i = 0; i < Inventory.Length; i++)
                     my[i] = new TradeItem
                     {
                         Item = Inventory[i] == null ? -1 : Inventory[i].ObjectType,
                         SlotType = SlotTypes[i],
                         Included = false,
                         Tradeable =
-                            (Inventory[i] != null && i >= 4) && (!Inventory[i].Soulbound && !Inventory[i].Undead && !Inventory[i].SUndead)
+                            (Inventory[i] != null && i >= 4) &&
+                            (!Inventory[i].Soulbound && !Inventory[i].Undead && !Inventory[i].SUndead)
                     };
                 var your = new TradeItem[target.Inventory.Length];
-                for (var i = 0; i < target.Inventory.Length; i++)
+                for (int i = 0; i < target.Inventory.Length; i++)
                     your[i] = new TradeItem
                     {
                         Item = target.Inventory[i] == null ? -1 : target.Inventory[i].ObjectType,
                         SlotType = target.SlotTypes[i],
                         Included = false,
                         Tradeable =
-                            (target.Inventory[i] != null && i >= 4) && (!target.Inventory[i].Soulbound && !target.Inventory[i].Undead &&
-                                                                        !target.Inventory[i].SUndead)
+                            (target.Inventory[i] != null && i >= 4) &&
+                            (!target.Inventory[i].Soulbound && !target.Inventory[i].Undead &&
+                             !target.Inventory[i].SUndead)
                     };
 
                 psr.SendPacket(new TradeStartPacket
@@ -126,9 +124,10 @@ namespace wServer.realm.entities.player
                 SendInfo("Sent trade request to " + target.Name);
             }
         }
+
         public bool usable(int slot, string[] needed)
         {
-            if (inUse[slot] == true)
+            if (inUse[slot])
             {
                 return false;
             }
@@ -136,7 +135,7 @@ namespace wServer.realm.entities.player
             {
                 return false;
             }
-            for (var i = 0; i < needed.Length; i++)
+            for (int i = 0; i < needed.Length; i++)
             {
                 if (Inventory[slot].ObjectId != needed[i])
                 {
@@ -154,8 +153,9 @@ namespace wServer.realm.entities.player
             }
             return false;
         }
+
         public void ChangeTrade(RealmTime time, ChangeTradePacket pkt)
-        {   
+        {
             if (trade != pkt.Offers)
             {
                 tradeAccepted = false;
@@ -167,7 +167,6 @@ namespace wServer.realm.entities.player
                     Offers = trade
                 });
             }
-            
         }
 
         public void AcceptTrade(RealmTime time, AcceptTradePacket pkt)
@@ -227,7 +226,7 @@ namespace wServer.realm.entities.player
                                 name2 = tradeTarget.Name;
                                 DoTrade();
                             }
-                        else
+                            else
                             {
                                 tradeTarget.tradeTarget = null;
                                 tradeTarget.trade = null;
@@ -237,12 +236,13 @@ namespace wServer.realm.entities.player
                                 tradeAccepted = false;
                                 return;
                             }
-                CheckTradeTimeout(time);
+            CheckTradeTimeout(time);
         }
 
         private void CheckTradeTimeout(RealmTime time)
         {
-            var newState = potentialTrader.Select(i => new Tuple<Player, int>(i.Key, i.Value - time.thisTickTimes)).ToList();
+            List<Tuple<Player, int>> newState =
+                potentialTrader.Select(i => new Tuple<Player, int>(i.Key, i.Value - time.thisTickTimes)).ToList();
 
             foreach (var i in newState)
             {
@@ -264,7 +264,7 @@ namespace wServer.realm.entities.player
                 int thisemptyslots = 0;
                 int targetemptyslots = 0;
                 var thisItems = new List<Item>();
-                for (var i = 0; i < trade.Length; i++)
+                for (int i = 0; i < trade.Length; i++)
                     if (trade[i])
                     {
                         thisItems.Add(Inventory[i]);
@@ -282,7 +282,7 @@ namespace wServer.realm.entities.player
                     }
 
                 var targetItems = new List<Item>();
-                for (var i = 0; i < tradeTarget.trade.Length; i++)
+                for (int i = 0; i < tradeTarget.trade.Length; i++)
                     if (tradeTarget.trade[i])
                     {
                         targetItems.Add(tradeTarget.Inventory[i]);
@@ -299,9 +299,9 @@ namespace wServer.realm.entities.player
                         }
                         itemnumber2++;
                     }
-                
-                
-                for (var i = 0; i != Inventory.Length; i++)
+
+
+                for (int i = 0; i != Inventory.Length; i++)
                 {
                     if (Inventory[i] == null)
                     {
@@ -311,7 +311,7 @@ namespace wServer.realm.entities.player
                         }
                         else
                         {
-                            for (var j = 0; j < targetItems.Count; j++)
+                            for (int j = 0; j < targetItems.Count; j++)
                             {
                                 if (targetItems[j].SlotType == SlotTypes[i])
                                 {
@@ -321,9 +321,8 @@ namespace wServer.realm.entities.player
                             }
                         }
                     }
-                    
                 }
-                for (var i = 0; i != tradeTarget.Inventory.Length; i++)
+                for (int i = 0; i != tradeTarget.Inventory.Length; i++)
                 {
                     if (SlotTypes[i] == 0)
                     {
@@ -331,186 +330,198 @@ namespace wServer.realm.entities.player
                     }
                     else
                     {
-                        for (var j = 0; j < thisItems.Count; j++)
+                        for (int j = 0; j < thisItems.Count; j++)
                         {
-                            if (thisItems[j].SlotType == SlotTypes[i])
+                            try
                             {
-                                targetemptyslots++;
-                                break;
+                                if (thisItems[j].SlotType == SlotTypes[i])
+                                {
+                                    targetemptyslots++;
+                                    break;
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                psr.SendPacket(new TradeDonePacket
+                                 {
+                                     Result = 1,
+                                     Message = "Trade unsuccessful."
+                                 });
                             }
                         }
                     }
                 }
                 if (targetemptyslots >= thisItems.Count && thisemptyslots >= targetItems.Count)
-                    {
-                        if (targetItems.Count == 0)
-                            targetItems.Add(null);
-                        if (thisItems.Count == 0)
-                            thisItems.Add(null);
-                        for (var i = 0; i < Inventory.Length; i++) //put items by slotType
+                {
+                    if (targetItems.Count == 0)
+                        targetItems.Add(null);
+                    if (thisItems.Count == 0)
+                        thisItems.Add(null);
+                    for (int i = 0; i < Inventory.Length; i++) //put items by slotType
+                        if (Inventory[i] == null)
+                        {
+                            if (SlotTypes[i] == 0)
+                            {
+                                Inventory[i] = targetItems[0];
+                                targetItems.RemoveAt(0);
+                            }
+                            else
+                            {
+                                int itmIdx = -1;
+                                for (int j = 0; j < targetItems.Count; j++)
+                                {
+                                    try
+                                    {
+                                        if (targetItems[j].SlotType == SlotTypes[i])
+                                        {
+                                            itmIdx = j;
+                                            break;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        itmIdx = -1;
+                                    }
+                                }
+                                if (itmIdx != -1)
+                                {
+                                    Inventory[i] = targetItems[itmIdx];
+                                    targetItems.RemoveAt(itmIdx);
+                                }
+                            }
+                            if (targetItems.Count == 0) break;
+                        }
+                    if (targetItems.Count > 0)
+                        for (int i = 0; i < Inventory.Length; i++) //force put item
                             if (Inventory[i] == null)
                             {
-                                if (SlotTypes[i] == 0)
-                                {
-                                    Inventory[i] = targetItems[0];
-                                    targetItems.RemoveAt(0);
-                                }
-                                else
-                                {
-                                    var itmIdx = -1;
-                                    for (var j = 0; j < targetItems.Count; j++)
-                                    {
-                                        try
-                                        {
-                                            if (targetItems[j].SlotType == SlotTypes[i])
-                                            {
-                                                itmIdx = j;
-                                                break;
-                                            }
-                                        }
-                                        catch
-                                        {
-                                            itmIdx = -1;
-                                        }
-                                    }
-                                    if (itmIdx != -1)
-                                    {
-                                        Inventory[i] = targetItems[itmIdx];
-                                        targetItems.RemoveAt(itmIdx);
-                                    }
-                                }
+                                Inventory[i] = targetItems[0];
+                                targetItems.RemoveAt(0);
                                 if (targetItems.Count == 0) break;
                             }
-                        if (targetItems.Count > 0)
-                            for (var i = 0; i < Inventory.Length; i++) //force put item
-                                if (Inventory[i] == null)
+
+
+                    for (int i = 0; i < tradeTarget.Inventory.Length; i++) //put items by slotType
+                        if (tradeTarget.Inventory[i] == null)
+                        {
+                            if (tradeTarget.SlotTypes[i] == 0)
+                            {
+                                tradeTarget.Inventory[i] = thisItems[0];
+                                thisItems.RemoveAt(0);
+                            }
+                            else
+                            {
+                                int itmIdx = -1;
+                                for (int j = 0; j < thisItems.Count; j++)
                                 {
-                                    Inventory[i] = targetItems[0];
-                                    targetItems.RemoveAt(0);
-                                    if (targetItems.Count == 0) break;
+                                    try
+                                    {
+                                        if (thisItems[j].SlotType == tradeTarget.SlotTypes[i])
+                                        {
+                                            itmIdx = j;
+                                            break;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        itmIdx = -1;
+                                    }
                                 }
-
-
-                        for (var i = 0; i < tradeTarget.Inventory.Length; i++) //put items by slotType
+                                if (itmIdx != -1)
+                                {
+                                    tradeTarget.Inventory[i] = thisItems[itmIdx];
+                                    thisItems.RemoveAt(itmIdx);
+                                }
+                            }
+                            if (thisItems.Count == 0) break;
+                        }
+                    if (thisItems.Count > 0)
+                        for (int i = 0; i < tradeTarget.Inventory.Length; i++) //force put item
                             if (tradeTarget.Inventory[i] == null)
                             {
-                                if (tradeTarget.SlotTypes[i] == 0)
-                                {
-                                    tradeTarget.Inventory[i] = thisItems[0];
-                                    thisItems.RemoveAt(0);
-                                }
-                                else
-                                {
-                                    var itmIdx = -1;
-                                    for (var j = 0; j < thisItems.Count; j++)
-                                    {
-                                        try
-                                        {
-                                            if (thisItems[j].SlotType == tradeTarget.SlotTypes[i])
-                                            {
-                                                itmIdx = j;
-                                                break;
-                                            }
-                                        }
-                                        catch
-                                        {
-                                            itmIdx = -1;
-                                        }
-                                    }
-                                    if (itmIdx != -1)
-                                    {
-                                        tradeTarget.Inventory[i] = thisItems[itmIdx];
-                                        thisItems.RemoveAt(itmIdx);
-                                    }
-                                }
+                                tradeTarget.Inventory[i] = thisItems[0];
+                                thisItems.RemoveAt(0);
                                 if (thisItems.Count == 0) break;
                             }
-                        if (thisItems.Count > 0)
-                            for (var i = 0; i < tradeTarget.Inventory.Length; i++) //force put item
-                                if (tradeTarget.Inventory[i] == null)
-                                {
-                                    tradeTarget.Inventory[i] = thisItems[0];
-                                    thisItems.RemoveAt(0);
-                                    if (thisItems.Count == 0) break;
-                                }
 
 
-                        psr.SendPacket(new TradeDonePacket
-                        {
-                            Result = 1,
-                            Message = "Trade successful!"
-                        });
-                        tradeTarget.psr.SendPacket(new TradeDonePacket
-                        {
-                            Result = 1,
-                            Message = "Trade successful!"
-                        });
-                        SaveToCharacter();
-                        psr.Save();
-                        tradeTarget.SaveToCharacter();
-                        tradeTarget.psr.Save();
-
-                        const string dir = @"logs";
-                        if (!Directory.Exists(dir))
-                            Directory.CreateDirectory(dir);
-                        using (var writer = new StreamWriter(@"logs\TradeLog.log", true))
-                        {
-                            writer.WriteLine(Name + " traded " + "{" + items1 + "}" + " with " + tradeTarget.Name + " for " +
-                                             "{" + items2 + "}");
-                        }
-                        Console.Out.WriteLine(Name + " traded " + "{" + items1 + "}" + " with " + tradeTarget.Name + " for " +
-                                              "{" + items2 + "}");
-                        items1 = "";
-                        items2 = "";
-                        itemnumber1 = 0;
-                        itemnumber2 = 0;
-                        UpdateCount++;
-                        tradeTarget.UpdateCount++;
-                        name1 = "";
-                        name2 = "";
-                        tradeTarget.tradeTarget = null;
-                        tradeTarget.trade = null;
-                        tradeTarget.tradeAccepted = false;
-                        tradeTarget = null;
-                        trade = null;
-                        tradeAccepted = false;
-                    }
-                    else
+                    psr.SendPacket(new TradeDonePacket
                     {
-                        psr.SendPacket(new TradeDonePacket
-                        {
-                            Result = 1,
-                            Message = "Exploit Halted! You have been logged."
-                        });
-                        tradeTarget.psr.SendPacket(new TradeDonePacket
-                        {
-                            Result = 1,
-                            Message = "Exploit Halted! You have been logged."
-                        });
-                        const string dir = @"logs";
-                        if (!Directory.Exists(dir))
-                            Directory.CreateDirectory(dir);
-                        using (var writer = new StreamWriter(@"logs\ExploitLog.log", true))
-                        {
-                            writer.WriteLine(Name + " tried to trade an ability into a weapon slot with " + tradeTarget.Name + " (Error: More items than free inventory slots)");
-                        }
-                        Console.Out.WriteLine(Name + " tried to trade an ability into a weapon slot with " + tradeTarget.Name + " (Error: More items than free inventory slots)");
-                        items1 = "";
-                        items2 = "";
-                        itemnumber1 = 0;
-                        itemnumber2 = 0;
-                        UpdateCount++;
-                        tradeTarget.UpdateCount++;
-                        name1 = "";
-                        name2 = "";
-                        tradeTarget.tradeTarget = null;
-                        tradeTarget.trade = null;
-                        tradeTarget.tradeAccepted = false;
-                        tradeTarget = null;
-                        trade = null;
-                        tradeAccepted = false;
-                        return;
+                        Result = 1,
+                        Message = "Trade successful!"
+                    });
+                    tradeTarget.psr.SendPacket(new TradeDonePacket
+                    {
+                        Result = 1,
+                        Message = "Trade successful!"
+                    });
+                    SaveToCharacter();
+                    psr.Save();
+                    tradeTarget.SaveToCharacter();
+                    tradeTarget.psr.Save();
+
+                    const string dir = @"logs";
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
+                    using (var writer = new StreamWriter(@"logs\TradeLog.log", true))
+                    {
+                        writer.WriteLine(Name + " traded " + "{" + items1 + "}" + " with " + tradeTarget.Name + " for " +
+                                         "{" + items2 + "}");
                     }
+                    Console.Out.WriteLine(Name + " traded " + "{" + items1 + "}" + " with " + tradeTarget.Name + " for " +
+                                          "{" + items2 + "}");
+                    items1 = "";
+                    items2 = "";
+                    itemnumber1 = 0;
+                    itemnumber2 = 0;
+                    UpdateCount++;
+                    tradeTarget.UpdateCount++;
+                    name1 = "";
+                    name2 = "";
+                    tradeTarget.tradeTarget = null;
+                    tradeTarget.trade = null;
+                    tradeTarget.tradeAccepted = false;
+                    tradeTarget = null;
+                    trade = null;
+                    tradeAccepted = false;
+                }
+                else
+                {
+                    psr.SendPacket(new TradeDonePacket
+                    {
+                        Result = 1,
+                        Message = "Exploit Halted! You have been logged."
+                    });
+                    tradeTarget.psr.SendPacket(new TradeDonePacket
+                    {
+                        Result = 1,
+                        Message = "Exploit Halted! You have been logged."
+                    });
+                    const string dir = @"logs";
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
+                    using (var writer = new StreamWriter(@"logs\ExploitLog.log", true))
+                    {
+                        writer.WriteLine(Name + " tried to trade an ability into a weapon slot with " + tradeTarget.Name +
+                                         " (Error: More items than free inventory slots)");
+                    }
+                    Console.Out.WriteLine(Name + " tried to trade an ability into a weapon slot with " +
+                                          tradeTarget.Name + " (Error: More items than free inventory slots)");
+                    items1 = "";
+                    items2 = "";
+                    itemnumber1 = 0;
+                    itemnumber2 = 0;
+                    UpdateCount++;
+                    tradeTarget.UpdateCount++;
+                    name1 = "";
+                    name2 = "";
+                    tradeTarget.tradeTarget = null;
+                    tradeTarget.trade = null;
+                    tradeTarget.tradeAccepted = false;
+                    tradeTarget = null;
+                    trade = null;
+                    tradeAccepted = false;
+                }
             }
             else
             {
@@ -535,9 +546,11 @@ namespace wServer.realm.entities.player
                     Directory.CreateDirectory(dir);
                 using (var writer = new StreamWriter(@"logs\ExploitLog.log", true))
                 {
-                    writer.WriteLine(name1 + " tried to trade an ability into a weapon slot with " + name2 + " (Error: More items than free inventory slots)");
+                    writer.WriteLine(name1 + " tried to trade an ability into a weapon slot with " + name2 +
+                                     " (Error: More items than free inventory slots)");
                 }
-                Console.Out.WriteLine(name1 + " tried to trade an ability into a weapon slot with " + name2 + " (Error: More items than free inventory slots)");
+                Console.Out.WriteLine(name1 + " tried to trade an ability into a weapon slot with " + name2 +
+                                      " (Error: More items than free inventory slots)");
                 items1 = "";
                 items2 = "";
                 name1 = "";
@@ -552,7 +565,6 @@ namespace wServer.realm.entities.player
                 tradeTarget = null;
                 trade = null;
                 tradeAccepted = false;
-                return;  
             }
         }
     }

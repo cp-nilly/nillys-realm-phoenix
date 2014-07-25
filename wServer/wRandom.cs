@@ -32,8 +32,8 @@ namespace wServer
 
         private uint Sample()
         {
-            var lb = (16807*(seed & 0xFFFF));
-            var hb = (16807*(seed >> 16));
+            uint lb = (16807*(seed & 0xFFFF));
+            uint hb = (16807*(seed >> 16));
             lb = lb + ((hb & 32767) << 16);
             lb = lb + (hb >> 15);
             if (lb > 2147483647)

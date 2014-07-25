@@ -131,7 +131,7 @@ namespace wServer.logic
                         Tuple.Create(0.01, (ILoot) new ItemLoot("Sprite Wand")),
                         Tuple.Create(0.003, (ILoot) new ItemLoot("Cloak of the Planewalker")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
                         Tuple.Create(0.4, (ILoot) new TierLoot(3, ItemType.Ring)),
                         Tuple.Create(0.4, (ILoot) new TierLoot(6, ItemType.Armor)),
                         Tuple.Create(0.4, (ILoot) new TierLoot(3, ItemType.Ability)),

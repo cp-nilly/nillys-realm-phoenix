@@ -29,10 +29,10 @@ namespace wServer.logic
 
         protected override void BehaveCore(BehaviorCondition cond, RealmTime? time, object state)
         {
-            var c = rand.Next(minCount, maxCount + 1);
-            for (var i = 0; i < c; i++)
+            int c = rand.Next(minCount, maxCount + 1);
+            for (int i = 0; i < c; i++)
             {
-                var entity = Entity.Resolve(objType);
+                Entity entity = Entity.Resolve(objType);
                 var parent = Host as Entity;
                 entity.Move(parent.X, parent.Y);
                 (entity as Enemy).Terrain = (Host as Enemy).Terrain;
@@ -61,7 +61,8 @@ namespace wServer.logic
 
         protected override void BehaveCore(BehaviorCondition cond, RealmTime? time, object state)
         {
-            if (Host.Self.Owner.Name != "Battle Arena" && Host.Self.Owner.Name != "Free Battle Arena" && Host.Self.Owner.Name != "Arena" && Host.Self.Owner.Name != "Nexus")
+            if (Host.Self.Owner.Name != "Battle Arena" && Host.Self.Owner.Name != "Free Battle Arena" &&
+                Host.Self.Owner.Name != "Arena" && Host.Self.Owner.Name != "Nexus")
             {
                 if (new Random().Next(1, 100) <= percent)
                 {
@@ -69,7 +70,7 @@ namespace wServer.logic
                     var parent = Host as Entity;
                     entity.Move(parent.X, parent.Y);
                     parent.Owner.EnterWorld(entity);
-                    var w = RealmManager.GetWorld(Host.Self.Owner.Id);
+                    World w = RealmManager.GetWorld(Host.Self.Owner.Id);
                     w.Timers.Add(new WorldTimer(timeExist*1000, (world, t) =>
                     {
                         if (timeExist > 0)

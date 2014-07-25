@@ -37,7 +37,7 @@
     <Static />
     <OccupySquare />
     <Enemy />
-    <NoMiniMap/>
+    <NoMiniMap />
     <XpMult>0.0</XpMult>
   </Object>
 
@@ -260,7 +260,7 @@
       <Size>100</Size>
       <LifetimeMS>1000</LifetimeMS>
     </Projectile>
-    
+
     <Projectile id="3">
       <ObjectId>Super Blast Purple</ObjectId>
       <Speed>40</Speed>
@@ -268,7 +268,7 @@
       <Size>140</Size>
       <LifetimeMS>900</LifetimeMS>
     </Projectile>
-    
+
     <Projectile id="4">
       <ObjectId>Super Blast Purple</ObjectId>
       <Speed>50</Speed>
@@ -366,7 +366,7 @@
       <Size>100</Size>
       <LifetimeMS>1000</LifetimeMS>
     </Projectile>
-    
+
     <Projectile id="3">
       <ObjectId>Super Blast Red</ObjectId>
       <Speed>40</Speed>
@@ -374,7 +374,7 @@
       <Size>140</Size>
       <LifetimeMS>900</LifetimeMS>
     </Projectile>
-    
+
     <Projectile id="4">
       <ObjectId>Super Blast Red</ObjectId>
       <Speed>50</Speed>
@@ -384,11 +384,11 @@
     </Projectile>
 
     <Projectile id="5">
-    <ObjectId>Super Blast Red</ObjectId>
-    <Speed>40</Speed>
-    <Damage>120</Damage>
-    <Size>140</Size>
-    <LifetimeMS>12000</LifetimeMS>
+      <ObjectId>Super Blast Red</ObjectId>
+      <Speed>40</Speed>
+      <Damage>120</Damage>
+      <Size>140</Size>
+      <LifetimeMS>12000</LifetimeMS>
     </Projectile>
 
     <Size>120</Size>
@@ -774,7 +774,7 @@
   <Object type="0x0d84" id="Oryx Pet">
     <DisplayId>Pet of Oryx</DisplayId>
     <Group>Oryx Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
 
     <AnimatedTexture>
@@ -793,8 +793,8 @@
       <Damage>75</Damage>
       <Size>80</Size>
       <LifetimeMS>400</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
 
     <Size>100</Size>

@@ -19,24 +19,24 @@
         protected override void Read(ClientProcessor psr, NReader rdr)
         {
             MyItems = new TradeItem[rdr.ReadInt16()];
-            for (var i = 0; i < MyItems.Length; i++)
+            for (int i = 0; i < MyItems.Length; i++)
                 MyItems[i] = TradeItem.Read(rdr);
 
             YourName = rdr.ReadUTF();
             YourItems = new TradeItem[rdr.ReadInt16()];
-            for (var i = 0; i < YourItems.Length; i++)
+            for (int i = 0; i < YourItems.Length; i++)
                 YourItems[i] = TradeItem.Read(rdr);
         }
 
         protected override void Write(ClientProcessor psr, NWriter wtr)
         {
             wtr.Write((short) MyItems.Length);
-            foreach (var i in MyItems)
+            foreach (TradeItem i in MyItems)
                 i.Write(wtr);
 
             wtr.WriteUTF(YourName);
             wtr.Write((short) YourItems.Length);
-            foreach (var i in YourItems)
+            foreach (TradeItem i in YourItems)
                 i.Write(wtr);
         }
     }

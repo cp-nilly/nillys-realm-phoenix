@@ -43,13 +43,13 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
             CirclingState state;
             object o;
             if (!Host.StateStorage.TryGetValue(Key, out o))
             {
-                var dist = sight;
+                float dist = sight;
                 Host.StateStorage[Key] = state = new CirclingState
                 {
                     target = WeakReference<Entity>.Create(GetNearestEntity(ref dist, objType)),
@@ -66,18 +66,18 @@ namespace wServer.logic.movement
                     Host.StateStorage.Remove(Key);
                     return false;
                 }
-                var target = state.target.Target;
+                Entity target = state.target.Target;
                 if (target == null || target.Owner == null)
                 {
                     Host.StateStorage.Remove(Key);
                     return false;
                 }
 
-                var x = target.X + Math.Cos(state.angle)*radius;
-                var y = target.Y + Math.Sin(state.angle)*radius;
+                double x = target.X + Math.Cos(state.angle)*radius;
+                double y = target.Y + Math.Sin(state.angle)*radius;
                 if (x != Host.Self.X || y != Host.Self.Y)
                 {
-                    var vect = new Vector2((float) x, (float) y) - new Vector2(Host.Self.X, Host.Self.Y);
+                    Vector2 vect = new Vector2((float) x, (float) y) - new Vector2(Host.Self.X, Host.Self.Y);
                     vect.Normalize();
                     vect *= (speed/1.5f)*(time.thisTickTimes/1000f);
                     ValidateAndMove(Host.Self.X + vect.X, Host.Self.Y + vect.Y);

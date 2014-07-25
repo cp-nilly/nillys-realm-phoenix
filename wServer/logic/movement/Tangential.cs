@@ -28,8 +28,8 @@ namespace wServer.logic.movement
 
         private Vector2 GetVelocity()
         {
-            var ms = 100;
-            var history = Host.Self.TryGetHistory(ms);
+            int ms = 100;
+            Position? history = Host.Self.TryGetHistory(ms);
             if (history == null)
                 return Vector2.Zero;
             return new Vector2(
@@ -41,12 +41,12 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
-            var velo = GetVelocity();
+            Vector2 velo = GetVelocity();
             if (velo != Vector2.Zero)
                 velo.Normalize();
-            var dist = (speed/1.5f)*(time.thisTickTimes/1000f);
+            float dist = (speed/1.5f)*(time.thisTickTimes/1000f);
             ValidateAndMove(Host.Self.X + velo.X*dist, Host.Self.Y + velo.Y*dist);
             Host.Self.UpdateCount++;
             return true;

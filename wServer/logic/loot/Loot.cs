@@ -46,50 +46,50 @@ namespace wServer.logic.loot
         static TierLoot()
         {
             WeaponItems = new Dictionary<int, Item[]>();
-            for (var tier = 1; tier < 20; tier++)
+            for (int tier = 1; tier < 20; tier++)
             {
                 var items = new List<Item>();
-                foreach (var i in WeaponsT)
+                foreach (int i in WeaponsT)
                     items.AddRange(XmlDatas.ItemDescs.Select(_ => _.Value).Where(_ => _.Tier == tier && _.SlotType == i));
                 if (items.Count == 0)
                     break;
                 WeaponItems[tier] = items.ToArray();
             }
             AbilityItems = new Dictionary<int, Item[]>();
-            for (var tier = 1; tier < 20; tier++)
+            for (int tier = 1; tier < 20; tier++)
             {
                 var items = new List<Item>();
-                foreach (var i in AbilityT)
+                foreach (int i in AbilityT)
                     items.AddRange(XmlDatas.ItemDescs.Select(_ => _.Value).Where(_ => _.Tier == tier && _.SlotType == i));
                 if (items.Count == 0)
                     break;
                 AbilityItems[tier] = items.ToArray();
             }
             ArmorItems = new Dictionary<int, Item[]>();
-            for (var tier = 1; tier < 20; tier++)
+            for (int tier = 1; tier < 20; tier++)
             {
                 var items = new List<Item>();
-                foreach (var i in ArmorsT)
+                foreach (int i in ArmorsT)
                     items.AddRange(XmlDatas.ItemDescs.Select(_ => _.Value).Where(_ => _.Tier == tier && _.SlotType == i));
                 if (items.Count == 0)
                     break;
                 ArmorItems[tier] = items.ToArray();
             }
             RingItems = new Dictionary<int, Item[]>();
-            for (var tier = 1; tier < 20; tier++)
+            for (int tier = 1; tier < 20; tier++)
             {
                 var items = new List<Item>();
-                foreach (var i in RingT)
+                foreach (int i in RingT)
                     items.AddRange(XmlDatas.ItemDescs.Select(_ => _.Value).Where(_ => _.Tier == tier && _.SlotType == i));
                 if (items.Count == 0)
                     break;
                 RingItems[tier] = items.ToArray();
             }
             MiscItems = new Dictionary<int, Item[]>();
-            for (var tier = 1; tier < 20; tier++)
+            for (int tier = 1; tier < 20; tier++)
             {
                 var items = new List<Item>();
-                foreach (var i in MiscT)
+                foreach (int i in MiscT)
                     items.AddRange(XmlDatas.ItemDescs.Select(_ => _.Value).Where(_ => _.Tier == tier && _.SlotType == i));
                 if (items.Count == 0)
                     break;
@@ -128,7 +128,7 @@ namespace wServer.logic.loot
                     candidates = MiscItems[Tier];
                     break;
             }
-            var idx = rand.Next(0, candidates.Length);
+            int idx = rand.Next(0, candidates.Length);
             return candidates[idx];
         }
     }
@@ -226,7 +226,7 @@ namespace wServer.logic.loot
         public StatPotionsLoot(params int[] tiers)
         {
             var p = new List<StatPotion>();
-            foreach (var i in tiers)
+            foreach (int i in tiers)
                 p.AddRange(Tiers[i - 1]);
             pots = p.Distinct().ToArray();
         }

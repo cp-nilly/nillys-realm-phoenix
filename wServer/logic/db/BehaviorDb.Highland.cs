@@ -40,7 +40,7 @@ namespace wServer.logic
                 Reproduce.Instance(0x646, 2), new LootBehavior(LootDef.Empty,
                     Tuple.Create(1, CommonLesserGodSoulBag),
                     Tuple.Create(360, new LootDef(0, 1, 0, 8,
-                        Tuple.Create(0.01, (ILoot)new ItemLoot("Purple Drake Egg"))
+                        Tuple.Create(0.01, (ILoot) new ItemLoot("Purple Drake Egg"))
                         ))
                     )
                 ))
@@ -71,8 +71,8 @@ namespace wServer.logic
                     Reproduce.Instance(0x642, 2)
                     ), new LootBehavior(
                         new LootDef(0, 2, 0, 8,
-                            Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance),
-                            Tuple.Create(0.01, (ILoot)new TierLoot(4, ItemType.Weapon))
+                            Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance),
+                            Tuple.Create(0.01, (ILoot) new TierLoot(4, ItemType.Weapon))
                             )
                         )
                 ))
@@ -84,7 +84,7 @@ namespace wServer.logic
                 Cooldown.Instance(200, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -96,7 +96,7 @@ namespace wServer.logic
                 Cooldown.Instance(500, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -108,7 +108,7 @@ namespace wServer.logic
                 Cooldown.Instance(500, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -125,14 +125,14 @@ namespace wServer.logic
                         SimpleWandering.Instance(4)
                         )
                     ),
-                Cooldown.Instance(500, MultiAttack.Instance(10, 7 * (float)Math.PI / 180, 3)),
+                Cooldown.Instance(500, MultiAttack.Instance(10, 7*(float) Math.PI/180, 3)),
                 Rand.Instance(
                     Reproduce.Instance(0x64f, 1),
                     Reproduce.Instance(0x650, 2)
                     ), new LootBehavior(LootDef.Empty,
                         Tuple.Create(1, CommonLesserGodSoulBag),
                         Tuple.Create(360, new LootDef(0, 1, 0, 8,
-                            Tuple.Create(0.01, (ILoot)new ItemLoot("Purple Drake Egg"))
+                            Tuple.Create(0.01, (ILoot) new ItemLoot("Purple Drake Egg"))
                             ))
                         )
                 ))
@@ -162,7 +162,7 @@ namespace wServer.logic
                     Reproduce.Instance(0x64a, 2)
                     ), new LootBehavior(
                         new LootDef(0, 2, 0, 8,
-                            Tuple.Create(0.03, (ILoot)HpPotionLoot.Instance)
+                            Tuple.Create(0.03, (ILoot) HpPotionLoot.Instance)
                             )
                         )
                 ))
@@ -174,7 +174,7 @@ namespace wServer.logic
                 Cooldown.Instance(500, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)HpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) HpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -186,7 +186,7 @@ namespace wServer.logic
                 Cooldown.Instance(500, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)HpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) HpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -198,7 +198,7 @@ namespace wServer.logic
                 Cooldown.Instance(500, SimpleAttack.Instance(3, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)HpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) HpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -210,7 +210,7 @@ namespace wServer.logic
                 Cooldown.Instance(500, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)HpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) HpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -231,7 +231,7 @@ namespace wServer.logic
                         )
                     ),
                 new QueuedBehavior(
-                    Cooldown.Instance(500, MultiAttack.Instance(10, 7 * (float)Math.PI / 180, 3, projectileIndex: 0)),
+                    Cooldown.Instance(500, MultiAttack.Instance(10, 7*(float) Math.PI/180, 3, projectileIndex: 0)),
                     Cooldown.Instance(500, PredictiveAttack.Instance(10, 1, 1))
                     ),
                 Rand.Instance(
@@ -241,7 +241,7 @@ namespace wServer.logic
                     ), new LootBehavior(LootDef.Empty,
                         Tuple.Create(1, CommonLesserGodSoulBag),
                         Tuple.Create(360, new LootDef(0, 1, 0, 8,
-                            Tuple.Create(0.01, (ILoot)new ItemLoot("Purple Drake Egg"))
+                            Tuple.Create(0.01, (ILoot) new ItemLoot("Purple Drake Egg"))
                             ))
                         )
                 ))
@@ -250,7 +250,7 @@ namespace wServer.logic
                 Cooldown.Instance(1000, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -278,7 +278,7 @@ namespace wServer.logic
                     Reproduce.Instance(0x63a, 3)
                     ), new LootBehavior(
                         new LootDef(0, 2, 0, 8,
-                            Tuple.Create(0.03, (ILoot)HpPotionLoot.Instance)
+                            Tuple.Create(0.03, (ILoot) HpPotionLoot.Instance)
                             )
                         )
                 ))
@@ -290,7 +290,7 @@ namespace wServer.logic
                 Cooldown.Instance(1000, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -302,7 +302,7 @@ namespace wServer.logic
                 Cooldown.Instance(1000, SimpleAttack.Instance(3, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)HpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) HpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -340,7 +340,7 @@ namespace wServer.logic
                     ), new LootBehavior(LootDef.Empty,
                         Tuple.Create(1, CommonLesserGodSoulBag),
                         Tuple.Create(360, new LootDef(0, 1, 0, 8,
-                            Tuple.Create(0.01, (ILoot)new ItemLoot("Purple Drake Egg"))
+                            Tuple.Create(0.01, (ILoot) new ItemLoot("Purple Drake Egg"))
                             ))
                         )
                 ))
@@ -349,7 +349,7 @@ namespace wServer.logic
                 Cooldown.Instance(1000, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -358,7 +358,7 @@ namespace wServer.logic
                 Cooldown.Instance(1000, SimpleAttack.Instance(10, 0)),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
@@ -393,11 +393,11 @@ namespace wServer.logic
                     ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.04, (ILoot)HpPotionLoot.Instance),
-                        Tuple.Create(0.01, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.04, (ILoot) HpPotionLoot.Instance),
+                        Tuple.Create(0.01, (ILoot) MpPotionLoot.Instance)
                         ),
                     Tuple.Create(1, new LootDef(0, 1, 0, 8,
-                        Tuple.Create(0.01, (ILoot)new TierLoot(2, ItemType.Ring))
+                        Tuple.Create(0.01, (ILoot) new TierLoot(2, ItemType.Ring))
                         ))
                     )
                 ))
@@ -425,8 +425,8 @@ namespace wServer.logic
                     ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.03, (ILoot)MpPotionLoot.Instance),
-                        Tuple.Create(0.01, (ILoot)new TierLoot(5, ItemType.Weapon))
+                        Tuple.Create(0.03, (ILoot) MpPotionLoot.Instance),
+                        Tuple.Create(0.01, (ILoot) new TierLoot(5, ItemType.Weapon))
                         )
                     )
                 ))
@@ -440,7 +440,7 @@ namespace wServer.logic
                 SimpleWandering.Instance(20),
                 Cooldown.Instance(1000, SimpleAttack.Instance(8)),
                 new QueuedBehavior(
-                    Cooldown.Instance(60 * 1000),
+                    Cooldown.Instance(60*1000),
                     new Transmute(0x0208)
                     )
                 ))
@@ -448,20 +448,20 @@ namespace wServer.logic
                 SimpleWandering.Instance(20),
                 Cooldown.Instance(1000, SimpleAttack.Instance(8)),
                 new QueuedBehavior(
-                    Cooldown.Instance(60 * 1000),
+                    Cooldown.Instance(60*1000),
                     new Transmute(0x0209)
                     )
                 ))
             .Init(0x0209, Behaves("Adult White Dragon",
                 SimpleWandering.Instance(20),
-                Cooldown.Instance(1000, MultiAttack.Instance(5, 7 * (float)Math.PI / 180, 3)),
-                Reproduce.Instance(0x0206, 2, 60 * 1000), new LootBehavior(
+                Cooldown.Instance(1000, MultiAttack.Instance(5, 7*(float) Math.PI/180, 3)),
+                Reproduce.Instance(0x0206, 2, 60*1000), new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.04, (ILoot)HpPotionLoot.Instance),
-                        Tuple.Create(0.01, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.04, (ILoot) HpPotionLoot.Instance),
+                        Tuple.Create(0.01, (ILoot) MpPotionLoot.Instance)
                         ),
                     Tuple.Create(1, new LootDef(0, 1, 0, 8,
-                        Tuple.Create(0.01, (ILoot)new ItemLoot("White Drake Egg"))
+                        Tuple.Create(0.01, (ILoot) new ItemLoot("White Drake Egg"))
                         ))
                     )
                 ))
@@ -497,9 +497,9 @@ namespace wServer.logic
                         )
                     ), new LootBehavior(
                         new LootDef(0, 2, 0, 8,
-                            Tuple.Create(0.04, (ILoot)HpPotionLoot.Instance),
-                            Tuple.Create(0.01, (ILoot)MpPotionLoot.Instance),
-                            Tuple.Create(0.01, (ILoot)new TierLoot(3, ItemType.Armor))
+                            Tuple.Create(0.04, (ILoot) HpPotionLoot.Instance),
+                            Tuple.Create(0.01, (ILoot) MpPotionLoot.Instance),
+                            Tuple.Create(0.01, (ILoot) new TierLoot(3, ItemType.Armor))
                             )
                         )
                 ))
@@ -507,11 +507,11 @@ namespace wServer.logic
                 SimpleWandering.Instance(.5f),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.04, (ILoot)HpPotionLoot.Instance),
-                        Tuple.Create(0.01, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.04, (ILoot) HpPotionLoot.Instance),
+                        Tuple.Create(0.01, (ILoot) MpPotionLoot.Instance)
                         ),
                     Tuple.Create(1, new LootDef(0, 1, 0, 8,
-                        Tuple.Create(0.01, (ILoot)new TierLoot(4, ItemType.Ability))
+                        Tuple.Create(0.01, (ILoot) new TierLoot(4, ItemType.Ability))
                         ))
                     )
                 ))
@@ -522,11 +522,11 @@ namespace wServer.logic
                     ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.04, (ILoot)HpPotionLoot.Instance),
-                        Tuple.Create(0.01, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.04, (ILoot) HpPotionLoot.Instance),
+                        Tuple.Create(0.01, (ILoot) MpPotionLoot.Instance)
                         ),
                     Tuple.Create(1, new LootDef(0, 1, 0, 8,
-                        Tuple.Create(0.01, (ILoot)new TierLoot(2, ItemType.Ring))
+                        Tuple.Create(0.01, (ILoot) new TierLoot(2, ItemType.Ring))
                         ))
                     )
                 ))
@@ -539,17 +539,17 @@ namespace wServer.logic
                 new QueuedBehavior(
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(0 * (float)Math.PI / 180, 0)
+                            AngleAttack.Instance(0*(float) Math.PI/180, 0)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(0 * (float)Math.PI / 180, 1)
+                            AngleAttack.Instance(0*(float) Math.PI/180, 1)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(0 * (float)Math.PI / 180, 2)
+                            AngleAttack.Instance(0*(float) Math.PI/180, 2)
                             )
                         ))
                     )
@@ -563,17 +563,17 @@ namespace wServer.logic
                 new QueuedBehavior(
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(90 * (float)Math.PI / 180, 0)
+                            AngleAttack.Instance(90*(float) Math.PI/180, 0)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(90 * (float)Math.PI / 180, 1)
+                            AngleAttack.Instance(90*(float) Math.PI/180, 1)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(90 * (float)Math.PI / 180, 2)
+                            AngleAttack.Instance(90*(float) Math.PI/180, 2)
                             )
                         ))
                     )
@@ -587,17 +587,17 @@ namespace wServer.logic
                 new QueuedBehavior(
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(45 * (float)Math.PI / 180, 0)
+                            AngleAttack.Instance(45*(float) Math.PI/180, 0)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(45 * (float)Math.PI / 180, 1)
+                            AngleAttack.Instance(45*(float) Math.PI/180, 1)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(45 * (float)Math.PI / 180, 2)
+                            AngleAttack.Instance(45*(float) Math.PI/180, 2)
                             )
                         ))
                     )
@@ -611,17 +611,17 @@ namespace wServer.logic
                 new QueuedBehavior(
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(135 * (float)Math.PI / 180, 0)
+                            AngleAttack.Instance(135*(float) Math.PI/180, 0)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(135 * (float)Math.PI / 180, 1)
+                            AngleAttack.Instance(135*(float) Math.PI/180, 1)
                             )
                         )),
                     Timed.Instance(1000, False.Instance(
                         Cooldown.Instance(100,
-                            AngleAttack.Instance(135 * (float)Math.PI / 180, 2)
+                            AngleAttack.Instance(135*(float) Math.PI/180, 2)
                             )
                         ))
                     )
@@ -632,107 +632,107 @@ namespace wServer.logic
                 new QueuedBehavior(
                     IsEntityPresent.Instance(14, null),
                     new RunBehaviors(
-                        TossEnemy.Instance(230 * (float)Math.PI / 180, 8, 0x0958),
-                        TossEnemy.Instance(180 * (float)Math.PI / 180, 9, 0x0958),
-                        TossEnemy.Instance(140 * (float)Math.PI / 180, 8, 0x0958)
+                        TossEnemy.Instance(230*(float) Math.PI/180, 8, 0x0958),
+                        TossEnemy.Instance(180*(float) Math.PI/180, 9, 0x0958),
+                        TossEnemy.Instance(140*(float) Math.PI/180, 8, 0x0958)
                         ),
                     Cooldown.Instance(1000),
                     new RunBehaviors(
-                        TossEnemy.Instance(200 * (float)Math.PI / 180, 7, 0x0959),
-                        TossEnemy.Instance(240 * (float)Math.PI / 180, 9, 0x0959),
-                        TossEnemy.Instance(280 * (float)Math.PI / 180, 9, 0x0959),
-                        TossEnemy.Instance(320 * (float)Math.PI / 180, 7, 0x0959)
+                        TossEnemy.Instance(200*(float) Math.PI/180, 7, 0x0959),
+                        TossEnemy.Instance(240*(float) Math.PI/180, 9, 0x0959),
+                        TossEnemy.Instance(280*(float) Math.PI/180, 9, 0x0959),
+                        TossEnemy.Instance(320*(float) Math.PI/180, 7, 0x0959)
                         ),
                     Cooldown.Instance(1000),
                     new RunBehaviors(
-                        TossEnemy.Instance(45 * (float)Math.PI / 180, 1, 0x0960),
-                        TossEnemy.Instance(45 * (float)Math.PI / 180, 6, 0x0960),
-                        TossEnemy.Instance(225 * (float)Math.PI / 180, 10, 0x0960),
-                        TossEnemy.Instance(225 * (float)Math.PI / 180, 5, 0x0960),
-                        TossEnemy.Instance(135 * (float)Math.PI / 180, 1, 0x0961),
-                        TossEnemy.Instance(135 * (float)Math.PI / 180, 6, 0x0961),
-                        TossEnemy.Instance(315 * (float)Math.PI / 180, 10, 0x0961),
-                        TossEnemy.Instance(315 * (float)Math.PI / 180, 5, 0x0961)
+                        TossEnemy.Instance(45*(float) Math.PI/180, 1, 0x0960),
+                        TossEnemy.Instance(45*(float) Math.PI/180, 6, 0x0960),
+                        TossEnemy.Instance(225*(float) Math.PI/180, 10, 0x0960),
+                        TossEnemy.Instance(225*(float) Math.PI/180, 5, 0x0960),
+                        TossEnemy.Instance(135*(float) Math.PI/180, 1, 0x0961),
+                        TossEnemy.Instance(135*(float) Math.PI/180, 6, 0x0961),
+                        TossEnemy.Instance(315*(float) Math.PI/180, 10, 0x0961),
+                        TossEnemy.Instance(315*(float) Math.PI/180, 5, 0x0961)
                         ),
                     Cooldown.Instance(3400)
                     ), new LootBehavior(LootDef.Empty,
                         Tuple.Create(1, CommonLesserGodSoulBag)
                         )
                 ))
-                .Init(0x0f3f, Behaves("Dallas Bug",
+            .Init(0x0f3f, Behaves("Dallas Bug",
                 new RunBehaviors(
                     SimpleWandering.Instance(5, 10),
-                   Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
-                   ),
+                    Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
+                    ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.5, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.5, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
-        .Init(0x0f40, Behaves("Luci Hellhound",
-                 new RunBehaviors(
+            .Init(0x0f40, Behaves("Luci Hellhound",
+                new RunBehaviors(
                     SimpleWandering.Instance(5, 10),
-                   Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
-                   ),
+                    Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
+                    ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.5, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.5, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
-                .Init(0x5029, Behaves("Lunar Deer",
-                 new RunBehaviors(
+            .Init(0x5029, Behaves("Lunar Deer",
+                new RunBehaviors(
                     SimpleWandering.Instance(5, 10),
-                   Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
-                   ),
+                    Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
+                    ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.5, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.5, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
-                .Init(0x5030, Behaves("Trav Pony",
-                 new RunBehaviors(
+            .Init(0x5030, Behaves("Trav Pony",
+                new RunBehaviors(
                     SimpleWandering.Instance(5, 10),
-                   Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
-                   ),
+                    Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
+                    ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.5, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.5, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
-                .Init(0x5031, Behaves("Proph Elf",
-                 new RunBehaviors(
+            .Init(0x5031, Behaves("Proph Elf",
+                new RunBehaviors(
                     SimpleWandering.Instance(5, 10),
-                   Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
-                   ),
+                    Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
+                    ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.5, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.5, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
-                .Init(0x5032, Behaves("Tachy Fish",
-                 new RunBehaviors(
+            .Init(0x5032, Behaves("Tachy Fish",
+                new RunBehaviors(
                     SimpleWandering.Instance(5, 10),
-                   Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
-                   ),
+                    Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
+                    ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.5, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.5, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ))
-                .Init(0x0f41, Behaves("Astro End",
-                 new RunBehaviors(
+            .Init(0x0f41, Behaves("Astro End",
+                new RunBehaviors(
                     SimpleWandering.Instance(5, 10),
-                   Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
-                   ),
+                    Cooldown.Instance(1000, SimpleAttack.Instance(7, 0))
+                    ),
                 loot: new LootBehavior(
                     new LootDef(0, 2, 0, 8,
-                        Tuple.Create(0.5, (ILoot)MpPotionLoot.Instance)
+                        Tuple.Create(0.5, (ILoot) MpPotionLoot.Instance)
                         )
                     )
                 ));

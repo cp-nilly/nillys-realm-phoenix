@@ -15,7 +15,7 @@ namespace wServer.realm.worlds
         public XmlWorld(DungeonDesc desc)
         {
             _d = desc;
-            var json = new WebClient().DownloadString(desc.Json);
+            string json = new WebClient().DownloadString(desc.Json);
 
             Name = desc.Name;
             Background = desc.Background;

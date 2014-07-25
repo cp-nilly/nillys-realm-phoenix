@@ -2,7 +2,6 @@
 
 using System;
 using wServer.logic.attack;
-using wServer.logic.loot;
 using wServer.logic.movement;
 using wServer.logic.taunt;
 
@@ -16,13 +15,11 @@ namespace wServer.logic
             .Init(0x3704, Behaves("The Shadow Mage",
                 new RunBehaviors(
                     Once.Instance(new SetKey(-1, 1)),
-                
                     IfEqual.Instance(-1, 1,
                         new RunBehaviors(
                             HpLesser.Instance(2500000, new SetKey(-1, 2))
                             )
                         ),
-                
                     IfEqual.Instance(-1, 2,
                         new RunBehaviors(
                             new QueuedBehavior(
@@ -58,7 +55,8 @@ namespace wServer.logic
                             new QueuedBehavior(
                                 new SimpleTaunt("Surely, you don't think you'll beat me, do you?"),
                                 Cooldown.Instance(10000),
-                                new SimpleTaunt("Now that I have decreased your numbers, it's time to unleash a little more of my powers"),
+                                new SimpleTaunt(
+                                    "Now that I have decreased your numbers, it's time to unleash a little more of my powers"),
                                 new SetKey(-1, 4)
                                 )
                             )
@@ -68,8 +66,7 @@ namespace wServer.logic
                             new RunBehaviors(
                                 InfiniteSpiralAttack.Instance(100, 4, 15, 1),
                                 InfiniteSpiralAttack.Instance(100, 4, 30, 1),
-                                Cooldown.Instance(500, MultiAttack.Instance(30, 90 * (float)Math.PI / 180, 30, 0, 0))
-                                
+                                Cooldown.Instance(500, MultiAttack.Instance(30, 90*(float) Math.PI/180, 30, 0, 0))
                                 ),
                             new QueuedBehavior(
                                 Cooldown.Instance(3000),
@@ -105,7 +102,6 @@ namespace wServer.logic
                             )
                         )
                     )
-            ));
-                
+                ));
     }
 }

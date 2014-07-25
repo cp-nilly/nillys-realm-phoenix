@@ -45,18 +45,18 @@ namespace wServer.realm.setpieces
         public void RenderSetPiece(World world, IntPoint pos)
         {
             var t = new int[81, 81];
-            for (var x = 0; x < Size; x++) //Flooring
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Flooring
+                for (int y = 0; y < Size; y++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy) + rand.NextDouble()*4 - 2;
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy) + rand.NextDouble()*4 - 2;
                     if (r <= 35)
                         t[x, y] = 1;
                 }
 
-            for (var x = 0; x < 17; x++) //Center
-                for (var y = 0; y < 17; y++)
+            for (int x = 0; x < 17; x++) //Center
+                for (int y = 0; y < 17; y++)
                 {
                     if (Center[x, y] != 0)
                         t[32 + x, 32 + y] = 2;
@@ -71,11 +71,11 @@ namespace wServer.realm.setpieces
             t[54, 40] = t[53, 40] = t[53, 39] = t[53, 41] = 4;
 
 
-            for (var x = 0; x < Size; x++) //Rendering
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Rendering
+                for (int y = 0; y < Size; y++)
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -83,7 +83,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 2)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Central;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -91,7 +91,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 3)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Central;
                         tile.ObjType = Pillar;
                         tile.Name = ConnectionComputer.GetConnString((_x, _y) => t[x + _x, y + _y] == 3);
@@ -101,7 +101,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 4)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = Pillar;
                         tile.Name = ConnectionComputer.GetConnString((_x, _y) => t[x + _x, y + _y] == 4);
@@ -110,7 +110,7 @@ namespace wServer.realm.setpieces
                         world.Map[x + pos.X, y + pos.Y] = tile;
                     }
 
-            var sphinx = Entity.Resolve(0x0d54);
+            Entity sphinx = Entity.Resolve(0x0d54);
             sphinx.Move(pos.X + 40.5f, pos.Y + 40.5f);
             world.EnterWorld(sphinx);
         }

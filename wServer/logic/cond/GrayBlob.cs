@@ -24,19 +24,19 @@ namespace wServer.logic.cond
         protected override void BehaveCore(BehaviorCondition cond, RealmTime? time, object state)
         {
             float dist = 2;
-            var entity = GetNearestEntity(ref dist, null);
+            Entity entity = GetNearestEntity(ref dist, null);
             if (entity != null)
             {
                 var chr = Host as Character;
-                var angleInc = (2*Math.PI)/12;
-                var desc = chr.ObjectDesc.Projectiles[0];
+                double angleInc = (2*Math.PI)/12;
+                ProjectileDesc desc = chr.ObjectDesc.Projectiles[0];
 
                 byte prjId = 0;
                 var prjPos = new Position {X = chr.X, Y = chr.Y};
-                var dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
-                for (var i = 0; i < 12; i++)
+                int dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
+                for (int i = 0; i < 12; i++)
                 {
-                    var prj = chr.CreateProjectile(
+                    Projectile prj = chr.CreateProjectile(
                         desc, chr.ObjectType, dmg, time.Value.tickTimes,
                         prjPos, (float) (angleInc*i));
                     chr.Owner.EnterWorld(prj);

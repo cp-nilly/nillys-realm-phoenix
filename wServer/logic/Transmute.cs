@@ -25,11 +25,11 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var c = rand.Next(minCount, maxCount + 1);
+            int c = rand.Next(minCount, maxCount + 1);
             var parent = Host as Entity;
-            for (var i = 0; i < c; i++)
+            for (int i = 0; i < c; i++)
             {
-                var entity = Entity.Resolve(objType);
+                Entity entity = Entity.Resolve(objType);
                 entity.Move(parent.X, parent.Y);
                 (entity as Enemy).Terrain = (Host as Enemy).Terrain;
                 parent.Owner.EnterWorld(entity);

@@ -38,14 +38,14 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
             Position target;
             object o;
             if (!Host.StateStorage.TryGetValue(Key, out o))
             {
-                var dist = radius;
-                var entity = GetNearestEntity(ref dist, objType);
+                float dist = radius;
+                Entity entity = GetNearestEntity(ref dist, objType);
                 if (entity == null) return true;
                 Host.StateStorage[Key] = target = new Position
                 {
@@ -58,7 +58,7 @@ namespace wServer.logic.movement
 
             if (target.X != Host.Self.X || target.Y != Host.Self.Y)
             {
-                var vect = new Vector2(target.X, target.Y) - new Vector2(Host.Self.X, Host.Self.Y);
+                Vector2 vect = new Vector2(target.X, target.Y) - new Vector2(Host.Self.X, Host.Self.Y);
                 vect.Normalize();
                 vect *= (speed/1.5f)*(time.thisTickTimes/1000f);
                 ValidateAndMove(Host.Self.X + vect.X, Host.Self.Y + vect.Y);

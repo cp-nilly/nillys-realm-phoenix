@@ -11,10 +11,15 @@ namespace wServer.realm.worlds
 {
     internal class GameWorld : World
     {
+        private readonly int mapId;
+        private readonly bool oryxPresent;
+
         public GameWorld(int mapId, string name, bool oryxPresent)
         {
             Name = name;
             Background = 0;
+            this.mapId = mapId;
+            this.oryxPresent = oryxPresent;
             SetMusic("Overworld");
             base.FromWorldMap(
                 typeof (RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.world" + mapId + ".wmap"));
@@ -28,11 +33,24 @@ namespace wServer.realm.worlds
                 Overseer = null;
         }
 
+        protected override void Init()
+        {
+            Console.WriteLine("Initializing Game World {0}({1}) from map {2}...", Id, Name, mapId);
+            base.FromWorldMap(
+                typeof(RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.maps.world" + mapId + ".wmap"));
+            SetPieces.ApplySetPieces(this);
+            if (oryxPresent)
+                Overseer = new Oryx(this);
+            else
+                Overseer = null;
+            Console.WriteLine("Game World initalized.");
+        }
+
         public Oryx Overseer { get; private set; }
 
         public static GameWorld AutoName(int mapId, bool oryxPresent)
         {
-            var name = RealmManager.realmNames[new Random().Next(RealmManager.realmNames.Count)];
+            string name = RealmManager.realmNames[new Random().Next(RealmManager.realmNames.Count)];
             RealmManager.realmNames.Remove(name);
             return new GameWorld(mapId, name, oryxPresent);
         }
@@ -52,7 +70,7 @@ namespace wServer.realm.worlds
 
         public override int EnterWorld(Entity entity)
         {
-            var ret = base.EnterWorld(entity);
+            int ret = base.EnterWorld(entity);
             if (entity is Player)
                 Overseer.OnPlayerEntered(entity as Player);
             return ret;

@@ -192,7 +192,7 @@ namespace wServer.logic
                     Tuple.Create(100, new LootDef(0, 5, 2, 5,
                         Tuple.Create(1.00, (ILoot) new ItemLoot("Potion of Mana")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
                         Tuple.Create(0.003, (ILoot) new ItemLoot("Coral Bow")),
                         Tuple.Create(0.008, (ILoot) new ItemLoot("Coral Silk Armor")),
                         Tuple.Create(0.015, (ILoot) new ItemLoot("Coral Venom Trap"))
@@ -207,7 +207,7 @@ namespace wServer.logic
                         )
                     ),
                 new RunBehaviors(
-                    Cooldown.Instance(1000, MultiAttack.Instance(100, 1 * (float)Math.PI / 30, 3, 0, projectileIndex: 0)),
+                    Cooldown.Instance(1000, MultiAttack.Instance(100, 1*(float) Math.PI/30, 3, 0, projectileIndex: 0)),
                     Cooldown.Instance(2000, SimpleAttack.Instance(3, 1)),
                     Cooldown.Instance(5000, RingAttack.Instance(5, 10, 0, 2))
                     )
@@ -221,7 +221,7 @@ namespace wServer.logic
                 Cooldown.Instance(1500, SimpleAttack.Instance(3, 1))
                 ))
             .Init(0x170c, Behaves("Giant Squid",
-                    Chasing.Instance(8, 25, 3, null),
+                Chasing.Instance(8, 25, 3, null),
                 Cooldown.Instance(250, SimpleAttack.Instance(10, projectileIndex: 0)),
                 SpawnMinion.Instance(0x170b, 0, 1, 10000, 10000)
                 ))
@@ -243,7 +243,7 @@ namespace wServer.logic
                     Chasing.Instance(12, 9, 1, 0x170a),
                     SimpleWandering.Instance(4, 1)
                     ),
-                Cooldown.Instance(660, MultiAttack.Instance(7, 2 * (float)Math.PI / 180, 2, 0, projectileIndex: 0))
+                Cooldown.Instance(660, MultiAttack.Instance(7, 2*(float) Math.PI/180, 2, 0, projectileIndex: 0))
                 ))
             .Init(0x170e, Behaves("Grey Sea Slurp",
                 IfNot.Instance(
@@ -289,7 +289,7 @@ namespace wServer.logic
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Coral Bow")),
                         Tuple.Create(0.007, (ILoot) new ItemLoot("Coral Silk Armor")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
                         Tuple.Create(0.5, (ILoot) new ItemLoot("Coral Juice")),
                         Tuple.Create(0.5, (ILoot) new ItemLoot("Potion of Mana"))
                         )))

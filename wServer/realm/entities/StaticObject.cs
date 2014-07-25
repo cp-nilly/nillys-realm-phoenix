@@ -30,19 +30,18 @@ namespace wServer.realm.entities
 
         public static int? GetHP(XElement elem)
         {
-            var n = elem.Element("MaxHitPoints");
+            XElement n = elem.Element("MaxHitPoints");
             if (n != null)
                 return Utils.FromString(n.Value);
             return null;
         }
 
-        static bool IsInteractive(short objType)
+        private static bool IsInteractive(short objType)
         {
             ObjectDesc desc;
             if (XmlDatas.ObjectDescs.TryGetValue(objType, out desc))
                 return !(desc.Static && !desc.Enemy && !desc.EnemyOccupySquare);
-            else
-                return false;
+            return false;
         }
 
         protected override void ExportStats(IDictionary<StatsType, object> stats)

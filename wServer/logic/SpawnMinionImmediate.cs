@@ -40,10 +40,10 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var count = rand.Next(minCount, maxCount + 1);
-            for (var i = 0; i < count; i++)
+            int count = rand.Next(minCount, maxCount + 1);
+            for (int i = 0; i < count; i++)
             {
-                var entity = Entity.Resolve(objType);
+                Entity entity = Entity.Resolve(objType);
                 entity.Move(Host.Self.X + (float) (rand.NextDouble()*2 - 1)*radius,
                     Host.Self.Y + (float) (rand.NextDouble()*2 - 1)*radius);
                 (entity as Enemy).Terrain = (Host as Enemy).Terrain;
@@ -81,11 +81,11 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            foreach (var i in GetNearestEntities(radius, null))
+            foreach (Entity i in GetNearestEntities(radius, null))
             {
                 if (!i.HasConditionEffect(ConditionEffects.Paralyzed))
                 {
-                    var entity = Entity.Resolve(objType);
+                    Entity entity = Entity.Resolve(objType);
                     entity.Move(i.X + (float) (rand.NextDouble()*2 - 1)*targetRadius,
                         i.Y + (float) (rand.NextDouble()*2 - 1)*targetRadius);
                     (entity as Enemy).Terrain = (Host as Enemy).Terrain;

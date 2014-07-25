@@ -40,11 +40,11 @@ namespace wServer.logic.attack
             if (objType == null)
             {
                 var host = Host.Self as Enemy;
-                var hp = host.HP;
+                int hp = host.HP;
                 hp = Math.Min(hp + amount, host.ObjectDesc.MaxHp);
                 if (hp != host.HP)
                 {
-                    var n = hp - host.HP;
+                    int n = hp - host.HP;
                     host.HP = hp;
                     host.UpdateCount++;
                     host.Owner.BroadcastPacket(new ShowEffectPacket
@@ -65,15 +65,15 @@ namespace wServer.logic.attack
             }
             else
             {
-                var dist = radius;
+                float dist = radius;
                 var entity = GetNearestEntity(ref dist, objType) as Enemy;
                 while (entity != null)
                 {
-                    var hp = entity.HP;
+                    int hp = entity.HP;
                     hp = Math.Min(hp + amount, entity.ObjectDesc.MaxHp);
                     if (hp != entity.HP)
                     {
-                        var n = hp - entity.HP;
+                        int n = hp - entity.HP;
                         entity.HP = hp;
                         entity.UpdateCount++;
                         entity.Owner.BroadcastPacket(new ShowEffectPacket

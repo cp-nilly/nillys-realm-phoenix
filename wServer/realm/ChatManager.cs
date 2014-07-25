@@ -1,6 +1,5 @@
 ﻿#region
 
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.svrPackets;
 
@@ -33,7 +32,7 @@ namespace wServer.realm
 
         public void Announce(string text)
         {
-            foreach (var i in RealmManager.Clients.Values)
+            foreach (ClientProcessor i in RealmManager.Clients.Values)
                 i.SendPacket(new TextPacket
                 {
                     BubbleTime = 0,

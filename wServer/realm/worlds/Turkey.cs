@@ -9,7 +9,7 @@
             AllowTeleport = false;
             SetMusic("Oryx");
             base.FromWorldMap(
-                typeof(RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.turkey.wmap"));
+                typeof (RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.turkey.wmap"));
         }
 
         public override World GetInstance(ClientProcessor psr)

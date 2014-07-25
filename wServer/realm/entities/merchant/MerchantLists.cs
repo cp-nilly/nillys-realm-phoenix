@@ -150,7 +150,7 @@ namespace wServer.realm.entities
         public static void AddPetShop()
         {
             var PetShop = new List<int>();
-            for (var i = 0x1500; i < 0x1562; i++)
+            for (int i = 0x1500; i < 0x1562; i++)
             {
                 PetShop.Add(i);
             }
@@ -164,7 +164,7 @@ namespace wServer.realm.entities
         public static void GetKeys()
         {
             var nkeys = new List<int>();
-            foreach (var i in XmlDatas.Keys)
+            foreach (short i in XmlDatas.Keys)
             {
                 prices[i] = new Tuple<int, CurrencyType>(XmlDatas.KeyPrices[i], CurrencyType.Fame);
                 nkeys.Add(i);
@@ -183,7 +183,7 @@ namespace wServer.realm.entities
             {
                 if (shopLists.ContainsKey(i.Value))
                 {
-                    var ls = shopLists[i.Value].ToList();
+                    List<int> ls = shopLists[i.Value].ToList();
                     ls.Add(i.Key);
                     shopLists[i.Value] = ls.ToArray();
                 }

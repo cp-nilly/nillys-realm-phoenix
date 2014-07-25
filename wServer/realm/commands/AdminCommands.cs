@@ -8,6 +8,7 @@ using System.Text;
 using db;
 using db.data;
 using MySql.Data.MySqlClient;
+using wServer.cliPackets;
 using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.realm.setpieces;
@@ -35,7 +36,7 @@ namespace wServer.realm.commands
             int num;
             if (args.Length > 0 && int.TryParse(args[0], out num)) //multi
             {
-                var name = string.Join(" ", args.Skip(1).ToArray());
+                string name = string.Join(" ", args.Skip(1).ToArray());
                 short objType;
                 //creates a new case insensitive dictionary based on the XmlDatas
                 var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
@@ -46,7 +47,7 @@ namespace wServer.realm.commands
                 }
                 else
                 {
-                    var c = int.Parse(args[0]);
+                    int c = int.Parse(args[0]);
                     if (player.Client.Account.Rank < 5 && c > 50)
                     {
                         player.SendError("Maximum spawn count is set to 50!");
@@ -59,13 +60,13 @@ namespace wServer.realm.commands
                         player.SendInfo("Bypass made!");
                     }
 
-                    for (var i = 0; i < num; i++)
+                    for (int i = 0; i < num; i++)
                     {
-                        var entity = Entity.Resolve(objType);
+                        Entity entity = Entity.Resolve(objType);
                         entity.Move(player.X, player.Y);
                         player.Owner.EnterWorld(entity);
                     }
-                    var dir = @"logs";
+                    string dir = @"logs";
                     if (!Directory.Exists(dir))
                     {
                         Directory.CreateDirectory(dir);
@@ -79,7 +80,7 @@ namespace wServer.realm.commands
             }
             else
             {
-                var name = string.Join(" ", args);
+                string name = string.Join(" ", args);
                 short objType;
                 //creates a new case insensitive dictionary based on the XmlDatas
                 var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
@@ -90,11 +91,11 @@ namespace wServer.realm.commands
                 }
                 else
                 {
-                    var entity = Entity.Resolve(objType);
+                    Entity entity = Entity.Resolve(objType);
                     entity.Move(player.X, player.Y);
                     player.Owner.EnterWorld(entity);
                 }
-                var dir = @"logs";
+                string dir = @"logs";
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
@@ -121,10 +122,10 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var prtal = Entity.Resolve(0x1900);
+            Entity prtal = Entity.Resolve(0x1900);
             prtal.Move(player.X, player.Y);
             player.Owner.EnterWorld(prtal);
-            var w = RealmManager.GetWorld(player.Owner.Id);
+            World w = RealmManager.GetWorld(player.Owner.Id);
             w.Timers.Add(new WorldTimer(30*1000, (world, t) => //default portal close time * 1000
 
             {
@@ -137,7 +138,7 @@ namespace wServer.realm.commands
                     Console.Out.WriteLine("Couldn't despawn portal.");
                 }
             }));
-            foreach (var i in RealmManager.Clients.Values)
+            foreach (ClientProcessor i in RealmManager.Clients.Values)
                 i.SendPacket(new TextPacket
                 {
                     BubbleTime = 0,
@@ -145,7 +146,7 @@ namespace wServer.realm.commands
                     Name = "",
                     Text = "Arena Opened by:" + " " + player.nName
                 });
-            foreach (var i in RealmManager.Clients.Values)
+            foreach (ClientProcessor i in RealmManager.Clients.Values)
                 i.SendPacket(new NotificationPacket
                 {
                     Color = new ARGB(0xff00ff00),
@@ -169,23 +170,23 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var name = "";
-            var maxed = 0;
+            string name = "";
+            int maxed = 0;
             var rand = new Random();
             try
             {
                 if (args.Length == 0)
                 {
                     var list = new List<string>();
-                    var num = 0;
-                    foreach (var i in RealmManager.Clients.Values)
+                    int num = 0;
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                     {
                         list.Add(i.Account.Name);
                         num++;
                     }
-                    var array = list.ToArray();
+                    string[] array = list.ToArray();
                     var random = new Random();
-                    var length = array.Length;
+                    int length = array.Length;
                     name = array[random.Next(0, length - 1)];
                     maxed = rand.Next(1, 11);
                 }
@@ -202,15 +203,15 @@ namespace wServer.realm.commands
                 else
                 {
                     var list = new List<string>();
-                    var num = 0;
-                    foreach (var i in RealmManager.Clients.Values)
+                    int num = 0;
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                     {
                         list.Add(i.Account.Name);
                         num++;
                     }
-                    var array = list.ToArray();
+                    string[] array = list.ToArray();
                     var random = new Random();
-                    var length = array.Length;
+                    int length = array.Length;
                     name = array[random.Next(0, length - 1)];
                     maxed = rand.Next(1, 11);
                 }
@@ -374,11 +375,10 @@ namespace wServer.realm.commands
             }
             else
             {
-
-                var dir = @"logs";
+                string dir = @"logs";
                 int num;
                 int amount = 1;
-                var name = "";
+                string name = "";
                 if (args.Length > 0 && int.TryParse(args[0], out num)) //multi
                 {
                     name = string.Join(" ", args.Skip(1).ToArray()).Trim();
@@ -388,7 +388,7 @@ namespace wServer.realm.commands
                 {
                     name = string.Join(" ", args.ToArray()).Trim();
                 }
-                
+
                 short objType;
                 var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
                 if (!icdatas.TryGetValue(name, out objType))
@@ -398,9 +398,9 @@ namespace wServer.realm.commands
                 }
                 if (!XmlDatas.ItemDescs[objType].Secret || player.Client.Account.Rank >= 5)
                 {
-                    for (var x = 0; x < amount; x++)
+                    for (int x = 0; x < amount; x++)
                     {
-                        for (var i = 0; i < player.Inventory.Length; i++)
+                        for (int i = 0; i < player.Inventory.Length; i++)
                         {
                             if (player.Inventory[i] == null)
                             {
@@ -408,21 +408,18 @@ namespace wServer.realm.commands
                                 player.UpdateCount++;
                                 break;
                             }
-                            else
+                            if (i == 11 && x < amount)
                             {
-                                if (i == 11 && x < amount)
+                                player.SendError("Inventory full!");
+                                if (!Directory.Exists(dir))
                                 {
-                                    player.SendError("Inventory full!");
-                                    if (!Directory.Exists(dir))
-                                    {
-                                        Directory.CreateDirectory(dir);
-                                    }
-                                    using (var writer = new StreamWriter(@"logs\GiveLog.log", true))
-                                    {
-                                        writer.WriteLine(player.Name + " gave themselves " + amount + " " + name);
-                                    }
-                                    return;
+                                    Directory.CreateDirectory(dir);
                                 }
+                                using (var writer = new StreamWriter(@"logs\GiveLog.log", true))
+                                {
+                                    writer.WriteLine(player.Name + " gave themselves " + amount + " " + name);
+                                }
+                                return;
                             }
                         }
                     }
@@ -435,20 +432,15 @@ namespace wServer.realm.commands
                         writer.WriteLine(player.Name + " gave themselves " + amount + " " + name);
                     }
                     player.SendInfo("Success!");
-                    return;
-
                 }
-                else
+                player.SendError("Item cannot be given!");
+                if (!Directory.Exists(dir))
                 {
-                    player.SendError("Item cannot be given!");
-                    if (!Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
-                    using (var writer = new StreamWriter(@"logs\GiveLog.log", true))
-                    {
-                        writer.WriteLine(player.Name + " tried to give themselves " + amount + " " + name);
-                    }
+                    Directory.CreateDirectory(dir);
+                }
+                using (var writer = new StreamWriter(@"logs\GiveLog.log", true))
+                {
+                    writer.WriteLine(player.Name + " tried to give themselves " + amount + " " + name);
                 }
             }
         }
@@ -596,7 +588,6 @@ namespace wServer.realm.commands
         }
     }
 
-   
 
     internal class Kick : ICommand
     {
@@ -621,7 +612,7 @@ namespace wServer.realm.commands
                 try
                 {
                     Player target = null;
-                    if((target = RealmManager.FindPlayer(string.Join(" ",args))) != null)
+                    if ((target = RealmManager.FindPlayer(string.Join(" ", args))) != null)
                     {
                         player.SendInfo("Player Disconnected");
                         target.Client.Disconnect();
@@ -673,7 +664,7 @@ namespace wServer.realm.commands
             }
             else
             {
-                var saytext = string.Join(" ", args);
+                string saytext = string.Join(" ", args);
                 player.SendEnemy("Oryx the Mad God", saytext);
             }
         }
@@ -694,16 +685,16 @@ namespace wServer.realm.commands
         public void Execute(Player player, string[] args)
         {
             var sb = new StringBuilder("All conplayers: ");
-            var players = 0;
+            int players = 0;
             foreach (var w in RealmManager.Worlds)
             {
-                var world = w.Value;
+                World world = w.Value;
                 if (w.Key != 0)
                 {
-                    var copy = world.Players.Values.ToArray();
+                    Player[] copy = world.Players.Values.ToArray();
                     if (copy.Length != 0)
                     {
-                        for (var i = 0; i < copy.Length; i++)
+                        for (int i = 0; i < copy.Length; i++)
                         {
                             sb.Append(copy[i].Name);
                             sb.Append(", ");
@@ -714,7 +705,7 @@ namespace wServer.realm.commands
             }
             sb.Append("players online: ");
             sb.Append(players.ToString());
-            var fixedString = sb.ToString().TrimEnd(',', ' '); //clean up trailing ", "s
+            string fixedString = sb.ToString().TrimEnd(',', ' '); //clean up trailing ", "s
 
             player.SendInfo(fixedString);
         }
@@ -740,9 +731,9 @@ namespace wServer.realm.commands
             }
             else
             {
-                var saytext = string.Join(" ", args);
+                string saytext = string.Join(" ", args);
 
-                foreach (var i in RealmManager.Clients.Values)
+                foreach (ClientProcessor i in RealmManager.Clients.Values)
                     i.SendPacket(new TextPacket
                     {
                         BubbleTime = 0,
@@ -774,7 +765,7 @@ namespace wServer.realm.commands
             }
             else
             {
-                var plr = RealmManager.FindPlayer(args[0]);
+                Player plr = RealmManager.FindPlayer(args[0]);
                 if (plr != null)
                 {
                     plr.Client.Reconnect(new ReconnectPacket
@@ -815,7 +806,7 @@ namespace wServer.realm.commands
                 foreach (var w in RealmManager.Worlds)
                 {
                     //string death = string.Join(" ", args);
-                    var world = w.Value;
+                    World world = w.Value;
                     if (w.Key != 0) // 0 is limbo??
                     {
                         foreach (var i in world.Players)
@@ -860,7 +851,7 @@ namespace wServer.realm.commands
             {
                 foreach (var w in RealmManager.Worlds)
                 {
-                    var world = w.Value;
+                    World world = w.Value;
                     if (w.Key != 0)
                     {
                         world.BroadcastPacket(new TextPacket
@@ -1175,7 +1166,7 @@ namespace wServer.realm.commands
             {
                 using (var dbx = new Database())
                 {
-                    var cmd = dbx.CreateQuery();
+                    MySqlCommand cmd = dbx.CreateQuery();
                     cmd.CommandText = "UPDATE accounts SET rank=1 WHERE name=@name";
                     cmd.Parameters.AddWithValue("@name", args[0]);
                     if (cmd.ExecuteNonQuery() == 0)
@@ -1189,7 +1180,7 @@ namespace wServer.realm.commands
                         Console.Out.WriteLine(player.nName + " Has Whitelisted " + args[0]);
                         Console.ForegroundColor = ConsoleColor.White;
 
-                        var dir = @"logs";
+                        string dir = @"logs";
                         if (!Directory.Exists(dir))
                             Directory.CreateDirectory(dir);
                         using (var writer = new StreamWriter(@"logs\WhitelistLog.log", true))
@@ -1221,21 +1212,21 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+            Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
             if (plr != null)
             {
-                var dir = @"logs";
+                string dir = @"logs";
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
-                } 
+                }
                 using (var writer = new StreamWriter(@"logs\Bans.log", true))
                 {
                     writer.WriteLine(player.Name + " Banned " + args[0] + ". ");
                 }
             }
             string name = string.Join(" ", args);
-            player.Client.SendPacket(new TextBoxPacket()
+            player.Client.SendPacket(new TextBoxPacket
             {
                 Title = "Confirm Ban",
                 Message = "Really ban " + name + "?",
@@ -1270,9 +1261,8 @@ namespace wServer.realm.commands
                 {
                     using (var dbx = new Database())
                     {
-
-                        var dir = @"logs";
-                        var cmd = dbx.CreateQuery();
+                        string dir = @"logs";
+                        MySqlCommand cmd = dbx.CreateQuery();
                         cmd.CommandText = "UPDATE accounts SET banned=1, rank=0 WHERE name=@name";
                         cmd.Parameters.AddWithValue("@name", args[0]);
                         if (cmd.ExecuteNonQuery() == 0)
@@ -1333,7 +1323,7 @@ namespace wServer.realm.commands
             {
                 using (var dbx = new Database())
                 {
-                    var cmd = dbx.CreateQuery();
+                    MySqlCommand cmd = dbx.CreateQuery();
                     cmd.CommandText = "UPDATE accounts SET banned=0 WHERE name=@name";
                     cmd.Parameters.AddWithValue("@name", args[0]);
                     if (cmd.ExecuteNonQuery() == 0)
@@ -1384,7 +1374,7 @@ namespace wServer.realm.commands
                     {
                         using (var dbx = new Database())
                         {
-                            var cmd = dbx.CreateQuery();
+                            MySqlCommand cmd = dbx.CreateQuery();
                             cmd.CommandText = "UPDATE accounts SET rank=@rank WHERE name=@name";
                             cmd.Parameters.AddWithValue("@rank", args[1]);
                             cmd.Parameters.AddWithValue("@name", args[0]);
@@ -1436,7 +1426,7 @@ namespace wServer.realm.commands
                 {
                     using (var dbx = new Database())
                     {
-                        var cmd = dbx.CreateQuery();
+                        MySqlCommand cmd = dbx.CreateQuery();
                         cmd.CommandText = "UPDATE accounts SET guildRank=@guildRank WHERE name=@name";
                         cmd.Parameters.AddWithValue("@guildRank", args[1]);
                         cmd.Parameters.AddWithValue("@name", args[0]);
@@ -1486,7 +1476,7 @@ namespace wServer.realm.commands
                 {
                     using (var dbx = new Database())
                     {
-                        var cmd = dbx.CreateQuery();
+                        MySqlCommand cmd = dbx.CreateQuery();
                         cmd.CommandText = "UPDATE accounts SET guild=@guild WHERE name=@name";
                         cmd.Parameters.AddWithValue("@guild", args[1]);
                         cmd.Parameters.AddWithValue("@name", args[0]);
@@ -1579,7 +1569,7 @@ namespace wServer.realm.commands
                     DurationMS = -1
                 });
                 player.SendInfo("Godmode On");
-                foreach (var i in RealmManager.Clients.Values)
+                foreach (ClientProcessor i in RealmManager.Clients.Values)
                     i.SendPacket(new NotificationPacket
                     {
                         Color = new ARGB(0xff00ff00),
@@ -1604,7 +1594,7 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args));
+            Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args));
             if (plr != null)
             {
                 player.SendInfo(plr.Name + "'s IP: " + plr.Client.IP.Address);
@@ -1614,7 +1604,7 @@ namespace wServer.realm.commands
             {
                 if (i.Key != 0 && i.Value.Id != player.Owner.Id)
                 {
-                    var p = i.Value.GetUniqueNamedPlayerRough(string.Join(" ", args));
+                    Player p = i.Value.GetUniqueNamedPlayerRough(string.Join(" ", args));
                     if (p != null)
                     {
                         player.SendInfo(plr.Name + "'s IP: " + plr.Client.IP.Address);
@@ -1643,12 +1633,12 @@ namespace wServer.realm.commands
             try
             {
                 Player target = null;
-                if((target = RealmManager.FindPlayer(string.Join(" ",args))) != null)
+                if ((target = RealmManager.FindPlayer(string.Join(" ", args))) != null)
                 {
-                    var player2 = target.Client;
-                    var v = RealmManager.PlayerVault(player2);
-                    var id = player2.Account.AccountId;
-                    player.Client.Reconnect(new ReconnectPacket()
+                    ClientProcessor player2 = target.Client;
+                    Vault v = RealmManager.PlayerVault(player2);
+                    int id = player2.Account.AccountId;
+                    player.Client.Reconnect(new ReconnectPacket
                     {
                         Host = "",
                         Port = 2050,
@@ -1656,7 +1646,6 @@ namespace wServer.realm.commands
                         Name = v.Name,
                         Key = Empty<byte>.Array,
                     });
-                    return;
                 }
             }
             catch
@@ -1756,7 +1745,7 @@ namespace wServer.realm.commands
             {
                 using (var db = new Database())
                 {
-                    var db1 = db.CreateQuery();
+                    MySqlCommand db1 = db.CreateQuery();
                     db1.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
                     db1.Parameters.AddWithValue("@name", args[0]);
                     if ((int) (long) db1.ExecuteScalar() > 0)
@@ -1810,7 +1799,7 @@ namespace wServer.realm.commands
             {
                 using (var db = new Database())
                 {
-                    var db1 = db.CreateQuery();
+                    MySqlCommand db1 = db.CreateQuery();
                     db1.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
                     db1.Parameters.AddWithValue("@name", args[1]);
                     if ((int) (long) db1.ExecuteScalar() > 0)
@@ -1838,10 +1827,10 @@ namespace wServer.realm.commands
                                 {
                                     if (playerX.Key != 0)
                                     {
-                                        var world = playerX.Value;
+                                        World world = playerX.Value;
                                         foreach (var p in world.Players)
                                         {
-                                            var Client = p.Value;
+                                            Player Client = p.Value;
                                             if ((player.Name.ToLower() == args[0].ToLower()) && player.NameChosen)
                                             {
                                                 player.Name = args[1];
@@ -1887,9 +1876,9 @@ namespace wServer.realm.commands
             }
             else
             {
-                var title = string.Join(" ", args);
-                var message = string.Join(" ", args.Skip(1).ToArray());
-                foreach (var i in RealmManager.Clients.Values)
+                string title = string.Join(" ", args);
+                string message = string.Join(" ", args.Skip(1).ToArray());
+                foreach (ClientProcessor i in RealmManager.Clients.Values)
                     i.SendPacket(new TextBoxPacket
                     {
                         Title = args[0],
@@ -1937,6 +1926,7 @@ namespace wServer.realm.commands
             }
         }
     }
+
     internal class zTokenCommand : ICommand
     {
         public string Command
@@ -1973,6 +1963,7 @@ namespace wServer.realm.commands
             }
         }
     }
+
     internal class FameCommand : ICommand
     {
         public string Command
@@ -2032,7 +2023,7 @@ namespace wServer.realm.commands
                 }
                 else if (args[0] == "ztokens")
                 {
-                    var plr = RealmManager.FindPlayer(args[1]);
+                    Player plr = RealmManager.FindPlayer(args[1]);
                     using (var db = new Database())
                     {
                         plr.zTokens = db.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
@@ -2044,7 +2035,7 @@ namespace wServer.realm.commands
                 {
                     using (var db = new Database())
                     {
-                        var plr = RealmManager.FindPlayer(args[1]);
+                        Player plr = RealmManager.FindPlayer(args[1]);
                         plr.Credits = db.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
                         plr.UpdateCount++;
                         db.Dispose();
@@ -2052,7 +2043,7 @@ namespace wServer.realm.commands
                 }
                 else if (args[0] == "fame")
                 {
-                    var plr = RealmManager.FindPlayer(args[1]);
+                    Player plr = RealmManager.FindPlayer(args[1]);
                     using (var db = new Database())
                     {
                         plr.CurrentFame = db.UpdateFame(plr.Client.Account, int.Parse(args[2]));
@@ -2117,6 +2108,8 @@ namespace wServer.realm.commands
 
     internal class TakeCommand : ICommand
     {
+        private RealmTime time;
+
         public string Command
         {
             get { return "take"; }
@@ -2126,19 +2119,20 @@ namespace wServer.realm.commands
         {
             get { return 3; }
         }
-        RealmTime time;
+
         public void Execute(Player player, string[] args)
         {
-            var plr = RealmManager.FindPlayer(args[0]);
+            Player plr = RealmManager.FindPlayer(args[0]);
             if (plr != null && plr.Owner == player.Owner)
             {
-                player.RequestTake(time, new wServer.cliPackets.RequestTradePacket
+                player.RequestTake(time, new RequestTradePacket
                 {
                     Name = plr.Name
                 });
             }
         }
     }
+
     internal class BanIPCommand : ICommand
     {
         public string Command
@@ -2163,13 +2157,13 @@ namespace wServer.realm.commands
                 {
                     if (i.Key != 0 && i.Value.Id != player.Owner.Id)
                     {
-                        var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+                        Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
                         if (plr != null)
                         {
                             using (var db = new Database())
                             {
                                 string address = plr.Client.IP.Address;
-                                var cmd = db.CreateQuery();
+                                MySqlCommand cmd = db.CreateQuery();
                                 cmd.CommandText = "UPDATE ips SET banned=1 WHERE ip=@Adress";
                                 cmd.Parameters.AddWithValue("Adress", plr.Client.IP.Address);
                                 string reason = string.Join(" ", args.Skip(1).ToArray()).Trim();
@@ -2183,14 +2177,15 @@ namespace wServer.realm.commands
                                     {
                                         plr.Client.Disconnect();
                                     }
-                                    var dir = @"logs";
+                                    string dir = @"logs";
                                     if (!Directory.Exists(dir))
                                     {
                                         Directory.CreateDirectory(dir);
                                     }
                                     using (var writer = new StreamWriter(@"logs\Bans.log", true))
                                     {
-                                        writer.WriteLine(player.Name + " IP-Banned " + args[0] + " (" + address + "). " + "Reason: " + reason);
+                                        writer.WriteLine(player.Name + " IP-Banned " + args[0] + " (" + address + "). " +
+                                                         "Reason: " + reason);
                                     }
                                     player.SendInfo("IP successfully Banned");
                                 }
@@ -2201,18 +2196,21 @@ namespace wServer.realm.commands
             }
         }
     }
-    
+
     internal class TradeCommand : ICommand
     {
+        private RealmTime time;
+
         public string Command
         {
             get { return "trade"; }
         }
+
         public int RequiredRank
         {
             get { return 0; }
         }
-        RealmTime time;
+
         public void Execute(Player player, string[] args)
         {
             if (args.Length < 1)
@@ -2221,10 +2219,10 @@ namespace wServer.realm.commands
             }
             else
             {
-                var plr = RealmManager.FindPlayer(args[0]);
+                Player plr = RealmManager.FindPlayer(args[0]);
                 if (plr != null && plr.Owner == player.Owner)
                 {
-                    player.RequestTrade(time, new wServer.cliPackets.RequestTradePacket
+                    player.RequestTrade(time, new RequestTradePacket
                     {
                         Name = plr.Name
                     });
@@ -2232,6 +2230,7 @@ namespace wServer.realm.commands
             }
         }
     }
+
     internal class IPBanC : ICommand
     {
         public string Command
@@ -2246,11 +2245,11 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+            Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
             if (plr != null)
             {
                 string address = plr.Client.IP.Address;
-                var dir = @"logs";
+                string dir = @"logs";
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
@@ -2261,7 +2260,7 @@ namespace wServer.realm.commands
                 }
             }
             string name = string.Join(" ", args);
-            player.Client.SendPacket(new TextBoxPacket()
+            player.Client.SendPacket(new TextBoxPacket
             {
                 Title = "Confirm IPBan",
                 Message = "Really IPBan " + name + "?",
@@ -2271,6 +2270,7 @@ namespace wServer.realm.commands
             });
         }
     }
+
     internal class Mute : ICommand
     {
         public string Command
@@ -2291,12 +2291,12 @@ namespace wServer.realm.commands
             }
             else
             {
-                var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+                Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
                 plr.muted = true;
             }
-            
         }
     }
+
     internal class Unmute : ICommand
     {
         public string Command
@@ -2317,12 +2317,12 @@ namespace wServer.realm.commands
             }
             else
             {
-                var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+                Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
                 plr.muted = false;
             }
-
         }
     }
+
     internal class SetTag : ICommand
     {
         public string Command
@@ -2347,8 +2347,7 @@ namespace wServer.realm.commands
                 {
                     using (var db = new Database())
                     {
-
-                        var cmd = db.CreateQuery();
+                        MySqlCommand cmd = db.CreateQuery();
                         cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
                         cmd.Parameters.AddWithValue("@name", player.nName);
                         cmd.Parameters.AddWithValue("@tag", args[0]);
@@ -2366,13 +2365,12 @@ namespace wServer.realm.commands
                 }
                 else if (args.Length == 2)
                 {
-                    var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+                    Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
                     if (plr != null)
                     {
                         using (var db = new Database())
                         {
-
-                            var cmd = db.CreateQuery();
+                            MySqlCommand cmd = db.CreateQuery();
                             cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
                             cmd.Parameters.AddWithValue("@name", args[0]);
                             cmd.Parameters.AddWithValue("@tag", args[1]);
@@ -2396,6 +2394,7 @@ namespace wServer.realm.commands
             }
         }
     }
+
     internal class RemoveTag : ICommand
     {
         public string Command
@@ -2414,7 +2413,7 @@ namespace wServer.realm.commands
             {
                 using (var db = new Database())
                 {
-                    var cmd = db.CreateQuery();
+                    MySqlCommand cmd = db.CreateQuery();
                     cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
                     cmd.Parameters.AddWithValue("@name", player.nName);
                     cmd.Parameters.AddWithValue("@tag", "");
@@ -2432,13 +2431,12 @@ namespace wServer.realm.commands
             }
             else if (args.Length == 1)
             {
-                var plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+                Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
                 if (plr != null)
                 {
                     using (var db = new Database())
                     {
-
-                        var cmd = db.CreateQuery();
+                        MySqlCommand cmd = db.CreateQuery();
                         cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
                         cmd.Parameters.AddWithValue("@name", args[0]);
                         cmd.Parameters.AddWithValue("@tag", "");
@@ -2461,6 +2459,7 @@ namespace wServer.realm.commands
             }
         }
     }
+
     internal class Vanish : ICommand
     {
         public string Command
@@ -2483,6 +2482,7 @@ namespace wServer.realm.commands
             }
         }
     }
+
     internal class Unvanish : ICommand
     {
         public string Command
@@ -2500,21 +2500,30 @@ namespace wServer.realm.commands
             player.vanished = false;
         }
     }
-    class Spectate : ICommand
+
+    internal class Spectate : ICommand
     {
-        public string Command { get { return "spectate"; } }
-        public int RequiredRank { get { return 2; } }
+        public string Command
+        {
+            get { return "spectate"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 2; }
+        }
 
         public void Execute(Player player, string[] args)
         {
-            if (player.HasConditionEffect(ConditionEffects.Invincible) && (player.HasConditionEffect(ConditionEffects.Invisible)))
+            if (player.HasConditionEffect(ConditionEffects.Invincible) &&
+                (player.HasConditionEffect(ConditionEffects.Invisible)))
             {
-                player.ApplyConditionEffect(new ConditionEffect()
+                player.ApplyConditionEffect(new ConditionEffect
                 {
                     Effect = ConditionEffectIndex.Invincible,
                     DurationMS = 0
                 });
-                player.ApplyConditionEffect(new ConditionEffect()
+                player.ApplyConditionEffect(new ConditionEffect
                 {
                     Effect = ConditionEffectIndex.Invisible,
                     DurationMS = 0
@@ -2523,20 +2532,19 @@ namespace wServer.realm.commands
             }
             else
             {
-
-                player.ApplyConditionEffect(new ConditionEffect()
+                player.ApplyConditionEffect(new ConditionEffect
                 {
                     Effect = ConditionEffectIndex.Invincible,
                     DurationMS = -1
                 });
-                player.ApplyConditionEffect(new ConditionEffect()
+                player.ApplyConditionEffect(new ConditionEffect
                 {
                     Effect = ConditionEffectIndex.Invisible,
                     DurationMS = -1
                 });
                 player.SendInfo("Spectate On");
-                foreach (var i in RealmManager.Clients.Values)
-                    i.SendPacket(new NotificationPacket()
+                foreach (ClientProcessor i in RealmManager.Clients.Values)
+                    i.SendPacket(new NotificationPacket
                     {
                         Color = new ARGB(0xff00ff00),
                         ObjectId = player.Id,
@@ -2545,5 +2553,4 @@ namespace wServer.realm.commands
             }
         }
     }
-       
 }

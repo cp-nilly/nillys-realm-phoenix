@@ -39,9 +39,9 @@ namespace terrain
         public Noise(int seed)
         {
             var rand = new Random(seed);
-            for (var i = 0; i < p.Length; i++)
+            for (int i = 0; i < p.Length; i++)
                 p[i] = (byte) rand.Next();
-            for (var i = 0; i < 512; i++)
+            for (int i = 0; i < 512; i++)
                 perm[i] = p[i & 255];
         }
 
@@ -60,19 +60,19 @@ namespace terrain
         {
             double n0, n1, n2, n3; // Noise contributions from the four corners
             // Skew the input space to determine which simplex cell we're in
-            var F3 = 1.0/3.0;
-            var s = (pX + pY + pZ)*F3; // Very nice and simple skew factor for 3D
-            var i = fastfloor(pX + s);
-            var j = fastfloor(pY + s);
-            var k = fastfloor(pZ + s);
-            var G3 = 1.0/6.0; // Very nice and simple unskew factor, too
-            var t = (i + j + k)*G3;
-            var X0 = i - t; // Unskew the cell origin back to (x,y,z) space
-            var Y0 = j - t;
-            var Z0 = k - t;
-            var x0 = pX - X0; // The x,y,z distances from the cell origin
-            var y0 = pY - Y0;
-            var z0 = pZ - Z0;
+            double F3 = 1.0/3.0;
+            double s = (pX + pY + pZ)*F3; // Very nice and simple skew factor for 3D
+            int i = fastfloor(pX + s);
+            int j = fastfloor(pY + s);
+            int k = fastfloor(pZ + s);
+            double G3 = 1.0/6.0; // Very nice and simple unskew factor, too
+            double t = (i + j + k)*G3;
+            double X0 = i - t; // Unskew the cell origin back to (x,y,z) space
+            double Y0 = j - t;
+            double Z0 = k - t;
+            double x0 = pX - X0; // The x,y,z distances from the cell origin
+            double y0 = pY - Y0;
+            double z0 = pZ - Z0;
             // For the 3D case, the simplex shape is a slightly irregular tetrahedron.
             // Determine which simplex we are in.
             int i1, j1, k1; // Offsets for second corner of simplex in (i,j,k) coords
@@ -143,25 +143,25 @@ namespace terrain
             // a step of (0,0,1) in (i,j,k) means a step of (-c,-c,1-c) in (x,y,z), where
             // c = 1/6.
 
-            var x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
-            var y1 = y0 - j1 + G3;
-            var z1 = z0 - k1 + G3;
-            var x2 = x0 - i2 + 2.0*G3; // Offsets for third corner in (x,y,z) coords
-            var y2 = y0 - j2 + 2.0*G3;
-            var z2 = z0 - k2 + 2.0*G3;
-            var x3 = x0 - 1.0 + 3.0*G3; // Offsets for last corner in (x,y,z) coords
-            var y3 = y0 - 1.0 + 3.0*G3;
-            var z3 = z0 - 1.0 + 3.0*G3;
+            double x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
+            double y1 = y0 - j1 + G3;
+            double z1 = z0 - k1 + G3;
+            double x2 = x0 - i2 + 2.0*G3; // Offsets for third corner in (x,y,z) coords
+            double y2 = y0 - j2 + 2.0*G3;
+            double z2 = z0 - k2 + 2.0*G3;
+            double x3 = x0 - 1.0 + 3.0*G3; // Offsets for last corner in (x,y,z) coords
+            double y3 = y0 - 1.0 + 3.0*G3;
+            double z3 = z0 - 1.0 + 3.0*G3;
             // Work out the hashed gradient indices of the four simplex corners
-            var ii = i & 255;
-            var jj = j & 255;
-            var kk = k & 255;
-            var gi0 = perm[ii + perm[jj + perm[kk]]]%12;
-            var gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]]%12;
-            var gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]]%12;
-            var gi3 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]]%12;
+            int ii = i & 255;
+            int jj = j & 255;
+            int kk = k & 255;
+            int gi0 = perm[ii + perm[jj + perm[kk]]]%12;
+            int gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]]%12;
+            int gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]]%12;
+            int gi3 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]]%12;
             // Calculate the contribution from the four corners
-            var t0 = 0.6 - x0*x0 - y0*y0 - z0*z0;
+            double t0 = 0.6 - x0*x0 - y0*y0 - z0*z0;
             if (t0 < 0)
                 n0 = 0.0;
             else
@@ -169,7 +169,7 @@ namespace terrain
                 t0 *= t0;
                 n0 = t0*t0*dot(grad3[gi0], x0, y0, z0);
             }
-            var t1 = 0.6 - x1*x1 - y1*y1 - z1*z1;
+            double t1 = 0.6 - x1*x1 - y1*y1 - z1*z1;
             if (t1 < 0)
                 n1 = 0.0;
             else
@@ -177,7 +177,7 @@ namespace terrain
                 t1 *= t1;
                 n1 = t1*t1*dot(grad3[gi1], x1, y1, z1);
             }
-            var t2 = 0.6 - x2*x2 - y2*y2 - z2*z2;
+            double t2 = 0.6 - x2*x2 - y2*y2 - z2*z2;
             if (t2 < 0)
                 n2 = 0.0;
             else
@@ -185,7 +185,7 @@ namespace terrain
                 t2 *= t2;
                 n2 = t2*t2*dot(grad3[gi2], x2, y2, z2);
             }
-            var t3 = 0.6 - x3*x3 - y3*y3 - z3*z3;
+            double t3 = 0.6 - x3*x3 - y3*y3 - z3*z3;
             if (t3 < 0)
                 n3 = 0.0;
             else

@@ -37,7 +37,7 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
             float d;
             object o;
@@ -47,7 +47,7 @@ namespace wServer.logic.movement
             {
                 d = (float) o;
 
-                var dd = (speed/1.5f)*(time.thisTickTimes/1000f);
+                float dd = (speed/1.5f)*(time.thisTickTimes/1000f);
                 d -= dd;
                 ValidateAndMove(Host.Self.X + (float) Math.Cos(angle)*dd, Host.Self.Y + (float) Math.Sin(angle)*dd);
                 Host.Self.UpdateCount++;

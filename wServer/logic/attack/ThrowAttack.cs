@@ -43,14 +43,14 @@ namespace wServer.logic.attack
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Stunned)) return false;
-            var dist = sightRadius;
+            float dist = sightRadius;
 
-            var player = GetNearestEntity(ref dist, null);
+            Entity player = GetNearestEntity(ref dist, null);
             if (player != null)
             {
-                var distance = Vector2.Distance(new Vector2(Host.Self.X, Host.Self.Y), new Vector2(player.X, player.Y));
+                float distance = Vector2.Distance(new Vector2(Host.Self.X, Host.Self.Y), new Vector2(player.X, player.Y));
                 var chr = Host as Character;
-                var angle = Math.Atan2(player.Y - chr.Y, player.X - chr.X)
+                double angle = Math.Atan2(player.Y - chr.Y, player.X - chr.X)
                                + offsetAngle;
                 var target = new Position
                 {

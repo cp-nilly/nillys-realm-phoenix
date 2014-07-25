@@ -21,30 +21,30 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            var deepWaterRadius = 1f;
+            float deepWaterRadius = 1f;
 
             var border = new List<IntPoint>();
 
             var t = new int[Size, Size];
 
 
-            for (var y = 0; y < Size; y++) //Replace Deep Water With NWater
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Replace Deep Water With NWater
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= deepWaterRadius)
                     {
                         t[x, y] = 1;
                     }
                 }
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Water;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -67,30 +67,30 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            var deepWaterRadius = 2f;
+            float deepWaterRadius = 2f;
 
             var border = new List<IntPoint>();
 
             var t = new int[Size, Size];
 
 
-            for (var y = 0; y < Size; y++) //Replace Deep Water With NWater
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Replace Deep Water With NWater
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= deepWaterRadius)
                     {
                         t[x, y] = 1;
                     }
                 }
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Water;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -113,30 +113,30 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            var deepWaterRadius = 3f;
+            float deepWaterRadius = 3f;
 
             var border = new List<IntPoint>();
 
             var t = new int[Size, Size];
 
 
-            for (var y = 0; y < Size; y++) //Replace Deep Water With NWater
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Replace Deep Water With NWater
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= deepWaterRadius)
                     {
                         t[x, y] = 1;
                     }
                 }
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Water;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -159,30 +159,30 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            var deepWaterRadius = 4.5f;
+            float deepWaterRadius = 4.5f;
 
             var border = new List<IntPoint>();
 
             var t = new int[Size, Size];
 
 
-            for (var y = 0; y < Size; y++) //Replace Deep Water With NWater
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Replace Deep Water With NWater
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= deepWaterRadius)
                     {
                         t[x, y] = 1;
                     }
                 }
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Water;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -205,30 +205,30 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            var deepWaterRadius = 6f;
+            float deepWaterRadius = 6f;
 
             var border = new List<IntPoint>();
 
             var t = new int[Size, Size];
 
 
-            for (var y = 0; y < Size; y++) //Replace Deep Water With NWater
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Replace Deep Water With NWater
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= deepWaterRadius)
                     {
                         t[x, y] = 1;
                     }
                 }
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Water;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;

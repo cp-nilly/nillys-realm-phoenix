@@ -242,11 +242,11 @@ namespace wServer.logic
                                 new SimpleTaunt("I am still very alone"),
                                 SetSize.Instance(100),
                                 new SetKey(-1, 0)
-                            )
-                        ),
+                                )
+                            ),
                         new RandomTaunt(0.0001, "I cannot be defeated while my loyal subjects sustain me!")
-                    )
-                )))
+                        )
+                    )))
             .Init(0x092a, Behaves("Small Ghost",
                 new QueuedBehavior(
                     SetConditionEffect.Instance(ConditionEffectIndex.Invulnerable),
@@ -404,7 +404,9 @@ namespace wServer.logic
                                             )
                                         )),
                                     UnsetConditionEffect.Instance(ConditionEffectIndex.Invulnerable),
-                                    Timed.Instance(5000, False.Instance(Cooldown.Instance(250, RingAttack.Instance(4, 0, 35 * (float)Math.PI / 180, projectileIndex: 0))))
+                                    Timed.Instance(5000,
+                                        False.Instance(Cooldown.Instance(250,
+                                            RingAttack.Instance(4, 0, 35*(float) Math.PI/180, projectileIndex: 0))))
                                     )
                                 ),
                             new QueuedBehavior( //Death

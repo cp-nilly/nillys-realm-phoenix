@@ -1,6 +1,5 @@
 ﻿#region
 
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.svrPackets;
 
@@ -34,7 +33,8 @@ namespace wServer.realm.commands
                             {
                                 if (e.Value.Client.Account.Guild.Rank == 40)
                                 {
-                                    player.SendInfo(e.Value.Client.Account.Name + " has been invited to ally with your guild!");
+                                    player.SendInfo(e.Value.Client.Account.Name +
+                                                    " has been invited to ally with your guild!");
                                     e.Value.Client.SendPacket(new GuildAllyRequestPacket
                                     {
                                         Name = player.Client.Account.Name,
@@ -43,7 +43,8 @@ namespace wServer.realm.commands
                                 }
                                 else
                                 {
-                                    player.SendError(e.Value.Client.Account.Guild.Name + " is already one of your allys!");
+                                    player.SendError(e.Value.Client.Account.Guild.Name +
+                                                     " is already one of your allys!");
                                 }
                             }
                         }
@@ -58,10 +59,9 @@ namespace wServer.realm.commands
             }
         }
     }
+
     internal class GuildChatCommand : ICommand
     {
-        private ClientProcessor psr;
-
         public string Command
         {
             get { return "g"; }
@@ -78,11 +78,11 @@ namespace wServer.realm.commands
             {
                 try
                 {
-                    var saytext = string.Join(" ", args);
+                    string saytext = string.Join(" ", args);
 
                     foreach (var w in RealmManager.Worlds)
                     {
-                        var world = w.Value;
+                        World world = w.Value;
                         if (w.Key != 0) // 0 is limbo??
                         {
                             foreach (var i in world.Players)

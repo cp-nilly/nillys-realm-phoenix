@@ -35,7 +35,7 @@ namespace wServer.realm.entities.player
                 list = new List<int>();
             var player = Owner.GetEntity(pkt.ObjectId) as Player;
             if (player == null) return;
-            var accId = player.psr.Account.AccountId;
+            int accId = player.psr.Account.AccountId;
             var dbx = new Database();
             //if (pkt.Add && list.Count < 6)
             //    list.Add(accId);
@@ -60,6 +60,40 @@ namespace wServer.realm.entities.player
             }
 
             SendAccountList(list, pkt.AccountListId);
+        }
+
+        public bool IsUserInLegends()
+        {
+            //Week
+            using (Database db = new Database())
+            {
+                var cmd = db.CreateQuery();
+                cmd.CommandText = "SELECT * FROM death WHERE (time >= DATE_SUB(NOW(), INTERVAL 1 WEEK)) ORDER BY totalFame DESC LIMIT 10;";
+                using (var rdr = cmd.ExecuteReader())
+                    while (rdr.Read())
+                        if (rdr.GetInt32("accId") == AccountId) return true;
+            }
+
+            //Month
+            using (Database db = new Database())
+            {
+                var cmd = db.CreateQuery();
+                cmd.CommandText = "SELECT * FROM death WHERE (time >= DATE_SUB(NOW(), INTERVAL 1 MONTH)) ORDER BY totalFame DESC LIMIT 10;";
+                using (var rdr = cmd.ExecuteReader())
+                    while (rdr.Read())
+                        if (rdr.GetInt32("accId") == AccountId) return true;
+            }
+            //All Time
+            using (Database db = new Database())
+            {
+                var cmd = db.CreateQuery();
+                cmd.CommandText = "SELECT * FROM death WHERE TRUE ORDER BY totalFame DESC LIMIT 10;";
+                using (var rdr = cmd.ExecuteReader())
+                    while (rdr.Read())
+                        if (rdr.GetInt32("accId") == AccountId) return true;
+            }
+
+            return false;
         }
     }
 }

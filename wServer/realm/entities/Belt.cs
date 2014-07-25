@@ -31,13 +31,13 @@
 //        {
 //            foreach (var i in Owner.EnemiesCollision.HitTest(this.X, this.Y, radius))
 //                {
-                   
-                        
+
+
 //                }
-                
+
 //            if (t / 500 == p2)
 //            {
-     
+
 //                Owner.BroadcastPacket(new ShowEffectPacket
 //                {
 //                    EffectType = EffectType.Trap,
@@ -57,3 +57,4 @@
 //        }
 //    }
 //}
+

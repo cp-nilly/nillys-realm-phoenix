@@ -42,39 +42,39 @@ namespace wServer.realm.setpieces
         {
             var p = new int[Size, Size];
             const double SCALE = 5.5;
-            for (var x = 0; x < Size; x++) //Lava
+            for (int x = 0; x < Size; x++) //Lava
             {
-                var t = (double) x/Size*Math.PI;
-                var x_ = t/Math.Sqrt(2) - Math.Sin(t)/(SCALE*Math.Sqrt(2));
-                var y1 = t/Math.Sqrt(2) - 2*Math.Sin(t)/(SCALE*Math.Sqrt(2));
-                var y2 = t/Math.Sqrt(2) + Math.Sin(t)/(SCALE*Math.Sqrt(2));
+                double t = (double) x/Size*Math.PI;
+                double x_ = t/Math.Sqrt(2) - Math.Sin(t)/(SCALE*Math.Sqrt(2));
+                double y1 = t/Math.Sqrt(2) - 2*Math.Sin(t)/(SCALE*Math.Sqrt(2));
+                double y2 = t/Math.Sqrt(2) + Math.Sin(t)/(SCALE*Math.Sqrt(2));
                 y1 /= Math.PI/Math.Sqrt(2);
                 y2 /= Math.PI/Math.Sqrt(2);
 
                 var y1_ = (int) Math.Ceiling(y1*Size);
                 var y2_ = (int) Math.Floor(y2*Size);
-                for (var i = y1_; i < y2_; i++)
+                for (int i = y1_; i < y2_; i++)
                     p[x, i] = 1;
             }
 
-            for (var x = 0; x < Size; x++) //Floor
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Floor
+                for (int y = 0; y < Size; y++)
                 {
                     if (p[x, y] == 1 && rand.Next()%5 == 0)
                         p[x, y] = 2;
                 }
 
-            var r = rand.Next(0, 4); //Rotation
-            for (var i = 0; i < r; i++)
+            int r = rand.Next(0, 4); //Rotation
+            for (int i = 0; i < r; i++)
                 p = SetPieces.rotateCW(p);
             p[20, 20] = 2;
 
-            for (var x = 0; x < Size; x++) //Rendering
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Rendering
+                for (int y = 0; y < Size; y++)
                 {
                     if (p[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Lava;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -82,7 +82,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (p[x, y] == 2)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Lava;
                         tile.ObjType = Floor;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
@@ -92,19 +92,19 @@ namespace wServer.realm.setpieces
                 }
 
 
-            var demon = Entity.Resolve(0x668);
+            Entity demon = Entity.Resolve(0x668);
             demon.Move(pos.X + 20.5f, pos.Y + 20.5f);
             world.EnterWorld(demon);
 
             var container = new Container(0x0501, null, false);
-            var count = rand.Next(5, 8);
+            int count = rand.Next(5, 8);
             var items = new List<Item>();
             while (items.Count < count)
             {
-                var item = chest.GetRandomLoot(rand);
+                Item item = chest.GetRandomLoot(rand);
                 if (item != null) items.Add(item);
             }
-            for (var i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
                 container.Inventory[i] = items[i];
             container.Move(pos.X + 20.5f, pos.Y + 20.5f);
             world.EnterWorld(container);

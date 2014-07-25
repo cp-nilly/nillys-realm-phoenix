@@ -28,7 +28,7 @@ namespace wServer.realm.entities
             this.duration = duration;
             speed = tps;
 
-            var history = player.TryGetHistory(100);
+            Position? history = player.TryGetHistory(100);
             if (history == null)
                 direction = GetRandDirection();
             else
@@ -52,7 +52,7 @@ namespace wServer.realm.entities
 
         private Vector2 GetRandDirection()
         {
-            var angle = rand.NextDouble()*2*Math.PI;
+            double angle = rand.NextDouble()*2*Math.PI;
             return new Vector2(
                 (float) Math.Cos(angle),
                 (float) Math.Sin(angle)

@@ -24,8 +24,8 @@ namespace wServer.logic.cond
 
         protected override void BehaveCore(BehaviorCondition cond, RealmTime? time, object state)
         {
-            var yes = Host.StateStorage.ContainsKey(42);
-            var val = 0;
+            bool yes = Host.StateStorage.ContainsKey(42);
+            int val = 0;
             if (yes)
                 val = (int) Host.StateStorage[42];
             if (cond == BehaviorCondition.OnHit)
@@ -33,7 +33,7 @@ namespace wServer.logic.cond
                 if (!yes)
                     Host.StateStorage[42] = val = 1;
 
-                var hp = (Host as Enemy).HP;
+                int hp = (Host as Enemy).HP;
                 if (hp < 170 && val > 0)
                 {
                     Taunt("Engaging Super-Mode!!!");
@@ -55,11 +55,11 @@ namespace wServer.logic.cond
                     if (val == 1)
                     {
                         var rand = new Random();
-                        var count = rand.Next(4, 8);
+                        int count = rand.Next(4, 8);
                         Debug.WriteLine(count);
-                        for (var i = 0; i < count; i++)
+                        for (int i = 0; i < count; i++)
                         {
-                            var entity = Entity.Resolve(0x7f01);
+                            Entity entity = Entity.Resolve(0x7f01);
                             entity.Move(Host.Self.X, Host.Self.Y);
                             Host.Self.Owner.EnterWorld(entity);
                         }
@@ -91,8 +91,8 @@ namespace wServer.logic.cond
                 }
                 else
                 {
-                    var oldIndex = host.AltTextureIndex;
-                    var newIndex = 0 + ((int) ((time.Value.tickTimes/1000)%2)*3);
+                    int oldIndex = host.AltTextureIndex;
+                    int newIndex = 0 + ((int) ((time.Value.tickTimes/1000)%2)*3);
                     if (newIndex != oldIndex)
                     {
                         host.AltTextureIndex = newIndex;

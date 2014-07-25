@@ -54,44 +54,44 @@ namespace wServer.realm.entities
             double x = BeginPos.X;
             double y = BeginPos.Y;
 
-            var dist = (elapsedTicks / 1000.0) * (Descriptor.Speed / 10.0);
-            var period = ProjectileId % 2 == 0 ? 0 : Math.PI;
+            double dist = (elapsedTicks/1000.0)*(Descriptor.Speed/10.0);
+            double period = ProjectileId%2 == 0 ? 0 : Math.PI;
             if (Descriptor.Wavy)
             {
-                var theta = Angle + (Math.PI * 64) * Math.Sin(period + 6 * Math.PI * (elapsedTicks / 1000));
-                x += dist * Math.Cos(theta);
-                y += dist * Math.Sin(theta);
+                double theta = Angle + (Math.PI*64)*Math.Sin(period + 6*Math.PI*(elapsedTicks/1000));
+                x += dist*Math.Cos(theta);
+                y += dist*Math.Sin(theta);
             }
             else if (Descriptor.Parametric)
             {
-                var theta = (double)elapsedTicks / Descriptor.LifetimeMS * 2 * Math.PI;
-                var a = Math.Sin(theta) * (ProjectileId % 2 != 0 ? 1 : -1);
-                var b = Math.Sin(theta * 2) * (ProjectileId % 4 < 2 ? 1 : -1);
-                var c = Math.Sin(Angle);
-                var d = Math.Cos(Angle);
-                x += (a * d - b * c) * Descriptor.Magnitude;
-                y += (a * c + b * d) * Descriptor.Magnitude;
+                double theta = (double) elapsedTicks/Descriptor.LifetimeMS*2*Math.PI;
+                double a = Math.Sin(theta)*(ProjectileId%2 != 0 ? 1 : -1);
+                double b = Math.Sin(theta*2)*(ProjectileId%4 < 2 ? 1 : -1);
+                double c = Math.Sin(Angle);
+                double d = Math.Cos(Angle);
+                x += (a*d - b*c)*Descriptor.Magnitude;
+                y += (a*c + b*d)*Descriptor.Magnitude;
             }
             else
             {
                 if (Descriptor.Boomerang)
                 {
-                    var d = (Descriptor.LifetimeMS / 1000.0) * (Descriptor.Speed / 10.0) / 2;
+                    double d = (Descriptor.LifetimeMS/1000.0)*(Descriptor.Speed/10.0)/2;
                     if (dist > d)
                         dist = d - (dist - d);
                 }
-                x += dist * Math.Cos(Angle);
-                y += dist * Math.Sin(Angle);
+                x += dist*Math.Cos(Angle);
+                y += dist*Math.Sin(Angle);
                 if (Descriptor.Amplitude != 0)
                 {
-                    var d = Descriptor.Amplitude *
+                    double d = Descriptor.Amplitude*
                                Math.Sin(period +
-                                        (double)elapsedTicks / Descriptor.LifetimeMS * Descriptor.Frequency * 2 * Math.PI);
-                    x += d * Math.Cos(Angle + Math.PI / 2);
-                    y += d * Math.Sin(Angle + Math.PI / 2);
+                                        (double) elapsedTicks/Descriptor.LifetimeMS*Descriptor.Frequency*2*Math.PI);
+                    x += d*Math.Cos(Angle + Math.PI/2);
+                    y += d*Math.Sin(Angle + Math.PI/2);
                 }
             }
-            return new Position { X = (float)x, Y = (float)y };
+            return new Position {X = (float) x, Y = (float) y};
         }
 
         public override void Tick(RealmTime time)
@@ -103,7 +103,7 @@ namespace wServer.realm.entities
                         ? Owner.EnemiesCollision
                         : Owner.PlayersCollision;
 
-                var elapsedTicks = time.tickTimes - BeginTime;
+                long elapsedTicks = time.tickTimes - BeginTime;
                 if (elapsedTicks > Descriptor.LifetimeMS)
                 {
                     Destroy(true);
@@ -127,7 +127,7 @@ namespace wServer.realm.entities
 
         private bool TickCore(long elapsedTicks, RealmTime time)
         {
-            var pos = GetPosition(elapsedTicks);
+            Position pos = GetPosition(elapsedTicks);
             Move(pos.X, pos.Y);
 
             if (pos.X < 0 || pos.X > Owner.Map.Width)
@@ -140,15 +140,15 @@ namespace wServer.realm.entities
                 Destroy(true);
                 return false;
             }
-            if (Owner.Map[(int)pos.X, (int)pos.Y].TileId == 0xff)
+            if (Owner.Map[(int) pos.X, (int) pos.Y].TileId == 0xff)
             {
                 Destroy(true);
                 return false;
             }
-            var penetrateObsta = Descriptor.PassesCover;
-            var penetrateEnemy = Descriptor.MultiHit;
+            bool penetrateObsta = Descriptor.PassesCover;
+            bool penetrateEnemy = Descriptor.MultiHit;
 
-            var objId = Owner.Map[(int)pos.X, (int)pos.Y].ObjType;
+            short objId = Owner.Map[(int) pos.X, (int) pos.Y].ObjType;
             if (objId != 0 &&
                 XmlDatas.ObjectDescs[objId].OccupySquare &&
                 !penetrateObsta)
@@ -157,17 +157,16 @@ namespace wServer.realm.entities
                 return false;
             }
 
-            var nearestRadius = double.MaxValue;
+            double nearestRadius = double.MaxValue;
             Entity entity = null;
-            var localHitted = false;
-            foreach (var i in collisionMap.HitTest(pos.X, pos.Y, 2))
+            foreach (Entity i in collisionMap.HitTest(pos.X, pos.Y, 2))
             {
                 if (i == ProjectileOwner.Self) continue;
                 if (i is Container) continue;
                 if (hitLast == i) continue;
-                double xSide = (i.X - pos.X) * (i.X - pos.X);
-                double ySide = (i.Y - pos.Y) * (i.Y - pos.Y);
-                if (xSide <= 0.5 * 0.5 && ySide <= 0.5 * 0.5 && xSide + ySide <= nearestRadius)
+                double xSide = (i.X - pos.X)*(i.X - pos.X);
+                double ySide = (i.Y - pos.Y)*(i.Y - pos.Y);
+                if (xSide <= 0.5*0.5 && ySide <= 0.5*0.5 && xSide + ySide <= nearestRadius)
                 {
                     nearestRadius = xSide + ySide;
                     entity = i;
@@ -191,8 +190,8 @@ namespace wServer.realm.entities
 
         public void ForceHit(Entity entity, RealmTime time)
         {
-            var penetrateObsta = Descriptor.PassesCover;
-            var penetrateEnemy = Descriptor.MultiHit;
+            bool penetrateObsta = Descriptor.PassesCover;
+            bool penetrateEnemy = Descriptor.MultiHit;
             Move(entity.X, entity.Y);
             if (entity.HitByProjectile(this, time))
             {

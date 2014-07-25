@@ -78,15 +78,15 @@ namespace wServer.logic
                 }
                 catch
                 {
-                    Console.WriteLine("Behavior Error" + objType.ToString());
+                    Console.WriteLine("Behavior Error" + objType);
                 }
                 return this;
             }
 
             public _ InitMany(short objTypeMin, short objTypeMax, Func<int, BehaviorDef> b)
             {
-                var count = objTypeMax - objTypeMin;
-                for (var i = 0; i <= count; i++)
+                int count = objTypeMax - objTypeMin;
+                for (int i = 0; i <= count; i++)
                 {
                     Behaviors.Add((short) (objTypeMin + i), b(objTypeMin + i));
                 }

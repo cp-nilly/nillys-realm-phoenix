@@ -16,8 +16,8 @@ namespace wServer.realm
             if (!points.TryGetValue(radius, out ret))
             {
                 var pts = new List<IntPoint>();
-                for (var y = -radius; y <= radius; y++)
-                    for (var x = -radius; x <= radius; x++)
+                for (int y = -radius; y <= radius; y++)
+                    for (int x = -radius; x <= radius; x++)
                     {
                         if (x*x + y*y <= radius*radius)
                             pts.Add(new IntPoint(x, y));

@@ -51,7 +51,7 @@ namespace wServer.realm.entities
             }
             t += time.thisTickTimes;
 
-            var monsterNearby = false;
+            bool monsterNearby = false;
             BehaviorBase.AOE(Owner, this, radius/2, false, enemy => monsterNearby = true);
             if (monsterNearby)
                 Explode(time);

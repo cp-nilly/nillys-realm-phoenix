@@ -16,8 +16,6 @@ namespace wServer.logic
         private readonly float dist;
         private readonly int highest;
         private readonly int lowest;
-        private DamageCounter counter;
-
         public PetAttack(int lowest, int highest, float dist)
         {
             this.lowest = lowest;
@@ -27,7 +25,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var radius = dist;
+            float radius = dist;
             var entity = GetNearestEntityPet(ref radius) as Enemy;
 
             if (entity != null)
@@ -74,15 +72,15 @@ namespace wServer.logic
 
             if (entity != null)
             {
-                var distance = Vector2.Distance(new Vector2(Host.Self.X, Host.Self.Y), new Vector2(entity.X, entity.Y));
+                float distance = Vector2.Distance(new Vector2(Host.Self.X, Host.Self.Y), new Vector2(entity.X, entity.Y));
                 var enemies = new List<Enemy>();
 
                 AOE(entity.Owner, entity, radius, false, enemy => { enemies.Add(enemy as Enemy); });
                 if (distance < 10)
                 {
-                    foreach (var enemy in enemies)
+                    foreach (Enemy enemy in enemies)
                     {
-                        var hp = enemy.HP;
+                        int hp = enemy.HP;
                         if (entity.HasConditionEffect(ConditionEffects.Invulnerable) == false)
                         {
                             hp = Math.Min(hp - (new Random().Next(lowest, highest) - entity.ObjectDesc.Defense),
@@ -91,7 +89,7 @@ namespace wServer.logic
 
                             if (hp != enemy.HP)
                             {
-                                var n = hp - enemy.HP;
+                                int n = hp - enemy.HP;
                                 entity.HP = hp;
                                 entity.UpdateCount++;
 
@@ -126,7 +124,7 @@ namespace wServer.logic
 
                                 if (entity.HP < 0)
                                 {
-                                    foreach (var i in entity.CondBehaviors)
+                                    foreach (ConditionalBehavior i in entity.CondBehaviors)
                                         if ((i.Condition & BehaviorCondition.OnDeath) != 0)
 
                                             i.Behave(BehaviorCondition.OnDeath, entity, time, counter);

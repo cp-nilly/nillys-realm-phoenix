@@ -198,8 +198,8 @@ namespace wServer.logic
                         Tuple.Create(0.5, (ILoot) new StatPotionLoot(StatPotion.Def)),
                         Tuple.Create(0.003, (ILoot) new ItemLoot("Demon Blade")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
-                        Tuple.Create(0.35, (ILoot)new TierLoot(5, ItemType.Ability)),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.35, (ILoot) new TierLoot(5, ItemType.Ability)),
                         Tuple.Create(0.5, (ILoot) new TierLoot(4, ItemType.Ability)),
                         Tuple.Create(0.6, (ILoot) new TierLoot(3, ItemType.Ability)),
                         Tuple.Create(0.175, (ILoot) new TierLoot(10, ItemType.Armor)),
@@ -329,7 +329,7 @@ namespace wServer.logic
                         Tuple.Create(0.5, (ILoot) new ItemLoot("Potion of Defense")),
                         Tuple.Create(0.5, (ILoot) new ItemLoot("Potion of Vitality")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Demon Blade"))
                         )))))
             .Init(0x0e1a, Behaves("AbyssTreasureLavaBomb",

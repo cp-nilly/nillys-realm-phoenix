@@ -44,26 +44,26 @@ namespace wServer.logic.attack
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Stunned)) return false;
-            var numShot = this.numShot;
+            int numShot = this.numShot;
             if (Host.Self.HasConditionEffect(ConditionEffects.Dazed))
                 numShot = Math.Max(1, numShot/2);
 
-            var dist = radius;
-            var player = GetNearestEntity(ref dist, null);
+            float dist = radius;
+            Entity player = GetNearestEntity(ref dist, null);
             if (player != null)
             {
                 var chr = Host as Character;
-                var startAngle = Math.Atan2(player.Y - chr.Y, player.X - chr.X)
+                double startAngle = Math.Atan2(player.Y - chr.Y, player.X - chr.X)
                                     - angle*(numShot - 1)/2
                                     + offset;
-                var desc = chr.ObjectDesc.Projectiles[projectileIndex];
+                ProjectileDesc desc = chr.ObjectDesc.Projectiles[projectileIndex];
 
                 byte prjId = 0;
                 var prjPos = new Position {X = chr.X, Y = chr.Y};
-                var dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
-                for (var i = 0; i < numShot; i++)
+                int dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
+                for (int i = 0; i < numShot; i++)
                 {
-                    var prj = chr.CreateProjectile(
+                    Projectile prj = chr.CreateProjectile(
                         desc, chr.ObjectType, dmg, time.tickTimes,
                         prjPos, (float) (startAngle + angle*i));
                     chr.Owner.EnterWorld(prj);

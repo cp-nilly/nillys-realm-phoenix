@@ -28,8 +28,8 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0300" id="Rogue">
     <Class>Player</Class>
@@ -60,7 +60,7 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
+
   </Object>
   <Object type="0x0307" id="Archer">
     <Class>Player</Class>
@@ -91,7 +91,7 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
+
   </Object>
   <Object type="0x030e" id="Wizard">
     <Class>Player</Class>
@@ -152,7 +152,7 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
+
   </Object>
   <Object type="0x031d" id="Warrior">
     <Class>Player</Class>
@@ -183,7 +183,7 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="1" max="2">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
+
   </Object>
   <Object type="0x0330" id="Ninja">
     <Class>Player</Class>
@@ -214,8 +214,8 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0328" id="Mechanic">
     <Class>Player</Class>
@@ -246,8 +246,8 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="1" max="2">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0324" id="Trickster">
     <Class>Player</Class>
@@ -278,8 +278,8 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0322" id="Huntress">
     <Class>Player</Class>
@@ -310,8 +310,8 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0325" id="Sorcerer">
     <Class>Player</Class>
@@ -342,8 +342,8 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="1" max="2">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0321" id="Necromancer">
     <Class>Player</Class>
@@ -374,8 +374,8 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x031e" id="Knight">
     <Class>Player</Class>
@@ -406,7 +406,7 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="1" max="2">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
+
   </Object>
   <Object type="0x0331" id="Samurai">
     <Class>Player</Class>
@@ -437,8 +437,8 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="1" max="2">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x031f" id="Paladin">
     <Class>Player</Class>
@@ -469,8 +469,8 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0323" id="Mystic">
     <Class>Player</Class>
@@ -501,8 +501,8 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0329" id="Angel">
     <Class>Player</Class>
@@ -533,8 +533,8 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0332" id="Summoner">
     <Class>Player</Class>
@@ -565,8 +565,8 @@
     <LevelIncrease min="0" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="1" max="2">HpRegen</LevelIncrease>
     <LevelIncrease min="1" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0327" id="Druid">
     <Class>Player</Class>
@@ -597,8 +597,8 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
-    
+
+
   </Object>
   <Object type="0x0333" id="Shaman">
     <Class>Player</Class>
@@ -629,8 +629,7 @@
     <LevelIncrease min="1" max="2">Dexterity</LevelIncrease>
     <LevelIncrease min="0" max="1">HpRegen</LevelIncrease>
     <LevelIncrease min="0" max="2">MpRegen</LevelIncrease>
-    
-    
-    
+
+
   </Object>
 </Objects>

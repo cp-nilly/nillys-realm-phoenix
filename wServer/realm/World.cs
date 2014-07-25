@@ -12,12 +12,13 @@ using log4net;
 using terrain;
 using wServer.realm.entities;
 using wServer.realm.entities.player;
+using wServer.realm.worlds;
 
 #endregion
 
 namespace wServer.realm
 {
-    public abstract class World
+    public abstract class World : IDisposable
     {
         public const int TUT_ID = -1;
         public const int NEXUS_ID = -2;
@@ -37,8 +38,10 @@ namespace wServer.realm
         public const int ADM_ID = -60;
         private static readonly ILog log = LogManager.GetLogger(typeof (World));
         public string ExtraVar = "Default";
+        public bool entered = false;
         private int entityInc;
         private RealmManager manager;
+        private bool canBeClosed;
 
         protected World()
         {
@@ -57,17 +60,10 @@ namespace wServer.realm
             ExtraXML = XmlDatas.ServerXmls.ToArray();
         }
 
-        public void SetMusic(params string[] music)
+        public void Dispose()
         {
-            Music = music;
-        }
-
-        public string GetMusic(wRandom rand)
-        {
-            if (Music != null && Music.Length > 0)
-                return Music[rand.Next(0, Music.Length)];
-            else
-                return "None";
+            Enemies.Clear();
+            Players.Clear();
         }
 
         public bool IsLimbo { get; protected set; }
@@ -86,7 +82,6 @@ namespace wServer.realm
         public int Id { get; internal set; }
         public string Name { get; protected set; }
         public string[] Music { get; protected set; }
-        public bool entered = false;
         public ConcurrentDictionary<int, Player> Players { get; private set; }
         public ConcurrentDictionary<int, Enemy> Enemies { get; private set; }
         public ConcurrentDictionary<int, Entity> Pets { get; private set; }
@@ -107,6 +102,18 @@ namespace wServer.realm
         public Wmap Map { get; private set; }
         public ConcurrentDictionary<int, Enemy> Quests { get; private set; }
 
+        public void SetMusic(params string[] music)
+        {
+            Music = music;
+        }
+
+        public string GetMusic(wRandom rand)
+        {
+            if (Music != null && Music.Length > 0)
+                return Music[rand.Next(0, Music.Length)];
+            return "None";
+        }
+
         public virtual World GetInstance(ClientProcessor psr)
         {
             return null;
@@ -114,7 +121,7 @@ namespace wServer.realm
 
         public bool IsPassable(int x, int y)
         {
-            var tile = Map[x, y];
+            WmapTile tile = Map[x, y];
             ObjectDesc desc;
             if (XmlDatas.TileDescs[tile.TileId].NoWalk)
                 return false;
@@ -129,23 +136,6 @@ namespace wServer.realm
         public int GetNextEntityId()
         {
             return Interlocked.Increment(ref entityInc);
-        }
-
-        public bool Delete()
-        {
-            lock (this)
-            {
-                if (!entered) return false;
-                if (Players.Count > 0) return false;
-                if (this.Name != "Undead Lair" && this.Name != "Abyss of Demons" && this.Name != "Sprite World" && this.Name != "Forest Sanctuary" && this.Name != "The Eternal Crucible" && this.Name != "Christmas Cellar" && this.Name != "Christmas Cellar" && this.Name != "Sheep Herding Minigame" && this.Name != "Ocean Trench" && this.Name != "Party Cellar" && this.Name != "Tomb of the Ancients" && this.Name != "Wine Cellar" && this.Name != "Turkey Hunting Grounds" && this.Name != "Zombies Minigame") return false;
-                if (this is worlds.GameWorld) return false;
-                
-                Id = 0;
-            }
-            World dummy;
-            RealmManager.Worlds.TryRemove(Id, out dummy);
-            
-            return true;
         }
 
         public virtual void BehaviorEvent(string type)
@@ -167,10 +157,10 @@ namespace wServer.realm
 
             int w = Map.Width, h = Map.Height;
             Obstacles = new byte[w, h];
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = Map[x, y];
+                    WmapTile tile = Map[x, y];
                     ObjectDesc desc;
                     if (XmlDatas.TileDescs[tile.TileId].NoWalk)
                         Obstacles[x, y] = 3;
@@ -191,7 +181,7 @@ namespace wServer.realm
             StaticObjects.Clear();
             Enemies.Clear();
             Players.Clear();
-            foreach (var i in Map.InstantiateEntities(Manager))
+            foreach (Entity i in Map.InstantiateEntities(Manager))
             {
                 if (i.ObjectDesc != null &&
                     (i.ObjectDesc.OccupySquare || i.ObjectDesc.EnemyOccupySquare))
@@ -204,7 +194,7 @@ namespace wServer.realm
         {
             if (File.Exists(file))
             {
-                var wmap = Json2Wmap.Convert(File.ReadAllText(file));
+                byte[] wmap = Json2Wmap.Convert(File.ReadAllText(file));
 
                 FromWorldMap(new MemoryStream(wmap));
             }
@@ -218,8 +208,8 @@ namespace wServer.realm
         {
             byte[] data = {};
             dat.Read(data, 0, (int) dat.Length);
-            var json = Encoding.ASCII.GetString(data);
-            var wmap = Json2Wmap.Convert(json);
+            string json = Encoding.ASCII.GetString(data);
+            byte[] wmap = Json2Wmap.Convert(json);
             FromWorldMap(new MemoryStream(wmap));
         } //not working
 
@@ -352,8 +342,8 @@ namespace wServer.realm
         public virtual void Tick(RealmTime time)
         {
             if (IsLimbo) return;
-            
-            for (var i = 0; i < Timers.Count; i++)
+
+            for (int i = 0; i < Timers.Count; i++)
                 if (Timers[i].Tick(this, time))
                 {
                     Timers.RemoveAt(i);
@@ -365,7 +355,7 @@ namespace wServer.realm
 
             if (EnemiesCollision != null)
             {
-                foreach (var i in EnemiesCollision.GetActiveChunks(PlayersCollision))
+                foreach (Entity i in EnemiesCollision.GetActiveChunks(PlayersCollision))
                     i.Tick(time);
                 foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
                     i.Value.Tick(time);
@@ -374,11 +364,22 @@ namespace wServer.realm
             {
                 foreach (var i in Enemies)
                     i.Value.Tick(time);
-                foreach (var i in StaticObjects)
-                    i.Value.Tick(time);
             }
             foreach (var i in Projectiles)
                 i.Value.Tick(time);
+
+            //if (Players.Count == 0 && canBeClosed && IsDungeon())
+           //     Manager.RemoveWorld(this);
+        }
+
+        public bool IsDungeon()
+        {
+            if (this is Nexus || this is Vault || this is GameWorld || this is ArenaMap ||
+                this is BattleArenaMap || this is BattleArenaMap2 || this is BeachZone ||           //botmaker-level scripting
+                this is Herding || this is Island || this is RandomRealm || this is ShopMap || 
+                this is ZombieMG || this is ZombieMap)
+                return false;
+            return true;
         }
     }
 }

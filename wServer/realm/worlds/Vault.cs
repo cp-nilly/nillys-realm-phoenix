@@ -41,12 +41,12 @@ namespace wServer.realm.worlds
             var vaultChestPosition = new List<IntPoint>();
             var spawn = new IntPoint(0, 0);
 
-            var w = Map.Width;
-            var h = Map.Height;
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            int w = Map.Width;
+            int h = Map.Height;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = Map[x, y];
+                    WmapTile tile = Map[x, y];
                     if (tile.Region == TileRegion.Spawn)
                         spawn = new IntPoint(x, y);
                     else if (tile.Region == TileRegion.Vault)
@@ -56,18 +56,18 @@ namespace wServer.realm.worlds
                 (x.X - spawn.X)*(x.X - spawn.X) + (x.Y - spawn.Y)*(x.Y - spawn.Y),
                 (y.X - spawn.X)*(y.X - spawn.X) + (y.Y - spawn.Y)*(y.Y - spawn.Y)));
 
-            var chests = psr.Account.Vault.Chests;
+            List<VaultChest> chests = psr.Account.Vault.Chests;
             foreach (VaultChest t in chests)
             {
                 var con = new Container(0x0504, null, false);
-                var inv =
+                Item[] inv =
                     t.Items.Select(
                         _ =>
                             _ == -1
                                 ? null
                                 : (XmlDatas.ItemDescs.ContainsKey((short) _) ? XmlDatas.ItemDescs[(short) _] : null))
                         .ToArray();
-                for (var j = 0; j < 8; j++)
+                for (int j = 0; j < 8; j++)
                     con.Inventory[j] = inv[j];
                 con.Move(vaultChestPosition[0].X + 0.5f, vaultChestPosition[0].Y + 0.5f);
                 EnterWorld(con);
@@ -75,7 +75,7 @@ namespace wServer.realm.worlds
 
                 _vaultChests[new Tuple<Container, VaultChest>(con, t)] = con.UpdateCount;
             }
-            foreach (var i in vaultChestPosition)
+            foreach (IntPoint i in vaultChestPosition)
             {
                 var x = new SellableObject(0x0505);
                 x.Move(i.X + 0.5f, i.Y + 0.5f);
@@ -86,14 +86,14 @@ namespace wServer.realm.worlds
         public void AddChest(VaultChest chest, Entity original)
         {
             var con = new Container(0x0504, null, false);
-            var inv =
+            Item[] inv =
                 chest.Items.Select(
                     _ =>
                         _ == -1
                             ? null
                             : (XmlDatas.ItemDescs.ContainsKey((short) _) ? XmlDatas.ItemDescs[(short) _] : null))
                     .ToArray();
-            for (var j = 0; j < 8; j++)
+            for (int j = 0; j < 8; j++)
                 con.Inventory[j] = inv[j];
             con.Move(original.X, original.Y);
             LeaveWorld(original);

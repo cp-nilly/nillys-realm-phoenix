@@ -40,62 +40,63 @@ namespace wServer.logic
 
     internal class TimedToggleTexture : Behavior
     {
-      private static readonly Dictionary<Tuple<int, int, int>, TimedToggleTexture> instances =
-        new Dictionary<Tuple<int, int, int>, TimedToggleTexture>();
+        private static readonly Dictionary<Tuple<int, int, int>, TimedToggleTexture> instances =
+            new Dictionary<Tuple<int, int, int>, TimedToggleTexture>();
 
-      private readonly int cooldown;
-      private readonly int texture1;
-      private readonly int texture2;
+        private readonly int cooldown;
+        private readonly int texture1;
+        private readonly int texture2;
+        private bool texture;
 
-      private TimedToggleTexture(int cooldown, int texture1, int texture2)
-      {
-        this.cooldown = cooldown;
-        this.texture1 = texture1;
-        this.texture2 = texture2;
-      }
-
-      public static TimedToggleTexture Instance(int cooldown, int texture1, int texture2)
-      {
-        var key = new Tuple<int, int, int>(cooldown, texture1, texture2);
-        TimedToggleTexture ret;
-        if (!instances.TryGetValue(key, out ret))
-          ret = instances[key] = new TimedToggleTexture(cooldown, texture1, texture2);
-        return ret;
-      }
-      bool texture = false;
-      protected override bool TickCore(RealmTime time)
-      {
-        int index;
-        bool ret;
-        int remainingTick;
-        object o;
-        if (!Host.StateStorage.TryGetValue(Key, out o))
+        private TimedToggleTexture(int cooldown, int texture1, int texture2)
         {
-          remainingTick = cooldown;
+            this.cooldown = cooldown;
+            this.texture1 = texture1;
+            this.texture2 = texture2;
         }
-        else
-          remainingTick = (int)o;
 
-        remainingTick -= time.thisTickTimes;
-
-        if (remainingTick <= 0)
+        public static TimedToggleTexture Instance(int cooldown, int texture1, int texture2)
         {
-          texture = !texture;
-          remainingTick = cooldown;
-          ret = true;
+            var key = new Tuple<int, int, int>(cooldown, texture1, texture2);
+            TimedToggleTexture ret;
+            if (!instances.TryGetValue(key, out ret))
+                ret = instances[key] = new TimedToggleTexture(cooldown, texture1, texture2);
+            return ret;
         }
-        else
-          ret = false;
-        if (texture == false) index = texture1;
-        else index = texture2;
 
-        if ((Host.Self as Enemy).AltTextureIndex != index)
+        protected override bool TickCore(RealmTime time)
         {
-          (Host.Self as Enemy).AltTextureIndex = index;
-          Host.Self.UpdateCount++;
+            int index;
+            bool ret;
+            int remainingTick;
+            object o;
+            if (!Host.StateStorage.TryGetValue(Key, out o))
+            {
+                remainingTick = cooldown;
+            }
+            else
+                remainingTick = (int) o;
+
+            remainingTick -= time.thisTickTimes;
+
+            if (remainingTick <= 0)
+            {
+                texture = !texture;
+                remainingTick = cooldown;
+                ret = true;
+            }
+            else
+                ret = false;
+            if (texture == false) index = texture1;
+            else index = texture2;
+
+            if ((Host.Self as Enemy).AltTextureIndex != index)
+            {
+                (Host.Self as Enemy).AltTextureIndex = index;
+                Host.Self.UpdateCount++;
+            }
+            Host.StateStorage[Key] = remainingTick;
+            return ret;
         }
-        Host.StateStorage[Key] = remainingTick;
-        return ret;
-      }
     }
 }

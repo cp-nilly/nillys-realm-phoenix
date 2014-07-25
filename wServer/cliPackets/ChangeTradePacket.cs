@@ -17,14 +17,14 @@
         protected override void Read(ClientProcessor psr, NReader rdr)
         {
             Offers = new bool[rdr.ReadInt16()];
-            for (var i = 0; i < Offers.Length; i++)
+            for (int i = 0; i < Offers.Length; i++)
                 Offers[i] = rdr.ReadBoolean();
         }
 
         protected override void Write(ClientProcessor psr, NWriter wtr)
         {
             wtr.Write((short) Offers.Length);
-            foreach (var i in Offers)
+            foreach (bool i in Offers)
                 wtr.Write(i);
         }
     }

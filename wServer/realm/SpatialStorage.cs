@@ -17,29 +17,29 @@ namespace wServer.realm
 
         private int HashPosition(double x, double y)
         {
-            var ix = (int) x/SCALE_FACTOR;
-            var iy = (int) y/SCALE_FACTOR;
+            int ix = (int) x/SCALE_FACTOR;
+            int iy = (int) y/SCALE_FACTOR;
             return (ix << 16) | iy;
         }
 
         public void Insert(Entity entity)
         {
-            var hash = HashPosition(entity.X, entity.Y);
-            var bucket = store.GetOrAdd(hash, _ => new ConcurrentDictionary<int, Entity>());
+            int hash = HashPosition(entity.X, entity.Y);
+            ConcurrentDictionary<int, Entity> bucket = store.GetOrAdd(hash, _ => new ConcurrentDictionary<int, Entity>());
             bucket[entity.Id] = entity;
         }
 
         public void Remove(Entity entity)
         {
-            var hash = HashPosition(entity.X, entity.Y);
-            var bucket = store[hash];
+            int hash = HashPosition(entity.X, entity.Y);
+            ConcurrentDictionary<int, Entity> bucket = store[hash];
             bucket.TryRemove(entity.Id, out entity);
         }
 
         public void Move(Entity entity, double x, double y)
         {
-            var hash = HashPosition(entity.X, entity.Y);
-            var bucket = store.GetOrAdd(hash, _ => new ConcurrentDictionary<int, Entity>());
+            int hash = HashPosition(entity.X, entity.Y);
+            ConcurrentDictionary<int, Entity> bucket = store.GetOrAdd(hash, _ => new ConcurrentDictionary<int, Entity>());
             Entity dummy;
             bucket.TryRemove(entity.Id, out dummy);
 
@@ -55,12 +55,12 @@ namespace wServer.realm
 
         public IEnumerable<Entity> HitTest(double _x, double _y, float radius)
         {
-            var xl = (int) (_x - radius)/SCALE_FACTOR;
-            var xh = (int) (_x + radius)/SCALE_FACTOR;
-            var yl = (int) (_y - radius)/SCALE_FACTOR;
-            var yh = (int) (_y + radius)/SCALE_FACTOR;
-            for (var x = xl; x <= xh; x++)
-                for (var y = yl; y <= yh; y++)
+            int xl = (int) (_x - radius)/SCALE_FACTOR;
+            int xh = (int) (_x + radius)/SCALE_FACTOR;
+            int yl = (int) (_y - radius)/SCALE_FACTOR;
+            int yh = (int) (_y + radius)/SCALE_FACTOR;
+            for (int x = xl; x <= xh; x++)
+                for (int y = yl; y <= yh; y++)
                 {
                     ConcurrentDictionary<int, Entity> bucket;
                     if (store.TryGetValue((x << 16) | y, out bucket))
@@ -70,8 +70,8 @@ namespace wServer.realm
 
         public IEnumerable<Entity> HitTest(double _x, double _y)
         {
-            var x = (int) _x/SCALE_FACTOR;
-            var y = (int) _y/SCALE_FACTOR;
+            int x = (int) _x/SCALE_FACTOR;
+            int y = (int) _y/SCALE_FACTOR;
             ConcurrentDictionary<int, Entity> bucket;
             if (store.TryGetValue((x << 16) | y, out bucket))
                 return bucket.Values;

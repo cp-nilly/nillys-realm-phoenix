@@ -103,14 +103,14 @@ namespace wServer.realm
 
         static RealmManager()
         {
+            Console.WriteLine("Initializing Realm Manager..."); ;
             Worlds[World.TUT_ID] = new Tutorial(true);
             Worlds[World.NEXUS_ID] = Worlds[0] = new Nexus();
             Worlds[World.NEXUS_LIMBO] = new NexusLimbo();
             Worlds[World.VAULT_ID] = new Vault(true);
             Worlds[World.TEST_ID] = new Test();
             Worlds[World.RAND_REALM] = new RandomRealm();
-            
-            
+
 
             Monitor = new RealmPortalMonitor(Worlds[World.NEXUS_ID] as Nexus);
 
@@ -123,6 +123,8 @@ namespace wServer.realm
             {
                 ShopWorlds.TryAdd(i.Key, AddWorld(new ShopMap(i.Key)));
             }
+
+            Console.WriteLine("Realm Manager initialized.");
         }
 
         public static RealmPortalMonitor Monitor { get; private set; }
@@ -134,7 +136,7 @@ namespace wServer.realm
 
         public static bool TryConnect(ClientProcessor psr)
         {
-            var acc = psr.Account;
+            Account acc = psr.Account;
             if (psr.IP.Banned)
                 return false;
             if (acc.Banned)
@@ -146,13 +148,14 @@ namespace wServer.realm
 
         public static void Disconnect(ClientProcessor psr)
         {
+            psr.Save();
             Clients.TryRemove(psr.Account.AccountId, out psr);
         }
 
         public static Vault PlayerVault(ClientProcessor processor)
         {
             Vault v;
-            var id = processor.Account.AccountId;
+            int id = processor.Account.AccountId;
             if (Vaults.ContainsKey(id))
             {
                 v = Vaults[id];
@@ -181,6 +184,35 @@ namespace wServer.realm
             return GuildHalls[g];
         }
 
+        public bool RemoveWorld(World world)
+        {
+            if (world.Manager == null)
+                throw new InvalidOperationException("World is not added.");
+            if (world == null)
+                throw new InvalidOperationException("World is not added.");
+            if (Worlds.TryRemove(world.Id, out world))
+            {
+                try
+                {
+                    OnWorldRemoved(world);
+                    //world.Dispose();
+                    GC.Collect();
+                }
+                catch (Exception e)
+                { }
+                return true;
+            }
+            return false;
+        }
+
+        private void OnWorldRemoved(World world)
+        {
+            world.Manager = null;
+            if (world is GameWorld)
+                Monitor.WorldRemoved(world);
+            Console.WriteLine("World {0}({1}) removed.", world.Id, world.Name);
+        }
+
         public static void CloseWorld(World world)
         {
             Monitor.WorldRemoved(world);
@@ -205,14 +237,22 @@ namespace wServer.realm
 
         public static List<Player> GuildMembersOf(string guild)
         {
-            return (from i in Worlds where i.Key != 0 from e in i.Value.Players where String.Equals(e.Value.Guild, guild, StringComparison.CurrentCultureIgnoreCase) select e.Value).ToList();
+            return (from i in Worlds
+                where i.Key != 0
+                from e in i.Value.Players
+                where String.Equals(e.Value.Guild, guild, StringComparison.CurrentCultureIgnoreCase)
+                select e.Value).ToList();
         }
 
         public static Player FindPlayer(string name)
         {
             if (name.Split(' ').Length > 1)
                 name = name.Split(' ')[1];
-            return (from i in Worlds where i.Key != 0 from e in i.Value.Players where String.Equals(e.Value.Client.Account.Name, name, StringComparison.CurrentCultureIgnoreCase) select e.Value).FirstOrDefault();
+            return (from i in Worlds
+                where i.Key != 0
+                from e in i.Value.Players
+                where String.Equals(e.Value.Client.Account.Name, name, StringComparison.CurrentCultureIgnoreCase)
+                select e.Value).FirstOrDefault();
         }
 
         public static Player FindPlayerRough(string name)

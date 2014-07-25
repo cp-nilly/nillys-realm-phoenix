@@ -38,13 +38,13 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
             CirclingState state;
             object o;
             if (!Host.StateStorage.TryGetValue(Key, out o))
             {
-                var dist = radius;
+                float dist = radius;
                 Host.StateStorage[Key] = state = new CirclingState
                 {
                     center = new Position {X = Host.Self.X, Y = Host.Self.Y},
@@ -56,11 +56,11 @@ namespace wServer.logic.movement
                 state = (CirclingState) o;
 
                 state.angle += angularSpeed*(time.thisTickTimes/1000f);
-                var x = state.center.X + Math.Cos(state.angle)*radius;
-                var y = state.center.Y + Math.Sin(state.angle)*radius;
+                double x = state.center.X + Math.Cos(state.angle)*radius;
+                double y = state.center.Y + Math.Sin(state.angle)*radius;
                 if (x != Host.Self.X && y != Host.Self.Y)
                 {
-                    var vect = new Vector2((float) x, (float) y) - new Vector2(Host.Self.X, Host.Self.Y);
+                    Vector2 vect = new Vector2((float) x, (float) y) - new Vector2(Host.Self.X, Host.Self.Y);
                     vect.Normalize();
                     vect *= (speed/1.5f)*(time.thisTickTimes/1000f);
                     ValidateAndMove(Host.Self.X + vect.X, Host.Self.Y + vect.Y);

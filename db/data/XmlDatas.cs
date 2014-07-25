@@ -74,7 +74,7 @@ namespace db.data
             stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("db.data.addition.xml");
             ProcessXmlStream(stream);
 
-            stream = typeof(XmlDatas).Assembly.GetManifestResourceStream("db.data.donatorpets.xml");
+            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("db.data.donatorpets.xml");
             ProcessXmlStream(stream);
         }
 
@@ -159,7 +159,7 @@ namespace db.data
                                     File.ReadAllBytes("texture/" + new String(rtId.Skip(5).ToArray()) + ".png"));
                     }
                 }
-                
+
 
                 XElement key = elem.Element("Key");
                 if (key != null)

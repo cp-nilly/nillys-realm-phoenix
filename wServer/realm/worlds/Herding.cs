@@ -65,12 +65,12 @@ namespace wServer.realm.worlds
 
         private void InitVars()
         {
-            var w = Map.Width;
-            var h = Map.Height;
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            int w = Map.Width;
+            int h = Map.Height;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = Map[x, y];
+                    WmapTile tile = Map[x, y];
                     if (tile.Region == TileRegion.Defender)
                         SheepSpawns.Add(new IntPoint(x, y));
                 }
@@ -119,7 +119,7 @@ namespace wServer.realm.worlds
                     {
                         SheepSpawns.Shuffle();
                         SpawningSheep.Shuffle();
-                        var e = Entity.Resolve(XmlDatas.IdToType[SpawningSheep.First()]);
+                        Entity e = Entity.Resolve(XmlDatas.IdToType[SpawningSheep.First()]);
                         e.Move(SheepSpawns[0].X, SheepSpawns[0].Y);
                         EnterWorld(e);
                     }
@@ -127,8 +127,8 @@ namespace wServer.realm.worlds
                 else if (Flags["started"] && !Flags["counting"])
                 {
                     var div = (int) Math.Ceiling((double) (FamePot/Players.Count));
-                    double golddivider = HerdedSheep / 20;
-                    int tokens = (int)Math.Floor(golddivider);
+                    double golddivider = HerdedSheep/20;
+                    var tokens = (int) Math.Floor(golddivider);
                     var db = new Database();
                     BroadcastPacket(new TextPacket
                     {
@@ -148,7 +148,8 @@ namespace wServer.realm.worlds
                             Color = new ARGB(0xFFFF6600),
                             Text = "+" + div + " Fame"
                         });
-                        i.Value.Credits = i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, tokens);
+                        i.Value.Credits =
+                            i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, tokens);
                         i.Value.UpdateCount++;
                     }
                     db.Dispose();
@@ -159,7 +160,7 @@ namespace wServer.realm.worlds
                 }
                 else if (!Flags["started"] && !Flags["counting"])
                 {
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new TextPacket
                         {
                             Stars = -1,
@@ -178,7 +179,7 @@ namespace wServer.realm.worlds
         {
             if (type.StartsWith("sheep"))
             {
-                var inc = (type.EndsWith("-g") ? 100 : 10)*Players.Count + 10*HerdedSheep;
+                int inc = (type.EndsWith("-g") ? 100 : 10)*Players.Count + 10*HerdedSheep;
                 foreach (var i in Players)
                     i.Value.Client.SendPacket(new NotificationPacket
                     {

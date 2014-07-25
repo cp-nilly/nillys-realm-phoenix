@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using db.data;
 using wServer.logic;
 using wServer.realm.entities.player;
 using wServer.svrPackets;
@@ -13,13 +14,13 @@ namespace wServer.realm.entities
     internal class Totem : StaticObject
     {
         private readonly int amount;
+        private readonly string monster;
         private readonly float radius;
-        string monster;
-        short totem;
-        private int t;
+        private int maximumtransforms;
         private int p = 1;
         private Player player;
-        int maximumtransforms = 0;
+        private int t;
+        private short totem;
 
         public Totem(Player player, float radius, int amount, string monster, short totem)
             : base(totem, 3000, true, true, false)
@@ -33,30 +34,30 @@ namespace wServer.realm.entities
 
         public override void Tick(RealmTime time)
         {
-            if (t / 1500 == p)
+            if (t/1500 == p)
             {
                 p = 100;
                 var pkts = new List<Packet>();
                 var enemies = new List<Enemy>();
                 short obj;
-                var pt = monster;
-                db.data.XmlDatas.IdToType.TryGetValue(pt, out obj);
-                BehaviorBase.AOE(Owner, this, radius, false, enemy =>
-                {
-                    enemies.Add(enemy as Enemy);
-                });
+                string pt = monster;
+                XmlDatas.IdToType.TryGetValue(pt, out obj);
+                BehaviorBase.AOE(Owner, this, radius, false, enemy => { enemies.Add(enemy as Enemy); });
                 Owner.BroadcastPacket(new ShowEffectPacket
                 {
                     EffectType = EffectType.AreaBlast,
                     Color = new ARGB(0x4E6C00),
-                    TargetId = this.Id,
-                    PosA = new Position { X = radius }
+                    TargetId = Id,
+                    PosA = new Position {X = radius}
                 }, null);
-                foreach (var i in enemies)
+                foreach (Enemy i in enemies)
                 {
                     try
                     {
-                        if (i.HasConditionEffect(ConditionEffects.StasisImmune) || i.ObjectDesc.MaxHp > amount || i.Name == monster || i.isPet || i.isSummon || !i.ObjectDesc.Enemy || i.Name == "Pentaract Tower" || i.HasConditionEffect(ConditionEffects.Invincible) || i.HasConditionEffect(ConditionEffects.Invulnerable) || i.ObjectDesc.StasisImmune)
+                        if (i.HasConditionEffect(ConditionEffects.StasisImmune) || i.ObjectDesc.MaxHp > amount ||
+                            i.Name == monster || i.isPet || i.isSummon || !i.ObjectDesc.Enemy ||
+                            i.Name == "Pentaract Tower" || i.HasConditionEffect(ConditionEffects.Invincible) ||
+                            i.HasConditionEffect(ConditionEffects.Invulnerable) || i.ObjectDesc.StasisImmune)
                         {
                             pkts.Add(new NotificationPacket
                             {
@@ -67,11 +68,11 @@ namespace wServer.realm.entities
                         }
                         else
                         {
-                            Position pos = new Position();
+                            var pos = new Position();
                             pos.X = i.X;
                             pos.Y = i.Y;
                             Owner.LeaveWorld(i);
-                            var newenemy = Resolve(obj);
+                            Entity newenemy = Resolve(obj);
                             Owner.EnterWorld(newenemy);
                             newenemy.Move(pos.X, pos.Y);
                             maximumtransforms++;
@@ -88,7 +89,6 @@ namespace wServer.realm.entities
                         Console.Out.WriteLine(i.Name);
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    
                 }
                 Owner.BroadcastPackets(pkts, null);
                 t += time.thisTickTimes;

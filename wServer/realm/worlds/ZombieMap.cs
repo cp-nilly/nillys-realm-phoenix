@@ -61,17 +61,17 @@ namespace wServer.realm.worlds
         {
             var enems = new List<string>();
             var r = new Random();
-            for (var i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 enems.Add(Zombies[r.Next(0, Zombies.Length - 1)]);
             }
             var r2 = new Random();
-            foreach (var i in enems)
+            foreach (string i in enems)
             {
-                var id = XmlDatas.IdToType[i];
-                var xloc = r2.Next(1, 254) + 0.5f;
-                var yloc = r2.Next(1, 254) + 0.5f;
-                var enemy = Entity.Resolve(id);
+                short id = XmlDatas.IdToType[i];
+                float xloc = r2.Next(1, 254) + 0.5f;
+                float yloc = r2.Next(1, 254) + 0.5f;
+                Entity enemy = Entity.Resolve(id);
                 enemy.Move(xloc, yloc);
                 EnterWorld(enemy);
             }
@@ -108,7 +108,8 @@ namespace wServer.realm.worlds
                                     {
                                         Color = new ARGB(0xffff00ff),
                                         ObjectId = i.Value.Id,
-                                        Text = "Wave " + Wave.ToString(CultureInfo.InvariantCulture) + " Starting in 4..."
+                                        Text =
+                                            "Wave " + Wave.ToString(CultureInfo.InvariantCulture) + " Starting in 4..."
                                     });
                                 }
                                 Timers.Add(new WorldTimer(1000, (w2, t2) =>
@@ -119,7 +120,9 @@ namespace wServer.realm.worlds
                                         {
                                             Color = new ARGB(0xffff00ff),
                                             ObjectId = i.Value.Id,
-                                            Text = "Wave " + Wave.ToString(CultureInfo.InvariantCulture) + " Starting in 3..."
+                                            Text =
+                                                "Wave " + Wave.ToString(CultureInfo.InvariantCulture) +
+                                                " Starting in 3..."
                                         });
                                     }
                                     Timers.Add(new WorldTimer(1000, (w3, t3) =>
@@ -130,7 +133,9 @@ namespace wServer.realm.worlds
                                             {
                                                 Color = new ARGB(0xffff00ff),
                                                 ObjectId = i.Value.Id,
-                                                Text = "Wave " + Wave.ToString(CultureInfo.InvariantCulture) + " Starting in 2..."
+                                                Text =
+                                                    "Wave " + Wave.ToString(CultureInfo.InvariantCulture) +
+                                                    " Starting in 2..."
                                             });
                                         }
                                         Timers.Add(new WorldTimer(1000, (w4, t4) =>
@@ -141,7 +146,9 @@ namespace wServer.realm.worlds
                                                 {
                                                     Color = new ARGB(0xffff00ff),
                                                     ObjectId = i.Value.Id,
-                                                    Text = "Wave " + Wave.ToString(CultureInfo.InvariantCulture) + " Starting..."
+                                                    Text =
+                                                        "Wave " + Wave.ToString(CultureInfo.InvariantCulture) +
+                                                        " Starting..."
                                                 });
                                             }
                                             Timers.Add(new WorldTimer(500, (w5, t5) =>

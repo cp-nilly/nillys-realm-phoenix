@@ -78,9 +78,10 @@ namespace wServer.logic
                             Tuple.Create(0.4, (ILoot) new StatPotionLoot(StatPotion.Vit)),
                             Tuple.Create(0.4, (ILoot) new StatPotionLoot(StatPotion.Spd))
                             ))),
-                    new ConditionalBehavior[] {
-                        new DeathPortal(0x7040, 100, 30)
-                    }
+                new ConditionalBehavior[]
+                {
+                    new DeathPortal(0x7040, 100, 30)
+                }
                 ))
             .Init(0x0944, Behaves("Henchman of Oryx",
                 new QueuedBehavior(
@@ -198,16 +199,24 @@ namespace wServer.logic
                         Cooldown.Instance(1500, PredictiveMultiAttack.Instance(25, 10*(float) Math.PI/180, 2, 1, 5)),
                         Cooldown.Instance(1500, PredictiveMultiAttack.Instance(25, 10*(float) Math.PI/180, 3, 1, 6)),
                         Cooldown.Instance(5000, RingAttack.Instance(16, projectileIndex: 9)),
-                        Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)), //Knight of the Void (4 sec)
-                        Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)), //Priest of the Void (10 sec)
-                        Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)), //Rogue of the Void (5 sec)
-                        Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1)), //Wizard of the Void (15 sec)
+                        Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)),
+                        //Knight of the Void (4 sec)
+                        Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)),
+                        //Priest of the Void (10 sec)
+                        Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)),
+                        //Rogue of the Void (5 sec)
+                        Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1)),
+                        //Wizard of the Void (15 sec)
                         If.Instance(CheckConditionEffects.Instance(new[] {ConditionEffects.Stunned}), new RunBehaviors(
-                            Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)), //Knight of the Void (4 sec)
-                            Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)), //Priest of the Void (10 sec)
-                            Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)), //Rogue of the Void (5 sec)
-                            Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1)) //Wizard of the Void (15 sec)
-                        )),
+                            Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)),
+                            //Knight of the Void (4 sec)
+                            Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)),
+                            //Priest of the Void (10 sec)
+                            Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)),
+                            //Rogue of the Void (5 sec)
+                            Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1))
+                            //Wizard of the Void (15 sec)
+                            )),
                         HpLesserPercent.Instance(0.1f, SetState.Instance("neardeath"))
                         ),
                     new State("neardeath",
@@ -219,16 +228,24 @@ namespace wServer.logic
                         Cooldown.Instance(1000, MultiAttack.Instance(25, 50*(float) Math.PI/180, 3, 0, 9)),
                         Cooldown.Instance(1000, MultiAttack.Instance(25, 50*(float) Math.PI/180, 2, 0, 5)),
                         Cooldown.Instance(1000, MultiAttack.Instance(25, 50*(float) Math.PI/180, 3, 0, 6)),
-                        Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)), //Knight of the Void (4 sec)
-                        Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)), //Priest of the Void (10 sec)
-                        Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)), //Rogue of the Void (5 sec)
-                        Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1)), //Wizard of the Void (15 sec)
-                        If.Instance(CheckConditionEffects.Instance(new[] { ConditionEffects.Stunned }), new RunBehaviors(
-                            Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)), //Knight of the Void (4 sec)
-                            Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)), //Priest of the Void (10 sec)
-                            Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)), //Rogue of the Void (5 sec)
-                            Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1)) //Wizard of the Void (15 sec)
-                        )),
+                        Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)),
+                        //Knight of the Void (4 sec)
+                        Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)),
+                        //Priest of the Void (10 sec)
+                        Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)),
+                        //Rogue of the Void (5 sec)
+                        Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1)),
+                        //Wizard of the Void (15 sec)
+                        If.Instance(CheckConditionEffects.Instance(new[] {ConditionEffects.Stunned}), new RunBehaviors(
+                            Cooldown.Instance(4000, SpawnMinionImmediate.Instance(0x2003, 5, 1, 1)),
+                            //Knight of the Void (4 sec)
+                            Cooldown.Instance(10000, SpawnMinionImmediate.Instance(0x370f, 5, 1, 1)),
+                            //Priest of the Void (10 sec)
+                            Cooldown.Instance(5000, SpawnMinionImmediate.Instance(0x370e, 5, 1, 1)),
+                            //Rogue of the Void (5 sec)
+                            Cooldown.Instance(15000, SpawnMinionImmediate.Instance(0x370d, 5, 1, 1))
+                            //Wizard of the Void (15 sec)
+                            )),
                         new QueuedBehavior(
                             Cooldown.Instance(2000, RingAttack.Instance(8, projectileIndex: 9)),
                             Cooldown.Instance(2000, RingAttack.Instance(8, offset: 90, projectileIndex: 9))
@@ -245,7 +262,8 @@ namespace wServer.logic
                         ))),
                 condBehaviors: new ConditionalBehavior[]
                 {
-                    new OnDeath(new RunBehaviors(new PlayMusic("clooooeebe mixex"), new SimpleTaunt("I'm such a weakling...")))
+                    new OnDeath(new RunBehaviors(new PlayMusic("clooooeebe mixex"),
+                        new SimpleTaunt("I'm such a weakling...")))
                 }
                 ))
             .Init(0x1902, Behaves("Magical Tree",
@@ -303,126 +321,117 @@ namespace wServer.logic
                     )
                 ))
             .Init(0x1740, Behaves("Oryx the Mad God 1",
-                    new RunBehaviors(
-                        IfExist.Instance(-1, NullBehavior.Instance,
-                            new RunBehaviors(
-                                new QueuedBehavior(
-                                    CooldownExact.Instance(400)
+                new RunBehaviors(
+                    IfExist.Instance(-1, NullBehavior.Instance,
+                        new RunBehaviors(
+                            new QueuedBehavior(
+                                CooldownExact.Instance(400)
                                 ),
-                                Once.Instance(new SimpleTaunt("I still have {HP} hitpoints!")),
-                                new QueuedBehavior(new SetKey(-1, 1))
-
+                            Once.Instance(new SimpleTaunt("I still have {HP} hitpoints!")),
+                            new QueuedBehavior(new SetKey(-1, 1))
                             )
                         ),
-                        IfEqual.Instance(-1, 1,
-                            new RunBehaviors(
+                    IfEqual.Instance(-1, 1,
+                        new RunBehaviors(
                             Once.Instance(SpawnMinionImmediate.Instance(0x1749, 10, 0, 4)),
-                            Cooldown.Instance(100000, MultiAttack.Instance(10, 15 * (float)Math.PI / 180, 4, 0, projectileIndex: 12)),
+                            Cooldown.Instance(100000, MultiAttack.Instance(10, 15*(float) Math.PI/180, 4, 0, 12)),
                             Reproduce.Instance(0x1749, 10, 5000, 4),
                             new QueuedBehavior(HpLesserPercent.Instance(0.95f, new SetKey(-1, 2)))
-
-
                             )
                         ),
-                        IfEqual.Instance(-1, 2,
-                            new RunBehaviors(
+                    IfEqual.Instance(-1, 2,
+                        new RunBehaviors(
                             Once.Instance(new SimpleTaunt("BE SILENT!")),
                             Once.Instance(RingAttack.Instance(20, 20, 0, projectileIndex: 0)),
                             Timed.Instance(2500, Flashing.Instance(200, 0xf389E13)),
-                            InfiniteSpiralAttack.Instance(125, 10, 7.5f, projectileIndex: 10),
-                            Cooldown.Instance(5000, RingAttack.Instance(8, 20, 0, projectileIndex: 17)),
+                            InfiniteSpiralAttack.Instance(125, 10, 7.5f, 10),
+                            Cooldown.Instance(5000, RingAttack.Instance(8, 20, 0, 17)),
                             Cooldown.Instance(4000, new SetConditionEffectTimed(ConditionEffectIndex.Invulnerable, 2000)),
                             new QueuedBehavior(HpLesserPercent.Instance(0.85f, new SetKey(-1, 3)))
                             )
-                         ),
-                         IfEqual.Instance(-1, 3,
-                            new RunBehaviors(
-                                Chasing.Instance(5, 20, 2, null),
-                                Cooldown.Instance(1000, RingAttack.Instance(20, 20, 0, projectileIndex: 2)),
-                                Cooldown.Instance(125, MultiAttack.Instance(20, 3 * (float)Math.PI / 180, 2, 0,  projectileIndex: 1)),
-                                new QueuedBehavior(HpLesserPercent.Instance(0.70f, new SetKey(-1, 4)))
+                        ),
+                    IfEqual.Instance(-1, 3,
+                        new RunBehaviors(
+                            Chasing.Instance(5, 20, 2, null),
+                            Cooldown.Instance(1000, RingAttack.Instance(20, 20, 0, 2)),
+                            Cooldown.Instance(125, MultiAttack.Instance(20, 3*(float) Math.PI/180, 2, 0, 1)),
+                            new QueuedBehavior(HpLesserPercent.Instance(0.70f, new SetKey(-1, 4)))
                             )
                         ),
-                        IfEqual.Instance(-1, 4,
-                            new RunBehaviors(
-                                Timed.Instance(2500, Flashing.Instance(200, 0xf389E13)),
-                                Once.Instance(new SimpleTaunt("I still have {HP} hitpoints!")),
-                                new QueuedBehavior(
-                                    CooldownExact.Instance(1000)
+                    IfEqual.Instance(-1, 4,
+                        new RunBehaviors(
+                            Timed.Instance(2500, Flashing.Instance(200, 0xf389E13)),
+                            Once.Instance(new SimpleTaunt("I still have {HP} hitpoints!")),
+                            new QueuedBehavior(
+                                CooldownExact.Instance(1000)
                                 ),
-                                SetConditionEffect.Instance(ConditionEffectIndex.Armored),
-                                Cooldown.Instance(4000, new SetConditionEffectTimed(ConditionEffectIndex.Invulnerable, 3000)),
-                                Once.Instance(new SimpleTaunt("Minions Kill Them!!")),
-                                Cooldown.Instance(2000, RingAttack.Instance(10, 20, 0, projectileIndex: 6)),
-                                Reproduce.Instance(0x1749, 3, 5000, 4),
-                                new QueuedBehavior(
-                                    HpLesserPercent.Instance(0.40f, new SetKey(-1, 5))
+                            SetConditionEffect.Instance(ConditionEffectIndex.Armored),
+                            Cooldown.Instance(4000, new SetConditionEffectTimed(ConditionEffectIndex.Invulnerable, 3000)),
+                            Once.Instance(new SimpleTaunt("Minions Kill Them!!")),
+                            Cooldown.Instance(2000, RingAttack.Instance(10, 20, 0, 6)),
+                            Reproduce.Instance(0x1749, 3, 5000, 4),
+                            new QueuedBehavior(
+                                HpLesserPercent.Instance(0.40f, new SetKey(-1, 5))
                                 )
                             )
                         ),
-                        IfEqual.Instance(-1, 5,
-                            new RunBehaviors(
-                                Once.Instance(new SimpleTaunt("My Artifacts will protect me!!")),
-                                Once.Instance(SpawnMinionImmediate.Instance(0x174a, 2, 1, 1)),
-                                Once.Instance(SpawnMinionImmediate.Instance(0x174b, 2, 1, 1)),
-                                Once.Instance(SpawnMinionImmediate.Instance(0x174c, 2, 1, 1)),
-                                Once.Instance(SpawnMinionImmediate.Instance(0x174d, 2, 1, 1)),
-                                Cooldown.Instance(4000, new SetConditionEffectTimed(ConditionEffectIndex.Invulnerable, 2000)),
-                                new QueuedBehavior(HpLesserPercent.Instance(0.20f, new SetKey(-1, 6)))
+                    IfEqual.Instance(-1, 5,
+                        new RunBehaviors(
+                            Once.Instance(new SimpleTaunt("My Artifacts will protect me!!")),
+                            Once.Instance(SpawnMinionImmediate.Instance(0x174a, 2, 1, 1)),
+                            Once.Instance(SpawnMinionImmediate.Instance(0x174b, 2, 1, 1)),
+                            Once.Instance(SpawnMinionImmediate.Instance(0x174c, 2, 1, 1)),
+                            Once.Instance(SpawnMinionImmediate.Instance(0x174d, 2, 1, 1)),
+                            Cooldown.Instance(4000, new SetConditionEffectTimed(ConditionEffectIndex.Invulnerable, 2000)),
+                            new QueuedBehavior(HpLesserPercent.Instance(0.20f, new SetKey(-1, 6)))
                             )
                         ),
-                        IfEqual.Instance(-1, 6,
-                            new RunBehaviors(
-                                Once.Instance(new SimpleTaunt("ENOUGH!")),
-                                Flashing.Instance(200, 0xf389E13),
-                                new QueuedBehavior(
-                                    CooldownExact.Instance(1100),
-                                    SetSize.Instance(100),
-                                    CooldownExact.Instance(1100),
-                                    SetSize.Instance(110),
-                                    CooldownExact.Instance(1100),
-                                    SetSize.Instance(120),
-                                    CooldownExact.Instance(1100),
-                                    SetSize.Instance(130),
-                                    CooldownExact.Instance(1100),
-                                    SetSize.Instance(140)
+                    IfEqual.Instance(-1, 6,
+                        new RunBehaviors(
+                            Once.Instance(new SimpleTaunt("ENOUGH!")),
+                            Flashing.Instance(200, 0xf389E13),
+                            new QueuedBehavior(
+                                CooldownExact.Instance(1100),
+                                SetSize.Instance(100),
+                                CooldownExact.Instance(1100),
+                                SetSize.Instance(110),
+                                CooldownExact.Instance(1100),
+                                SetSize.Instance(120),
+                                CooldownExact.Instance(1100),
+                                SetSize.Instance(130),
+                                CooldownExact.Instance(1100),
+                                SetSize.Instance(140)
                                 ),
-                                Chasing.Instance(8, 20, 3, null),
-                                Cooldown.Instance(125, MultiAttack.Instance(20, 3 * (float)Math.PI / 180, 2, 0, projectileIndex: 1)),
-                                Cooldown.Instance(2000, MultiAttack.Instance(20, 10 * (float)Math.PI / 180, 2, 0, projectileIndex: 14))
+                            Chasing.Instance(8, 20, 3, null),
+                            Cooldown.Instance(125, MultiAttack.Instance(20, 3*(float) Math.PI/180, 2, 0, 1)),
+                            Cooldown.Instance(2000, MultiAttack.Instance(20, 10*(float) Math.PI/180, 2, 0, 14))
                             )
                         )
-                        
                     ),
-
-                    loot: new LootBehavior(LootDef.Empty,
-                        Tuple.Create(100, new LootDef(0, 6, 0, 16,
-                            Tuple.Create(0.001, (ILoot)new TierLoot(4, ItemType.Ability)),
-                            Tuple.Create(0.005, (ILoot)new TierLoot(5, ItemType.Ability)),
-
-                            Tuple.Create(0.05, (ILoot)new TierLoot(8, ItemType.Armor)),
-                            Tuple.Create(0.05, (ILoot)new TierLoot(9, ItemType.Armor)),
-                            Tuple.Create(0.025, (ILoot)new TierLoot(10, ItemType.Armor)),
-                            Tuple.Create(0.005, (ILoot)new TierLoot(11, ItemType.Armor)),
-                            Tuple.Create(0.001, (ILoot)new TierLoot(12, ItemType.Armor)),
-
-                            Tuple.Create(0.05, (ILoot)new TierLoot(8, ItemType.Weapon)),
-                            Tuple.Create(0.05, (ILoot)new TierLoot(9, ItemType.Weapon)),
-                            Tuple.Create(0.005, (ILoot)new TierLoot(10, ItemType.Weapon)),
-                            Tuple.Create(0.001, (ILoot)new TierLoot(11, ItemType.Weapon)),
-
-                            Tuple.Create(0.2, (ILoot)new TierLoot(5, ItemType.Ring)),
-                            Tuple.Create(0.5, (ILoot)new TierLoot(4, ItemType.Ring)),
-                            Tuple.Create(0.7, (ILoot)new TierLoot(3, ItemType.Ring)),
-                            Tuple.Create(0.5, (ILoot)new StatPotionLoot(StatPotion.Def)),
-                            Tuple.Create(0.5, (ILoot)new StatPotionLoot(StatPotion.Att))
-                    ))),
-                    condBehaviors: new ConditionalBehavior[]
-                    {
-                        new DeathPortal(0x0721, 100, 60),
-                    }       
-
-            ))
+                loot: new LootBehavior(LootDef.Empty,
+                    Tuple.Create(100, new LootDef(0, 6, 0, 16,
+                        Tuple.Create(0.001, (ILoot) new TierLoot(4, ItemType.Ability)),
+                        Tuple.Create(0.005, (ILoot) new TierLoot(5, ItemType.Ability)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(8, ItemType.Armor)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(9, ItemType.Armor)),
+                        Tuple.Create(0.025, (ILoot) new TierLoot(10, ItemType.Armor)),
+                        Tuple.Create(0.005, (ILoot) new TierLoot(11, ItemType.Armor)),
+                        Tuple.Create(0.001, (ILoot) new TierLoot(12, ItemType.Armor)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(8, ItemType.Weapon)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(9, ItemType.Weapon)),
+                        Tuple.Create(0.005, (ILoot) new TierLoot(10, ItemType.Weapon)),
+                        Tuple.Create(0.001, (ILoot) new TierLoot(11, ItemType.Weapon)),
+                        Tuple.Create(0.2, (ILoot) new TierLoot(5, ItemType.Ring)),
+                        Tuple.Create(0.5, (ILoot) new TierLoot(4, ItemType.Ring)),
+                        Tuple.Create(0.7, (ILoot) new TierLoot(3, ItemType.Ring)),
+                        Tuple.Create(0.5, (ILoot) new StatPotionLoot(StatPotion.Def)),
+                        Tuple.Create(0.5, (ILoot) new StatPotionLoot(StatPotion.Att))
+                        ))),
+                condBehaviors: new ConditionalBehavior[]
+                {
+                    new DeathPortal(0x0721, 100, 60)
+                }
+                ))
             .Init(0x1748, Behaves("Ring Element",
                 new RunBehaviors(
                     Timed.Instance(20000, Cooldown.Instance(700, RingAttack.Instance(8, 100, 0, projectileIndex: 0))),

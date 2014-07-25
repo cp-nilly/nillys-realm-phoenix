@@ -12,9 +12,9 @@ namespace wServer
         public static T RandomElement<T>(this IEnumerable<T> source,
             Random rng)
         {
-            var current = default(T);
-            var count = 0;
-            foreach (var element in source)
+            T current = default(T);
+            int count = 0;
+            foreach (T element in source)
             {
                 count++;
                 if (rng.Next(count) == 0)

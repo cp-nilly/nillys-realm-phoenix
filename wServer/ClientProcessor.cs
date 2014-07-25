@@ -10,7 +10,6 @@ using db.data;
 using MySql.Data.MySqlClient;
 using wServer.cliPackets;
 using wServer.realm;
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.realm.worlds;
 using wServer.svrPackets;
@@ -30,6 +29,7 @@ namespace wServer
 
     public class ClientProcessor
     {
+        private readonly Socket skt;
         public uint UpdateAckCount = 0;
         private Account account;
         private Char character;
@@ -38,13 +38,9 @@ namespace wServer
         private Player entity;
         private NetworkHandler handler;
         private IP ip;
-        private bool isGuest = false;
 
-        private ClientProcessor psr;
-        private Socket skt;
         private ProtocalStage stage;
         private int targetWorld = -1;
-        private Thread wkrThread;
 
         public ClientProcessor(Socket skt)
         {
@@ -249,7 +245,7 @@ namespace wServer
             try
             {
                 if (stage == ProtocalStage.Disconnected) return;
-                var original = stage;
+                ProtocalStage original = stage;
                 stage = ProtocalStage.Disconnected;
                 if (account != null)
                     DisconnectFromRealm();
@@ -271,7 +267,7 @@ namespace wServer
         public void Save()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write("Saving {0}...\r\n", this.account.Name);
+            Console.Write("Saving {0}...\r\n", account.Name);
             Console.ForegroundColor = ConsoleColor.Gray;
             try
             {
@@ -324,7 +320,6 @@ namespace wServer
                     db.Dispose();
                     return;
                 }
-                
             }
             if ((ip = db.CheckIp(skt.RemoteEndPoint.ToString().Split(':')[0])) == null)
             {
@@ -341,7 +336,7 @@ namespace wServer
             ConnectedBuild = pkt.BuildVersion;
             if (!RealmManager.TryConnect(this))
             {
-                if (CheckAccountInUse(account.AccountId) != false)
+                if (CheckAccountInUse(account.AccountId))
                 {
                     Console.WriteLine(@"Account in use: " + account.AccountId + @" " + account.Name);
                     account = null;
@@ -366,7 +361,7 @@ namespace wServer
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(@"Client loading world");
                 Console.ForegroundColor = ConsoleColor.White;
-                var world = RealmManager.GetWorld(pkt.GameId);
+                World world = RealmManager.GetWorld(pkt.GameId);
                 if (world == null)
                 {
                     SendPacket(new FailurePacket
@@ -391,7 +386,7 @@ namespace wServer
 
                 else if (world.IsLimbo)
                     world = world.GetInstance(this);
-                var seed = (uint) ((long) Environment.TickCount*pkt.GUID.GetHashCode())%uint.MaxValue;
+                uint seed = (uint) ((long) Environment.TickCount*pkt.GUID.GetHashCode())%uint.MaxValue;
                 Random = new wRandom(seed);
                 targetWorld = world.Id;
                 if (!ConnectedBuildStartsWith(clientVer))
@@ -424,7 +419,6 @@ namespace wServer
                     Music = world.GetMusic(Random),
                     ClientXML = world.ClientXML,
                     ExtraXML = world.ExtraXML,
-
                     SendMusic = ConnectedBuildStartsWith(clientVer)
                 });
                 stage = ProtocalStage.Handshaked;
@@ -438,15 +432,15 @@ namespace wServer
 
         private void ProcessCreatePacket(CreatePacket pkt)
         {
-            var nextCharId = 1;
-            var maxChar = 2;
+            int nextCharId = 1;
+            int maxChar = 2;
             nextCharId = db.GetNextCharId(account);
-            var cmd = db.CreateQuery();
+            MySqlCommand cmd = db.CreateQuery();
             cmd.CommandText = "SELECT maxCharSlot FROM accounts WHERE id=@accId;";
             cmd.Parameters.AddWithValue("@accId", account.AccountId);
             try
             {
-                maxChar = (int)cmd.ExecuteScalar();
+                maxChar = (int) cmd.ExecuteScalar();
             }
             catch
             {
@@ -454,7 +448,7 @@ namespace wServer
             cmd = db.CreateQuery();
             cmd.CommandText = "SELECT COUNT(id) FROM characters WHERE accId=@accId AND dead = FALSE;";
             cmd.Parameters.AddWithValue("@accId", account.AccountId);
-            var currChar = (int)(long)cmd.ExecuteScalar();
+            var currChar = (int) (long) cmd.ExecuteScalar();
 
             if (currChar >= maxChar)
             {
@@ -462,7 +456,7 @@ namespace wServer
                 db.Dispose();
                 return;
             }
-            if (CheckAccountInUse(account.AccountId) != false)
+            if (CheckAccountInUse(account.AccountId))
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(@"Account in use: " + account.AccountId);
@@ -476,7 +470,7 @@ namespace wServer
             }
 
             character = Database.CreateCharacter(pkt.ObjectType, nextCharId);
-            var stats = new int[]
+            var stats = new[]
             {
                 character.MaxHitPoints,
                 character.MaxMagicPoints,
@@ -485,10 +479,10 @@ namespace wServer
                 character.Speed,
                 character.Dexterity,
                 character.HpRegen,
-                character.MpRegen,
+                character.MpRegen
             };
 
-            var ok = true;
+            bool ok = true;
             cmd = db.CreateQuery();
             cmd.Parameters.AddWithValue("@accId", account.AccountId);
             cmd.Parameters.AddWithValue("@charId", nextCharId);
@@ -498,7 +492,7 @@ namespace wServer
             cmd.Parameters.AddWithValue("@fameStats", character.FameStats.ToString());
             cmd.CommandText =
                 "INSERT INTO characters (accId, charId, charType, level, exp, fame, items, hp, mp, stats, dead, pet, fameStats) VALUES (@accId, @charId, @charType, 1, 0, 0, @items, 100, 100, @stats, FALSE, -1, @fameStats);";
-            var v = cmd.ExecuteNonQuery();
+            int v = cmd.ExecuteNonQuery();
             ok = v > 0;
 
             if (ok)
@@ -506,8 +500,8 @@ namespace wServer
                 if (account.Bonuses != null)
                     if (account.Bonuses.Count > 0)
                     {
-                        var chrEquip = character.Equipment;
-                        for (var i = 4; i < 12; i++)
+                        short[] chrEquip = character.Equipment;
+                        for (int i = 4; i < 12; i++)
                         {
                             if (chrEquip[i] == -1)
                             {
@@ -537,8 +531,8 @@ namespace wServer
                 if (IP.Gifts != null)
                     if (IP.Gifts.Count > 0)
                     {
-                        var chrEquip = character.Equipment;
-                        for (var i = 4; i < 12; i++)
+                        short[] chrEquip = character.Equipment;
+                        for (int i = 4; i < 12; i++)
                         {
                             if (chrEquip[i] == -1)
                             {
@@ -570,7 +564,7 @@ namespace wServer
 
             if (ok)
             {
-                var target = RealmManager.Worlds[targetWorld];
+                World target = RealmManager.Worlds[targetWorld];
                 //Delay to let client load remote texture
                 target.Timers.Add(new WorldTimer(2000, (w, t) => SendPacket(new CreateResultPacket
                 {
@@ -596,7 +590,7 @@ namespace wServer
                     {
                         Message = "Character is dead."
                     });
-                else if (CheckAccountInUse(account.AccountId) != false)
+                else if (CheckAccountInUse(account.AccountId))
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("Account in use: " + account.AccountId);
@@ -611,8 +605,8 @@ namespace wServer
                     if (account.Bonuses != null)
                         if (account.Bonuses.Count > 0)
                         {
-                            var chrEquip = character.Equipment;
-                            for (var i = 4; i < 12; i++)
+                            short[] chrEquip = character.Equipment;
+                            for (int i = 4; i < 12; i++)
                             {
                                 if (chrEquip[i] == -1)
                                 {
@@ -642,8 +636,8 @@ namespace wServer
                     if (IP.Gifts != null)
                         if (IP.Gifts.Count > 0)
                         {
-                            var chrEquip = character.Equipment;
-                            for (var i = 4; i < 12; i++)
+                            short[] chrEquip = character.Equipment;
+                            for (int i = 4; i < 12; i++)
                             {
                                 if (chrEquip[i] == -1)
                                 {
@@ -671,7 +665,7 @@ namespace wServer
                         IP.Gifts = new List<short>();
                     }
 
-                    var target = RealmManager.Worlds[targetWorld];
+                    World target = RealmManager.Worlds[targetWorld];
                     //Delay to let client load remote texture
                     target.Timers.Add(new WorldTimer(2000, (w, t) => SendPacket(new CreateResultPacket
                     {
@@ -690,10 +684,10 @@ namespace wServer
 
         private void ProcessChooseNamePacket(ChooseNamePacket pkt)
         {
-            var cmdx = db.CreateQuery();
+            MySqlCommand cmdx = db.CreateQuery();
             cmdx.CommandText = "SELECT namechosen FROM accounts WHERE id=@accId";
             cmdx.Parameters.AddWithValue("@accId", account.AccountId);
-            var execx = cmdx.ExecuteScalar();
+            object execx = cmdx.ExecuteScalar();
             bool namechosen = bool.Parse(execx.ToString());
 
             if (string.IsNullOrEmpty(pkt.Name) ||
@@ -707,10 +701,10 @@ namespace wServer
             }
             else
             {
-                var cmd = db.CreateQuery();
+                MySqlCommand cmd = db.CreateQuery();
                 cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
                 cmd.Parameters.AddWithValue("@name", pkt.Name);
-                var x = cmd.ExecuteScalar();
+                object x = cmd.ExecuteScalar();
                 if (int.Parse(x.ToString()) > 0)
                     SendPacket(new NameResultPacket
                     {
@@ -720,7 +714,7 @@ namespace wServer
                 else
                 {
                     db.ReadStats(account);
-                    if (account.Credits < 1000 && namechosen == true)
+                    if (account.Credits < 1000 && namechosen)
                         SendPacket(new NameResultPacket
                         {
                             Success = false,
@@ -786,7 +780,7 @@ namespace wServer
         {
             try
             {
-                var world = RealmManager.GetWorld(Player.Owner.Id);
+                World world = RealmManager.GetWorld(Player.Owner.Id);
                 if (world.Id == World.NEXUS_ID)
                 {
                     SendPacket(new TextPacket
@@ -818,13 +812,13 @@ namespace wServer
         private void ProcessBroadcastPacket(BroadcastPacket pkt)
         {
             Account acc;
-            var msg = pkt.Message;
+            string msg = pkt.Message;
 
             if ((acc = new Database().Verify(pkt.Username, pkt.Password)) != null)
             {
                 if (acc.Rank >= 5)
                 {
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new TextPacket
                         {
                             BubbleTime = 0,
@@ -864,20 +858,17 @@ namespace wServer
         {
             try
             {
-                var count = 0;
-                for (var i = 0; i < RealmManager.Worlds.Values.Count; i++)
+                int count = 0;
+                for (int i = 0; i < RealmManager.Worlds.Values.Count; i++)
                 {
-                    var w = RealmManager.GetWorld(i);
-                    foreach (var plr in w.Players.Values)
+                    World w = RealmManager.GetWorld(i);
+                    foreach (Player plr in w.Players.Values)
                     {
                         if (plr.AccountId == accId)
                         {
                             return true;
                         }
-                        else
-                        {
-                            count = count + 1;
-                        }
+                        count = count + 1;
                     }
                     if (count == w.Players.Values.ToArray().Length)
                     {

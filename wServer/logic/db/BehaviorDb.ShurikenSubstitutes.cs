@@ -58,14 +58,14 @@ namespace wServer.logic
                         Despawn.Instance
                         ))
                 ))
-                .Init(0x4a10, Behaves("ShurikenSubstituteChristmas",
+            .Init(0x4a10, Behaves("ShurikenSubstituteChristmas",
                 new RunBehaviors(
                     new QueuedBehavior(
                         Once.Instance(PetAttackTarget.Instance(20, 1, 0)),
                         Despawn.Instance
                         ))
                 ))
-			.Init(0x1432, Behaves("ShurikenSubstituteO37",
+            .Init(0x1432, Behaves("ShurikenSubstituteO37",
                 new RunBehaviors(
                     new QueuedBehavior(
                         Once.Instance(PetAttackTarget.Instance(10, 1, 0)),

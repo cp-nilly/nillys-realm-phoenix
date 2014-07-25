@@ -1,6 +1,5 @@
 ﻿#region
 
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 
 #endregion

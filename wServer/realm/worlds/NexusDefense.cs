@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using db;
 using db.data;
+using wServer.realm.entities;
 using wServer.svrPackets;
 
 #endregion
@@ -14,10 +15,65 @@ namespace wServer.realm.worlds
     public class NexusDefense : World
     {
         private readonly Dictionary<string, bool> Flags = new Dictionary<string, bool>();
-        Dictionary<string, float> UsedDebuffs = new Dictionary<string, float>();
-        Dictionary<string, float> UsedBuffs = new Dictionary<string, float>();
-        KeyValuePair<string, float> monster;
-        float monstervalue = 0;
+
+        private readonly Dictionary<string, float> RandomBosses = new Dictionary<string, float>
+        {
+            {"Elder Tree", 25},
+            {"Limon the Sprite God", 25},
+            {"Stheno the Snake Queen", 25},
+            {"Abyss Idol", 25},
+            {"Archdemon Malphas", 50},
+            {"Septavius the Ghost God", 50},
+            {"Skull Shrine", 100},
+            {"Cube God", 100},
+            {"Grand Sphinx", 125},
+            {"Lord of the Lost Lands", 125},
+            {"Crystal Prisoner", 150},
+            {"Phoenix God", 150},
+            {"Thessal the Mermaid Goddess", 200},
+            {"Tomb Support", 200},
+            {"Tomb Defender", 200},
+            {"Tomb Attacker", 200},
+            {"Oryx the Mad God 2", 200}
+        };
+
+        private readonly Dictionary<string, float> UsedBuffs = new Dictionary<string, float>();
+        private readonly Dictionary<string, float> UsedDebuffs = new Dictionary<string, float>();
+        private readonly List<IntPoint> bossSpawns = new List<IntPoint>();
+
+        private readonly Dictionary<string, float> buffs = new Dictionary<string, float>
+        {
+            {"Speedy", 2},
+            {"Tiny", 4},
+            {"Small", 2},
+            {"Buff", 3},
+            {"Armored", 3},
+            {"Invisible", 5},
+            {"Berserk", 5},
+            {"Damaging", 5}
+        };
+
+        private readonly Dictionary<string, float> debuffs = new Dictionary<string, float>
+        {
+            {"Slow", 2},
+            {"Giant", 4},
+            {"Large", 2},
+            {"Vulnerable", 3},
+            {"Unarmored", 5},
+            {"Weak", 5},
+            {"Dazed", 5},
+            {"Paralyzed", 5}
+        };
+
+        private int actualmonsters = 0;
+        private Dictionary<string, float> availableBuffs = new Dictionary<string, float>();
+        private Dictionary<string, float> availableDebuffs = new Dictionary<string, float>();
+        private Dictionary<string, float> currentbuffs = new Dictionary<string, float>();
+        private Dictionary<string, float> currentdebuffs = new Dictionary<string, float>();
+        private int enemynumber;
+        private KeyValuePair<string, float> monster;
+        private float monstervalue;
+
         public NexusDefense()
         {
             Name = "Nexus Defense";
@@ -30,56 +86,7 @@ namespace wServer.realm.worlds
                 typeof (RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.nexusdefense.wmap"));
             InitVars();
         }
-        int actualmonsters = 0;
-        Dictionary<string, float> currentbuffs = new Dictionary<string,float>();
-        Dictionary<string, float> currentdebuffs = new Dictionary<string, float>();
-        Dictionary<string, float> availableDebuffs = new Dictionary<string, float>();
-        Dictionary<string, float> availableBuffs = new Dictionary<string, float>();
-        Dictionary<string, float> RandomBosses = new Dictionary<string, float>
-                            {
-                                {"Elder Tree", 25}, 
-                                {"Limon the Sprite God", 25},
-                                {"Stheno the Snake Queen", 25},
-                                {"Abyss Idol", 25}, 
-                                {"Archdemon Malphas", 50}, 
-                                {"Septavius the Ghost God", 50},
-                                {"Skull Shrine", 100},
-                                {"Cube God", 100},
-                                {"Grand Sphinx", 125},
-                                {"Lord of the Lost Lands", 125},
-                                {"Crystal Prisoner", 150},
-                                {"Phoenix God", 150},
-                                {"Thessal the Mermaid Goddess", 200},
-                                {"Tomb Support", 200}, 
-                                {"Tomb Defender", 200},
-                                {"Tomb Attacker", 200},
-                                {"Oryx the Mad God 2", 200}
-                            };
-        Dictionary<string, float> buffs = new Dictionary<string, float>
-            {
-                {"Speedy", 2},
-                {"Tiny", 4},
-                {"Small", 2},
-                {"Buff", 3},
-                {"Armored", 3},
-                {"Invisible", 5},
-                {"Berserk", 5},
-                {"Damaging", 5}
-            };
-        Dictionary<string, float> debuffs = new Dictionary<string, float>
-            {
-                {"Slow", 2},
-                {"Giant", 4},
-                {"Large", 2},
-                {"Vulnerable", 3},
-                {"Unarmored", 5},
-                {"Weak", 5},
-                {"Dazed", 5},
-                {"Paralyzed", 5}
-            };
-        private readonly List<IntPoint> bossSpawns = new List<IntPoint>();
-        private int enemynumber;
-        
+
 
         public bool Joinable
         {
@@ -88,18 +95,19 @@ namespace wServer.realm.worlds
 
         private void InitVars()
         {
-            var w = Map.Width;
-            var h = Map.Height;
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            int w = Map.Width;
+            int h = Map.Height;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = Map[x, y];
+                    WmapTile tile = Map[x, y];
                     if (tile.Region == TileRegion.Enemy)
                     {
                         bossSpawns.Add(new IntPoint(x, y));
                     }
                 }
         }
+
         public void Countdown(int s)
         {
             if (s != 0)
@@ -143,7 +151,6 @@ namespace wServer.realm.worlds
                 {
                     SpawnBoss();
                     Flags["counting"] = false;
-                    
                 }
             }
         }
@@ -153,7 +160,7 @@ namespace wServer.realm.worlds
             availableBuffs = buffs;
             for (int i = 0; i < amount; i++)
             {
-                Random rand = new Random();
+                var rand = new Random();
                 int random = rand.Next(0, availableBuffs.Count);
                 KeyValuePair<string, float> buff = availableBuffs.ElementAt(random);
                 availableBuffs.Remove(buff.Key);
@@ -201,14 +208,15 @@ namespace wServer.realm.worlds
                     availableDebuffs.Remove("Weak");
                 }
             }
-            this.currentbuffs = UsedBuffs;
+            currentbuffs = UsedBuffs;
         }
+
         public void getDebuffs(int amount)
         {
             availableDebuffs = debuffs;
             for (int i = 0; i < amount; i++)
             {
-                Random rand = new Random();
+                var rand = new Random();
                 int random = rand.Next(0, availableDebuffs.Count);
                 KeyValuePair<string, float> debuff = availableDebuffs.ElementAt(random);
                 availableDebuffs.Remove(debuff.Key);
@@ -229,17 +237,16 @@ namespace wServer.realm.worlds
                 {
                     availableDebuffs.Remove("Slowed");
                 }
-
             }
-            this.currentdebuffs = UsedDebuffs;
+            currentdebuffs = UsedDebuffs;
         }
 
         public void SpawnBoss()
         {
             bossSpawns.Shuffle();
-            Random rand = new Random();
+            var rand = new Random();
             monster = RandomBosses.ElementAt(rand.Next(0, RandomBosses.Count));
-            var e = Entity.Resolve(XmlDatas.IdToType[monster.Key]);
+            Entity e = Entity.Resolve(XmlDatas.IdToType[monster.Key]);
             availableDebuffs = buffs;
             availableDebuffs = debuffs;
             if (enemynumber < 3)
@@ -276,43 +283,41 @@ namespace wServer.realm.worlds
                 {
                     case "Speedy":
                         e.ApplyConditionEffect(new[]
-                            {
-                                Speedy
-                            });             
-                            break;
+                        {
+                            Speedy
+                        });
+                        break;
                     case "Berserk":
                         e.ApplyConditionEffect(new[]
-                            {
-                                Berserk
-                            });
-                            break;
+                        {
+                            Berserk
+                        });
+                        break;
                     case "Tiny":
-                            e.Size = e.Size / 4;
-                            break;
+                        e.Size = e.Size/4;
+                        break;
                     case "Small":
-                            e.Size = e.Size / 2;
-                            break;
+                        e.Size = e.Size/2;
+                        break;
                     case "Buff":
-                            (e as entities.Enemy).HP = (e as entities.Enemy).HP * 2;
-                            break;
+                        (e as Enemy).HP = (e as Enemy).HP*2;
+                        break;
                     case "Armored":
-                            e.ApplyConditionEffect(new[]
-                            {
-                                Armored
-                            });
-                            break;
+                        e.ApplyConditionEffect(new[]
+                        {
+                            Armored
+                        });
+                        break;
                     case "Invisible":
-                            e.Size = 0;
-                            break;
+                        e.Size = 0;
+                        break;
                     case "Damaging":
-                            e.ApplyConditionEffect(new[]
-                            {
-                                Damaging
-                            });
-                            break;
-                            
+                        e.ApplyConditionEffect(new[]
+                        {
+                            Damaging
+                        });
+                        break;
                 }
-                
             }
             foreach (var i in UsedDebuffs)
             {
@@ -336,44 +341,43 @@ namespace wServer.realm.worlds
                 {
                     case "Slow":
                         e.ApplyConditionEffect(new[]
-                            {
-                                Slowed
-                            });
+                        {
+                            Slowed
+                        });
                         break;
                     case "Giant":
-                        e.Size = e.Size * 4;
+                        e.Size = e.Size*4;
                         break;
                     case "Large":
-                        e.Size = e.Size * 2;
+                        e.Size = e.Size*2;
                         break;
                     case "Vulnerable":
-                        (e as entities.Enemy).HP = (e as entities.Enemy).HP / 2;
+                        (e as Enemy).HP = (e as Enemy).HP/2;
                         break;
                     case "Unarmored":
                         e.ApplyConditionEffect(new[]
-                            {
-                                ArmorBroken
-                            });
+                        {
+                            ArmorBroken
+                        });
                         break;
                     case "Weak":
                         e.ApplyConditionEffect(new[]
-                            {
-                                Weak
-                            });
+                        {
+                            Weak
+                        });
                         break;
                     case "Dazed":
                         e.ApplyConditionEffect(new[]
-                            {
-                                Dazed
-                            });
+                        {
+                            Dazed
+                        });
                         break;
                     case "Paralyzed":
                         e.ApplyConditionEffect(new[]
-                            {
-                                Paralyzed
-                            });
+                        {
+                            Paralyzed
+                        });
                         break;
-
                 }
                 e.Name = buffs.Keys.ToArray().ToString() + debuffs.Keys.ToArray().ToString() + e.Name;
                 float buffvalue = 0;
@@ -386,20 +390,19 @@ namespace wServer.realm.worlds
                 {
                     debuffvalue += y.Value;
                 }
-                monstervalue = (int)Math.Ceiling(monster.Value * buffvalue / debuffvalue);
+                monstervalue = (int) Math.Ceiling(monster.Value*buffvalue/debuffvalue);
                 BroadcastPacket(new TextPacket
                 {
                     BubbleTime = 0,
                     Stars = -1,
                     Name = "#Nexus Defense",
-                    Text = "New Monster: " + e.Name.ToString() + " Bounty: " + monstervalue.ToString()
+                    Text = "New Monster: " + e.Name + " Bounty: " + monstervalue
                 }, null);
                 e.Move(bossSpawns[0].X, bossSpawns[0].Y);
                 EnterWorld(e);
                 UsedBuffs.Clear();
                 UsedDebuffs.Clear();
             }
-            
         }
 
         public override void Tick(RealmTime time)
@@ -416,30 +419,31 @@ namespace wServer.realm.worlds
                             foreach (var i in Players)
                             {
                                 i.Value.CurrentFame =
-                                    i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, (int)monstervalue);
+                                    i.Value.Client.Account.Stats.Fame =
+                                        db.UpdateFame(i.Value.Client.Account, (int) monstervalue);
                                 i.Value.UpdateCount++;
                                 i.Value.Client.SendPacket(new NotificationPacket
                                 {
                                     Color = new ARGB(0xFFFF6600),
                                     ObjectId = i.Value.Id,
-                                    Text = "+" + (int)monstervalue + " Fame"
+                                    Text = "+" + (int) monstervalue + " Fame"
                                 });
                                 if (Math.IEEERemainder(monstervalue, 1000) == 0)
                                 {
-                                    i.Value.Credits = i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                    i.Value.Credits =
+                                        i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
                                     i.Value.UpdateCount++;
                                 }
                             }
                             db.Dispose();
                             Countdown(5);
                         }
-                        
                     }
                 }
 
                 else if (!Flags["started"] && !Flags["counting"])
                 {
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new TextPacket
                         {
                             Stars = -1,
@@ -450,10 +454,10 @@ namespace wServer.realm.worlds
                     Flags["counting"] = true;
                     Countdown(60);
                 }
-
             }
             base.Tick(time);
         }
+
         public override World GetInstance(ClientProcessor psr)
         {
             return RealmManager.AddWorld(new NexusDefense());

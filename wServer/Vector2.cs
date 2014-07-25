@@ -98,13 +98,13 @@ namespace Mono.Game
         public static float Distance(Vector2 value1, Vector2 value2)
         {
             float v1 = value1.X - value2.X, v2 = value1.Y - value2.Y;
-            return (float) System.Math.Sqrt((v1*v1) + (v2*v2));
+            return (float) Math.Sqrt((v1*v1) + (v2*v2));
         }
 
         public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
         {
             float v1 = value1.X - value2.X, v2 = value1.Y - value2.Y;
-            result = (float) System.Math.Sqrt((v1*v1) + (v2*v2));
+            result = (float) Math.Sqrt((v1*v1) + (v2*v2));
         }
 
         public static float DistanceSquared(Vector2 value1, Vector2 value2)
@@ -134,7 +134,7 @@ namespace Mono.Game
 
         public static Vector2 Divide(Vector2 value1, float divider)
         {
-            var factor = 1/divider;
+            float factor = 1/divider;
             value1.X *= factor;
             value1.Y *= factor;
             return value1;
@@ -142,7 +142,7 @@ namespace Mono.Game
 
         public static void Divide(ref Vector2 value1, float divider, out Vector2 result)
         {
-            var factor = 1/divider;
+            float factor = 1/divider;
             result.X = value1.X*factor;
             result.Y = value1.Y*factor;
         }
@@ -175,7 +175,7 @@ namespace Mono.Game
         public static Vector2 Reflect(Vector2 vector, Vector2 normal)
         {
             Vector2 result;
-            var val = 2.0f*((vector.X*normal.X) + (vector.Y*normal.Y));
+            float val = 2.0f*((vector.X*normal.X) + (vector.Y*normal.Y));
             result.X = vector.X - (normal.X*val);
             result.Y = vector.Y - (normal.Y*val);
             return result;
@@ -183,7 +183,7 @@ namespace Mono.Game
 
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
-            var val = 2.0f*((vector.X*normal.X) + (vector.Y*normal.Y));
+            float val = 2.0f*((vector.X*normal.X) + (vector.Y*normal.Y));
             result.X = vector.X - (normal.X*val);
             result.Y = vector.Y - (normal.Y*val);
         }
@@ -195,7 +195,7 @@ namespace Mono.Game
 
         public float Length()
         {
-            return (float) System.Math.Sqrt((X*X) + (Y*Y));
+            return (float) Math.Sqrt((X*X) + (Y*Y));
         }
 
         public float LengthSquared()
@@ -268,16 +268,16 @@ namespace Mono.Game
 
         public void Normalize()
         {
-            var d = (float) System.Math.Sqrt((X*X) + (Y*Y));
+            var d = (float) Math.Sqrt((X*X) + (Y*Y));
             if (d == 0) return;
-            var val = 1.0f/d;
+            float val = 1.0f/d;
             X *= val;
             Y *= val;
         }
 
         public static Vector2 Normalize(Vector2 value)
         {
-            var val = 1.0f/(float) System.Math.Sqrt((value.X*value.X) + (value.Y*value.Y));
+            float val = 1.0f/(float) Math.Sqrt((value.X*value.X) + (value.Y*value.Y));
             value.X *= val;
             value.Y *= val;
             return value;
@@ -285,7 +285,7 @@ namespace Mono.Game
 
         public static void Normalize(ref Vector2 value, out Vector2 result)
         {
-            var val = 1.0f/(float) System.Math.Sqrt((value.X*value.X) + (value.Y*value.Y));
+            float val = 1.0f/(float) Math.Sqrt((value.X*value.X) + (value.Y*value.Y));
             result.X = value.X*val;
             result.Y = value.Y*val;
         }
@@ -305,7 +305,7 @@ namespace Mono.Game
 
         public override string ToString()
         {
-            var currentCulture = CultureInfo.CurrentCulture;
+            CultureInfo currentCulture = CultureInfo.CurrentCulture;
             return string.Format(currentCulture, "{{X:{0} Y:{1}}}", new object[]
             {
                 X.ToString(currentCulture), Y.ToString(currentCulture)
@@ -386,7 +386,7 @@ namespace Mono.Game
 
         public static Vector2 operator /(Vector2 value1, float divider)
         {
-            var factor = 1/divider;
+            float factor = 1/divider;
             value1.X *= factor;
             value1.Y *= factor;
             return value1;

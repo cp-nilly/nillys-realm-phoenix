@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Xml.Linq;
 using db.data;
 using Ionic.Zlib;
@@ -12,15 +10,8 @@ namespace db
 {
     public partial class Database : IDisposable
     {
-        private static string UppercaseFirst(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-            {
-                return string.Empty;
-            }
-            return char.ToUpper(s[0]) + s.Substring(1);
-        }
         private const bool Testing = false;
+
         private static readonly string[] Names =
         {
             "Darq", "Deyst", "Drac", "Drol",
@@ -39,16 +30,25 @@ namespace db
         public Database()
         {
             _con = Testing
-	            ? new MySqlConnection( /* Testing = true; */
-		        "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;")
-	            : new MySqlConnection( /* Testing = false; */
-		        "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;");
+                ? new MySqlConnection( /* Testing = true; */
+                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;")
+                : new MySqlConnection( /* Testing = false; */
+                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;");
             _con.Open();
         }
 
         public void Dispose()
         {
             _con.Close();
+        }
+
+        private static string UppercaseFirst(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+            return char.ToUpper(s[0]) + s.Substring(1);
         }
 
         public MySqlCommand CreateQuery()
@@ -108,8 +108,8 @@ AND characters.charId=death.chrId;";
 
         public Account CreateGuestAccount(string uuid)
         {
-			return Register(uuid, "", true);
-			//return Verify(uuid, password);
+            return Register(uuid, "", true);
+            //return Verify(uuid, password);
             /*return new Account
             {
                 Name = Names[(uint) uuid.GetHashCode()%Names.Length],
@@ -199,9 +199,10 @@ AND characters.charId=death.chrId;";
                 "INSERT INTO accounts(uuid, password, name, rank, namechosen, verified, guild, guildRank, guildFame, vaultCount, maxCharSlot, regTime, guest, banned, locked, ignored, bonuses) VALUES(@uuid, SHA1(@password), @name, 0, @nameChosen, 0, 0, 0, 0, 1, 2, @regTime, @guest, 0, @empty, @empty, @empty);";
             cmd.Parameters.AddWithValue("@uuid", uuid);
             cmd.Parameters.AddWithValue("@password", password);
-			cmd.Parameters.AddWithValue("@name", (isGuest) ? Names[(uint)uuid.GetHashCode() % Names.Length] : uuid); //names[(uint)uuid.GetHashCode() % names.Length]);
+            cmd.Parameters.AddWithValue("@name", (isGuest) ? Names[(uint) uuid.GetHashCode()%Names.Length] : uuid);
+                //names[(uint)uuid.GetHashCode() % names.Length]);
             cmd.Parameters.AddWithValue("@nameChosen", !isGuest);
-			cmd.Parameters.AddWithValue("@guest", isGuest);
+            cmd.Parameters.AddWithValue("@guest", isGuest);
             cmd.Parameters.AddWithValue("@regTime", DateTime.Now);
             cmd.Parameters.AddWithValue("@empty", "");
             int v = cmd.ExecuteNonQuery();
@@ -347,7 +348,7 @@ SELECT credits FROM stats WHERE accId=@accId;";
 SELECT deaths FROM stats WHERE accId=@accId;";
             cmd.Parameters.AddWithValue("@accId", acc.AccountId);
             cmd.Parameters.AddWithValue("@amount", amount);
-            return (int)cmd.ExecuteScalar();
+            return (int) cmd.ExecuteScalar();
         }
 
         public int UpdateFame(Account acc, int amount)
@@ -539,7 +540,6 @@ SELECT MAX(chestId) FROM vaults WHERE accId = @accId;";
                 i.Backpacks = GetBackpacks(i, acc);
                 i.Backpack = 1;
                 i._Equipment += ", " + Utils.GetCommaSepString(i.Backpacks[i.Backpack]);
-                
             }
         }
 
@@ -556,16 +556,16 @@ SELECT MAX(chestId) FROM vaults WHERE accId = @accId;";
                 CurrentFame = 0,
                 Backpack = 1,
                 _Equipment = cls.Element("Equipment").Value,
-				MaxHitPoints = int.Parse((string)cls.Element("MaxHitPoints").Attribute("max")),
-				HitPoints = int.Parse((string)cls.Element("MaxHitPoints").Attribute("max")),
-				MaxMagicPoints = int.Parse((string)cls.Element("MaxMagicPoints").Attribute("max")),
-				MagicPoints = int.Parse((string)cls.Element("MaxMagicPoints").Attribute("max")),
-				Attack = int.Parse((string)cls.Element("Attack").Attribute("max")),
-				Defense = int.Parse((string)cls.Element("Defense").Attribute("max")),
-				Speed = int.Parse((string)cls.Element("Speed").Attribute("max")),
-				Dexterity = int.Parse((string)cls.Element("Dexterity").Attribute("max")),
-				HpRegen = int.Parse((string)cls.Element("HpRegen").Attribute("max")),
-				MpRegen = int.Parse((string)cls.Element("MpRegen").Attribute("max")),
+                MaxHitPoints = int.Parse((string) cls.Element("MaxHitPoints").Attribute("max")),
+                HitPoints = int.Parse((string) cls.Element("MaxHitPoints").Attribute("max")),
+                MaxMagicPoints = int.Parse((string) cls.Element("MaxMagicPoints").Attribute("max")),
+                MagicPoints = int.Parse((string) cls.Element("MaxMagicPoints").Attribute("max")),
+                Attack = int.Parse((string) cls.Element("Attack").Attribute("max")),
+                Defense = int.Parse((string) cls.Element("Defense").Attribute("max")),
+                Speed = int.Parse((string) cls.Element("Speed").Attribute("max")),
+                Dexterity = int.Parse((string) cls.Element("Dexterity").Attribute("max")),
+                HpRegen = int.Parse((string) cls.Element("HpRegen").Attribute("max")),
+                MpRegen = int.Parse((string) cls.Element("MpRegen").Attribute("max")),
                 Tex1 = 0,
                 Tex2 = 0,
                 Dead = false,
@@ -691,7 +691,7 @@ bestFame = GREATEST(bestFame, @bestFame);";
             cmd.Parameters.AddWithValue("@bestFame", chr.CurrentFame);
             cmd.ExecuteNonQuery();
             cmd.Dispose();
-            
+
 
             SaveBackpacks(chr, acc);
         }
@@ -712,7 +712,6 @@ bestFame = GREATEST(bestFame, @bestFame);";
                 cmd.Dispose();
                 return ret;
             }
-            
         }
 
         public void SaveBackpacks(Char chr, Account acc)
@@ -899,13 +898,11 @@ VALUES(@accId, @chrId, @name, @objType, @tex1, @tex2, @items, @fame, @fameStats,
             try
             {
                 return cmd.ExecuteScalar().ToString().Split(',').Select(int.Parse).ToList();
-
             }
             catch
             {
                 return new List<int>();
             }
-            
         }
 
         public List<int> GetIgnoreds(int accId)
@@ -936,7 +933,6 @@ VALUES(@accId, @chrId, @name, @objType, @tex1, @tex2, @items, @fame, @fameStats,
                 return false;
             cmd.Dispose();
             return true;
-
         }
 
         public bool RemoveLock(int accId, int lockId)

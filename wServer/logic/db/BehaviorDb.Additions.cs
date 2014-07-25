@@ -56,28 +56,28 @@ namespace wServer.logic
                     ),
                 loot: new LootBehavior(LootDef.Empty,
                     Tuple.Create(100, new LootDef(0, 5, 0, 8,
-                        Tuple.Create(0.001, (ILoot)new TierLoot(8, ItemType.Ability)),
-                        Tuple.Create(0.005, (ILoot)new TierLoot(7, ItemType.Ability)),
-                        Tuple.Create(0.05, (ILoot)new TierLoot(6, ItemType.Ability)),
-                        Tuple.Create(0.001, (ILoot)new TierLoot(15, ItemType.Armor)),
-                        Tuple.Create(0.005, (ILoot)new TierLoot(14, ItemType.Armor)),
-                        Tuple.Create(0.05, (ILoot)new TierLoot(13, ItemType.Armor)),
-                        Tuple.Create(0.001, (ILoot)new TierLoot(14, ItemType.Weapon)),
-                        Tuple.Create(0.005, (ILoot)new TierLoot(13, ItemType.Weapon)),
-                        Tuple.Create(0.05, (ILoot)new TierLoot(12, ItemType.Weapon)),
-                        Tuple.Create(0.05, (ILoot)new TierLoot(5, ItemType.Ring)),
-                        Tuple.Create(0.005, (ILoot)new ItemLoot("Potion of Oryx")),
-                        Tuple.Create(0.1, (ILoot)new StatPotionLoot(StatPotion.Att)),
-                        Tuple.Create(0.1, (ILoot)new StatPotionLoot(StatPotion.Wis)),
-                        Tuple.Create(0.1, (ILoot)new StatPotionLoot(StatPotion.Vit)),
-                        Tuple.Create(0.1, (ILoot)new StatPotionLoot(StatPotion.Spd))
+                        Tuple.Create(0.001, (ILoot) new TierLoot(8, ItemType.Ability)),
+                        Tuple.Create(0.005, (ILoot) new TierLoot(7, ItemType.Ability)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(6, ItemType.Ability)),
+                        Tuple.Create(0.001, (ILoot) new TierLoot(15, ItemType.Armor)),
+                        Tuple.Create(0.005, (ILoot) new TierLoot(14, ItemType.Armor)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(13, ItemType.Armor)),
+                        Tuple.Create(0.001, (ILoot) new TierLoot(14, ItemType.Weapon)),
+                        Tuple.Create(0.005, (ILoot) new TierLoot(13, ItemType.Weapon)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(12, ItemType.Weapon)),
+                        Tuple.Create(0.05, (ILoot) new TierLoot(5, ItemType.Ring)),
+                        Tuple.Create(0.005, (ILoot) new ItemLoot("Potion of Oryx")),
+                        Tuple.Create(0.1, (ILoot) new StatPotionLoot(StatPotion.Att)),
+                        Tuple.Create(0.1, (ILoot) new StatPotionLoot(StatPotion.Wis)),
+                        Tuple.Create(0.1, (ILoot) new StatPotionLoot(StatPotion.Vit)),
+                        Tuple.Create(0.1, (ILoot) new StatPotionLoot(StatPotion.Spd))
                         ))),
                 condBehaviors: new ConditionalBehavior[]
                 {
                     new OnHit(new State("idle", SetState.Instance("begin")))
                 }
                 ))
-				            .Init(0x710d, Behaves("Flying Brain Transform",
+            .Init(0x710d, Behaves("Flying Brain Transform",
                 IfNot.Instance(
                     Chasing.Instance(6, 7, 4, null),
                     SimpleWandering.Instance(4)
@@ -85,7 +85,7 @@ namespace wServer.logic
                 Cooldown.Instance(500, RingAttack.Instance(5, 12)),
                 loot: new LootBehavior(LootDef.Empty,
                     Tuple.Create(360, new LootDef(0, 1, 0, 8,
-                        Tuple.Create(0.4, (ILoot)PotionLoot.Instance)
+                        Tuple.Create(0.4, (ILoot) PotionLoot.Instance)
                         ))
                     )
                 ));

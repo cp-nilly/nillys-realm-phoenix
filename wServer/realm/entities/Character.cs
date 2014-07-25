@@ -11,7 +11,7 @@
             //Name = ObjectDesc.DisplayId ?? "";
             if (ObjectDesc.SizeStep != 0)
             {
-                var step = Random.Next(0, (ObjectDesc.MaxSize - ObjectDesc.MinSize)/ObjectDesc.SizeStep + 1)*
+                int step = Random.Next(0, (ObjectDesc.MaxSize - ObjectDesc.MinSize)/ObjectDesc.SizeStep + 1)*
                            ObjectDesc.SizeStep;
                 Size = ObjectDesc.MinSize + step;
             }

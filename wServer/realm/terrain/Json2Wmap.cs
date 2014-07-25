@@ -15,19 +15,19 @@ namespace terrain
     {
         public static void Convert(string from, string to)
         {
-            var x = Convert(File.ReadAllText(from));
+            byte[] x = Convert(File.ReadAllText(from));
             File.WriteAllBytes(to, x);
         }
 
         public static byte[] Convert(string json)
         {
             var obj = JsonConvert.DeserializeObject<json_dat>(json);
-            var dat = ZlibStream.UncompressBuffer(obj.data);
+            byte[] dat = ZlibStream.UncompressBuffer(obj.data);
 
             var tileDict = new Dictionary<short, TerrainTile>();
-            for (var i = 0; i < obj.dict.Length; i++)
+            for (int i = 0; i < obj.dict.Length; i++)
             {
-                var o = obj.dict[i];
+                loc o = obj.dict[i];
                 tileDict[(short) i] = new TerrainTile
                 {
                     TileId = o.ground == null ? (short) 0xff : XmlDatas.IdToType[o.ground],
@@ -43,8 +43,8 @@ namespace terrain
 
             var tiles = new TerrainTile[obj.width, obj.height];
             using (var rdr = new NReader(new MemoryStream(dat)))
-                for (var y = 0; y < obj.height; y++)
-                    for (var x = 0; x < obj.width; x++)
+                for (int y = 0; y < obj.height; y++)
+                    for (int x = 0; x < obj.width; x++)
                     {
                         tiles[x, y] = tileDict[rdr.ReadInt16()];
                     }
@@ -54,12 +54,12 @@ namespace terrain
         public static byte[] ConvertMakeWalls(string json)
         {
             var obj = JsonConvert.DeserializeObject<json_dat>(json);
-            var dat = ZlibStream.UncompressBuffer(obj.data);
+            byte[] dat = ZlibStream.UncompressBuffer(obj.data);
 
             var tileDict = new Dictionary<short, TerrainTile>();
-            for (var i = 0; i < obj.dict.Length; i++)
+            for (int i = 0; i < obj.dict.Length; i++)
             {
-                var o = obj.dict[i];
+                loc o = obj.dict[i];
                 tileDict[(short) i] = new TerrainTile
                 {
                     TileId = o.ground == null ? (short) 0xff : XmlDatas.IdToType[o.ground],
@@ -75,21 +75,21 @@ namespace terrain
 
             var tiles = new TerrainTile[obj.width, obj.height];
             using (var rdr = new NReader(new MemoryStream(dat)))
-                for (var y = 0; y < obj.height; y++)
-                    for (var x = 0; x < obj.width; x++)
+                for (int y = 0; y < obj.height; y++)
+                    for (int x = 0; x < obj.width; x++)
                     {
                         tiles[x, y] = tileDict[rdr.ReadInt16()];
                         tiles[x, y].X = x;
                         tiles[x, y].Y = y;
                     }
 
-            foreach (var i in tiles)
+            foreach (TerrainTile i in tiles)
             {
                 if (i.TileId == 0xff && i.TileObj == null)
                 {
-                    var createWall = false;
-                    for (var ty = -1; ty <= 1; ty++)
-                        for (var tx = -1; tx <= 1; tx++)
+                    bool createWall = false;
+                    for (int ty = -1; ty <= 1; ty++)
+                        for (int tx = -1; tx <= 1; tx++)
                             try
                             {
                                 if (tiles[i.X + tx, i.Y + ty].TileId != 0xff)
@@ -110,14 +110,14 @@ namespace terrain
         public static byte[] ConvertUDL(string json)
         {
             var obj = JsonConvert.DeserializeObject<json_dat>(json);
-            var dat = ZlibStream.UncompressBuffer(obj.data);
+            byte[] dat = ZlibStream.UncompressBuffer(obj.data);
 
             var rand = new Random();
 
             var tileDict = new Dictionary<short, TerrainTile>();
-            for (var i = 0; i < obj.dict.Length; i++)
+            for (int i = 0; i < obj.dict.Length; i++)
             {
-                var o = obj.dict[i];
+                loc o = obj.dict[i];
                 tileDict[(short) i] = new TerrainTile
                 {
                     TileId = o.ground == null ? (short) 0xff : XmlDatas.IdToType[o.ground],
@@ -133,21 +133,21 @@ namespace terrain
 
             var tiles = new TerrainTile[obj.width, obj.height];
             using (var rdr = new NReader(new MemoryStream(dat)))
-                for (var y = 0; y < obj.height; y++)
-                    for (var x = 0; x < obj.width; x++)
+                for (int y = 0; y < obj.height; y++)
+                    for (int x = 0; x < obj.width; x++)
                     {
                         tiles[x, y] = tileDict[rdr.ReadInt16()];
                         tiles[x, y].X = x;
                         tiles[x, y].Y = y;
                     }
 
-            foreach (var i in tiles)
+            foreach (TerrainTile i in tiles)
             {
                 if (i.TileId == 0xff && i.TileObj == null)
                 {
-                    var createWall = false;
-                    for (var ty = -1; ty <= 1; ty++)
-                        for (var tx = -1; tx <= 1; tx++)
+                    bool createWall = false;
+                    for (int ty = -1; ty <= 1; ty++)
+                        for (int tx = -1; tx <= 1; tx++)
                             try
                             {
                                 if (tiles[i.X + tx, i.Y + ty].TileId != 0xff && tiles[i.X + tx, i.Y + ty].TileId != 0xfe &&

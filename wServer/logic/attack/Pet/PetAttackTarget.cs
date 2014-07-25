@@ -39,17 +39,17 @@ namespace wServer.logic.attack
 
         protected override bool TickCore(RealmTime time)
         {
-            var targetlocation = Player.targetlink;
+            Position targetlocation = Player.targetlink;
             var chr = Host as Character;
-            var arcGap = 11.25f*Math.PI/180;
-            var startAngle = Math.Atan2(targetlocation.Y - chr.Y, targetlocation.X - chr.X) - (numshot - 1)/2*arcGap;
-            var desc = chr.ObjectDesc.Projectiles[projectileIndex];
+            double arcGap = 11.25f*Math.PI/180;
+            double startAngle = Math.Atan2(targetlocation.Y - chr.Y, targetlocation.X - chr.X) - (numshot - 1)/2*arcGap;
+            ProjectileDesc desc = chr.ObjectDesc.Projectiles[projectileIndex];
             byte prjId = 0;
             var prjPos = new Position {X = chr.X, Y = chr.Y};
-            var dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
-            for (var i = 0; i < numshot; i++)
+            int dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
+            for (int i = 0; i < numshot; i++)
             {
-                var prj = chr.CreateProjectile(
+                Projectile prj = chr.CreateProjectile(
                     desc, chr.ObjectType, dmg, time.tickTimes,
                     prjPos, (float) (startAngle + arcGap*i));
                 chr.Owner.EnterWorld(prj);

@@ -13,16 +13,16 @@ namespace terrain
     {
         public string Export(TerrainTile[,] tiles)
         {
-            var w = tiles.GetLength(0);
-            var h = tiles.GetLength(1);
+            int w = tiles.GetLength(0);
+            int h = tiles.GetLength(1);
             var dat = new byte[w*h*2];
-            var i = 0;
+            int i = 0;
             var idxs = new Dictionary<TerrainTile, short>(new TileComparer());
             var dict = new List<loc>();
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = tiles[x, y];
+                    TerrainTile tile = tiles[x, y];
                     short idx;
                     if (!idxs.TryGetValue(tile, out idx))
                     {

@@ -37,12 +37,12 @@ namespace wServer.realm.setpieces
 
         protected static void Render(Temple temple, World world, IntPoint pos, int[,] ground, int[,] objs)
         {
-            for (var x = 0; x < temple.Size; x++) //Rendering
-                for (var y = 0; y < temple.Size; y++)
+            for (int x = 0; x < temple.Size; x++) //Rendering
+                for (int y = 0; y < temple.Size; y++)
                 {
                     if (ground[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = DarkGrass;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -50,7 +50,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (ground[x, y] == 2)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -59,7 +59,7 @@ namespace wServer.realm.setpieces
 
                     if (objs[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.ObjType = WallA;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
                         world.Obstacles[x + pos.X, y + pos.Y] = 2;
@@ -67,7 +67,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (objs[x, y] == 2)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.ObjType = WallB;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
                         world.Obstacles[x + pos.X, y + pos.Y] = 2;
@@ -75,7 +75,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (objs[x, y] == 3)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.ObjType = WallC;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
                         world.Obstacles[x + pos.X, y + pos.Y] = 2;
@@ -83,7 +83,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (objs[x, y] == 4)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.ObjType = Flower;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -91,7 +91,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (objs[x, y] == 5)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.ObjType = Grass;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -99,7 +99,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (objs[x, y] == 6)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.ObjType = Tree;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;

@@ -42,19 +42,19 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
-            var dist = radius;
-            var entity = GetNearestEntity(ref dist, objType);
+            float dist = radius;
+            Entity entity = GetNearestEntity(ref dist, objType);
             if (entity != null && dist > targetRadius)
             {
-                var tx = entity.X + rand.Next(-2, 2)/2f;
-                var ty = entity.Y + rand.Next(-2, 2)/2f;
+                float tx = entity.X + rand.Next(-2, 2)/2f;
+                float ty = entity.Y + rand.Next(-2, 2)/2f;
                 if (tx != Host.Self.X || ty != Host.Self.Y)
                 {
-                    var x = Host.Self.X;
-                    var y = Host.Self.Y;
-                    var vect = new Vector2(tx, ty) - new Vector2(Host.Self.X, Host.Self.Y);
+                    float x = Host.Self.X;
+                    float y = Host.Self.Y;
+                    Vector2 vect = new Vector2(tx, ty) - new Vector2(Host.Self.X, Host.Self.Y);
                     vect.Normalize();
                     vect *= (speed/1.5f)*(time.thisTickTimes/1000f);
                     ValidateAndMove(Host.Self.X + vect.X, Host.Self.Y + vect.Y);
@@ -95,19 +95,19 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
-            var dist = radius;
-            var entity = GetNearestEntityPet(ref dist);
+            float dist = radius;
+            Entity entity = GetNearestEntityPet(ref dist);
             if (entity != null && dist > targetRadius)
             {
-                var tx = entity.X + rand.Next(-2, 2)/2f;
-                var ty = entity.Y + rand.Next(-2, 2)/2f;
+                float tx = entity.X + rand.Next(-2, 2)/2f;
+                float ty = entity.Y + rand.Next(-2, 2)/2f;
                 if (tx != Host.Self.X || ty != Host.Self.Y)
                 {
-                    var x = Host.Self.X;
-                    var y = Host.Self.Y;
-                    var vect = new Vector2(tx, ty) - new Vector2(Host.Self.X, Host.Self.Y);
+                    float x = Host.Self.X;
+                    float y = Host.Self.Y;
+                    Vector2 vect = new Vector2(tx, ty) - new Vector2(Host.Self.X, Host.Self.Y);
                     vect.Normalize();
                     vect *= (speed/1.5f)*(time.thisTickTimes/1000f);
                     ValidateAndMove(Host.Self.X + vect.X, Host.Self.Y + vect.Y);
@@ -148,19 +148,19 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
-            var dist = radius;
+            float dist = radius;
             Entity entity = Host.Self.PlayerOwner;
             if (entity != null && dist > targetRadius)
             {
-                var tx = entity.X + rand.Next(-2, 2)/2f;
-                var ty = entity.Y + rand.Next(-2, 2)/2f;
+                float tx = entity.X + rand.Next(-2, 2)/2f;
+                float ty = entity.Y + rand.Next(-2, 2)/2f;
                 if (tx != Host.Self.X || ty != Host.Self.Y)
                 {
-                    var x = Host.Self.X;
-                    var y = Host.Self.Y;
-                    var vect = new Vector2(tx, ty) - new Vector2(Host.Self.X, Host.Self.Y);
+                    float x = Host.Self.X;
+                    float y = Host.Self.Y;
+                    Vector2 vect = new Vector2(tx, ty) - new Vector2(Host.Self.X, Host.Self.Y);
                     vect.Normalize();
                     vect *= (speed/1.5f)*(time.thisTickTimes/1000f);
                     ValidateAndMove(Host.Self.X + vect.X, Host.Self.Y + vect.Y);
@@ -182,7 +182,7 @@ namespace wServer.logic.movement
             {
                 if (Host.Self.PlayerOwner.Owner != null)
                 {
-                    var distance = Vector2.Distance(new Vector2(Host.Self.X, Host.Self.Y),
+                    float distance = Vector2.Distance(new Vector2(Host.Self.X, Host.Self.Y),
                         new Vector2(Host.Self.PlayerOwner.X, Host.Self.PlayerOwner.Y));
                     if (distance > 15)
                     {
@@ -199,7 +199,7 @@ namespace wServer.logic.movement
             }
             var enemy = Host as Enemy;
             enemy.DamageCounter.Death();
-            foreach (var i in enemy.CondBehaviors)
+            foreach (ConditionalBehavior i in enemy.CondBehaviors)
                 if ((i.Condition & BehaviorCondition.OnDeath) != 0)
                     i.Behave(BehaviorCondition.OnDeath, Host, null, enemy.DamageCounter);
             try

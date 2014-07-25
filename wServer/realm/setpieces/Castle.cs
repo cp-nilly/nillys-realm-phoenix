@@ -46,8 +46,8 @@ namespace wServer.realm.setpieces
         {
             var t = new int[31, 40];
 
-            for (var x = 0; x < 13; x++) //Moats
-                for (var y = 0; y < 13; y++)
+            for (int x = 0; x < 13; x++) //Moats
+                for (int y = 0; y < 13; y++)
                 {
                     if ((x == 0 && (y < 3 || y > 9)) ||
                         (y == 0 && (x < 3 || x > 9)) ||
@@ -57,19 +57,19 @@ namespace wServer.realm.setpieces
                     t[x + 0, y + 0] = t[x + 18, y + 0] = 2;
                     t[x + 0, y + 27] = t[x + 18, y + 27] = 2;
                 }
-            for (var x = 3; x < 28; x++)
-                for (var y = 3; y < 37; y++)
+            for (int x = 3; x < 28; x++)
+                for (int y = 3; y < 37; y++)
                 {
                     if (x < 6 || x > 24 || y < 6 || y > 33)
                         t[x, y] = 2;
                 }
 
-            for (var x = 7; x < 24; x++) //Floor
-                for (var y = 7; y < 33; y++)
+            for (int x = 7; x < 24; x++) //Floor
+                for (int y = 7; y < 33; y++)
                     t[x, y] = rand.Next()%3 == 0 ? 0 : 1;
 
-            for (var x = 0; x < 7; x++) //Perimeter
-                for (var y = 0; y < 7; y++)
+            for (int x = 0; x < 7; x++) //Perimeter
+                for (int y = 0; y < 7; y++)
                 {
                     if ((x == 0 && y != 3) ||
                         (y == 0 && x != 3) ||
@@ -79,20 +79,20 @@ namespace wServer.realm.setpieces
                     t[x + 3, y + 3] = t[x + 21, y + 3] = 4;
                     t[x + 3, y + 30] = t[x + 21, y + 30] = 4;
                 }
-            for (var x = 6; x < 25; x++)
+            for (int x = 6; x < 25; x++)
                 t[x, 6] = t[x, 33] = 4;
-            for (var y = 6; y < 34; y++)
+            for (int y = 6; y < 34; y++)
                 t[6, y] = t[24, y] = 4;
 
-            for (var x = 13; x < 18; x++) //Bridge
-                for (var y = 3; y < 7; y++)
+            for (int x = 13; x < 18; x++) //Bridge
+                for (int y = 3; y < 7; y++)
                     t[x, y] = 6;
 
-            for (var x = 0; x < 31; x++) //Corruption
-                for (var y = 0; y < 40; y++)
+            for (int x = 0; x < 31; x++) //Corruption
+                for (int y = 0; y < 40; y++)
                 {
                     if (t[x, y] == 1 || t[x, y] == 0) continue;
-                    var p = rand.NextDouble();
+                    double p = rand.NextDouble();
                     if (t[x, y] == 6)
                     {
                         if (p < 0.4)
@@ -110,17 +110,17 @@ namespace wServer.realm.setpieces
             t[15, 27] = 7;
             t[15, 20] = 8;
 
-            var r = rand.Next(0, 4);
-            for (var i = 0; i < r; i++) //Rotation
+            int r = rand.Next(0, 4);
+            for (int i = 0; i < r; i++) //Rotation
                 t = SetPieces.rotateCW(t);
             int w = t.GetLength(0), h = t.GetLength(1);
 
-            for (var x = 0; x < w; x++) //Rendering
-                for (var y = 0; y < h; y++)
+            for (int x = 0; x < w; x++) //Rendering
+                for (int y = 0; y < h; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -129,7 +129,7 @@ namespace wServer.realm.setpieces
 
                     else if (t[x, y] == 2)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = WaterA;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -137,7 +137,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 3)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = WaterB;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 3;
@@ -146,7 +146,7 @@ namespace wServer.realm.setpieces
 
                     else if (t[x, y] == 4)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = WallA;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
@@ -155,18 +155,18 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 5)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         world.Obstacles[x + pos.X, y + pos.Y] = 2;
                         world.Map[x + pos.X, y + pos.Y] = tile;
-                        var wall = Entity.Resolve(WallB);
+                        Entity wall = Entity.Resolve(WallB);
                         wall.Move(x + pos.X + 0.5f, y + pos.Y + 0.5f);
                         world.EnterWorld(wall);
                     }
 
                     else if (t[x, y] == 6)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Bridge;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
                         world.Map[x + pos.X, y + pos.Y] = tile;
@@ -174,21 +174,21 @@ namespace wServer.realm.setpieces
                     else if (t[x, y] == 7)
                     {
                         var container = new Container(0x0501, null, false);
-                        var count = rand.Next(5, 8);
+                        int count = rand.Next(5, 8);
                         var items = new List<Item>();
                         while (items.Count < count)
                         {
-                            var item = chest.GetRandomLoot(rand);
+                            Item item = chest.GetRandomLoot(rand);
                             if (item != null) items.Add(item);
                         }
-                        for (var i = 0; i < items.Count; i++)
+                        for (int i = 0; i < items.Count; i++)
                             container.Inventory[i] = items[i];
                         container.Move(pos.X + x + 0.5f, pos.Y + y + 0.5f);
                         world.EnterWorld(container);
                     }
                     else if (t[x, y] == 8)
                     {
-                        var cyclops = Entity.Resolve(0x67d);
+                        Entity cyclops = Entity.Resolve(0x67d);
                         cyclops.Move(pos.X + x, pos.Y + y);
                         world.EnterWorld(cyclops);
                     }

@@ -96,7 +96,7 @@ namespace wServer.logic
                         Tuple.Create(0.002, (ILoot) new ItemLoot("Tome of Holy Protection")),
                         Tuple.Create(0.002, (ILoot) new ItemLoot("Ring of the Pyramid")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation"))
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation"))
                         )))
                 ))
             .Init(0x0d22,
@@ -180,8 +180,8 @@ namespace wServer.logic
                 loot: new LootBehavior(LootDef.Empty,
                     Tuple.Create(100, new LootDef(0, 2, 0, 2,
                         Tuple.Create(0.002, (ILoot) new ItemLoot("Ring of the Sphinx")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
-                        Tuple.Create(0.0015, (ILoot)new ItemLoot("Void Incantation")),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
                         Tuple.Create(1.00, (ILoot) new ItemLoot("Potion of Life"))
                         )))
                 ))
@@ -262,7 +262,7 @@ namespace wServer.logic
                     Tuple.Create(100, new LootDef(0, 2, 0, 2,
                         Tuple.Create(1.0, (ILoot) new StatPotionLoot(StatPotion.Life)),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
                         Tuple.Create(0.002, (ILoot) new ItemLoot("Ring of the Nile"))
                         ))
                     )

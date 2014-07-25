@@ -17,8 +17,6 @@ namespace wServer.logic
         private readonly Behavior behavior;
         private readonly int cooldown;
         private readonly int doTimes;
-        private int irrelevantnumber = 1;
-        private Random rand = new Random();
         private int timesDone;
 
         public DoMultiple(int doTimes, int cooldown, Behavior behavior)
@@ -39,8 +37,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var chr = Host as Character;
-            var w = RealmManager.GetWorld(Host.Self.Owner.Id);
+            World w = RealmManager.GetWorld(Host.Self.Owner.Id);
 
             while (doTimes > timesDone)
             {

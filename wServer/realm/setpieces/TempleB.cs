@@ -22,25 +22,25 @@ namespace wServer.realm.setpieces
             var t = new int[Size, Size];
             var o = new int[Size, Size];
 
-            for (var x = 0; x < 60; x++) //Flooring
-                for (var y = 0; y < 60; y++)
+            for (int x = 0; x < 60; x++) //Flooring
+                for (int y = 0; y < 60; y++)
                 {
                     if (Math.Abs(x - Size/2)/(Size/2.0) + rand.NextDouble()*0.3 < 0.9 &&
                         Math.Abs(y - Size/2)/(Size/2.0) + rand.NextDouble()*0.3 < 0.9)
                     {
-                        var dist =
+                        double dist =
                             Math.Sqrt(((x - Size/2)*(x - Size/2) + (y - Size/2)*(y - Size/2))/((Size/2.0)*(Size/2.0)));
                         t[x, y] = rand.NextDouble() < (1 - dist)*(1 - dist) ? 2 : 1;
                     }
                 }
 
-            for (var x = 0; x < Size; x++) //Corruption
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Corruption
+                for (int y = 0; y < Size; y++)
                     if (rand.Next()%50 == 0)
                         t[x, y] = 0;
 
             const int bas = 16; //Walls
-            for (var x = 0; x < 23; x++)
+            for (int x = 0; x < 23; x++)
             {
                 if (x > 9 && x < 13) continue;
 
@@ -50,7 +50,7 @@ namespace wServer.realm.setpieces
                 o[bas + x, bas + 21] = 2;
                 o[bas + x, bas + 22] = 2;
             }
-            for (var y = 0; y < 23; y++)
+            for (int y = 0; y < 23; y++)
             {
                 if (y > 9 && y < 13) continue;
 
@@ -70,18 +70,18 @@ namespace wServer.realm.setpieces
                 o[bas + 13, bas + 23] = o[bas + 14, bas + 23] = o[bas + 15, bas + 23] = 1;
 
 
-            for (var y = 0; y < 4; y++) //Columns
-                for (var x = 0; x < 4; x++)
+            for (int y = 0; y < 4; y++) //Columns
+                for (int x = 0; x < 4; x++)
                     o[bas + 5 + x*4, bas + 5 + y*4] = 3;
 
-            for (var x = 0; x < Size; x++) //Plants
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Plants
+                for (int y = 0; y < Size; y++)
                 {
                     if (((x > 5 && x < bas) || (x < Size - 5 && x > Size - bas) ||
                          (y > 5 && y < bas) || (y < Size - 5 && y > Size - bas)) &&
                         o[x, y] == 0 && t[x, y] == 1)
                     {
-                        var r = rand.NextDouble();
+                        double r = rand.NextDouble();
                         if (r > 0.6) //0.4
                             o[x, y] = 4;
                         else if (r > 0.35) //0.25
@@ -91,8 +91,8 @@ namespace wServer.realm.setpieces
                     }
                 }
 
-            var rotation = rand.Next(0, 4); //Rotation
-            for (var i = 0; i < rotation; i++)
+            int rotation = rand.Next(0, 4); //Rotation
+            for (int i = 0; i < rotation; i++)
             {
                 t = SetPieces.rotateCW(t);
                 o = SetPieces.rotateCW(o);
@@ -103,19 +103,19 @@ namespace wServer.realm.setpieces
             //Boss & Chest
 
             var container = new Container(0x0501, null, false);
-            var count = rand.Next(3, 8);
+            int count = rand.Next(3, 8);
             var items = new List<Item>();
             while (items.Count < count)
             {
-                var item = chest.GetRandomLoot(rand);
+                Item item = chest.GetRandomLoot(rand);
                 if (item != null) items.Add(item);
             }
-            for (var i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
                 container.Inventory[i] = items[i];
             container.Move(pos.X + bas + 11.5f, pos.Y + bas + 11.5f);
             world.EnterWorld(container);
 
-            var snake = Entity.Resolve(0x0dc2);
+            Entity snake = Entity.Resolve(0x0dc2);
             snake.Move(pos.X + bas + 11.5f, pos.Y + bas + 11.5f);
             world.EnterWorld(snake);
         }

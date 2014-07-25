@@ -99,15 +99,13 @@ namespace wServer.realm.entities.player
             }
         };
 
-        private bool buttonDown;
-
         public static int oldstat { get; set; }
         public static Position targetlink { get; set; }
 
         public void UseItem(RealmTime time, UseItemPacket pkt)
         {
             var container = Owner.GetEntity(pkt.Slot.ObjectId) as IContainer;
-            var item = container.Inventory[pkt.Slot.SlotId];
+            Item item = container.Inventory[pkt.Slot.SlotId];
             Activate(time, item, pkt.Position);
             if (item.Consumable)
             {
@@ -135,8 +133,8 @@ namespace wServer.realm.entities.player
 
         public static void ActivateHealHp(Player player, int amount, List<Packet> pkts)
         {
-            var maxHp = player.Stats[0] + player.Boost[0];
-            var newHp = Math.Min(maxHp, player.HP + amount);
+            int maxHp = player.Stats[0] + player.Boost[0];
+            int newHp = Math.Min(maxHp, player.HP + amount);
             if (newHp != player.HP)
             {
                 pkts.Add(new ShowEffectPacket
@@ -158,8 +156,8 @@ namespace wServer.realm.entities.player
 
         private static void ActivateHealMp(Player player, int amount, List<Packet> pkts)
         {
-            var maxMp = player.Stats[1] + player.Boost[1];
-            var newMp = Math.Min(maxMp, player.MP + amount);
+            int maxMp = player.Stats[1] + player.Boost[1];
+            int newMp = Math.Min(maxMp, player.MP + amount);
             if (newMp != player.MP)
             {
                 pkts.Add(new ShowEffectPacket
@@ -181,20 +179,20 @@ namespace wServer.realm.entities.player
 
         private static void ActivateBoostStat(Player player, int idxnew, List<Packet> pkts)
         {
-            var OriginalStat = 0;
+            int OriginalStat = 0;
             OriginalStat = player.Stats[idxnew] + OriginalStat;
             oldstat = OriginalStat;
         }
 
         private void ActivateShoot(RealmTime time, Item item, Position target)
         {
-            var arcGap = item.ArcGap*Math.PI/180;
-            var startAngle = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles - 1)/2*arcGap;
-            var prjDesc = item.Projectiles[0]; //Assume only one
+            double arcGap = item.ArcGap*Math.PI/180;
+            double startAngle = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles - 1)/2*arcGap;
+            ProjectileDesc prjDesc = item.Projectiles[0]; //Assume only one
 
-            for (var i = 0; i < item.NumProjectiles; i++)
+            for (int i = 0; i < item.NumProjectiles; i++)
             {
-                var proj = CreateProjectile(prjDesc, item.ObjectType,
+                Projectile proj = CreateProjectile(prjDesc, item.ObjectType,
                     (int) statsMgr.GetAttackDamage(prjDesc.MinDamage, prjDesc.MaxDamage),
                     time.tickTimes, new Position {X = X, Y = Y}, (float) (startAngle + arcGap*i));
                 Owner.EnterWorld(proj);
@@ -204,41 +202,41 @@ namespace wServer.realm.entities.player
 
         private void ActivateDualShoot(RealmTime time, Item item, Position target)
         {
-          var arcGap1 = item.ArcGap1 * Math.PI / 180;
-          var arcGap2 = item.ArcGap2 * Math.PI / 180;
-          var startAngle1 = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles1 - 1) / 2 * arcGap1;
-          var startAngle2 = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles2 - 1) / 2 * arcGap2;
-          var prjDesc1 = item.Projectiles[0];
-          var prjDesc2 = item.Projectiles[1]; //Assume only two
+            double arcGap1 = item.ArcGap1*Math.PI/180;
+            double arcGap2 = item.ArcGap2*Math.PI/180;
+            double startAngle1 = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles1 - 1)/2*arcGap1;
+            double startAngle2 = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles2 - 1)/2*arcGap2;
+            ProjectileDesc prjDesc1 = item.Projectiles[0];
+            ProjectileDesc prjDesc2 = item.Projectiles[1]; //Assume only two
 
-          for (var i = 0; i < item.NumProjectiles1; i++)
-          {
-            var proj1 = CreateProjectile(prjDesc1, item.ObjectType,
-                (int)statsMgr.GetAttackDamage(prjDesc1.MinDamage, prjDesc1.MaxDamage),
-                time.tickTimes, new Position { X = X, Y = Y }, (float)(startAngle1 + arcGap1 * i));
-            Owner.EnterWorld(proj1);
-            fames.Shoot(proj1);
-          }
+            for (int i = 0; i < item.NumProjectiles1; i++)
+            {
+                Projectile proj1 = CreateProjectile(prjDesc1, item.ObjectType,
+                    (int) statsMgr.GetAttackDamage(prjDesc1.MinDamage, prjDesc1.MaxDamage),
+                    time.tickTimes, new Position {X = X, Y = Y}, (float) (startAngle1 + arcGap1*i));
+                Owner.EnterWorld(proj1);
+                fames.Shoot(proj1);
+            }
 
-          for (var h = 0; h < item.NumProjectiles2; h++)
-          {
-            var proj2 = CreateProjectile(prjDesc2, item.ObjectType,
-                (int)statsMgr.GetAttackDamage(prjDesc2.MinDamage, prjDesc2.MaxDamage),
-                time.tickTimes, new Position { X = X, Y = Y }, (float)(startAngle2 + arcGap2 * h));
-            Owner.EnterWorld(proj2);
-            fames.Shoot(proj2);
-          }
+            for (int h = 0; h < item.NumProjectiles2; h++)
+            {
+                Projectile proj2 = CreateProjectile(prjDesc2, item.ObjectType,
+                    (int) statsMgr.GetAttackDamage(prjDesc2.MinDamage, prjDesc2.MaxDamage),
+                    time.tickTimes, new Position {X = X, Y = Y}, (float) (startAngle2 + arcGap2*h));
+                Owner.EnterWorld(proj2);
+                fames.Shoot(proj2);
+            }
         }
 
         private void ActivatePearl(RealmTime time, Item item, Position target)
         {
-            var arcGap = item.ArcGap*Math.PI/180;
-            var startAngle = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles - 1)/2*arcGap;
-            var prjDesc = item.Projectiles[0]; //Assume only one
+            double arcGap = item.ArcGap*Math.PI/180;
+            double startAngle = Math.Atan2(target.Y - Y, target.X - X) - (item.NumProjectiles - 1)/2*arcGap;
+            ProjectileDesc prjDesc = item.Projectiles[0]; //Assume only one
 
-            for (var i = 0; i < item.NumProjectiles; i++)
+            for (int i = 0; i < item.NumProjectiles; i++)
             {
-                var proj = CreateProjectile(prjDesc, item.ObjectType,
+                Projectile proj = CreateProjectile(prjDesc, item.ObjectType,
                     (int) statsMgr.GetAttackDamage(prjDesc.MinDamage, prjDesc.MaxDamage),
                     time.tickTimes, new Position {X = X, Y = Y}, (float) (startAngle + arcGap*i));
                 Owner.EnterWorld(proj);
@@ -260,9 +258,9 @@ namespace wServer.realm.entities.player
                         }
                     });
                 var remainingDmg = (int) StatsManager.GetDefenseDamage(enemy, eff.TotalDamage, enemy.ObjectDesc.Defense);
-                var perDmg = remainingDmg*1000/eff.DurationMS;
+                int perDmg = remainingDmg*1000/eff.DurationMS;
                 WorldTimer tmr = null;
-                var x = 0;
+                int x = 0;
                 tmr = new WorldTimer(100, (w, t) =>
                 {
                     if (enemy.Owner == null) return;
@@ -302,26 +300,26 @@ namespace wServer.realm.entities.player
         private void Activate(RealmTime time, Item item, Position target)
         {
             MP -= item.MpCost;
-            foreach (var eff in item.ActivateEffects)
+            foreach (ActivateEffect eff in item.ActivateEffects)
             {
                 switch (eff.Effect)
                 {
                     case ActivateEffects.BulletNova:
                     {
-                        var prjDesc = item.Projectiles[0]; //Assume only one
+                        ProjectileDesc prjDesc = item.Projectiles[0]; //Assume only one
                         var batch = new Packet[21];
-                        var s = Random.CurrentSeed;
+                        uint s = Random.CurrentSeed;
                         Random.CurrentSeed = (uint) (s*time.tickTimes);
-                        for (var i = 0; i < 20; i++)
+                        for (int i = 0; i < 20; i++)
                         {
-                            Random random = new Random();
-                            
+                            var random = new Random();
+
                             var SpellTarget = new Position
-                              {
-                                X = (float)(random.NextDouble() * ((target.X + 2) - (target.X - 2)) + (target.X - 2)),
-                                Y = (float)(random.NextDouble() * ((target.Y + 2) - (target.Y - 2)) + (target.Y - 2))
-                              };
-                            var proj = CreateProjectile(prjDesc, item.ObjectType,
+                            {
+                                X = (float) (random.NextDouble()*((target.X + 2) - (target.X - 2)) + (target.X - 2)),
+                                Y = (float) (random.NextDouble()*((target.Y + 2) - (target.Y - 2)) + (target.Y - 2))
+                            };
+                            Projectile proj = CreateProjectile(prjDesc, item.ObjectType,
                                 (int) statsMgr.GetAttackDamage(prjDesc.MinDamage, prjDesc.MaxDamage),
                                 time.tickTimes, SpellTarget, (float) (i*(Math.PI*2)/20));
                             Owner.EnterWorld(proj);
@@ -359,7 +357,7 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.StatBoostSelf:
                     {
-                        var idx = -1;
+                        int idx = -1;
 
                         switch ((StatsType) eff.Stats)
                         {
@@ -391,10 +389,10 @@ namespace wServer.realm.entities.player
                         var pkts = new List<Packet>();
 
                         ActivateBoostStat(this, idx, pkts);
-                        var OGstat = oldstat;
+                        int OGstat = oldstat;
 
 
-                        var s = eff.Amount;
+                        int s = eff.Amount;
                         Boost[idx] += s;
                         UpdateCount++;
                         Owner.Timers.Add(new WorldTimer(eff.DurationMS, (world, t) =>
@@ -412,7 +410,7 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.StatBoostAura:
                     {
-                        var idx = -1;
+                        int idx = -1;
                         switch ((StatsType) eff.Stats)
                         {
                             case StatsType.MaximumHP:
@@ -441,7 +439,7 @@ namespace wServer.realm.entities.player
                                 break;
                         }
 
-                        var s = eff.Amount;
+                        int s = eff.Amount;
                         BehaviorBase.AOE(Owner, this, eff.Range, true, player =>
                         {
                             (player as Player).Boost[idx] += s;
@@ -487,7 +485,7 @@ namespace wServer.realm.entities.player
                                 DurationMS = eff.DurationMS
                             });
                         });
-                        var color = 0xffffffff;
+                        uint color = 0xffffffff;
                         if (eff.ConditionEffect.Value == ConditionEffectIndex.Damaging)
                             color = 0xffff0000;
                         Owner.BroadcastPacket(new ShowEffectPacket
@@ -591,7 +589,7 @@ namespace wServer.realm.entities.player
                             PosB = new Position {X = target.X + eff.Radius, Y = target.Y}
                         });
 
-                        var totalDmg = 0;
+                        int totalDmg = 0;
                         var enemies = new List<Enemy>();
                         BehaviorBase.AOE(Owner, target, eff.Radius, false, enemy =>
                         {
@@ -606,10 +604,10 @@ namespace wServer.realm.entities.player
                         });
 
                         var rand = new Random();
-                        for (var i = 0; i < 5; i++)
+                        for (int i = 0; i < 5; i++)
                         {
-                            var a = enemies[rand.Next(0, enemies.Count)];
-                            var b = players[rand.Next(0, players.Count)];
+                            Enemy a = enemies[rand.Next(0, enemies.Count)];
+                            Player b = players[rand.Next(0, players.Count)];
                             pkts.Add(new ShowEffectPacket
                             {
                                 EffectType = EffectType.Flow,
@@ -621,8 +619,8 @@ namespace wServer.realm.entities.player
 
                         if (enemies.Count > 0)
                         {
-                            var a = enemies[rand.Next(0, enemies.Count)];
-                            var b = players[rand.Next(0, players.Count)];
+                            Enemy a = enemies[rand.Next(0, enemies.Count)];
+                            Player b = players[rand.Next(0, players.Count)];
                             pkts.Add(new ShowEffectPacket
                             {
                                 EffectType = EffectType.Flow,
@@ -733,9 +731,9 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.MultiDecoy:
                     {
-                        for (var i = 0; i < eff.Amount; i++)
+                        for (int i = 0; i < eff.Amount; i++)
                         {
-                            var decoy = Decoy.DecoyRandom(this, eff.DurationMS, statsMgr.GetSpeed());
+                            Decoy decoy = Decoy.DecoyRandom(this, eff.DurationMS, statsMgr.GetSpeed());
                             decoy.Move(X, Y);
                             Owner.EnterWorld(decoy);
                         }
@@ -744,12 +742,12 @@ namespace wServer.realm.entities.player
                     case ActivateEffects.Lightning:
                     {
                         Enemy start = null;
-                        var angle = Math.Atan2(target.Y - Y, target.X - X);
-                        var diff = Math.PI/3;
+                        double angle = Math.Atan2(target.Y - Y, target.X - X);
+                        double diff = Math.PI/3;
                         BehaviorBase.AOE(Owner, target, 6, false, enemy =>
                         {
                             if (!(enemy is Enemy)) return;
-                            var x = Math.Atan2(enemy.Y - Y, enemy.X - X);
+                            double x = Math.Atan2(enemy.Y - Y, enemy.X - X);
                             if (Math.Abs(angle - x) < diff)
                             {
                                 start = enemy as Enemy;
@@ -759,9 +757,9 @@ namespace wServer.realm.entities.player
                         if (start == null)
                             break;
 
-                        var current = start;
+                        Enemy current = start;
                         var targets = new Enemy[eff.MaxTargets];
-                        for (var i = 0; i < targets.Length; i++)
+                        for (int i = 0; i < targets.Length; i++)
                         {
                             targets[i] = current;
                             float dist = 8;
@@ -776,10 +774,10 @@ namespace wServer.realm.entities.player
                         }
 
                         var pkts = new List<Packet>();
-                        for (var i = 0; i < targets.Length; i++)
+                        for (int i = 0; i < targets.Length; i++)
                         {
                             if (targets[i] == null) break;
-                            var prev = i == 0 ? (Entity) this : targets[i - 1];
+                            Entity prev = i == 0 ? (Entity) this : targets[i - 1];
                             targets[i].Damage(this, time, eff.TotalDamage, false);
                             if (eff.ConditionEffect != null)
                                 targets[i].ApplyConditionEffect(new ConditionEffect
@@ -877,7 +875,7 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.IncrementStat:
                     {
-                        var idx = -1;
+                        int idx = -1;
                         switch ((StatsType) eff.Stats)
                         {
                             case StatsType.MaximumHP:
@@ -906,7 +904,7 @@ namespace wServer.realm.entities.player
                                 break;
                         }
                         Stats[idx] += eff.Amount;
-                        var limit =
+                        int limit =
                             int.Parse(
                                 XmlDatas.TypeToElement[ObjectType].Element(StatsManager.StatsIndexToName(idx))
                                     .Attribute("max")
@@ -922,10 +920,10 @@ namespace wServer.realm.entities.player
                         if (!XmlDatas.IdToType.TryGetValue(eff.Id, out objType) ||
                             !XmlDatas.PortalDescs.ContainsKey(objType))
                             break; // object not found, ignore
-                        var entity = Resolve(objType);
-                        var w = RealmManager.GetWorld(Owner.Id); //can't use Owner here, as it goes out of scope
-                        var TimeoutTime = XmlDatas.PortalDescs[objType].TimeoutTime;
-                        var DungName = XmlDatas.PortalDescs[objType].DungeonName;
+                        Entity entity = Resolve(objType);
+                        World w = RealmManager.GetWorld(Owner.Id); //can't use Owner here, as it goes out of scope
+                        int TimeoutTime = XmlDatas.PortalDescs[objType].TimeoutTime;
+                        string DungName = XmlDatas.PortalDescs[objType].DungeonName;
 
                         ARGB c;
                         c.A = 0;
@@ -935,7 +933,7 @@ namespace wServer.realm.entities.player
 
                         if (eff.Id == "Wine Cellar Portal") //wine cellar incantation
                         {
-                            var opened = false;
+                            bool opened = false;
                             foreach (var i in w.StaticObjects)
                             {
                                 if (i.Value.ObjectType == 0x0721) //locked wine cellar portal
@@ -1028,9 +1026,9 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.PartyAOE:
                     {
-                        var randomnumber = Random.Next(1, 5);
+                        int randomnumber = Random.Next(1, 5);
                         ConditionEffectIndex partyeffect = 0;
-                        var color = 0xffffffff;
+                        uint color = 0xffffffff;
                         if (randomnumber == 1)
                         {
                             partyeffect = ConditionEffectIndex.Damaging;
@@ -1073,7 +1071,7 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.ShurikenAbility:
                     {
-                        var w = RealmManager.GetWorld(Owner.Id);
+                        World w = RealmManager.GetWorld(Owner.Id);
                         ApplyConditionEffect(new ConditionEffect
                         {
                             Effect = ConditionEffectIndex.Speedy,
@@ -1081,10 +1079,10 @@ namespace wServer.realm.entities.player
                         });
 
 
-                        var pt = eff.ObjectId;
+                        string pt = eff.ObjectId;
                         short obj;
                         XmlDatas.IdToType.TryGetValue(pt, out obj);
-                        var substitute = Resolve(obj);
+                        Entity substitute = Resolve(obj);
                         substitute.PlayerOwner = this;
                         substitute.isPet = true;
                         w.EnterWorld(substitute);
@@ -1114,7 +1112,7 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.Mushroom:
                     {
-                        var w = RealmManager.GetWorld(Owner.Id);
+                        World w = RealmManager.GetWorld(Owner.Id);
                         Size = eff.Amount;
                         UpdateCount++;
                         w.Timers.Add(new WorldTimer(eff.DurationMS, (world, t) =>
@@ -1133,11 +1131,11 @@ namespace wServer.realm.entities.player
 
                     case ActivateEffects.PearlAbility:
                     {
-                        var w = RealmManager.GetWorld(Owner.Id);
-                        var pt = eff.ObjectId;
+                        World w = RealmManager.GetWorld(Owner.Id);
+                        string pt = eff.ObjectId;
                         short obj;
                         XmlDatas.IdToType.TryGetValue(pt, out obj);
-                        var substitute = Resolve(obj);
+                        Entity substitute = Resolve(obj);
                         substitute.PlayerOwner = this;
                         substitute.isPet = true;
                         w.EnterWorld(substitute);
@@ -1170,7 +1168,7 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.Backpack:
                     {
-                        var bps = 1;
+                        int bps = 1;
                         foreach (var i in psr.Character.Backpacks)
                         {
                             if (bps < i.Key)
@@ -1183,11 +1181,11 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.Drake:
                     {
-                        var w = RealmManager.GetWorld(Owner.Id);
-                        var pt = eff.ObjectId;
+                        World w = RealmManager.GetWorld(Owner.Id);
+                        string pt = eff.ObjectId;
                         short obj;
                         XmlDatas.IdToType.TryGetValue(pt, out obj);
-                        var drake = Resolve(obj);
+                        Entity drake = Resolve(obj);
                         drake.PlayerOwner = this;
                         w.EnterWorld(drake);
                         drake.Move(X, Y);
@@ -1206,12 +1204,12 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.BuildTower:
                     {
-                        var w = RealmManager.GetWorld(Owner.Id);
-                        var pt = eff.ObjectId;
+                        World w = RealmManager.GetWorld(Owner.Id);
+                        string pt = eff.ObjectId;
 
                         short obj;
                         XmlDatas.IdToType.TryGetValue(pt, out obj);
-                        var tower = Resolve(obj);
+                        Entity tower = Resolve(obj);
                         tower.PlayerOwner = this;
                         tower.isPet = true;
                         w.EnterWorld(tower);
@@ -1221,11 +1219,11 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.MonsterToss:
                     {
-                        var w = RealmManager.GetWorld(Owner.Id);
-                        var pt = eff.ObjectId;
+                        World w = RealmManager.GetWorld(Owner.Id);
+                        string pt = eff.ObjectId;
                         short obj;
                         XmlDatas.IdToType.TryGetValue(pt, out obj);
-                        var monster = Resolve(obj);
+                        Entity monster = Resolve(obj);
                         Owner.BroadcastPacket(new ShowEffectPacket
                         {
                             EffectType = EffectType.Throw,
@@ -1250,16 +1248,15 @@ namespace wServer.realm.entities.player
                     case ActivateEffects.Fame:
                     {
                         CurrentFame = psr.Account.Stats.Fame = new Database().UpdateFame(psr.Account, eff.Amount);
-                       
                     }
                         break;
                     case ActivateEffects.SamuraiAbility:
                     {
-                        var ydist = target.Y - Y;
-                        var xdist = target.X - X;
-                        var xwalkable = target.X + xdist/2;
-                        var ywalkable = target.Y + ydist/2;
-                        var tile = Owner.Map[(int) xwalkable, (int) ywalkable];
+                        float ydist = target.Y - Y;
+                        float xdist = target.X - X;
+                        float xwalkable = target.X + xdist/2;
+                        float ywalkable = target.Y + ydist/2;
+                        WmapTile tile = Owner.Map[(int) xwalkable, (int) ywalkable];
                         ObjectDesc desc;
                         if (XmlDatas.TileDescs[tile.TileId].NoWalk)
                             return;
@@ -1320,23 +1317,22 @@ namespace wServer.realm.entities.player
                     case ActivateEffects.Summon:
                     {
                         int summons = 0;
-                        foreach (var i in this.Owner.EnemiesCollision.HitTest(this.X, this.Y, 20))
+                        foreach (Entity i in Owner.EnemiesCollision.HitTest(X, Y, 20))
                         {
                             if (i.PlayerOwner == this && i.isSummon)
                             {
                                 summons++;
-                                continue;
                             }
                         }
                         if (summons > 2)
                         {
                             return;
                         }
-                        var w = RealmManager.GetWorld(Owner.Id);
-                        var pt = eff.ObjectId + " Summon";
+                        World w = RealmManager.GetWorld(Owner.Id);
+                        string pt = eff.ObjectId + " Summon";
                         short obj;
                         XmlDatas.IdToType.TryGetValue(pt, out obj);
-                        var summon = Resolve(obj);
+                        Entity summon = Resolve(obj);
                         summon.PlayerOwner = this;
                         summon.isPet = true;
                         summon.isSummon = true;
@@ -1346,162 +1342,161 @@ namespace wServer.realm.entities.player
                     }
                         break;
                     case ActivateEffects.ChristmasPopper:
+                    {
+                        var pkts = new List<Packet>();
+                        pkts.Add(new ShowEffectPacket
                         {
-                            var pkts = new List<Packet>();
-                            pkts.Add(new ShowEffectPacket
-                            {
-                                EffectType = EffectType.Diffuse,
-                                Color = new ARGB(0xFFFF0000),
-                                TargetId = Id,
-                                PosA = new Position { X = this.X, Y = this.Y},
-                                PosB = new Position { X = this.X + 3, Y = this.Y + 3 }
-                            });
-                            pkts.Add(new ShowEffectPacket
-                            {
-                                EffectType = EffectType.Diffuse,
-                                Color = new ARGB(0x0000FF),
-                                TargetId = Id,
-                                PosA = new Position { X = this.X, Y = this.Y },
-                                PosB = new Position { X = this.X + 4, Y = this.Y + 4 }
-                            });
-                            pkts.Add(new ShowEffectPacket
-                            {
-                                EffectType = EffectType.Diffuse,
-                                Color = new ARGB(0x008000),
-                                TargetId = Id,
-                                PosA = new Position { X = this.X, Y = this.Y },
-                                PosB = new Position { X = this.X + 5, Y = this.Y + 5 }
-                            });
-                            Owner.BroadcastPackets(pkts, null);
-                        }
+                            EffectType = EffectType.Diffuse,
+                            Color = new ARGB(0xFFFF0000),
+                            TargetId = Id,
+                            PosA = new Position {X = X, Y = Y},
+                            PosB = new Position {X = X + 3, Y = Y + 3}
+                        });
+                        pkts.Add(new ShowEffectPacket
+                        {
+                            EffectType = EffectType.Diffuse,
+                            Color = new ARGB(0x0000FF),
+                            TargetId = Id,
+                            PosA = new Position {X = X, Y = Y},
+                            PosB = new Position {X = X + 4, Y = Y + 4}
+                        });
+                        pkts.Add(new ShowEffectPacket
+                        {
+                            EffectType = EffectType.Diffuse,
+                            Color = new ARGB(0x008000),
+                            TargetId = Id,
+                            PosA = new Position {X = X, Y = Y},
+                            PosB = new Position {X = X + 5, Y = Y + 5}
+                        });
+                        Owner.BroadcastPackets(pkts, null);
+                    }
                         break;
                     case ActivateEffects.Belt:
+                    {
+                        Player start = null;
+                        double angle = Math.Atan2(target.Y - Y, target.X - X);
+                        double diff = Math.PI/3;
+                        BehaviorBase.AOE(Owner, target, 6, true, player =>
                         {
-                            Player start = null;
-                            var angle = Math.Atan2(target.Y - Y, target.X - X);
-                            var diff = Math.PI / 3;
-                            BehaviorBase.AOE(Owner, target, 6, true, player =>
+                            if (!(player is Player) || player.Id == Id) return;
+                            double x = Math.Atan2(player.Y - Y, player.X - X);
+                            if (Math.Abs(angle - x) < diff)
                             {
-                                if (!(player is Player) || player.Id == this.Id) return;
-                                var x = Math.Atan2(player.Y - Y, player.X - X);
-                                if (Math.Abs(angle - x) < diff)
-                                {
-                                    start = player as Player;
-                                    diff = Math.Abs(angle - x);
-                                }
-                            });
-                            if (start == null)
-                                break;
-
-                            var current = start;
-                            var targets = new Player[eff.MaxTargets];
-                            for (var i = 0; i < targets.Length; i++)
-                            {
-                                targets[i] = current;
-                                float dist = 8;
-                                var next = BehaviorBase.GetNearestEntity(current, ref dist, false,
-                                    player =>
-                                        player is Player &&
-                                        Array.IndexOf(targets, player) == -1 &&
-                                        BehaviorBase.Dist(this, player) <= 6) as Player;
-
-                                if (next == null) break;
-                                current = next;
+                                start = player as Player;
+                                diff = Math.Abs(angle - x);
                             }
+                        });
+                        if (start == null)
+                            break;
 
-                            var pkts = new List<Packet>();
-                            for (var i = 0; i < targets.Length; i++)
-                            {
-                                if (targets[i] == null) break;
-                                var prev = i == 0 ? (Entity)this : targets[i - 1];
-                                targets[i].ApplyConditionEffect(new ConditionEffect
-                                    {
-                                        Effect = ConditionEffectIndex.Blessed,
-                                        DurationMS = (int)(eff.EffectDuration * 1000)
-                                    });
-                                var shotColor = new ARGB(0xffd700);
-                                if (eff.Color != null)
-                                    shotColor = new ARGB((uint)eff.Color);
-                                pkts.Add(new ShowEffectPacket
-                                {
-                                    EffectType = EffectType.Lightning,
-                                    TargetId = prev.Id,
-                                    Color = shotColor,
-                                    PosA = new Position
-                                    {
-                                        X = targets[i].X,
-                                        Y = targets[i].Y
-                                    },
-                                    PosB = new Position { X = 350 }
-                                });
-                            }
-                            this.ApplyConditionEffect(new ConditionEffect
+                        Player current = start;
+                        var targets = new Player[eff.MaxTargets];
+                        for (int i = 0; i < targets.Length; i++)
+                        {
+                            targets[i] = current;
+                            float dist = 8;
+                            var next = BehaviorBase.GetNearestEntity(current, ref dist, false,
+                                player =>
+                                    player is Player &&
+                                    Array.IndexOf(targets, player) == -1 &&
+                                    BehaviorBase.Dist(this, player) <= 6) as Player;
+
+                            if (next == null) break;
+                            current = next;
+                        }
+
+                        var pkts = new List<Packet>();
+                        for (int i = 0; i < targets.Length; i++)
+                        {
+                            if (targets[i] == null) break;
+                            Entity prev = i == 0 ? (Entity) this : targets[i - 1];
+                            targets[i].ApplyConditionEffect(new ConditionEffect
                             {
                                 Effect = ConditionEffectIndex.Blessed,
-                                DurationMS = (int)(eff.EffectDuration * 1000)
+                                DurationMS = (int) (eff.EffectDuration*1000)
+                            });
+                            var shotColor = new ARGB(0xffd700);
+                            if (eff.Color != null)
+                                shotColor = new ARGB((uint) eff.Color);
+                            pkts.Add(new ShowEffectPacket
+                            {
+                                EffectType = EffectType.Lightning,
+                                TargetId = prev.Id,
+                                Color = shotColor,
+                                PosA = new Position
+                                {
+                                    X = targets[i].X,
+                                    Y = targets[i].Y
+                                },
+                                PosB = new Position {X = 350}
                             });
                         }
+                        ApplyConditionEffect(new ConditionEffect
+                        {
+                            Effect = ConditionEffectIndex.Blessed,
+                            DurationMS = (int) (eff.EffectDuration*1000)
+                        });
+                    }
                         break;
                     case ActivateEffects.Totem:
-                        {
-                            short obj;
-                            var pt = eff.ObjectId2;
-                            XmlDatas.IdToType.TryGetValue(pt, out obj);
-                            var totem = new Totem(this, eff.Range, eff.Amount, eff.ObjectId, obj);
-                            totem.isSummon = true;
-                            totem.Move(this.X, this.Y);
-                            Owner.EnterWorld(totem);
-                            
-                        }
+                    {
+                        short obj;
+                        string pt = eff.ObjectId2;
+                        XmlDatas.IdToType.TryGetValue(pt, out obj);
+                        var totem = new Totem(this, eff.Range, eff.Amount, eff.ObjectId, obj);
+                        totem.isSummon = true;
+                        totem.Move(X, Y);
+                        Owner.EnterWorld(totem);
+                    }
                         break;
                     case ActivateEffects.UnlockPortal:
+                    {
+                        short LockedId = XmlDatas.IdToType[eff.LockedName];
+                        short DungeonId = XmlDatas.IdToType[eff.DungeonName];
+                        World w = RealmManager.GetWorld(Owner.Id);
+                        Entity entity = null;
+                        bool opened = false;
+                        foreach (var i in w.StaticObjects)
                         {
-                            var LockedId = XmlDatas.IdToType[eff.LockedName];
-                            var DungeonId = XmlDatas.IdToType[eff.DungeonName];
-                            var w = RealmManager.GetWorld(Owner.Id);
-                            Entity entity = null;
-                            var opened = false;
-                            foreach (var i in w.StaticObjects)
-                            {
-                                if (i.Value.ObjectType != XmlDatas.IdToType[eff.LockedName]) continue;
-                                entity = Entity.Resolve(XmlDatas.IdToType[eff.DungeonName]);
-                                opened = true;
-                                entity.Move(i.Value.X, i.Value.Y);
-                                w.EnterWorld(entity);
-                                w.LeaveWorld(i.Value);
-                                UpdateCount++;
-                                break;
-                            }
-                            if (opened)
-                            {
-                                w.BroadcastPacket(new NotificationPacket
-                                {
-                                    Color = new ARGB(0xFF00FF00),
-                                    Text = "Unlocked by " + psr.Account.Name,
-                                    ObjectId = psr.Player.Id
-                                }, null);
-                                w.BroadcastPacket(new TextPacket
-                                {
-                                    BubbleTime = 0,
-                                    Stars = -1,
-                                    Name = "",
-                                    Text = eff.DungeonName + " unlocked by " + psr.Account.Name
-                                }, null);
-                                w.Timers.Add(new WorldTimer(XmlDatas.PortalDescs[DungeonId].TimeoutTime * 1000,
-                                    (world, t) => //default portal close time * 1000
-                                    {
-                                        try
-                                        {
-                                            w.LeaveWorld(entity);
-                                        }
-                                        catch
-                                        //couldn't remove portal, Owner became null. Should be fixed with RealmManager implementation
-                                        {
-                                            Console.WriteLine(@"Couldn't despawn portal.");
-                                        }
-                                    }));
-                            }
+                            if (i.Value.ObjectType != XmlDatas.IdToType[eff.LockedName]) continue;
+                            entity = Resolve(XmlDatas.IdToType[eff.DungeonName]);
+                            opened = true;
+                            entity.Move(i.Value.X, i.Value.Y);
+                            w.EnterWorld(entity);
+                            w.LeaveWorld(i.Value);
+                            UpdateCount++;
+                            break;
                         }
+                        if (opened)
+                        {
+                            w.BroadcastPacket(new NotificationPacket
+                            {
+                                Color = new ARGB(0xFF00FF00),
+                                Text = "Unlocked by " + psr.Account.Name,
+                                ObjectId = psr.Player.Id
+                            }, null);
+                            w.BroadcastPacket(new TextPacket
+                            {
+                                BubbleTime = 0,
+                                Stars = -1,
+                                Name = "",
+                                Text = eff.DungeonName + " unlocked by " + psr.Account.Name
+                            }, null);
+                            w.Timers.Add(new WorldTimer(XmlDatas.PortalDescs[DungeonId].TimeoutTime*1000,
+                                (world, t) => //default portal close time * 1000
+                                {
+                                    try
+                                    {
+                                        w.LeaveWorld(entity);
+                                    }
+                                    catch
+                                        //couldn't remove portal, Owner became null. Should be fixed with RealmManager implementation
+                                    {
+                                        Console.WriteLine(@"Couldn't despawn portal.");
+                                    }
+                                }));
+                        }
+                    }
                         break;
                 }
             }

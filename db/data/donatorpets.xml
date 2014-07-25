@@ -24,7 +24,7 @@
       <Index>16</Index>
     </AnimatedTexture>
     <NoMiniMap />
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Tag name="HP">
       <Min>25</Min>
       <Max>25</Max>
@@ -274,7 +274,7 @@
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>4615574032220160</Id>
-      <Animated/>
+      <Animated />
     </RemoteTexture>
     <NoMiniMap />
     <Tag name="HP">
@@ -287,7 +287,7 @@
       <Max>50</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>White Flame</ObjectId>
       <Damage>350</Damage>
@@ -370,7 +370,7 @@
       <Max>15</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Ice Triangle</ObjectId>
       <Damage>75</Damage>
@@ -404,7 +404,7 @@
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>4533382920798208</Id>
-      <Animated/>
+      <Animated />
     </RemoteTexture>
     <Size>75</Size>
     <NoMiniMap />
@@ -418,7 +418,7 @@
       <Max>15</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>White Flame</ObjectId>
       <Damage>75</Damage>
@@ -530,7 +530,7 @@
       <Max>20</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Rimmed Mystic Shot</ObjectId>
       <Damage>125</Damage>
@@ -575,7 +575,7 @@
       <Max>35</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>White Flame</ObjectId>
       <Damage>200</Damage>
@@ -584,7 +584,7 @@
       <LifetimeMS>450</LifetimeMS>
     </Projectile>
   </Object>
-<Object type="0x601f" id="IFoxy's Pet Generator">
+  <Object type="0x601f" id="IFoxy's Pet Generator">
     <DisplayId>IFoxy's sphinx</DisplayId>
     <Class>Equipment</Class>
     <Item />
@@ -620,7 +620,7 @@
       <Max>35</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>White Flame</ObjectId>
       <Damage>200</Damage>
@@ -665,7 +665,7 @@
       <Max>35</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Blue Boomerang</ObjectId>
       <Damage>1</Damage>
@@ -674,50 +674,50 @@
       <LifetimeMS>850</LifetimeMS>
     </Projectile>
   </Object>
-<Object type="0x6021" id="Filenub's Slurp Generator">
-  <DisplayId>Filenub's Slurp</DisplayId>
-  <Class>Equipment</Class>
-  <Item />
-  <AnimatedTexture>
-    <File>chars8x8rPets1</File>
-    <Index>0x0f</Index>
-  </AnimatedTexture>
-  <SlotType>10</SlotType>
-  <Description>A pet received by donating to the server!</Description>
-  <Sound>spell/light_heal</Sound>
-  <InvUse />
-  <VaultItem />
-  <Soulbound />
-  <ScaleValue>3</ScaleValue>
-  <Activate objectId="Filenub's Pet" cooldown="10">PermaPet</Activate>
-  <OldSound>use_potion</OldSound>
-</Object>
-<Object type="0x6111" id="Filenub's Pet">
-  <Class>Character</Class>
-  <AnimatedTexture>
+  <Object type="0x6021" id="Filenub's Slurp Generator">
+    <DisplayId>Filenub's Slurp</DisplayId>
+    <Class>Equipment</Class>
+    <Item />
+    <AnimatedTexture>
+      <File>chars8x8rPets1</File>
+      <Index>0x0f</Index>
+    </AnimatedTexture>
+    <SlotType>10</SlotType>
+    <Description>A pet received by donating to the server!</Description>
+    <Sound>spell/light_heal</Sound>
+    <InvUse />
+    <VaultItem />
+    <Soulbound />
+    <ScaleValue>3</ScaleValue>
+    <Activate objectId="Filenub's Pet" cooldown="10">PermaPet</Activate>
+    <OldSound>use_potion</OldSound>
+  </Object>
+  <Object type="0x6111" id="Filenub's Pet">
+    <Class>Character</Class>
+    <AnimatedTexture>
       <File>chars8x8rPets1</File><Index>0x0f</Index>
     </AnimatedTexture>
-  <Size>75</Size>
-  <NoMiniMap />
-  <Tag name="HP">
-    <Min>90</Min>
-    <Max>90</Max>
-    <Cooldown>1500</Cooldown>
-  </Tag>
-  <Tag name="MP">
-    <Min>50</Min>
-    <Max>50</Max>
-    <Cooldown>1500</Cooldown>
-  </Tag>
-  <Tag name="Shoot"/>
-  <Projectile id="0">
-    <ObjectId>Purple Spit</ObjectId>
-    <Damage>350</Damage>
-    <Size>80</Size>
-    <Speed>180</Speed>
-    <LifetimeMS>850</LifetimeMS>
-  </Projectile>
-</Object>
+    <Size>75</Size>
+    <NoMiniMap />
+    <Tag name="HP">
+      <Min>90</Min>
+      <Max>90</Max>
+      <Cooldown>1500</Cooldown>
+    </Tag>
+    <Tag name="MP">
+      <Min>50</Min>
+      <Max>50</Max>
+      <Cooldown>1500</Cooldown>
+    </Tag>
+    <Tag name="Shoot" />
+    <Projectile id="0">
+      <ObjectId>Purple Spit</ObjectId>
+      <Damage>350</Damage>
+      <Size>80</Size>
+      <Speed>180</Speed>
+      <LifetimeMS>850</LifetimeMS>
+    </Projectile>
+  </Object>
   <Object type="0x6022" id="Versified's Pet Generator">
     <DisplayId>Versified's Pirate</DisplayId>
     <Class>Equipment</Class>
@@ -754,7 +754,7 @@
       <Max>5</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
       <Damage>80</Damage>
@@ -799,7 +799,7 @@
       <Max>15</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Darkness Bolt</ObjectId>
       <Damage>75</Damage>
@@ -844,7 +844,7 @@
       <Max>10</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
       <Damage>50</Damage>
@@ -889,7 +889,7 @@
       <Max>15</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Darkness Bolt</ObjectId>
       <Damage>75</Damage>
@@ -898,7 +898,7 @@
       <LifetimeMS>450</LifetimeMS>
     </Projectile>
   </Object>
-    <Object type="0x6026" id="Mike's Pet Generator">
+  <Object type="0x6026" id="Mike's Pet Generator">
     <DisplayId>Mike's Goblin Wizard</DisplayId>
     <Class>Equipment</Class>
     <Item />
@@ -973,7 +973,7 @@
     <Tag name="Taunt">
       <Message>Bring him the photo</Message>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Magic Sparkle</ObjectId>
       <Damage>125</Damage>
@@ -1019,7 +1019,7 @@
       <Max>15</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Fire Spinner</ObjectId>
       <Damage>75</Damage>
@@ -1064,7 +1064,7 @@
       <Max>15</Max>
       <Cooldown>1500</Cooldown>
     </Tag>
-    <Tag name="Shoot"/>
+    <Tag name="Shoot" />
     <Projectile id="0">
       <ObjectId>Rainbow Magic Star</ObjectId>
       <Damage>75</Damage>

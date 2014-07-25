@@ -41,9 +41,9 @@ namespace wServer.logic.attack
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Stunned)) return false;
-            var dist = sightRadius;
+            float dist = sightRadius;
             var entity = GetNearestEntityPet(ref dist) as Enemy;
-            var dmg = new Random().Next(lowest, highest);
+            int dmg = new Random().Next(lowest, highest);
             if (entity != null)
             {
                 var chr = Host as Character;

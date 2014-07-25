@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace wServer.realm.worlds
+﻿namespace wServer.realm.worlds
 {
     public class TombMap : World
     {

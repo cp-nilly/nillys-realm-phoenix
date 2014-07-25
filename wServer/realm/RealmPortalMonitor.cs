@@ -43,9 +43,9 @@ namespace wServer.realm
 
         public void WorldAdded(World world)
         {
-            //lock (worldLock)
-            //{
-            var pos = GetRandPosition();
+            lock (worldLock)
+            {
+            Position pos = GetRandPosition();
             var portal = new Portal(0x0712, null)
             {
                 Size = 80,
@@ -55,25 +55,26 @@ namespace wServer.realm
             portal.Move(pos.X + 0.5f, pos.Y + 0.5f);
             nexus.EnterWorld(portal);
             portals.Add(world, portal);
-            //}
+            }
         }
 
         public void WorldRemoved(World world)
         {
-            //lock (worldLock)
-            //{
-            var portal = portals[world];
+            lock (worldLock)
+            {
+            Portal portal = portals[world];
             nexus.LeaveWorld(portal);
             portals.Remove(world);
-            
-            //}
+            Console.WriteLine("World {0}({1}) removed.", world.Id, world.Name);
+            GC.Collect();
+            }
         }
 
         public void WorldClosed(World world)
         {
             lock (worldLock)
             {
-                var portal = portals[world];
+                Portal portal = portals[world];
                 nexus.LeaveWorld(portal);
                 portals.Remove(world);
             }
@@ -83,7 +84,7 @@ namespace wServer.realm
         {
             lock (worldLock)
             {
-                var pos = GetRandPosition();
+                Position pos = GetRandPosition();
                 var portal = new Portal(0x71c, null)
                 {
                     Size = 150,
@@ -100,7 +101,7 @@ namespace wServer.realm
         {
             lock (worldLock)
             {
-                var worlds = portals.Keys.ToArray();
+                World[] worlds = portals.Keys.ToArray();
                 if (worlds.Length == 0)
                     return RealmManager.Worlds[World.NEXUS_ID];
                 return worlds[Environment.TickCount%worlds.Length];

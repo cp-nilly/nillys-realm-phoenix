@@ -44,7 +44,7 @@ Ndk0XNr+U+9HLLxxEbQgUcfftRv/7kojO01LtmE743DJ
         public string Decrypt(string str)
         {
             if (string.IsNullOrEmpty(str)) return "";
-            var dat = Convert.FromBase64String(str);
+            byte[] dat = Convert.FromBase64String(str);
             var encoding = new Pkcs1Encoding(engine);
             encoding.Init(false, key);
             return Encoding.UTF8.GetString(encoding.ProcessBlock(dat, 0, dat.Length));
@@ -53,7 +53,7 @@ Ndk0XNr+U+9HLLxxEbQgUcfftRv/7kojO01LtmE743DJ
         public string Encrypt(string str)
         {
             if (string.IsNullOrEmpty(str)) return "";
-            var dat = Encoding.UTF8.GetBytes(str);
+            byte[] dat = Encoding.UTF8.GetBytes(str);
             var encoding = new Pkcs1Encoding(engine);
             encoding.Init(true, key);
             return Convert.ToBase64String(encoding.ProcessBlock(dat, 0, dat.Length));

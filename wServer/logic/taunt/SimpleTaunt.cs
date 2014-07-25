@@ -16,7 +16,7 @@ namespace wServer.logic.taunt
             if (taunt.Contains("{PLAYER}"))
             {
                 float dist = 10;
-                var player = GetNearestEntity(ref dist, null);
+                Entity player = GetNearestEntity(ref dist, null);
                 if (player == null) return;
                 taunt = taunt.Replace("{PLAYER}", player.nName);
             }
@@ -44,33 +44,33 @@ namespace wServer.logic.taunt
 
         protected void NoBubbleTaunt(string taunt, bool all)
         {
-          if (taunt.Contains("{PLAYER}"))
-          {
-            float dist = 10;
-            Entity player = GetNearestEntity(ref dist, null);
-            if (player == null) return;
-            taunt = taunt.Replace("{PLAYER}", player.nName);
-          }
-          taunt = taunt.Replace("{HP}", (Host as Enemy).HP.ToString());
-          try
-          {
-            Host.Self.Owner.BroadcastPacket(new TextPacket()
+            if (taunt.Contains("{PLAYER}"))
             {
-              Name = "#" + (Host.Self.ObjectDesc.DisplayId ?? Host.Self.ObjectDesc.ObjectId),
-              ObjectId = Host.Self.Id,
-              Stars = -1,
-              BubbleTime = 0,
-              Recipient = "",
-              Text = taunt,
-              CleanText = ""
-            }, null);
-          }
-          catch
-          {
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Out.WriteLine("Crash halted - Nobody likes death...");
-            Console.ForegroundColor = ConsoleColor.White;
-          }
+                float dist = 10;
+                Entity player = GetNearestEntity(ref dist, null);
+                if (player == null) return;
+                taunt = taunt.Replace("{PLAYER}", player.nName);
+            }
+            taunt = taunt.Replace("{HP}", (Host as Enemy).HP.ToString());
+            try
+            {
+                Host.Self.Owner.BroadcastPacket(new TextPacket
+                {
+                    Name = "#" + (Host.Self.ObjectDesc.DisplayId ?? Host.Self.ObjectDesc.ObjectId),
+                    ObjectId = Host.Self.Id,
+                    Stars = -1,
+                    BubbleTime = 0,
+                    Recipient = "",
+                    Text = taunt,
+                    CleanText = ""
+                }, null);
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Out.WriteLine("Crash halted - Nobody likes death...");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
         }
 
         protected abstract override bool TickCore(RealmTime time);
@@ -92,15 +92,19 @@ namespace wServer.logic.taunt
         }
     }
 
-    class QuietTaunt : TauntBase
+    internal class QuietTaunt : TauntBase
     {
-      string taunt;
-      public QuietTaunt(string taunt) { this.taunt = taunt; }
+        private readonly string taunt;
 
-      protected override bool TickCore(RealmTime time)
-      {
-        NoBubbleTaunt(taunt, false);
-        return true;
-      }
+        public QuietTaunt(string taunt)
+        {
+            this.taunt = taunt;
+        }
+
+        protected override bool TickCore(RealmTime time)
+        {
+            NoBubbleTaunt(taunt, false);
+            return true;
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace wServer.logic.taunt
         {
             float dist = 8;
 
-            var n = 0;
+            int n = 0;
             object o;
             if (Host.StateStorage.TryGetValue(Key, out o))
                 n = (int) o;

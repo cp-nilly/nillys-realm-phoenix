@@ -40,28 +40,28 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            var outerRadius = 13;
-            var waterRadius = 10;
-            var islandRadius = 3;
+            int outerRadius = 13;
+            int waterRadius = 10;
+            int islandRadius = 3;
             var border = new List<IntPoint>();
 
             var t = new int[Size, Size];
-            for (var y = 0; y < Size; y++) //Outer
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Outer
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= outerRadius)
                         t[x, y] = 1;
                 }
 
-            for (var y = 0; y < Size; y++) //Water
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Water
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= waterRadius)
                     {
                         t[x, y] = 2;
@@ -70,12 +70,12 @@ namespace wServer.realm.setpieces
                     }
                 }
 
-            for (var y = 0; y < Size; y++) //Island
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Island
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= islandRadius)
                     {
                         t[x, y] = 1;
@@ -88,15 +88,15 @@ namespace wServer.realm.setpieces
             while (trees.Count < border.Count*0.5)
                 trees.Add(border[rand.Next(0, border.Count)]);
 
-            foreach (var i in trees)
+            foreach (IntPoint i in trees)
                 t[i.X, i.Y] = 3;
 
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -104,7 +104,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 2)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Water;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -112,7 +112,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 3)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = Tree;
                         tile.Name = "size:" + (rand.Next()%2 == 0 ? 120 : 140);
@@ -122,19 +122,19 @@ namespace wServer.realm.setpieces
                     }
                 }
 
-            var giant = Entity.Resolve(0x678);
+            Entity giant = Entity.Resolve(0x678);
             giant.Move(pos.X + 15.5f, pos.Y + 15.5f);
             world.EnterWorld(giant);
 
             var container = new Container(0x0501, null, false);
-            var count = rand.Next(5, 8);
+            int count = rand.Next(5, 8);
             var items = new List<Item>();
             while (items.Count < count)
             {
-                var item = chest.GetRandomLoot(rand);
+                Item item = chest.GetRandomLoot(rand);
                 if (item != null) items.Add(item);
             }
-            for (var i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
                 container.Inventory[i] = items[i];
             container.Move(pos.X + 15.5f, pos.Y + 15.5f);
             world.EnterWorld(container);

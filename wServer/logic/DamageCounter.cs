@@ -67,9 +67,9 @@ namespace wServer.logic
             }
 
             var eligiblePlayers = new List<Tuple<Player, int>>();
-            var totalDamage = 0;
-            var totalPlayer = 0;
-            var enemy = (Parent ?? this).enemy;
+            int totalDamage = 0;
+            int totalPlayer = 0;
+            Enemy enemy = (Parent ?? this).enemy;
             foreach (var i in (Parent ?? this).hitters)
             {
                 if (i.Key.Owner == null) continue;
@@ -79,21 +79,21 @@ namespace wServer.logic
             }
             if (totalPlayer != 0)
             {
-                var totalExp = totalPlayer*(enemy.ObjectDesc.MaxHp/10f)*(enemy.ObjectDesc.ExpMultiplier ?? 1);
-                var lowerLimit = totalExp/totalPlayer*0.1f;
-                var lvUps = 0;
+                float totalExp = totalPlayer*(enemy.ObjectDesc.MaxHp/10f)*(enemy.ObjectDesc.ExpMultiplier ?? 1);
+                float lowerLimit = totalExp/totalPlayer*0.1f;
+                int lvUps = 0;
                 foreach (var i in eligiblePlayers)
                 {
-                    var playerXp = totalExp*i.Item2/totalDamage;
+                    float playerXp = totalExp*i.Item2/totalDamage;
 
-                    var upperLimit = i.Item1.ExperienceGoal*0.1f;
+                    float upperLimit = i.Item1.ExperienceGoal*0.1f;
                     if (i.Item1.Quest == enemy)
                         upperLimit = i.Item1.ExperienceGoal*0.5f;
 
                     if (playerXp < lowerLimit) playerXp = lowerLimit;
                     if (playerXp > upperLimit) playerXp = upperLimit;
 
-                    var killer = (Parent ?? this).LastHitter == i.Item1;
+                    bool killer = (Parent ?? this).LastHitter == i.Item1;
                     if (i.Item1.EnemyKilled(
                         enemy,
                         (int) playerXp,

@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wServer.svrPackets;
-using wServer.cliPackets;
-using System.Collections.Concurrent;
-using wServer.realm.worlds;
-using wServer.logic;
-using wServer.realm.entities.player;
 using db;
+using wServer.cliPackets;
+using wServer.svrPackets;
 
 namespace wServer.realm.entities.player
 {
@@ -16,7 +9,7 @@ namespace wServer.realm.entities.player
     {
         public void CreateGuild(RealmTime t, CreateGuildPacket pkt)
         {
-            var GuildsActive = true;
+            bool GuildsActive = true;
             if (GuildsActive == false)
             {
                 psr.SendPacket(new CreateGuildResultPacket()
@@ -30,7 +23,7 @@ namespace wServer.realm.entities.player
             {
                 try
                 {
-                    var name = pkt.Name.ToString();
+                    string name = pkt.Name.ToString();
                     if (psr.Account.Stats.Fame >= 1000)
                     {
                         if (name != "")
@@ -52,7 +45,7 @@ namespace wServer.realm.entities.player
                                     {
                                         if (pkt.Name != "")
                                         {
-                                            var g = db1.CreateGuild(psr.Account, pkt.Name);
+                                            Guild g = db1.CreateGuild(psr.Account, pkt.Name);
                                             psr.Account.Guild.Name = g.Name;
                                             psr.Account.Guild.Rank = g.Rank;
                                             Guild = g.Name;
@@ -68,7 +61,8 @@ namespace wServer.realm.entities.player
                                                 Success = true,
                                                 ResultMessage = "Success!"
                                             });
-                                            CurrentFame = psr.Account.Stats.Fame = psr.Database.UpdateFame(psr.Account, -1000);
+                                            CurrentFame =
+                                                psr.Account.Stats.Fame = psr.Database.UpdateFame(psr.Account, -1000);
                                             UpdateCount++;
                                             return;
                                         }
@@ -134,24 +128,25 @@ namespace wServer.realm.entities.player
                 }
             }
         }
+
         public void JoinGuild(RealmTime t, JoinGuildPacket pkt)
         {
             var db = new Database();
-            var gStruct = db.GetGuild(pkt.GuildName);
+            GuildStruct gStruct = db.GetGuild(pkt.GuildName);
             if (psr.Player.Invited == false)
             {
                 SendInfo("You need to be invited to join a guild!");
             }
             if (gStruct != null)
             {
-                var g = db.ChangeGuild(psr.Account, gStruct.Id, 0, 0, false);
+                Guild g = db.ChangeGuild(psr.Account, gStruct.Id, 0, 0, false);
                 if (g != null)
                 {
                     psr.Account.Guild = g;
                     Guild = g.Name;
                     GuildRank = g.Rank;
                     UpdateCount++;
-                    foreach (var p in RealmManager.GuildMembersOf(g.Name))
+                    foreach (Player p in RealmManager.GuildMembersOf(g.Name))
                     {
                         p.Client.SendPacket(new TextPacket()
                         {
@@ -166,11 +161,12 @@ namespace wServer.realm.entities.player
                 }
             }
         }
+
         public void InviteToGuild(RealmTime t, GuildInvitePacket pkt)
         {
             if (GuildRank >= 20)
             {
-                foreach (var i in RealmManager.Clients.Values)
+                foreach (ClientProcessor i in RealmManager.Clients.Values)
                 {
                     foreach (var l in RealmManager.Worlds)
                     {
@@ -210,49 +206,57 @@ namespace wServer.realm.entities.player
                     Text = "Members and initiates cannot invite!"
                 });
             }
-
         }
+
         public string ResolveGuildChatName()
         {
             return Name;
         }
+
         public string ResolveRankName(int rank)
         {
             string name;
             switch (rank)
             {
                 case 0:
-                    name = "Initiate"; break;
+                    name = "Initiate";
+                    break;
                 case 10:
-                    name = "Member"; break;
+                    name = "Member";
+                    break;
                 case 20:
-                    name = "Officer"; break;
+                    name = "Officer";
+                    break;
                 case 30:
-                    name = "Leader"; break;
+                    name = "Leader";
+                    break;
                 case 40:
-                    name = "Founder"; break;
+                    name = "Founder";
+                    break;
                 default:
-                    name = ""; break;
+                    name = "";
+                    break;
             }
             return name;
         }
 
         public void ChangeGuildRank(RealmTime t, ChangeGuildRankPacket pkt)
         {
-            var pname = pkt.Name;
-            var rank = pkt.GuildRank;
+            string pname = pkt.Name;
+            int rank = pkt.GuildRank;
             if (GuildRank >= 20)
             {
-                var other = RealmManager.FindPlayer(pname);
+                Player other = RealmManager.FindPlayer(pname);
                 if (other != null && other.Guild == Guild)
                 {
-                    var rankname = ResolveRankName(other.GuildRank);
-                    var rankname2 = ResolveRankName(rank);
+                    string rankname = ResolveRankName(other.GuildRank);
+                    string rankname2 = ResolveRankName(rank);
                     other.GuildRank = rank;
                     other.Client.Account.Guild.Rank = rank;
-                    new Database().ChangeGuild(other.Client.Account, other.Client.Account.Guild.Id, other.GuildRank, other.Client.Account.Guild.Fame, false);
+                    new Database().ChangeGuild(other.Client.Account, other.Client.Account.Guild.Id, other.GuildRank,
+                        other.Client.Account.Guild.Fame, false);
                     other.UpdateCount++;
-                    foreach (var p in RealmManager.GuildMembersOf(Guild))
+                    foreach (Player p in RealmManager.GuildMembersOf(Guild))
                     {
                         p.Client.SendPacket(new TextPacket()
                         {
@@ -269,13 +273,13 @@ namespace wServer.realm.entities.player
                     try
                     {
                         var db = new Database();
-                        var acc = db.GetAccount(pname);
+                        Account acc = db.GetAccount(pname);
                         if (acc.Guild.Name == Guild)
                         {
-                            var rankname = ResolveRankName(acc.Guild.Rank);
-                            var rankname2 = ResolveRankName(rank);
+                            string rankname = ResolveRankName(acc.Guild.Rank);
+                            string rankname2 = ResolveRankName(rank);
                             db.ChangeGuild(acc, acc.Guild.Id, rank, acc.Guild.Fame, false);
-                            foreach (var p in RealmManager.GuildMembersOf(Guild))
+                            foreach (Player p in RealmManager.GuildMembersOf(Guild))
                             {
                                 p.Client.SendPacket(new TextPacket()
                                 {
@@ -324,14 +328,15 @@ namespace wServer.realm.entities.player
 
         public void GuildRemove(RealmTime t, GuildRemovePacket pkt)
         {
-            var pname = pkt.Name;
+            string pname = pkt.Name;
             try
             {
-                var p = RealmManager.FindPlayer(pname);
+                Player p = RealmManager.FindPlayer(pname);
                 if (p != null && p.Guild == Guild)
                 {
                     var db = new Database();
-                    var g = db.ChangeGuild(p.Client.Account, p.Client.Account.Guild.Id, p.GuildRank, p.Client.Account.Guild.Fame, true);
+                    Guild g = db.ChangeGuild(p.Client.Account, p.Client.Account.Guild.Id, p.GuildRank,
+                        p.Client.Account.Guild.Fame, true);
                     p.Guild = "";
                     p.GuildRank = 0;
                     p.Client.Account.Guild = g;
@@ -339,13 +344,13 @@ namespace wServer.realm.entities.player
                     if (p != this)
                     {
                         p.SendGuild("You have been kicked from the guild.");
-                        foreach (var pl in RealmManager.GuildMembersOf(Guild))
+                        foreach (Player pl in RealmManager.GuildMembersOf(Guild))
                             pl.SendGuild(p.nName + " has been kicked from the guild by " + nName + ".");
                     }
                     else
                     {
                         p.SendGuild("You have left the guild.");
-                        foreach (var pl in RealmManager.GuildMembersOf(Guild))
+                        foreach (Player pl in RealmManager.GuildMembersOf(Guild))
                             pl.SendGuild(nName + " has left the guild.");
                     }
                 }
@@ -354,11 +359,11 @@ namespace wServer.realm.entities.player
                     try
                     {
                         var db = new Database();
-                        var other = db.GetAccount(pname);
+                        Account other = db.GetAccount(pname);
                         if (other.Guild.Name == Guild)
                         {
                             db.ChangeGuild(other, other.Guild.Id, other.Guild.Rank, other.Guild.Fame, true);
-                            foreach (var pl in RealmManager.GuildMembersOf(Guild))
+                            foreach (Player pl in RealmManager.GuildMembersOf(Guild))
                                 pl.SendGuild(pname + " has been kicked from the guild by " + nName + ".");
                         }
                     }
@@ -373,7 +378,6 @@ namespace wServer.realm.entities.player
                         });
                     }
                 }
-
             }
             catch (Exception e)
             {

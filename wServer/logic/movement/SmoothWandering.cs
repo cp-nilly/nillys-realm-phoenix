@@ -35,7 +35,7 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
             WanderingState state;
             object o;
@@ -46,9 +46,9 @@ namespace wServer.logic.movement
             {
                 state = (WanderingState) o;
 
-                var dist = (speed/1.5f)*(time.thisTickTimes/1000.0);
-                var x = Math.Cos(state.angle)*dist;
-                var y = Math.Sin(state.angle)*dist;
+                double dist = (speed/1.5f)*(time.thisTickTimes/1000.0);
+                double x = Math.Cos(state.angle)*dist;
+                double y = Math.Sin(state.angle)*dist;
                 state.remainingDist -= (float) dist;
                 ValidateAndMove(Host.Self.X + (float) x, Host.Self.Y + (float) y);
                 Host.Self.UpdateCount++;
@@ -57,15 +57,15 @@ namespace wServer.logic.movement
             bool ret;
             if (state.remainingDist <= 0)
             {
-                var randAngle = Math.PI*2*rand.NextDouble();
-                var randRadius = radius*rand.NextDouble();
+                double randAngle = Math.PI*2*rand.NextDouble();
+                double randRadius = radius*rand.NextDouble();
                 var newPos = new Position
                 {
                     X = (float) (Math.Cos(randAngle)*randRadius) + state.beginPos.X,
                     Y = (float) (Math.Sin(randAngle)*randRadius) + state.beginPos.Y,
                 };
-                var dx = newPos.X - Host.Self.X;
-                var dy = newPos.Y - Host.Self.Y;
+                float dx = newPos.X - Host.Self.X;
+                float dy = newPos.Y - Host.Self.Y;
                 state.angle = (float) Math.Atan2(dy, dx);
                 state.remainingDist = (float) Math.Sqrt(dx*dx + dy*dy);
                 ret = true;

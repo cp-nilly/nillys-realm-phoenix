@@ -2,7 +2,6 @@
 
 using System;
 using wServer.realm;
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 
 #endregion
@@ -49,11 +48,11 @@ namespace wServer.logic
         {
             if (!adminOnly || player.Client.Account.Rank >= 2)
             {
-                foreach (var s in chat)
+                foreach (string s in chat)
                 {
                     if (msg.ToLower() == s.ToLower())
                     {
-                        foreach (var i in behaves)
+                        foreach (Behavior i in behaves)
                         {
                             i.Tick(Host, (RealmTime) time);
                         }
@@ -62,7 +61,7 @@ namespace wServer.logic
                 }
                 if (falseBehaves != null)
                 {
-                    foreach (var f in falseBehaves)
+                    foreach (Behavior f in falseBehaves)
                     {
                         f.Tick(Host, (RealmTime) time);
                     }

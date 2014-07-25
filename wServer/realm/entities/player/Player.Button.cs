@@ -1,7 +1,9 @@
 ﻿#region
 
+using System.Collections.Generic;
 using System.Linq;
 using db;
+using MySql.Data.MySqlClient;
 using wServer.cliPackets;
 using wServer.logic.loot;
 using wServer.realm.worlds;
@@ -17,7 +19,7 @@ namespace wServer.realm.entities.player
 
         public void TextBoxButton(TextBoxButtonPacket pkt)
         {
-            var type = pkt.Type;
+            string type = pkt.Type;
 
             if (type == "test")
             {
@@ -61,7 +63,7 @@ namespace wServer.realm.entities.player
             }
             if (type.Split(':')[0] == "ConfirmBan")
             {
-                var pName = type.Split(':')[1];
+                string pName = type.Split(':')[1];
                 if (pkt.Button == 2)
                     return;
                 if (psr.Account.Rank < 2)
@@ -79,7 +81,7 @@ namespace wServer.realm.entities.player
                     }
                     using (var db = new Database())
                     {
-                        var cmd = db.CreateQuery();
+                        MySqlCommand cmd = db.CreateQuery();
                         cmd.CommandText = "UPDATE accounts SET banned=1, rank=0 WHERE name=@name";
                         cmd.Parameters.AddWithValue("@name", target.Client.Account.Name);
                         if (cmd.ExecuteNonQuery() == 0)
@@ -96,7 +98,7 @@ namespace wServer.realm.entities.player
             }
             if (type.Split(':')[0] == "ConfirmIPBan")
             {
-                var pName = type.Split(':')[1];
+                string pName = type.Split(':')[1];
                 if (pkt.Button == 2)
                     return;
                 if (psr.Account.Rank < 2)
@@ -115,24 +117,23 @@ namespace wServer.realm.entities.player
                     using (var db = new Database())
                     {
                         string address = target.Client.IP.Address;
-                        var cmd = db.CreateQuery();
+                        MySqlCommand cmd = db.CreateQuery();
                         cmd.CommandText = "UPDATE ips SET banned=1 WHERE ip=@Adress";
                         cmd.Parameters.AddWithValue("Adress", target.Client.IP.Address);
                         if (cmd.ExecuteNonQuery() == 0)
                         {
-                            this.SendInfo("Could not ban");
+                            SendInfo("Could not ban");
                             db.Dispose();
                             return;
                         }
                         db.Dispose();
                     }
                     target.Client.Disconnect();
-                    this.SendInfo("IP successfully Banned");
+                    SendInfo("IP successfully Banned");
                 }
             }
-                    
-                
-            
+
+
             if (type == "EnterTestArena")
             {
                 if (pkt.Button == 1)
@@ -172,8 +173,8 @@ namespace wServer.realm.entities.player
                             db.Dispose();
                         }
 
-                        var world = RealmManager.GetWorld(World.NEXUS_ID);
-                        var fworld = false;
+                        World world = RealmManager.GetWorld(World.NEXUS_ID);
+                        bool fworld = false;
                         foreach (var i in RealmManager.Worlds)
                             if (i.Value is BattleArenaMap)
                                 if ((i.Value as BattleArenaMap).Joinable)
@@ -208,8 +209,8 @@ namespace wServer.realm.entities.player
             {
                 if (pkt.Button == 1)
                 {
-                    var world = RealmManager.GetWorld(World.NEXUS_ID);
-                    var fworld = false;
+                    World world = RealmManager.GetWorld(World.NEXUS_ID);
+                    bool fworld = false;
                     foreach (var i in RealmManager.Worlds)
                         if (i.Value is BattleArenaMap2)
                             if ((i.Value as BattleArenaMap2).Joinable)
@@ -247,8 +248,8 @@ namespace wServer.realm.entities.player
                             db.Dispose();
                         }
 
-                        var world = RealmManager.GetWorld(World.NEXUS_ID);
-                        var fworld = false;
+                        World world = RealmManager.GetWorld(World.NEXUS_ID);
+                        bool fworld = false;
                         foreach (var i in RealmManager.Worlds)
                             if (i.Value is Herding)
                                 if ((i.Value as Herding).Joinable)
@@ -291,8 +292,8 @@ namespace wServer.realm.entities.player
                             db.Dispose();
                         }
 
-                        var world = RealmManager.GetWorld(World.NEXUS_ID);
-                        var fworld = false;
+                        World world = RealmManager.GetWorld(World.NEXUS_ID);
+                        bool fworld = false;
                         foreach (var i in RealmManager.Worlds)
                             if (i.Value is ZombieMG)
                                 if ((i.Value as ZombieMG).Joinable)
@@ -338,16 +339,16 @@ namespace wServer.realm.entities.player
             {
                 if (pkt.Button == 1)
                 {
-                    var weaponsT5 = TierLoot.WeaponItems[5].ToList();
-                    var weaponsT6 = TierLoot.WeaponItems[6].ToList();
-                    var weaponsT7 = TierLoot.WeaponItems[7].ToList();
-                    var abilitiesT3 = TierLoot.AbilityItems[2].ToList();
-                    var ringsT3 = TierLoot.RingItems[3].ToList();
-                    var armorT6 = TierLoot.ArmorItems[6].ToList();
-                    var armorT7 = TierLoot.ArmorItems[7].ToList();
-                    var armorT8 = TierLoot.ArmorItems[8].ToList();
+                    List<Item> weaponsT5 = TierLoot.WeaponItems[5].ToList();
+                    List<Item> weaponsT6 = TierLoot.WeaponItems[6].ToList();
+                    List<Item> weaponsT7 = TierLoot.WeaponItems[7].ToList();
+                    List<Item> abilitiesT3 = TierLoot.AbilityItems[2].ToList();
+                    List<Item> ringsT3 = TierLoot.RingItems[3].ToList();
+                    List<Item> armorT6 = TierLoot.ArmorItems[6].ToList();
+                    List<Item> armorT7 = TierLoot.ArmorItems[7].ToList();
+                    List<Item> armorT8 = TierLoot.ArmorItems[8].ToList();
 
-                    var calculator = Random.Next(1, 1000);
+                    int calculator = Random.Next(1, 1000);
                     if (calculator <= 600)
                     {
                         SendHelp("Better luck next time!");
@@ -522,7 +523,7 @@ namespace wServer.realm.entities.player
                     else if (calculator <= 1000 && calculator > 999)
                     {
                         SendHelp("Incredible! You won the 10000 fame jackpot!");
-                        foreach (var i in RealmManager.Clients.Values)
+                        foreach (ClientProcessor i in RealmManager.Clients.Values)
                             i.SendPacket(new TextPacket
                             {
                                 BubbleTime = 0,

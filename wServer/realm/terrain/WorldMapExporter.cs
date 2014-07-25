@@ -20,14 +20,14 @@ namespace terrain
         {
             var dict = new List<TerrainTile>();
 
-            var w = tiles.GetLength(0);
-            var h = tiles.GetLength(1);
+            int w = tiles.GetLength(0);
+            int h = tiles.GetLength(1);
             var dat = new byte[w*h*3];
-            var idx = 0;
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            int idx = 0;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = tiles[x, y];
+                    TerrainTile tile = tiles[x, y];
                     var i = (short) dict.IndexOf(tile);
                     if (i == -1)
                     {
@@ -44,7 +44,7 @@ namespace terrain
             using (var wtr = new BinaryWriter(ms))
             {
                 wtr.Write((short) dict.Count);
-                foreach (var i in dict)
+                foreach (TerrainTile i in dict)
                 {
                     wtr.Write(i.TileId);
                     wtr.Write(i.TileObj ?? "");
@@ -57,7 +57,7 @@ namespace terrain
                 wtr.Write(h);
                 wtr.Write(dat);
             }
-            var buff = ZlibStream.CompressBuffer(ms.ToArray());
+            byte[] buff = ZlibStream.CompressBuffer(ms.ToArray());
             var ret = new byte[buff.Length + 1];
             Buffer.BlockCopy(buff, 0, ret, 1, buff.Length);
             ret[0] = 2;

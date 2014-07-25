@@ -43,13 +43,13 @@ namespace wServer.logic
                     Cooldown.Instance(2000, new PetAttack(200, 300, 7)
                         ))
                 ))
-                .Init(0x1662, Behaves("Lunar's Phoenix",
+            .Init(0x1662, Behaves("Lunar's Phoenix",
                 new RunBehaviors(
                     If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3)),
                     Cooldown.Instance(1500, new PetsHealingHP(60, 70)),
                     Cooldown.Instance(1500, new PetsHealingMP(40, 50))
-                        ))
-                )
+                    ))
+            )
             .Init(0x1656, Behaves("Dallas's Pet",
                 new RunBehaviors(
                     If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3)),
@@ -81,8 +81,8 @@ namespace wServer.logic
             .Init(0x1664, Behaves("Dark Sonic",
                 new RunBehaviors(
                     If.Instance(new PetBehaves(), PetChasing.Instance(13, 8, 3)),
-						Cooldown.Instance(1500, new PetsHealingHP(69, 69)),
-						Cooldown.Instance(1400, new PetsHealingMP(33, 33))
+                    Cooldown.Instance(1500, new PetsHealingHP(69, 69)),
+                    Cooldown.Instance(1400, new PetsHealingMP(33, 33))
                     )))
             .Init(0x1642, Behaves("Cube Pet",
                 new RunBehaviors(
@@ -91,27 +91,38 @@ namespace wServer.logic
                     Cooldown.Instance(1500, PetPredictiveMultiAttack.Instance(25, 10*(float) Math.PI/180, 4, 1, 1)),
                     If.Instance(new PetBehaves(), PetChasing.Instance(8, 10, 3))
                     )))
-            .InitMany(0x1643, 0x1655, (i) => Behaves("Elite Pet",
-            new RunBehaviors(
-                new Switch(new IfValue("Speed", "Value", If.Instance(new PetBehaves(), PetChasing.Instance(new GetTag(i).GetInt("Speed", "Value", 10), new GetTag(i).GetInt("Speed", "Value", 10), 3))),
-                    If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3))),
-                Cooldown.Instance(new GetTag(i).GetInt("HP", "Cooldown", 1000), new IfTag("HP", new PetsHealingHP(new GetTag(i).GetInt("HP", "Min", 50), new GetTag(i).GetInt("HP", "Max", 100)))),
-                Cooldown.Instance(new GetTag(i).GetInt("MP", "Cooldown", 1000), new IfTag("MP", new PetsHealingMP(new GetTag(i).GetInt("MP", "Min", 30), new GetTag(i).GetInt("MP", "Max", 60)))),
-                Cooldown.Instance(new GetTag(i).GetInt("Dmg", "Cooldown", 1000), new IfTag("Dmg", new PetAttack(new GetTag(i).GetInt("Dmg", "Min", 50), new GetTag(i).GetInt("Dmg", "Max", 70), new GetTag(i).GetInt("Dmg", "Range", 10))))
-                //Cooldown.Instance(1000, ThrowAttackPet.Instance(4, 10, 40, 70))
-            )))
-
-           .Init(0x6004, Behaves("Wverhe's Pet",
-             new RunBehaviors(
-               If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3)),
-               Cooldown.Instance(1500, new PetsHealingHP(69, 69)),
-               Cooldown.Instance(1500, new PetsHealingMP(69, 69))
-             )
-           ))
-
+            .InitMany(0x1643, 0x1655, i => Behaves("Elite Pet",
+                new RunBehaviors(
+                    new Switch(
+                        new IfValue("Speed", "Value",
+                            If.Instance(new PetBehaves(),
+                                PetChasing.Instance(new GetTag(i).GetInt("Speed", "Value", 10),
+                                    new GetTag(i).GetInt("Speed", "Value", 10), 3))),
+                        If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3))),
+                    Cooldown.Instance(new GetTag(i).GetInt("HP", "Cooldown", 1000),
+                        new IfTag("HP",
+                            new PetsHealingHP(new GetTag(i).GetInt("HP", "Min", 50),
+                                new GetTag(i).GetInt("HP", "Max", 100)))),
+                    Cooldown.Instance(new GetTag(i).GetInt("MP", "Cooldown", 1000),
+                        new IfTag("MP",
+                            new PetsHealingMP(new GetTag(i).GetInt("MP", "Min", 30),
+                                new GetTag(i).GetInt("MP", "Max", 60)))),
+                    Cooldown.Instance(new GetTag(i).GetInt("Dmg", "Cooldown", 1000),
+                        new IfTag("Dmg",
+                            new PetAttack(new GetTag(i).GetInt("Dmg", "Min", 50), new GetTag(i).GetInt("Dmg", "Max", 70),
+                                new GetTag(i).GetInt("Dmg", "Range", 10))))
+                    //Cooldown.Instance(1000, ThrowAttackPet.Instance(4, 10, 40, 70))
+                    )))
+            .Init(0x6004, Behaves("Wverhe's Pet",
+                new RunBehaviors(
+                    If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3)),
+                    Cooldown.Instance(1500, new PetsHealingHP(69, 69)),
+                    Cooldown.Instance(1500, new PetsHealingMP(69, 69))
+                    )
+                ))
             .InitMany(0x6101, 0x61ff, i => Behaves("Donator Pet",
                 new RunBehaviors(
-                        If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3)),
+                    If.Instance(new PetBehaves(), PetChasing.Instance(10, 10, 3)),
                     Cooldown.Instance(new GetTag(i).GetInt("HP", "Cooldown", 1000),
                         new IfTag("HP",
                             new PetsHealingHP(new GetTag(i).GetInt("HP", "Min", 0),
@@ -120,17 +131,14 @@ namespace wServer.logic
                         new IfTag("MP",
                             new PetsHealingMP(new GetTag(i).GetInt("MP", "Min", 30),
                                 new GetTag(i).GetInt("MP", "Max", 60)))),
-                        new IfTag("Taunt",
-                            Cooldown.Instance(new GetTag(i).GetInt("Taunt", "Cooldown", 60000),
-                                new SimpleTaunt(new GetTag(i).Get("Taunt", "Message", "Prepare to die!")))),
-                        new IfTag("Shoot",
-                            Cooldown.Instance(new GetTag(i).GetInt("Shoot", "Cooldown", 1200),
+                    new IfTag("Taunt",
+                        Cooldown.Instance(new GetTag(i).GetInt("Taunt", "Cooldown", 60000),
+                            new SimpleTaunt(new GetTag(i).Get("Taunt", "Message", "Prepare to die!")))),
+                    new IfTag("Shoot",
+                        Cooldown.Instance(new GetTag(i).GetInt("Shoot", "Cooldown", 1200),
                             PetSimpleAttack.Instance(new GetTag(i).GetInt("Shoot", "Range", 10),
-                            new GetTag(i).GetInt("Shoot", "Index", 0))))
-
+                                new GetTag(i).GetInt("Shoot", "Index", 0))))
                     )))
-            
-            
             ;
     }
 }

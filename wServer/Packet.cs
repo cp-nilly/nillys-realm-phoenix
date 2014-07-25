@@ -18,7 +18,7 @@ namespace wServer
 
         static Packet()
         {
-            foreach (var i in typeof (Packet).Assembly.GetTypes())
+            foreach (Type i in typeof (Packet).Assembly.GetTypes())
                 if (typeof (Packet).IsAssignableFrom(i) && !i.IsAbstract)
                 {
                     var pkt = (Packet) Activator.CreateInstance(i);
@@ -42,7 +42,7 @@ namespace wServer
             var s = new MemoryStream();
             Write(psr, new NWriter(s));
 
-            var content = s.ToArray();
+            byte[] content = s.ToArray();
             var ret = new byte[5 + content.Length];
             content = Crypt(psr, content, content.Length);
             Buffer.BlockCopy(BitConverter.GetBytes(IPAddress.HostToNetworkOrder(ret.Length)), 0, ret, 0, 4);
@@ -57,8 +57,8 @@ namespace wServer
         public override string ToString()
         {
             var ret = new StringBuilder("{");
-            var arr = GetType().GetProperties();
-            for (var i = 0; i < arr.Length; i++)
+            PropertyInfo[] arr = GetType().GetProperties();
+            for (int i = 0; i < arr.Length; i++)
             {
                 if (i != 0) ret.Append(", ");
                 ret.AppendFormat("{0}: {1}", arr[i].Name, arr[i].GetValue(this, null));

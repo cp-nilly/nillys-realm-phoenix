@@ -12,7 +12,7 @@ namespace wServer
 
         public RC4(byte[] key)
         {
-            for (var i = 0; i < 256; i++)
+            for (int i = 0; i < 256; i++)
             {
                 m_State[i] = (byte) i;
             }
@@ -20,8 +20,8 @@ namespace wServer
             X = 0;
             Y = 0;
 
-            var index1 = 0;
-            var index2 = 0;
+            int index1 = 0;
+            int index2 = 0;
 
             byte tmp;
 
@@ -30,7 +30,7 @@ namespace wServer
                 throw new Exception();
             }
 
-            for (var i = 0; i < 256; i++)
+            for (int i = 0; i < 256; i++)
             {
                 index2 = ((key[index1] & 0xff) + (m_State[i] & 0xff) + index2) & 0xff;
 
@@ -68,7 +68,7 @@ namespace wServer
 
             var result = new byte[len];
 
-            for (var i = 0; i < len; i++)
+            for (int i = 0; i < len; i++)
             {
                 X = (X + 1) & 0xff;
                 Y = ((m_State[X] & 0xff) + Y) & 0xff;

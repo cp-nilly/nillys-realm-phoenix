@@ -29,10 +29,10 @@ namespace wServer.realm.entities
             : base((short) Utils.FromString(node.Attribute("type").Value), null, false, false, false)
         {
             SlotTypes = Utils.FromCommaSepString32(node.Element("SlotTypes").Value);
-            var eq = node.Element("Equipment");
+            XElement eq = node.Element("Equipment");
             if (eq != null)
             {
-                var inv =
+                Item[] inv =
                     Utils.FromCommaSepString16(eq.Value).Select(_ => _ == -1 ? null : XmlDatas.ItemDescs[_]).ToArray();
                 Array.Resize(ref inv, 12);
                 Inventory = inv;
@@ -113,8 +113,8 @@ namespace wServer.realm.entities
         {
             if (ObjectType == 0x504) //Vault chest
                 return;
-            var hasItem = false;
-            foreach (var i in Inventory)
+            bool hasItem = false;
+            foreach (Item i in Inventory)
                 if (i != null)
                 {
                     hasItem = true;

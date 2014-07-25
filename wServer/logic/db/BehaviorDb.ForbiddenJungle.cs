@@ -154,7 +154,7 @@ namespace wServer.logic
                 loot: new LootBehavior(LootDef.Empty,
                     Tuple.Create(100, new LootDef(0, 6, 0, 10,
                         Tuple.Create(0.001, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation")),
                         Tuple.Create(0.4, (ILoot) new ItemLoot("Crystal Bone Ring")),
                         Tuple.Create(0.25, (ILoot) new ItemLoot("Staff of the Crystal Serpent")),
                         Tuple.Create(0.3, (ILoot) new ItemLoot("Cracked Crystal Skull")),

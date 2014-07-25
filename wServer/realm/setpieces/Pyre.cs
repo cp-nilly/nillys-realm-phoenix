@@ -38,15 +38,15 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy) + rand.NextDouble()*4 - 2;
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy) + rand.NextDouble()*4 - 2;
                     if (r <= 10)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -54,19 +54,19 @@ namespace wServer.realm.setpieces
                     }
                 }
 
-            var lord = Entity.Resolve(0x675);
+            Entity lord = Entity.Resolve(0x675);
             lord.Move(pos.X + 15.5f, pos.Y + 15.5f);
             world.EnterWorld(lord);
 
             var container = new Container(0x0501, null, false);
-            var count = rand.Next(5, 8);
+            int count = rand.Next(5, 8);
             var items = new List<Item>();
             while (items.Count < count)
             {
-                var item = chest.GetRandomLoot(rand);
+                Item item = chest.GetRandomLoot(rand);
                 if (item != null) items.Add(item);
             }
-            for (var i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
                 container.Inventory[i] = items[i];
             container.Move(pos.X + 15.5f, pos.Y + 15.5f);
             world.EnterWorld(container);

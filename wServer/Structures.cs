@@ -222,7 +222,7 @@ namespace wServer
             ret.Id = rdr.ReadInt32();
             ret.Position = Position.Read(rdr);
             ret.Stats = new KeyValuePair<StatsType, object>[rdr.ReadInt16()];
-            for (var i = 0; i < ret.Stats.Length; i++)
+            for (int i = 0; i < ret.Stats.Length; i++)
             {
                 var type = (StatsType) rdr.ReadByte();
                 if (type == StatsType.Guild || type == StatsType.Name)

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using wServer.cliPackets;
 using wServer.svrPackets;
 
@@ -13,7 +12,8 @@ namespace wServer.realm.entities.player
 {
     partial class Player
     {
-        bool intake;
+        private bool intake;
+
         public void RequestTake(RealmTime time, RequestTradePacket pkt)
         {
             if (tradeTarget != null)
@@ -22,7 +22,7 @@ namespace wServer.realm.entities.player
                 tradeTarget = null;
                 return;
             }
-            var target = Owner.GetUniqueNamedPlayer(pkt.Name);
+            Player target = Owner.GetUniqueNamedPlayer(pkt.Name);
             if (target == null)
             {
                 SendError("Player not found!");
@@ -33,49 +33,48 @@ namespace wServer.realm.entities.player
                 SendError(target.Name + " is already trading!");
                 return;
             }
-                tradeTarget = target;
-                trade = new bool[12];
-                tradeAccepted = false;
-                target.tradeTarget = this;
-                target.trade = new bool[12];
-                taking = true;
-                tradeTarget.intake = true;
-                var my = new TradeItem[Inventory.Length];
-                for (var i = 0; i < Inventory.Length; i++)
-                    my[i] = new TradeItem
-                    {
-                        Item = target.Inventory[i] == null ? -1 : target.Inventory[i].ObjectType,
-                        SlotType = target.SlotTypes[i],
-                        Included = false,
-                        Tradeable = (target.Inventory[i] != null)
-                            
-                    };
-                var your = new TradeItem[target.Inventory.Length];
-                for (var i = 0; i < target.Inventory.Length; i++)
-                    your[i] = new TradeItem
-                    {
-                        Item = -1,
-                        SlotType = target.SlotTypes[i],
-                        Included = false,
-                        Tradeable = false
-                            
-                    };
-
-                psr.SendPacket(new TradeStartPacket
+            tradeTarget = target;
+            trade = new bool[12];
+            tradeAccepted = false;
+            target.tradeTarget = this;
+            target.trade = new bool[12];
+            taking = true;
+            tradeTarget.intake = true;
+            var my = new TradeItem[Inventory.Length];
+            for (int i = 0; i < Inventory.Length; i++)
+                my[i] = new TradeItem
                 {
-                    MyItems = my,
-                    YourName = target.Name,
-                    YourItems = your
-                });
+                    Item = target.Inventory[i] == null ? -1 : target.Inventory[i].ObjectType,
+                    SlotType = target.SlotTypes[i],
+                    Included = false,
+                    Tradeable = (target.Inventory[i] != null)
+                };
+            var your = new TradeItem[target.Inventory.Length];
+            for (int i = 0; i < target.Inventory.Length; i++)
+                your[i] = new TradeItem
+                {
+                    Item = -1,
+                    SlotType = target.SlotTypes[i],
+                    Included = false,
+                    Tradeable = false
+                };
+
+            psr.SendPacket(new TradeStartPacket
+            {
+                MyItems = my,
+                YourName = target.Name,
+                YourItems = your
+            });
         }
-        
+
         private void TakeTick(RealmTime time)
         {
             if (trade != null)
-                if (taking == true)
+                if (taking)
                     if (tradeTarget != null)
                         if (tradeAccepted)
-                            if (tradeTarget != null && Owner != null && tradeTarget.Owner != null && Owner == tradeTarget.Owner)
+                            if (tradeTarget != null && Owner != null && tradeTarget.Owner != null &&
+                                Owner == tradeTarget.Owner)
                             {
                                 name1 = Name;
                                 name2 = tradeTarget.Name;
@@ -91,16 +90,15 @@ namespace wServer.realm.entities.player
                                 trade = null;
                                 taking = false;
                                 tradeAccepted = false;
-                                return;
                             }
-
         }
+
         private void DoTake()
         {
             if (tradeTarget != null && Owner != null && tradeTarget.Owner != null && Owner == tradeTarget.Owner)
             {
                 var thisItems = new List<Item>();
-                for (var i = 0; i < trade.Length; i++)
+                for (int i = 0; i < trade.Length; i++)
                     if (trade[i])
                     {
                         if (tradeTarget.Inventory[i] != null)
@@ -121,7 +119,7 @@ namespace wServer.realm.entities.player
                     }
                 if (thisItems.Count == 0)
                     thisItems.Add(null);
-                for (var i = 0; i < Inventory.Length; i++) //put items by slotType
+                for (int i = 0; i < Inventory.Length; i++) //put items by slotType
                     if (Inventory[i] == null)
                     {
                         if (SlotTypes[i] == 0 && thisItems[0] != null)
@@ -131,8 +129,8 @@ namespace wServer.realm.entities.player
                         }
                         else
                         {
-                            var itmIdx = -1;
-                            for (var j = 0; j < thisItems.Count; j++)
+                            int itmIdx = -1;
+                            for (int j = 0; j < thisItems.Count; j++)
                             {
                                 try
                                 {
@@ -156,7 +154,7 @@ namespace wServer.realm.entities.player
                         if (thisItems.Count == 0) break;
                     }
                 if (thisItems.Count > 0)
-                    for (var i = 0; i < Inventory.Length; i++) //force put item
+                    for (int i = 0; i < Inventory.Length; i++) //force put item
                         if (Inventory[i] == null)
                         {
                             Inventory[i] = thisItems[0];
@@ -206,5 +204,5 @@ namespace wServer.realm.entities.player
                 }
             }
         }
-    }             
+    }
 }

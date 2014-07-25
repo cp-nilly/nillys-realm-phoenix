@@ -19,14 +19,14 @@ namespace wServer.logic.cond
         protected override bool TickCore(RealmTime time)
         {
             float dist = 4;
-            var entity = GetNearestEntityByGroup(ref dist, "Golem Satellites");
+            Entity entity = GetNearestEntityByGroup(ref dist, "Golem Satellites");
             if (entity == null)
             {
                 entity = Entity.Resolve((short) (0x6d2 + rand.Next(0, 3)));
                 entity.Move(Host.Self.X, Host.Self.Y);
                 Host.Self.Owner.EnterWorld(entity);
 
-                for (var i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     entity = Entity.Resolve((short) (0x6d5 + i));
                     entity.Move(Host.Self.X, Host.Self.Y);
@@ -49,7 +49,7 @@ namespace wServer.logic.cond
         protected override bool TickCore(RealmTime time)
         {
             float dist = 8;
-            var entity = GetNearestEntityByGroup(ref dist, "Golem");
+            Entity entity = GetNearestEntityByGroup(ref dist, "Golem");
             if (entity != null && dist > 4)
             {
                 ValidateAndMove(entity.X, entity.Y);

@@ -8,7 +8,8 @@
             Background = 0;
             AllowTeleport = true;
             SetMusic("Haunted Cemetary"); //Placeholder
-            base.FromWorldMap(typeof(RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.crucible.wmap"));
+            base.FromWorldMap(
+                typeof (RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.crucible.wmap"));
         }
 
         public override World GetInstance(ClientProcessor psr)

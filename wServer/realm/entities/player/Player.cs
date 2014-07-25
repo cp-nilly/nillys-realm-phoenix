@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using db;
 using db.data;
 using wServer.cliPackets;
@@ -26,12 +27,12 @@ namespace wServer.realm.entities.player
         private readonly StatsManager statsMgr;
         private FameCounter fames;
         private float hpRegenCounter;
-        public bool vanished = false;
         private RealmManager manager;
         public int maxChests = 47;
         private float mpRegenCounter;
         private bool resurrecting;
         private byte[,] tiles;
+        public bool vanished = false;
 
         public Player(ClientProcessor psr)
             : base((short) psr.Character.ObjectType, psr.Random)
@@ -51,9 +52,7 @@ namespace wServer.realm.entities.player
             Level = psr.Character.Level;
             Experience = psr.Character.Exp;
             ExperienceGoal = GetExpGoal(psr.Character.Level);
-            if (psr.Account.Name == "Lucifer" || psr.Account.Name == "Luciferus" || psr.Account.Name == "Amaymon")
-                Stars = 666;
-            else if (psr.Account.Rank > 2)
+            if (psr.Account.Rank > 2)
                 Stars = 100;
             else if (psr.Account.Rank > 1)
                 Stars = 95;
@@ -66,9 +65,9 @@ namespace wServer.realm.entities.player
             NameChosen = psr.Account.NameChosen;
             CurrentFame = psr.Account.Stats.Fame;
             Fame = psr.Character.CurrentFame;
-            var state = psr.Account.Stats.ClassStates.SingleOrDefault(_ => _.ObjectType == ObjectType);
+            ClassStats state = psr.Account.Stats.ClassStates.SingleOrDefault(_ => _.ObjectType == ObjectType);
             FameGoal = GetFameGoal(state != null ? state.BestFame : 0);
-            Glowing = false;
+            Glowing = IsUserInLegends() ? psr.Account.Rank == 5 : false;
             Guild = psr.Account.Guild.Name;
             GuildRank = psr.Account.Guild.Rank;
             if (psr.Character.HitPoints <= 0)
@@ -248,7 +247,7 @@ namespace wServer.realm.entities.player
                     Credits = (int) val;
                     break;
                 case StatsType.zTokens:
-                    zTokens = (int)val;
+                    zTokens = (int) val;
                     break;
                 case StatsType.NameChosen:
                     NameChosen = (int) val != 0 ? true : false;
@@ -261,7 +260,7 @@ namespace wServer.realm.entities.player
                     break;
 
                 case StatsType.Glowing:
-                    Glowing = false;//(int) val != 0 ? true : false;
+                    Glowing = IsUserInLegends() ? psr.Account.Rank == 6 : false;; //(int) val != 0 ? true : false;
                     break;
                 case StatsType.HP:
                     HP = (int) val;
@@ -357,7 +356,8 @@ namespace wServer.realm.entities.player
             stats[StatsType.Texture1] = Texture1;
             stats[StatsType.Texture2] = Texture2;
 
-            stats[StatsType.Glowing] = Glowing ? 1 : 0;
+            if (Glowing)
+                stats[StatsType.Glowing] = 1;
             stats[StatsType.HP] = HP;
             stats[StatsType.MP] = MP;
 
@@ -402,7 +402,7 @@ namespace wServer.realm.entities.player
 
         public void SaveToCharacter()
         {
-            var chr = psr.Character;
+            Char chr = psr.Character;
             chr.Exp = Experience;
             chr.Level = Level;
             chr.Tex1 = Texture1;
@@ -426,8 +426,8 @@ namespace wServer.realm.entities.player
         {
             if (Boost == null) Boost = new int[12];
             else
-                for (var i = 0; i < Boost.Length; i++) Boost[i] = 0;
-            for (var i = 0; i < 4; i++)
+                for (int i = 0; i < Boost.Length; i++) Boost[i] = 0;
+            for (int i = 0; i < 4; i++)
             {
                 if (Inventory[i] == null) continue;
                 foreach (var b in Inventory[i].StatsBoost)
@@ -631,10 +631,10 @@ namespace wServer.realm.entities.player
 
         public void UsePortal(RealmTime time, UsePortalPacket pkt)
         {
-            var entity = Owner.GetEntity(pkt.ObjectId);
+            Entity entity = Owner.GetEntity(pkt.ObjectId);
             if (entity == null || !entity.Usable) return;
             World world = null;
-            var player = this;
+            Player player = this;
             Portal p = null;
             if (entity is Portal)
             {
@@ -645,8 +645,8 @@ namespace wServer.realm.entities.player
             {
                 if (p != null)
                 {
-                    var setWorldInstance = true;
-                    var d = "";
+                    bool setWorldInstance = true;
+                    string d = "";
                     if (XmlDatas.IdToDungeon.TryGetValue(entity.ObjectType, out d))
                     {
                         world = RealmManager.AddWorld(new XmlWorld(XmlDatas.DungeonDescs[d]));
@@ -807,16 +807,16 @@ namespace wServer.realm.entities.player
                             }
                                 break;
                             case 0x4a2b:
+                            {
+                                psr.SendPacket(new TextBoxPacket
                                 {
-                                    psr.SendPacket(new TextBoxPacket
-                                    {
-                                        Button1 = "Yes",
-                                        Button2 = "Cancel",
-                                        Message = "Sorry, this isn't quite done yet. Look forward to it, though.",
-                                        Title = "Nexus Defense",
-                                        Type = "Nexus Defense"
-                                    });
-                                }
+                                    Button1 = "Yes",
+                                    Button2 = "Cancel",
+                                    Message = "Sorry, this isn't quite done yet. Look forward to it, though.",
+                                    Title = "Nexus Defense",
+                                    Type = "Nexus Defense"
+                                });
+                            }
                                 break;
                             case 0x7025:
                                 world = RealmManager.AddWorld(new ForestMap());
@@ -836,7 +836,6 @@ namespace wServer.realm.entities.player
                             case 0x0d7b:
                                 world = RealmManager.AddWorld(new OryxChamberMap());
                                 break;
-                                
                         }
                     }
                     if (setWorldInstance)
@@ -887,7 +886,7 @@ namespace wServer.realm.entities.player
 
         public void Teleport(RealmTime time, int objId)
         {
-            var obj = Owner.GetEntity(objId);
+            Entity obj = Owner.GetEntity(objId);
             if (obj == null) return;
             if (!TPCooledDown())
             {
@@ -947,8 +946,8 @@ namespace wServer.realm.entities.player
                 Death("Unknown");
                 return;
             }
-            var enemy = Owner.GetEntity(pkt.EnemyId);
-            var killer = "Unknown";
+            Entity enemy = Owner.GetEntity(pkt.EnemyId);
+            string killer = "Unknown";
             if (!HasConditionEffect(ConditionEffects.Invulnerable))
                 HP -= pkt.Damage;
             ConditionEffects? ceffects = null;
@@ -956,7 +955,7 @@ namespace wServer.realm.entities.player
             {
                 killer = enemy.ObjectDesc.DisplayId ??
                          enemy.ObjectDesc.ObjectId;
-                var proj = (enemy as IProjectileOwner).Projectiles[pkt.BulletId];
+                Projectile proj = (enemy as IProjectileOwner).Projectiles[pkt.BulletId];
                 if (proj != null)
                 {
                     if (!HasConditionEffect(ConditionEffects.Invincible))
@@ -995,9 +994,9 @@ namespace wServer.realm.entities.player
 
         private bool CheckResurrection()
         {
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                var item = Inventory[i];
+                Item item = Inventory[i];
                 if (item == null || !item.Resurrects) continue;
 
                 HP = Stats[0] + Stats[0];
@@ -1027,11 +1026,11 @@ namespace wServer.realm.entities.player
 
         private void GenerateGravestone()
         {
-            var maxed = 0;
-            foreach (var i in XmlDatas.TypeToElement[ObjectType].Elements("LevelIncrease"))
+            int maxed = 0;
+            foreach (XElement i in XmlDatas.TypeToElement[ObjectType].Elements("LevelIncrease"))
             {
-                var limit = int.Parse(XmlDatas.TypeToElement[ObjectType].Element(i.Value).Attribute("max").Value);
-                var idx = StatsManager.StatsNameToIndex(i.Value);
+                int limit = int.Parse(XmlDatas.TypeToElement[ObjectType].Element(i.Value).Attribute("max").Value);
+                int idx = StatsManager.StatsNameToIndex(i.Value);
                 if (Stats[idx] >= limit)
                     maxed++;
             }
@@ -1166,12 +1165,11 @@ namespace wServer.realm.entities.player
             Pet.Move(X, Y);
             Pet.isPet = true;
             Owner.EnterWorld(Pet);
-            
         }
 
         public bool CompareName(string name)
         {
-            var rn = name.ToLower();
+            string rn = name.ToLower();
             if (rn.Split(' ')[0].StartsWith("[") || Name.Split(' ').Length == 1)
                 if (Name.ToLower().StartsWith(rn)) return true;
                 else return false;
@@ -1236,7 +1234,7 @@ namespace wServer.realm.entities.player
                     }, null);
                     HP = psr.Character.MaxHitPoints;
                     SaveToCharacter();
-                    psr.Save(); 
+                    psr.Save();
                     psr.Disconnect();
                     return;
             }
@@ -1277,7 +1275,11 @@ namespace wServer.realm.entities.player
 
             try
             {
-                var maxed = (from i in XmlDatas.TypeToElement[ObjectType].Elements("LevelIncrease") let limit = int.Parse(XmlDatas.TypeToElement[ObjectType].Element(i.Value).Attribute("max").Value) let idx = StatsManager.StatsNameToIndex(i.Value) where Stats[idx] >= limit select StatsManager.StatsIndexToPotName(idx)).ToList();
+                List<string> maxed = (from i in XmlDatas.TypeToElement[ObjectType].Elements("LevelIncrease")
+                    let limit = int.Parse(XmlDatas.TypeToElement[ObjectType].Element(i.Value).Attribute("max").Value)
+                    let idx = StatsManager.StatsNameToIndex(i.Value)
+                    where Stats[idx] >= limit
+                    select StatsManager.StatsIndexToPotName(idx)).ToList();
 
                 psr.Character.Dead = true;
                 SaveToCharacter();
@@ -1294,7 +1296,7 @@ namespace wServer.realm.entities.player
                     Owner.Timers.Add(new WorldTimer(1000, (w, t) => psr.Disconnect()));
                     Owner.LeaveWorld(this);
 
-                    var mcount = maxed.Count;
+                    int mcount = maxed.Count;
                     if (mcount >= 2)
                     {
                         MaxPotionOnDeath(maxed);

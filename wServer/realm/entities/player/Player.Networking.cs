@@ -35,13 +35,13 @@ namespace wServer.realm.entities.player
 
         private void BroadcastSync(IEnumerable<Packet> packets)
         {
-            foreach (var i in packets)
+            foreach (Packet i in packets)
                 BroadcastSync(i, _ => true);
         }
 
         private void BroadcastSync(IEnumerable<Packet> packets, Predicate<Player> cond)
         {
-            foreach (var i in packets)
+            foreach (Packet i in packets)
                 BroadcastSync(i, cond);
         }
     }

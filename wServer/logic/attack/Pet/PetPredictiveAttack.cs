@@ -39,17 +39,17 @@ namespace wServer.logic.attack
 
         private double Predict(Entity entity, ProjectileDesc desc)
         {
-            var history = entity.TryGetHistory(100);
+            Position? history = entity.TryGetHistory(100);
             if (history == null)
                 return 0;
 
-            var originalAngle = Math.Atan2(history.Value.Y - Host.Self.Y, history.Value.X - Host.Self.X);
-            var newAngle = Math.Atan2(entity.Y - Host.Self.Y, entity.X - Host.Self.X);
+            double originalAngle = Math.Atan2(history.Value.Y - Host.Self.Y, history.Value.X - Host.Self.X);
+            double newAngle = Math.Atan2(entity.Y - Host.Self.Y, entity.X - Host.Self.X);
 
 
-            var bulletSpeed = desc.Speed/100f;
-            var dist = Dist(entity, Host.Self);
-            var angularVelo = (newAngle - originalAngle)/(100/1000f);
+            float bulletSpeed = desc.Speed/100f;
+            float dist = Dist(entity, Host.Self);
+            double angularVelo = (newAngle - originalAngle)/(100/1000f);
             return angularVelo*bulletSpeed;
         }
 
@@ -57,15 +57,15 @@ namespace wServer.logic.attack
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Stunned)) return false;
 
-            var dist = radius;
-            var entity = GetNearestEntityPet(ref dist);
+            float dist = radius;
+            Entity entity = GetNearestEntityPet(ref dist);
             if (entity != null)
             {
                 var chr = Host as Character;
-                var desc = chr.ObjectDesc.Projectiles[projectileIndex];
-                var angle = Math.Atan2(entity.Y - chr.Y, entity.X - chr.X) + Predict(entity, desc);
+                ProjectileDesc desc = chr.ObjectDesc.Projectiles[projectileIndex];
+                double angle = Math.Atan2(entity.Y - chr.Y, entity.X - chr.X) + Predict(entity, desc);
 
-                var prj = chr.CreateProjectile(
+                Projectile prj = chr.CreateProjectile(
                     desc, chr.ObjectType, chr.Random.Next(desc.MinDamage, desc.MaxDamage),
                     time.tickTimes, new Position {X = chr.X, Y = chr.Y}, (float) angle);
                 chr.Owner.EnterWorld(prj);

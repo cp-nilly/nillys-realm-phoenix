@@ -1,6 +1,5 @@
 ﻿#region
 
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 
 #endregion
@@ -25,11 +24,11 @@ namespace wServer.realm
 
         public float GetAttackDamage(int min, int max)
         {
-            var att = GetStats(2);
+            int att = GetStats(2);
             if (player.HasConditionEffect(ConditionEffects.Paralyzed))
                 att = 0;
 
-            var ret = player.Random.Next(min, max)*(0.5f + att/50f);
+            float ret = player.Random.Next(min, max)*(0.5f + att/50f);
 
             if (player.HasConditionEffect(ConditionEffects.Damaging))
                 ret *= 1.5f;
@@ -44,7 +43,7 @@ namespace wServer.realm
             if (host.HasConditionEffect(ConditionEffects.ArmorBroken))
                 def = 0;
 
-            var limit = dmg*0.15f;
+            float limit = dmg*0.15f;
 
             float ret;
             if (dmg - def < limit) ret = limit;
@@ -58,14 +57,14 @@ namespace wServer.realm
 
         public float GetDefenseDamage(int dmg, bool noDef)
         {
-            var def = GetStats(3);
+            int def = GetStats(3);
             if (player.HasConditionEffect(ConditionEffects.Armored))
                 def *= 2;
             if (player.HasConditionEffect(ConditionEffects.ArmorBroken) ||
                 noDef)
                 def = 0;
 
-            var limit = dmg*0.15f;
+            float limit = dmg*0.15f;
 
             float ret;
             if (dmg - def < limit) ret = limit;
@@ -79,7 +78,7 @@ namespace wServer.realm
 
         public static float GetSpeed(Entity entity, float stat)
         {
-            var ret = 4 + 5.6f*(stat/75f);
+            float ret = 4 + 5.6f*(stat/75f);
             if (entity.HasConditionEffect(ConditionEffects.Speedy))
                 ret *= 1.5f;
             if (entity.HasConditionEffect(ConditionEffects.Slowed))
@@ -96,7 +95,7 @@ namespace wServer.realm
 
         public float GetHPRegen()
         {
-            var vit = GetStats(5);
+            int vit = GetStats(5);
             if (player.HasConditionEffect(ConditionEffects.Sick))
                 vit = 0;
             return 1 + vit/6f;
@@ -104,7 +103,7 @@ namespace wServer.realm
 
         public float GetMPRegen()
         {
-            var wis = GetStats(6);
+            int wis = GetStats(6);
             if (player.HasConditionEffect(ConditionEffects.Quiet))
                 return 0;
             return 1 + wis/9f;
@@ -112,11 +111,11 @@ namespace wServer.realm
 
         public float GetDex()
         {
-            var dex = GetStats(7);
+            int dex = GetStats(7);
             if (player.HasConditionEffect(ConditionEffects.Dazed))
                 dex = 0;
 
-            var ret = 1.5f + 6.5f*(dex/75f);
+            float ret = 1.5f + 6.5f*(dex/75f);
             if (player.HasConditionEffect(ConditionEffects.Berserk))
                 ret *= 1.5f;
             if (player.HasConditionEffect(ConditionEffects.Stunned))

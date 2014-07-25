@@ -38,14 +38,14 @@ namespace wServer.logic.attack
 
         protected override bool TickCore(RealmTime time)
         {
-            var ret = false;
-            foreach (var entity in GetNearestEntitiesByGroup(radius, group).OfType<Enemy>())
+            bool ret = false;
+            foreach (Enemy entity in GetNearestEntitiesByGroup(radius, group).OfType<Enemy>())
             {
-                var hp = entity.HP;
+                int hp = entity.HP;
                 hp = Math.Min(hp + amount, entity.ObjectDesc.MaxHp);
                 if (hp != entity.HP)
                 {
-                    var n = hp - entity.HP;
+                    int n = hp - entity.HP;
                     entity.HP = hp;
                     entity.UpdateCount++;
                     entity.Owner.BroadcastPacket(new ShowEffectPacket

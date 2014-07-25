@@ -1,31 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using wServer.logic.loot;
-using terrain;
 using db.data;
 
 namespace wServer.realm.setpieces
 {
-    class GroundHeat1 : ISetPiece
+    internal class GroundHeat1 : ISetPiece
     {
-        public int Size { get { return 30; } }
-        static readonly byte Heated = (byte)XmlDatas.IdToType["Hot Pebble"];
+        private static readonly byte Heated = (byte) XmlDatas.IdToType["Hot Pebble"];
 
-        Random rand = new Random();
+        private Random rand = new Random();
+
+        public int Size
+        {
+            get { return 30; }
+        }
+
         public void RenderSetPiece(World world, IntPoint pos)
         {
             int heatedRadius = 15;
 
-            int[,] t = new int[Size, Size];
+            var t = new int[Size, Size];
 
             for (int y = 0; y < Size; y++)
                 for (int x = 0; x < Size; x++)
                 {
-                    double dx = x - (Size / 2.0);
-                    double dy = y - (Size / 2.0);
-                    double r = Math.Sqrt(dx * dx + dy * dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= heatedRadius)
                         t[x, y] = 1;
                 }
@@ -36,36 +36,41 @@ namespace wServer.realm.setpieces
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
 
-                        tile.TileId = Heated; tile.ObjType = 0;
+                        tile.TileId = Heated;
+                        tile.ObjType = 0;
 
                         if (world.Obstacles[x + pos.X, y + pos.Y] == 0)
                             world.Map[x + pos.X, y + pos.Y] = tile;
-
                     }
                 }
         }
     }
 
-    class GroundHeat2 : ISetPiece
+    internal class GroundHeat2 : ISetPiece
     {
-        public int Size { get { return 30; } }
-        static readonly byte Cooled = (byte)XmlDatas.IdToType["Scorch Blend"];
+        private static readonly byte Cooled = (byte) XmlDatas.IdToType["Scorch Blend"];
 
-        Random rand = new Random();
+        private Random rand = new Random();
+
+        public int Size
+        {
+            get { return 30; }
+        }
+
         public void RenderSetPiece(World world, IntPoint pos)
         {
             int cooledRadius = 15;
 
-            int[,] t = new int[Size, Size];
+            var t = new int[Size, Size];
 
             for (int y = 0; y < Size; y++)
                 for (int x = 0; x < Size; x++)
                 {
-                    double dx = x - (Size / 2.0);
-                    double dy = y - (Size / 2.0);
-                    double r = Math.Sqrt(dx * dx + dy * dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= cooledRadius)
                         t[x, y] = 1;
                 }
@@ -76,13 +81,13 @@ namespace wServer.realm.setpieces
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
 
-                        tile.TileId = Cooled; tile.ObjType = 0;
+                        tile.TileId = Cooled;
+                        tile.ObjType = 0;
 
                         if (world.Obstacles[x + pos.X, y + pos.Y] == 0)
                             world.Map[x + pos.X, y + pos.Y] = tile;
-
                     }
                 }
         }

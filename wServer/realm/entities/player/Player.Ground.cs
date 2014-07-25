@@ -24,12 +24,12 @@ namespace wServer.realm.entities.player
 
                 try
                 {
-                    var tile = Owner.Map[(int) X, (int) Y];
-                    var objDesc = tile.ObjType == 0 ? null : XmlDatas.ObjectDescs[tile.ObjType];
-                    var tileDesc = XmlDatas.TileDescs[tile.TileId];
+                    WmapTile tile = Owner.Map[(int) X, (int) Y];
+                    ObjectDesc objDesc = tile.ObjType == 0 ? null : XmlDatas.ObjectDescs[tile.ObjType];
+                    TileDesc tileDesc = XmlDatas.TileDescs[tile.TileId];
                     if (tileDesc.Damaging && (objDesc == null || !objDesc.ProtectFromGroundDamage))
                     {
-                        var dmg = Random.Next(tileDesc.MinDamage, tileDesc.MaxDamage);
+                        int dmg = Random.Next(tileDesc.MinDamage, tileDesc.MaxDamage);
                         dmg = (int) statsMgr.GetDefenseDamage(dmg, true);
 
                         HP -= dmg;
@@ -50,11 +50,14 @@ namespace wServer.realm.entities.player
                 {
                     if (Owner.Name == "Ocean Trench")
                     {
-                        var fObject = false;
-                        foreach (var i in Owner.StaticObjects.Where(i => i.Value.ObjectType == 0x0731).Where(i => (X - i.Value.X)*(X - i.Value.X) + (Y - i.Value.Y)*(Y - i.Value.Y) < 2))
+                        bool fObject = false;
+                        foreach (
+                            var i in
+                                Owner.StaticObjects.Where(i => i.Value.ObjectType == 0x0731)
+                                    .Where(i => (X - i.Value.X)*(X - i.Value.X) + (Y - i.Value.Y)*(Y - i.Value.Y) < 2))
                             fObject = true;
 
-                        
+
                         OxygenRegen = fObject;
 
                         if (!OxygenRegen)

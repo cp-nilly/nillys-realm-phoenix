@@ -57,16 +57,16 @@ namespace wServer.logic
             {
                 if (CountEntity(radius, objType) < maxCount)
                 {
-                    var entity = Entity.Resolve(objType);
+                    Entity entity = Entity.Resolve(objType);
 
                     double targetX = Host.Self.X;
                     double targetY = Host.Self.Y;
                     if (radius != 5)
                     {
-                        var i = 0;
+                        int i = 0;
                         do
                         {
-                            var angle = rand.NextDouble()*2*Math.PI;
+                            double angle = rand.NextDouble()*2*Math.PI;
                             targetX = Host.Self.X + radius*0.5*Math.Cos(angle);
                             targetY = Host.Self.Y + radius*0.5*Math.Sin(angle);
                             i++;

@@ -40,9 +40,9 @@ namespace wServer.logic.attack
 
             var chr = Host as Character;
             if (chr.Owner == null) return false;
-            var desc = chr.ObjectDesc.Projectiles[projectileIndex];
+            ProjectileDesc desc = chr.ObjectDesc.Projectiles[projectileIndex];
 
-            var prj = chr.CreateProjectile(
+            Projectile prj = chr.CreateProjectile(
                 desc, chr.ObjectType, chr.Random.Next(desc.MinDamage, desc.MaxDamage),
                 time.tickTimes, new Position {X = chr.X, Y = chr.Y}, angle);
             chr.Owner.EnterWorld(prj);

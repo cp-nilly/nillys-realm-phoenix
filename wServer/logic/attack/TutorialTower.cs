@@ -49,8 +49,8 @@ namespace wServer.logic.attack
                         break;
                 }
 
-                var desc = Host.Self.ObjectDesc.Projectiles[0];
-                var proj = Host.Self.CreateProjectile(desc, Host.Self.ObjectType,
+                ProjectileDesc desc = Host.Self.ObjectDesc.Projectiles[0];
+                Projectile proj = Host.Self.CreateProjectile(desc, Host.Self.ObjectType,
                     5, time.tickTimes, new Position {X = Host.Self.X, Y = Host.Self.Y},
                     (float) angle);
                 Host.Self.Owner.EnterWorld(proj);

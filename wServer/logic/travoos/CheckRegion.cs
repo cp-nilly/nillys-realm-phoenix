@@ -29,7 +29,7 @@ namespace wServer.logic.travoos
 
         protected override bool TickCore(RealmTime time)
         {
-            var wt = Host.Self.Owner.Map[(int) Host.Self.X, (int) Host.Self.Y];
+            WmapTile wt = Host.Self.Owner.Map[(int) Host.Self.X, (int) Host.Self.Y];
             if (wt.Region == region)
                 return true;
             return false;

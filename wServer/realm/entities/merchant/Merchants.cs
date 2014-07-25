@@ -94,7 +94,7 @@ namespace wServer.realm.entities
                 else
                     thelist = new[] {mType};
 
-                var theListL = thelist.ToList();
+                List<int> theListL = thelist.ToList();
                 theListL.Shuffle();
                 trueMType = theListL[0];
             }
@@ -125,7 +125,7 @@ namespace wServer.realm.entities
 
         protected bool TryDeduct(Player player)
         {
-            var acc = player.Client.Account;
+            Account acc = player.Client.Account;
             new Database().ReadStats(acc);
             if (!player.NameChosen) return false;
             if (player.Stars < RankReq) return false;
@@ -160,8 +160,8 @@ namespace wServer.realm.entities
             {
                 if (TryDeduct(player))
                 {
-                    var Inventory = player.Inventory;
-                    for (var i = 0; i < player.Inventory.Length; i++)
+                    Item[] Inventory = player.Inventory;
+                    for (int i = 0; i < player.Inventory.Length; i++)
                     {
                         XElement ist;
                         XmlDatas.TypeToElement.TryGetValue((short) trueMType, out ist);
@@ -180,8 +180,8 @@ namespace wServer.realm.entities
                         Result = 0,
                         Message = "Purchase Successful!"
                     });
-                    var ItemName = XmlDatas.ItemDescs[(short) trueMType].ObjectId;
-                    var dir = @"logs";
+                    string ItemName = XmlDatas.ItemDescs[(short) trueMType].ObjectId;
+                    string dir = @"logs";
                     if (!Directory.Exists(dir))
                         Directory.CreateDirectory(dir);
 

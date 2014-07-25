@@ -43,15 +43,15 @@ namespace wServer.logic.attack
             if (Host.Self.HasConditionEffect(ConditionEffects.Stunned)) return false;
 
             var chr = Host as Character;
-            var startAngle = angle - projAngle*(numShot - 1)/2;
-            var desc = chr.ObjectDesc.Projectiles[projectileIndex];
+            float startAngle = angle - projAngle*(numShot - 1)/2;
+            ProjectileDesc desc = chr.ObjectDesc.Projectiles[projectileIndex];
 
             byte prjId = 0;
             var prjPos = new Position {X = chr.X, Y = chr.Y};
-            var dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
-            for (var i = 0; i < numShot; i++)
+            int dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
+            for (int i = 0; i < numShot; i++)
             {
-                var prj = chr.CreateProjectile(
+                Projectile prj = chr.CreateProjectile(
                     desc, chr.ObjectType, dmg, time.tickTimes,
                     prjPos, startAngle + projAngle*i);
                 chr.Owner.EnterWorld(prj);

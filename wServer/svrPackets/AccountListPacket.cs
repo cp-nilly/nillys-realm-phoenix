@@ -19,7 +19,7 @@
         {
             AccountListId = rdr.ReadInt32();
             AccountIds = new int[rdr.ReadInt16()];
-            for (var i = 0; i < AccountIds.Length; i++)
+            for (int i = 0; i < AccountIds.Length; i++)
                 AccountIds[i] = rdr.ReadInt32();
         }
 
@@ -27,7 +27,7 @@
         {
             wtr.Write(AccountListId);
             wtr.Write((short) AccountIds.Length);
-            foreach (var i in AccountIds)
+            foreach (int i in AccountIds)
                 wtr.Write(i);
         }
     }

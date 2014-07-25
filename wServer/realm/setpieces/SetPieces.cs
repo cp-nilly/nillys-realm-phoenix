@@ -34,12 +34,12 @@ namespace wServer.realm.setpieces
 
         public static int[,] rotateCW(int[,] mat)
         {
-            var M = mat.GetLength(0);
-            var N = mat.GetLength(1);
+            int M = mat.GetLength(0);
+            int N = mat.GetLength(1);
             var ret = new int[N, M];
-            for (var r = 0; r < M; r++)
+            for (int r = 0; r < M; r++)
             {
-                for (var c = 0; c < N; c++)
+                for (int c = 0; c < N; c++)
                 {
                     ret[c, M - 1 - r] = mat[r, c];
                 }
@@ -49,22 +49,22 @@ namespace wServer.realm.setpieces
 
         public static int[,] reflectVert(int[,] mat)
         {
-            var M = mat.GetLength(0);
-            var N = mat.GetLength(1);
+            int M = mat.GetLength(0);
+            int N = mat.GetLength(1);
             var ret = new int[M, N];
-            for (var x = 0; x < M; x++)
-                for (var y = 0; y < N; y++)
+            for (int x = 0; x < M; x++)
+                for (int y = 0; y < N; y++)
                     ret[x, N - y - 1] = mat[x, y];
             return ret;
         }
 
         public static int[,] reflectHori(int[,] mat)
         {
-            var M = mat.GetLength(0);
-            var N = mat.GetLength(1);
+            int M = mat.GetLength(0);
+            int N = mat.GetLength(1);
             var ret = new int[M, N];
-            for (var x = 0; x < M; x++)
-                for (var y = 0; y < N; y++)
+            for (int x = 0; x < M; x++)
+                for (int y = 0; y < N; y++)
                     ret[M - x - 1, y] = mat[x, y];
             return ret;
         }
@@ -76,21 +76,21 @@ namespace wServer.realm.setpieces
 
         public static void ApplySetPieces(World world)
         {
-            var map = world.Map;
+            Wmap map = world.Map;
             int w = map.Width, h = map.Height;
 
             var rand = new Random();
             var rects = new HashSet<Rect>();
             foreach (var dat in setPieces)
             {
-                var size = dat.Item1.Size;
-                var count = rand.Next(dat.Item2, dat.Item3);
-                for (var i = 0; i < count; i++)
+                int size = dat.Item1.Size;
+                int count = rand.Next(dat.Item2, dat.Item3);
+                for (int i = 0; i < count; i++)
                 {
                     var pt = new IntPoint();
                     Rect rect;
 
-                    var max = 50;
+                    int max = 50;
                     do
                     {
                         pt.X = rand.Next(0, w);

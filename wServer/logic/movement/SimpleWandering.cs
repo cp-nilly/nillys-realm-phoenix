@@ -35,7 +35,7 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
             WanderingState state;
             object o;
@@ -45,7 +45,7 @@ namespace wServer.logic.movement
             {
                 state = (WanderingState) o;
 
-                var dist = (speed/1.5f)*(time.thisTickTimes/1000f);
+                float dist = (speed/1.5f)*(time.thisTickTimes/1000f);
                 state.remainingDist -= dist;
                 ValidateAndMove(Host.Self.X + state.x*dist, Host.Self.Y + state.y*dist);
                 Host.Self.UpdateCount++;

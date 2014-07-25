@@ -24,6 +24,7 @@ namespace wServer
         private ReceiveState receiveState = ReceiveState.Awaiting;
         private SocketAsyncEventArgs send;
         private SendState sendState = SendState.Awaiting;
+
         public NetworkHandler(ClientProcessor parent, Socket skt)
         {
             this.parent = parent;
@@ -102,7 +103,7 @@ namespace wServer
                                     return;
                                 }
 
-                                var len = (e.UserToken as ReceiveToken).Length =
+                                int len = (e.UserToken as ReceiveToken).Length =
                                     IPAddress.NetworkToHostOrder(BitConverter.ToInt32(e.Buffer, 0)) - 5;
                                 if (len < 0 || len > BUFFER_SIZE)
                                     throw new InternalBufferOverflowException();
@@ -125,11 +126,11 @@ namespace wServer
                                     return;
                                 }
 
-                                var pkt = (e.UserToken as ReceiveToken).Packet;
+                                Packet pkt = (e.UserToken as ReceiveToken).Packet;
                                 pkt.Read(parent, e.Buffer, (e.UserToken as ReceiveToken).Length);
 
                                 receiveState = ReceiveState.Processing;
-                                var cont = OnPacketReceived(pkt);
+                                bool cont = OnPacketReceived(pkt);
 
                                 if (cont && skt.Connected)
                                 {
@@ -150,7 +151,7 @@ namespace wServer
                         switch (sendState)
                         {
                             case SendState.Ready:
-                                var dat = (e.UserToken as SendToken).Packet.Write(parent);
+                                byte[] dat = (e.UserToken as SendToken).Packet.Write(parent);
 
                                 sendState = SendState.Sending;
                                 e.SetBuffer(dat, 0, dat.Length);
@@ -224,7 +225,7 @@ namespace wServer
                 pendingPackets.Enqueue(pkt);
                 if (CanSendPacket(send, false))
                 {
-                    var dat = (send.UserToken as SendToken).Packet.Write(parent);
+                    byte[] dat = (send.UserToken as SendToken).Packet.Write(parent);
 
                     sendState = SendState.Sending;
                     send.SetBuffer(dat, 0, dat.Length);
@@ -245,11 +246,11 @@ namespace wServer
         {
             try
             {
-                foreach (var i in pkts)
+                foreach (Packet i in pkts)
                     pendingPackets.Enqueue(i);
                 if (CanSendPacket(send, false))
                 {
-                    var dat = (send.UserToken as SendToken).Packet.Write(parent);
+                    byte[] dat = (send.UserToken as SendToken).Packet.Write(parent);
 
                     sendState = SendState.Sending;
                     send.SetBuffer(dat, 0, dat.Length);

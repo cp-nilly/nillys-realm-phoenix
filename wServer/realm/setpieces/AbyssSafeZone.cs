@@ -46,19 +46,19 @@ namespace wServer.realm.setpieces
             t[3, 4] = 1;
 
 
-            for (var x = 0; x < 5; x++) //Rendering
-                for (var y = 0; y < 5; y++)
+            for (int x = 0; x < 5; x++) //Rendering
+                for (int y = 0; y < 5; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Floor;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
                         world.Map[x + pos.X, y + pos.Y] = tile;
                     }
                 }
-            var portal = Entity.Resolve(0x1733);
+            Entity portal = Entity.Resolve(0x1733);
             portal.Move(pos.X + 2.5f, pos.Y + 2.5f);
             world.EnterWorld(portal);
         }

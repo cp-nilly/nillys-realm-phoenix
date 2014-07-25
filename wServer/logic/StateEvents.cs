@@ -26,7 +26,7 @@ namespace wServer.logic
         {
             if (Host.Self.State == name)
             {
-                foreach (var i in behave)
+                foreach (Behavior i in behave)
                 {
                     i.Tick(Host, time);
                 }
@@ -54,7 +54,7 @@ namespace wServer.logic
         {
             if (Host.Self.State != name)
             {
-                foreach (var i in behave)
+                foreach (Behavior i in behave)
                 {
                     i.Tick(Host, time);
                 }
@@ -82,7 +82,7 @@ namespace wServer.logic
         {
             if (Host.Self.SubState == name)
             {
-                foreach (var i in behave)
+                foreach (Behavior i in behave)
                 {
                     i.Tick(Host, time);
                 }
@@ -113,7 +113,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var states = state.Split('.');
+            string[] states = state.Split('.');
             if (states[0] != null || states[0] != "")
             {
                 Host.Self.State = states[0];
@@ -163,7 +163,7 @@ namespace wServer.logic
         {
             if (!Host.StateTable.ContainsKey(Key))
             {
-                foreach (var i in x)
+                foreach (Behavior i in x)
                 {
                     i.Tick(Host, time);
                 }
@@ -197,7 +197,7 @@ namespace wServer.logic
         {
             if (Host.Self.State == name)
             {
-                foreach (var i in behave)
+                foreach (Behavior i in behave)
                 {
                     i.Tick(Host, (RealmTime) time);
                 }

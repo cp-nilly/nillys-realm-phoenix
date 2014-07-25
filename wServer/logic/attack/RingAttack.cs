@@ -41,26 +41,26 @@ namespace wServer.logic.attack
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Stunned)) return false;
-            var dist = radius;
-            var entity = radius == 0 ? null : GetNearestEntity(ref dist, null);
+            float dist = radius;
+            Entity entity = radius == 0 ? null : GetNearestEntity(ref dist, null);
             if (entity != null || radius == 0)
             {
                 var chr = Host as Character;
                 if (chr.Owner == null) return false;
-                var angle = entity == null ? offset : Math.Atan2(entity.Y - chr.Y, entity.X - chr.X) + offset;
-                var angleInc = (2*Math.PI)/this.count;
-                var desc = chr.ObjectDesc.Projectiles[projectileIndex];
+                double angle = entity == null ? offset : Math.Atan2(entity.Y - chr.Y, entity.X - chr.X) + offset;
+                double angleInc = (2*Math.PI)/this.count;
+                ProjectileDesc desc = chr.ObjectDesc.Projectiles[projectileIndex];
 
-                var count = this.count;
+                int count = this.count;
                 if (Host.Self.HasConditionEffect(ConditionEffects.Dazed))
                     count = Math.Max(1, count/2);
 
                 byte prjId = 0;
                 var prjPos = new Position {X = chr.X, Y = chr.Y};
-                var dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
-                for (var i = 0; i < count; i++)
+                int dmg = chr.Random.Next(desc.MinDamage, desc.MaxDamage);
+                for (int i = 0; i < count; i++)
                 {
-                    var prj = chr.CreateProjectile(
+                    Projectile prj = chr.CreateProjectile(
                         desc, chr.ObjectType, dmg, time.tickTimes,
                         prjPos, (float) (angle + angleInc*i));
                     chr.Owner.EnterWorld(prj);

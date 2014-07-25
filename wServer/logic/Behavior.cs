@@ -33,9 +33,9 @@ namespace wServer.logic
 
         public static bool HasPlayerNearby(Entity entity)
         {
-            foreach (var i in entity.Owner.PlayersCollision.HitTest(entity.X, entity.Y, 16))
+            foreach (Entity i in entity.Owner.PlayersCollision.HitTest(entity.X, entity.Y, 16))
             {
-                var d = Dist(i, entity);
+                float d = Dist(i, entity);
                 if (d < 16*16)
                     return true;
             }
@@ -44,9 +44,9 @@ namespace wServer.logic
 
         public static bool HasPlayerNearby(World world, double x, double y)
         {
-            foreach (var i in world.PlayersCollision.HitTest(x, y, 16))
+            foreach (Entity i in world.PlayersCollision.HitTest(x, y, 16))
             {
-                var d = Dist(i.X, i.Y, x, y);
+                double d = Dist(i.X, i.Y, x, y);
                 if (d < 16*16)
                     return true;
             }
@@ -55,8 +55,8 @@ namespace wServer.logic
 
         public static float DistSqr(Entity a, Entity b)
         {
-            var dx = a.X - b.X;
-            var dy = a.Y - b.Y;
+            float dx = a.X - b.X;
+            float dy = a.Y - b.Y;
             return dx*dx + dy*dy;
         }
 
@@ -76,11 +76,11 @@ namespace wServer.logic
             Entity ret = null;
             ;
             if (objType == null)
-                foreach (var i in Host.Self.Owner.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+                foreach (Entity i in Host.Self.Owner.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
                 {
                     if (!(i as IPlayer).IsVisibleToEnemy() &&
                         !Host.StateStorage.ContainsKey(MAGIC_EYE_KEY)) continue;
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < dist)
                     {
                         dist = d;
@@ -88,12 +88,12 @@ namespace wServer.logic
                     }
                 }
             else
-                foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+                foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
                 {
                     short any = 1;
                     if (i.ObjectType != objType.Value && objType.Value != any) continue;
                     if (i.isPet) continue;
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < dist)
                     {
                         dist = d;
@@ -107,19 +107,19 @@ namespace wServer.logic
         {
             if (Host.Self.Owner == null) yield break;
             if (objType == null)
-                foreach (var i in Host.Self.Owner.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+                foreach (Entity i in Host.Self.Owner.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
                 {
                     if (!(i as IPlayer).IsVisibleToEnemy() &&
                         !Host.StateStorage.ContainsKey(MAGIC_EYE_KEY)) continue;
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < dist)
                         yield return i;
                 }
             else
-                foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+                foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
                 {
                     if (i.ObjectType != objType.Value) continue;
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < dist)
                         yield return i;
                 }
@@ -129,10 +129,10 @@ namespace wServer.logic
         {
             if (Host.Self.Owner == null) return null;
             Entity ret = null;
-            foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+            foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
             {
                 if (i.ObjectDesc == null || i.ObjectDesc.Group != group) continue;
-                var d = Dist(i, Host.Self);
+                float d = Dist(i, Host.Self);
                 if (d < dist)
                 {
                     dist = d;
@@ -147,12 +147,12 @@ namespace wServer.logic
             if (Host.Self.Owner == null) return null;
             Entity ret = null;
             ;
-            foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+            foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
             {
                 if (i.isPet) continue;
                 if (!(i is Enemy)) continue;
                 if (!i.ObjectDesc.Enemy) continue;
-                var d = Dist(i, Host.Self);
+                float d = Dist(i, Host.Self);
                 if (d < dist)
                 {
                     dist = d;
@@ -166,10 +166,10 @@ namespace wServer.logic
         {
             if (Host.Self.Owner == null)
                 yield break;
-            foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+            foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
             {
                 if (i.ObjectDesc == null || i.ObjectDesc.Group != group) continue;
-                var d = Dist(i, Host.Self);
+                float d = Dist(i, Host.Self);
                 if (d < dist)
                     yield return i;
             }
@@ -181,11 +181,11 @@ namespace wServer.logic
             if (entity.Owner == null) return null;
             Entity ret = null;
             if (players)
-                foreach (var i in entity.Owner.PlayersCollision.HitTest(entity.X, entity.Y, dist))
+                foreach (Entity i in entity.Owner.PlayersCollision.HitTest(entity.X, entity.Y, dist))
                 {
                     if (!(i as IPlayer).IsVisibleToEnemy() ||
                         i == entity) continue;
-                    var d = Dist(i, entity);
+                    float d = Dist(i, entity);
                     if (d < dist)
                     {
                         if (predicate != null && !predicate(i))
@@ -195,10 +195,10 @@ namespace wServer.logic
                     }
                 }
             else
-                foreach (var i in entity.Owner.EnemiesCollision.HitTest(entity.X, entity.Y, dist))
+                foreach (Entity i in entity.Owner.EnemiesCollision.HitTest(entity.X, entity.Y, dist))
                 {
                     if (i == entity) continue;
-                    var d = Dist(i, entity);
+                    float d = Dist(i, entity);
                     if (d < dist)
                     {
                         if (predicate != null && !predicate(i))
@@ -213,20 +213,20 @@ namespace wServer.logic
         protected int CountEntity(float dist, short? objType)
         {
             if (Host.Self.Owner == null) return 0;
-            var ret = 0;
+            int ret = 0;
             if (objType == null)
-                foreach (var i in Host.Self.Owner.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+                foreach (Entity i in Host.Self.Owner.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
                 {
                     if (!(i as IPlayer).IsVisibleToEnemy()) continue;
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < dist)
                         ret++;
                 }
             else
-                foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+                foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
                 {
                     if (i.ObjectType != objType.Value) continue;
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < dist)
                         ret++;
                 }
@@ -236,11 +236,11 @@ namespace wServer.logic
         protected int CountEntity(float dist, string group)
         {
             if (Host.Self.Owner == null) return 0;
-            var ret = 0;
-            foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
+            int ret = 0;
+            foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, dist))
             {
                 if (i.ObjectDesc == null || i.ObjectDesc.Group != group) continue;
-                var d = Dist(i, Host.Self);
+                float d = Dist(i, Host.Self);
                 if (d < dist)
                     ret++;
             }
@@ -263,7 +263,7 @@ namespace wServer.logic
         protected IEnumerable<Entity> HitTestPlayer(float x, float y)
         {
             if (Host.Self.Owner == null) yield break;
-            foreach (var i in Host.Self.Owner.PlayersCollision.HitTest(x, y))
+            foreach (Entity i in Host.Self.Owner.PlayersCollision.HitTest(x, y))
             {
                 double xSide = (i.X - x);
                 double ySide = (i.Y - y);
@@ -275,7 +275,7 @@ namespace wServer.logic
         protected IEnumerable<Entity> HitTestEnemy(float x, float y)
         {
             if (Host.Self.Owner == null) yield break;
-            foreach (var i in Host.Self.Owner.EnemiesCollision.HitTest(x, y))
+            foreach (Entity i in Host.Self.Owner.EnemiesCollision.HitTest(x, y))
             {
                 double xSide = (i.X - x);
                 double ySide = (i.Y - y);
@@ -294,8 +294,8 @@ namespace wServer.logic
             if (Host.Self.ObjectDesc.Flying &&
                 Host.Self.Owner.Obstacles[(int) x, (int) y] != 2) return true;
 
-            var tile = Host.Self.Owner.Map[(int) x, (int) y];
-            var objId = tile.ObjType;
+            WmapTile tile = Host.Self.Owner.Map[(int) x, (int) y];
+            short objId = tile.ObjType;
             if (objId != 0 &&
                 XmlDatas.ObjectDescs[objId].OccupySquare)
                 return false;
@@ -334,7 +334,7 @@ namespace wServer.logic
             if (entity.ObjectDesc.Flying &&
                 entity.Owner.Obstacles[(int) x, (int) y] != 2) return true;
 
-            var objId = entity.Owner.Map[(int) x, (int) y].ObjType;
+            short objId = entity.Owner.Map[(int) x, (int) y].ObjType;
             if (objId != 0 &&
                 XmlDatas.ObjectDescs[objId].OccupySquare)
                 return false;
@@ -362,17 +362,17 @@ namespace wServer.logic
         protected void AOE(World world, float radius, short? objType, Action<Entity> callback) //Null for player
         {
             if (objType == null)
-                foreach (var i in world.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, radius))
+                foreach (Entity i in world.PlayersCollision.HitTest(Host.Self.X, Host.Self.Y, radius))
                 {
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < radius)
                         callback(i);
                 }
             else
-                foreach (var i in world.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, radius))
+                foreach (Entity i in world.EnemiesCollision.HitTest(Host.Self.X, Host.Self.Y, radius))
                 {
                     if (i.ObjectType != objType.Value) continue;
-                    var d = Dist(i, Host.Self);
+                    float d = Dist(i, Host.Self);
                     if (d < radius)
                         callback(i);
                 }
@@ -382,17 +382,17 @@ namespace wServer.logic
             //Null for player
         {
             if (players)
-                foreach (var i in world.PlayersCollision.HitTest(self.X, self.Y, radius))
+                foreach (Entity i in world.PlayersCollision.HitTest(self.X, self.Y, radius))
                 {
-                    var d = Dist(i, self);
+                    float d = Dist(i, self);
                     if (d < radius)
                         callback(i);
                 }
             else
-                foreach (var i in world.EnemiesCollision.HitTest(self.X, self.Y, radius))
+                foreach (Entity i in world.EnemiesCollision.HitTest(self.X, self.Y, radius))
                 {
                     if (!(i is Enemy)) continue;
-                    var d = Dist(i, self);
+                    float d = Dist(i, self);
                     if (d < radius)
                         callback(i);
                 }
@@ -402,17 +402,17 @@ namespace wServer.logic
             //Null for player
         {
             if (players)
-                foreach (var i in world.PlayersCollision.HitTest(pos.X, pos.Y, radius))
+                foreach (Entity i in world.PlayersCollision.HitTest(pos.X, pos.Y, radius))
                 {
-                    var d = Dist(i.X, i.Y, pos.X, pos.Y);
+                    double d = Dist(i.X, i.Y, pos.X, pos.Y);
                     if (d < radius)
                         callback(i);
                 }
             else
-                foreach (var i in world.EnemiesCollision.HitTest(pos.X, pos.Y, radius))
+                foreach (Entity i in world.EnemiesCollision.HitTest(pos.X, pos.Y, radius))
                 {
                     if (!(i is Enemy)) continue;
-                    var d = Dist(i.X, i.Y, pos.X, pos.Y);
+                    double d = Dist(i.X, i.Y, pos.X, pos.Y);
                     if (d < radius)
                         callback(i);
                 }
@@ -420,11 +420,11 @@ namespace wServer.logic
 
         public static void AOEPet(World world, Position pos, float radius, Action<Entity> callback) //Null for player
         {
-            foreach (var i in world.EnemiesCollision.HitTest(pos.X, pos.Y, radius))
+            foreach (Entity i in world.EnemiesCollision.HitTest(pos.X, pos.Y, radius))
             {
                 if (i.isPet) continue;
                 if (!(i is Enemy)) continue;
-                var d = Dist(i.X, i.Y, pos.X, pos.Y);
+                double d = Dist(i.X, i.Y, pos.X, pos.Y);
                 if (d < radius)
                     callback(i);
             }
@@ -547,7 +547,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            foreach (var i in behavs)
+            foreach (Behavior i in behavs)
                 i.Tick(Host, time);
             return true;
         }
@@ -564,16 +564,16 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var idx = 0;
+            int idx = 0;
             object obj;
             if (Host.StateStorage.TryGetValue(Key, out obj))
                 idx = (int) obj;
             else
                 idx = 0;
 
-            var repeat = false;
-            var c = 0;
-            var ret = false;
+            bool repeat = false;
+            int c = 0;
+            bool ret = false;
             do
             {
                 repeat = false;
@@ -648,7 +648,6 @@ namespace wServer.logic
         {
             this.cooldown = cooldown;
             this.behav = behav;
-            
         }
 
         public static Cooldown Instance(int cooldown, Behavior behav = null)
@@ -666,18 +665,18 @@ namespace wServer.logic
             object o;
             if (!Host.StateStorage.TryGetValue(Key, out o))
 
-                remainingTick = rand.Next(0, (int)cooldown);
+                remainingTick = rand.Next(0, (int) cooldown);
             else
             {
-                remainingTick = (int)o;
+                remainingTick = (int) o;
 
                 if (Host.Self.HasConditionEffect(ConditionEffects.Berserk))
                 {
-                    remainingTick = (int)cooldown / 2;
+                    remainingTick = (int) cooldown/2;
                 }
                 if (Host.Self.HasConditionEffect(ConditionEffects.Dazed))
                 {
-                    remainingTick = (int)cooldown * 2;
+                    remainingTick = (int) cooldown*2;
                 }
             }
 
@@ -746,49 +745,53 @@ namespace wServer.logic
 
     internal class RandomDelay2 : Behavior
     {
-      int min;
-      int max;
-      Behavior behav;
-      private RandomDelay2(int min, int max, Behavior behav)
-      {
-        this.min = min;
-        this.max = max;
-        this.behav = behav;
-      }
-      static readonly Dictionary<Tuple<int, int, Behavior>, RandomDelay2> instances = new Dictionary<Tuple<int, int, Behavior>, RandomDelay2>();
-      public static RandomDelay2 Instance(int min, int max, Behavior behav)
-      {
-        var key = new Tuple<int, int, Behavior>(min, max, behav);
-        RandomDelay2 ret;
-        if (!instances.TryGetValue(key, out ret))
-          ret = instances[key] = new RandomDelay2(min, max, behav);
-        return ret;
-      }
+        private static readonly Dictionary<Tuple<int, int, Behavior>, RandomDelay2> instances =
+            new Dictionary<Tuple<int, int, Behavior>, RandomDelay2>();
 
-      Random rand = new Random();
-      protected override bool TickCore(RealmTime time)
-      {
-        int remainingTick;
-        object o;
-        if (!Host.StateStorage.TryGetValue(Key, out o))
-          remainingTick = rand.Next(min, max);
-        else
-          remainingTick = (int)o;
+        private readonly Behavior behav;
+        private readonly int max;
+        private readonly int min;
+        private readonly Random rand = new Random();
 
-        remainingTick -= time.thisTickTimes;
-        bool ret;
-        if (remainingTick <= 0)
+        private RandomDelay2(int min, int max, Behavior behav)
         {
-          if (behav != null)
-            behav.Tick(Host, time);
-          remainingTick = rand.Next(min, max);
-          ret = true;
+            this.min = min;
+            this.max = max;
+            this.behav = behav;
         }
-        else
-          ret = false;
-        Host.StateStorage[Key] = remainingTick;
-        return ret;
-      }
+
+        public static RandomDelay2 Instance(int min, int max, Behavior behav)
+        {
+            var key = new Tuple<int, int, Behavior>(min, max, behav);
+            RandomDelay2 ret;
+            if (!instances.TryGetValue(key, out ret))
+                ret = instances[key] = new RandomDelay2(min, max, behav);
+            return ret;
+        }
+
+        protected override bool TickCore(RealmTime time)
+        {
+            int remainingTick;
+            object o;
+            if (!Host.StateStorage.TryGetValue(Key, out o))
+                remainingTick = rand.Next(min, max);
+            else
+                remainingTick = (int) o;
+
+            remainingTick -= time.thisTickTimes;
+            bool ret;
+            if (remainingTick <= 0)
+            {
+                if (behav != null)
+                    behav.Tick(Host, time);
+                remainingTick = rand.Next(min, max);
+                ret = true;
+            }
+            else
+                ret = false;
+            Host.StateStorage[Key] = remainingTick;
+            return ret;
+        }
     }
 
     internal class CooldownExact : Behavior
@@ -853,8 +856,8 @@ namespace wServer.logic
 
         public static Rand Instance(params Behavior[] behavs)
         {
-            var key = behavs.Length;
-            foreach (var i in behavs)
+            int key = behavs.Length;
+            foreach (Behavior i in behavs)
                 key = key*23 + i.GetHashCode();
             Rand ret;
             if (!instances.TryGetValue(key, out ret))
@@ -1012,84 +1015,92 @@ namespace wServer.logic
         }
     }
 
-    class IfLesser : Behavior
+    internal class IfLesser : Behavior
     {
-      int key;
-      int value;
-      Behavior result;
-      Behavior no;
-      private IfLesser(int key, int value, Behavior result, Behavior no)
-      {
-        this.key = key;
-        this.value = value;
-        this.result = result;
-        this.no = no;
-      }
-      static readonly Dictionary<Tuple<int, int, Behavior, Behavior>, IfLesser> instances = new Dictionary<Tuple<int, int, Behavior, Behavior>, IfLesser>();
-      public static IfLesser Instance(int key, int value, Behavior result, Behavior no = null)
-      {
-        Tuple<int, int, Behavior, Behavior> k = new Tuple<int, int, Behavior, Behavior>(key, value, result, no);
-        IfLesser ret;
-        if (!instances.TryGetValue(k, out ret))
-          ret = instances[k] = new IfLesser(key, value, result, no);
-        return ret;
-      }
+        private static readonly Dictionary<Tuple<int, int, Behavior, Behavior>, IfLesser> instances =
+            new Dictionary<Tuple<int, int, Behavior, Behavior>, IfLesser>();
 
-      protected override bool TickCore(RealmTime time)
-      {
-        object obj;
-        int val;
-        if (Host.StateStorage.TryGetValue(key, out obj))
-          val = (int)obj;
-        else
-          return false;
-        if (val < value)
-          return result.Tick(Host, time);
-        else if (no != null)
-          return no.Tick(Host, time);
-        return false;
-      }
+        private readonly int key;
+        private readonly Behavior no;
+        private readonly Behavior result;
+        private readonly int value;
+
+        private IfLesser(int key, int value, Behavior result, Behavior no)
+        {
+            this.key = key;
+            this.value = value;
+            this.result = result;
+            this.no = no;
+        }
+
+        public static IfLesser Instance(int key, int value, Behavior result, Behavior no = null)
+        {
+            var k = new Tuple<int, int, Behavior, Behavior>(key, value, result, no);
+            IfLesser ret;
+            if (!instances.TryGetValue(k, out ret))
+                ret = instances[k] = new IfLesser(key, value, result, no);
+            return ret;
+        }
+
+        protected override bool TickCore(RealmTime time)
+        {
+            object obj;
+            int val;
+            if (Host.StateStorage.TryGetValue(key, out obj))
+                val = (int) obj;
+            else
+                return false;
+            if (val < value)
+                return result.Tick(Host, time);
+            if (no != null)
+                return no.Tick(Host, time);
+            return false;
+        }
     }
 
-    class IfBetween : Behavior
+    internal class IfBetween : Behavior
     {
-      int key;
-      int minValue;
-      int maxValue;
-      Behavior result;
-      Behavior no;
-      private IfBetween(int key, int minValue, int maxValue, Behavior result, Behavior no)
-      {
-        this.key = key;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.result = result;
-        this.no = no;
-      }
-      static readonly Dictionary<Tuple<int, int, int, Behavior, Behavior>, IfBetween> instances = new Dictionary<Tuple<int, int, int, Behavior, Behavior>, IfBetween>();
-      public static IfBetween Instance(int key, int minValue, int maxValue, Behavior result, Behavior no = null)
-      {
-        Tuple<int, int, int, Behavior, Behavior> k = new Tuple<int, int, int, Behavior, Behavior>(key, minValue, maxValue, result, no);
-        IfBetween ret;
-        if (!instances.TryGetValue(k, out ret))
-          ret = instances[k] = new IfBetween(key, minValue, maxValue, result, no);
-        return ret;
-      }
+        private static readonly Dictionary<Tuple<int, int, int, Behavior, Behavior>, IfBetween> instances =
+            new Dictionary<Tuple<int, int, int, Behavior, Behavior>, IfBetween>();
 
-      protected override bool TickCore(RealmTime time)
-      {
-        object obj;
-        int val;
-        if (Host.StateStorage.TryGetValue(key, out obj))
-          val = (int)obj;
-        else
-          return false;
-        if (val < maxValue & val > minValue)
-          return result.Tick(Host, time);
-        else if (no != null)
-          return no.Tick(Host, time);
-        return false;
-      }
+        private readonly int key;
+        private readonly int maxValue;
+        private readonly int minValue;
+        private readonly Behavior no;
+        private readonly Behavior result;
+
+        private IfBetween(int key, int minValue, int maxValue, Behavior result, Behavior no)
+        {
+            this.key = key;
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+            this.result = result;
+            this.no = no;
+        }
+
+        public static IfBetween Instance(int key, int minValue, int maxValue, Behavior result, Behavior no = null)
+        {
+            var k = new Tuple<int, int, int, Behavior, Behavior>(key, minValue, maxValue, result, no);
+            IfBetween ret;
+            if (!instances.TryGetValue(k, out ret))
+                ret = instances[k] = new IfBetween(key, minValue, maxValue, result, no);
+            return ret;
+        }
+
+        protected override bool TickCore(RealmTime time)
+        {
+            object obj;
+            int val;
+            if (Host.StateStorage.TryGetValue(key, out obj))
+                val = (int) obj;
+            else
+                return false;
+            if (val < maxValue & val > minValue)
+                return result.Tick(Host, time);
+            if (no != null)
+                return no.Tick(Host, time);
+            return false;
+        }
     }
 
     internal class IfGreater : Behavior
@@ -1364,7 +1375,7 @@ namespace wServer.logic
 
         public static And Instance(Behavior x, Behavior y)
         {
-            var key = Tuple.Create(x, y);
+            Tuple<Behavior, Behavior> key = Tuple.Create(x, y);
             And ret;
             if (!instances.TryGetValue(key, out ret))
                 ret = instances[key] = new And(x, y);
@@ -1393,7 +1404,7 @@ namespace wServer.logic
 
         public static Or Instance(Behavior x, Behavior y)
         {
-            var key = Tuple.Create(x, y);
+            Tuple<Behavior, Behavior> key = Tuple.Create(x, y);
             Or ret;
             if (!instances.TryGetValue(key, out ret))
                 ret = instances[key] = new Or(x, y);
@@ -1519,7 +1530,7 @@ namespace wServer.logic
                 remainingTick = (int) o;
 
             remainingTick -= time.thisTickTimes;
-            var ret = behav.Tick(Host, time);
+            bool ret = behav.Tick(Host, time);
             if (remainingTick <= 0)
             {
                 remainingTick = this.time;
@@ -1559,7 +1570,7 @@ namespace wServer.logic
         {
             var enemy = Host as Enemy;
             enemy.DamageCounter.Death();
-            foreach (var i in enemy.CondBehaviors)
+            foreach (ConditionalBehavior i in enemy.CondBehaviors)
                 if ((i.Condition & BehaviorCondition.OnDeath) != 0)
                     i.Behave(BehaviorCondition.OnDeath, Host, null, enemy.DamageCounter);
             try
@@ -1602,7 +1613,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var dist = radius;
+            float dist = radius;
             return GetNearestEntity(ref dist, objType) != null;
         }
     }
@@ -1633,7 +1644,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var dist = radius;
+            float dist = radius;
             return GetNearestEntity(ref dist, objType) == null;
         }
     }
@@ -1724,7 +1735,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var dist = radius;
+            float dist = radius;
             return Dist(Host.Self.X, Host.Self.Y,
                 (Host.Self as Enemy).SpawnPoint.X,
                 (Host.Self as Enemy).SpawnPoint.Y) < radius;
@@ -1768,8 +1779,8 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var effLength = 0;
-            foreach (var i in effects)
+            int effLength = 0;
+            foreach (ConditionEffects i in effects)
                 if (Host.Self.HasConditionEffect(i))
                     effLength++;
             return effLength == effects.Length;
@@ -1818,12 +1829,12 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var desc = Host.Self;
+            Entity desc = Host.Self;
             if (desc.Tags.Count > 0)
             {
                 if (desc.Tags.ContainsTag(tag))
                 {
-                    foreach (var i in behaves)
+                    foreach (Behavior i in behaves)
                         i.Tick(Host, time);
                     return true;
                 }
@@ -1847,12 +1858,12 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var desc = Host.Self;
+            Entity desc = Host.Self;
             if (desc.Tags.Count > 0)
             {
                 if (desc.Tags.TagValue(tag, value) != null)
                 {
-                    foreach (var i in behaves)
+                    foreach (Behavior i in behaves)
                         i.Tick(Host, time);
                     return true;
                 }
@@ -1874,7 +1885,7 @@ namespace wServer.logic
         {
             try
             {
-                var ret = XmlDatas.ObjectDescs[objType].Tags.TagValue(name, value);
+                string ret = XmlDatas.ObjectDescs[objType].Tags.TagValue(name, value);
                 if (ret != null)
                     return ret;
                 return def;
@@ -1889,7 +1900,7 @@ namespace wServer.logic
         {
             try
             {
-                var ret = XmlDatas.ObjectDescs[objType].Tags.TagValue(name, value);
+                string ret = XmlDatas.ObjectDescs[objType].Tags.TagValue(name, value);
                 if (ret != null)
                     return Convert.ToInt32(ret);
                 return def;
@@ -1912,7 +1923,7 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            foreach (var i in behaves)
+            foreach (Behavior i in behaves)
             {
                 if (!i.Tick(Host, time))
                     continue;
@@ -1928,12 +1939,14 @@ namespace wServer.logic
 
         public PlayMusic(string name = "default")
         {
-            this.music = name;
+            music = name;
         }
 
         protected override bool TickCore(RealmTime time)
         {
-            Host.Self.Owner.BroadcastPacket(new SwitchMusicPacket() { Music = music == "default" ? Host.Self.Owner.GetMusic(new wRandom()) : music }, null);
+            Host.Self.Owner.BroadcastPacket(
+                new SwitchMusicPacket {Music = music == "default" ? Host.Self.Owner.GetMusic(new wRandom()) : music},
+                null);
             return true;
         }
     }

@@ -53,17 +53,17 @@ namespace wServer.realm.worlds
         {
             var enems = new List<string>();
             var r = new Random();
-            for (var i = 0; i < Math.Ceiling((double) (Wave + Players.Count)/2); i++)
+            for (int i = 0; i < Math.Ceiling((double) (Wave + Players.Count)/2); i++)
             {
                 enems.Add(RandomEnemies[r.Next(0, RandomEnemies.Length)]);
             }
             var r2 = new Random();
-            foreach (var i in enems)
+            foreach (string i in enems)
             {
-                var id = XmlDatas.IdToType[i];
-                var xloc = r2.Next(6, 27) + 0.5f;
-                var yloc = r2.Next(6, 27) + 0.5f;
-                var enemy = Entity.Resolve(id);
+                short id = XmlDatas.IdToType[i];
+                float xloc = r2.Next(6, 27) + 0.5f;
+                float yloc = r2.Next(6, 27) + 0.5f;
+                Entity enemy = Entity.Resolve(id);
                 enemy.Move(xloc, yloc);
                 EnterWorld(enemy);
             }
@@ -73,17 +73,17 @@ namespace wServer.realm.worlds
         {
             var enems = new List<string>();
             var r = new Random();
-            for (var i = 0; i < (1); i++)
+            for (int i = 0; i < (1); i++)
             {
                 enems.Add(RandomBosses[r.Next(0, RandomBosses.Length)]);
             }
             var r2 = new Random();
-            foreach (var i in enems)
+            foreach (string i in enems)
             {
-                var id = XmlDatas.IdToType[i];
-                var xloc = r2.Next(6, 27) + 0.5f;
-                var yloc = r2.Next(6, 27) + 0.5f;
-                var enemy = Entity.Resolve(id);
+                short id = XmlDatas.IdToType[i];
+                float xloc = r2.Next(6, 27) + 0.5f;
+                float yloc = r2.Next(6, 27) + 0.5f;
+                Entity enemy = Entity.Resolve(id);
                 enemy.Move(xloc, yloc);
                 EnterWorld(enemy);
             }
@@ -139,7 +139,7 @@ namespace wServer.realm.worlds
             {
                 if (!Flags["started"] && !Flags["counting"])
                 {
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new TextPacket
                         {
                             Stars = -1,
@@ -190,7 +190,7 @@ namespace wServer.realm.worlds
                         }
                         if (Wave > 35)
                         {
-                          RandomBosses = new[]
+                            RandomBosses = new[]
                             {
                                 "Thessal the Mermaid Goddess", "Crystal Prisoner", "Tomb Support", "Tomb Defender",
                                 "Tomb Attacker", "Oryx the Mad God 2", "Phoenix Wright", "Bridge Sentinel"
@@ -198,17 +198,17 @@ namespace wServer.realm.worlds
                         }
                         var db = new Database();
                         //FamePot = (Wave/2)*10/(Players.Count == 1 ? 1 : 2);
-                        if(Players.Count == 1)
+                        if (Players.Count == 1)
                         {
-                          FamePot = (Wave / 2) * 10;
+                            FamePot = (Wave/2)*10;
                         }
-                        else if(Wave % 2 == 1)
+                        else if (Wave%2 == 1)
                         {
-                          FamePot = ((Wave + 1) / 4) * 10;
+                            FamePot = ((Wave + 1)/4)*10;
                         }
                         else
                         {
-                          FamePot = (Wave / 4) * 10;
+                            FamePot = (Wave/4)*10;
                         }
                         foreach (var i in Players)
                         {
@@ -223,7 +223,8 @@ namespace wServer.realm.worlds
                             });
                             if (Math.IEEERemainder(Wave, 15) == 0)
                             {
-                                i.Value.Credits = i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                i.Value.Credits =
+                                    i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
                                 i.Value.UpdateCount++;
                             }
                         }
@@ -236,7 +237,7 @@ namespace wServer.realm.worlds
                         Healing.DurationMS = 6000;
                         foreach (var i in Players)
                         {
-                            i.Value.Client.SendPacket(new SwitchMusicPacket()
+                            i.Value.Client.SendPacket(new SwitchMusicPacket
                             {
                                 Music = "Arena"
                             });

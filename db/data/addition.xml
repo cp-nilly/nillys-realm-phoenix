@@ -1356,15 +1356,15 @@
       <LifetimeMS>350</LifetimeMS>
     </Projectile>
   </Object>
-  
+
   <Object type="0x370d" id="Wizard of the Void">
     <Group>Void Mob</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>5963805555163136</Id>
-      <Animated/>
+      <Animated />
     </RemoteTexture>
     <HitSound></HitSound>
     <DeathSound></DeathSound>
@@ -1383,12 +1383,12 @@
   </Object>
   <Object type="0x370e" id="Rogue of the Void">
     <Group>Void Mob</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>5562909012787200</Id>
-      <Animated/>
+      <Animated />
     </RemoteTexture>
     <HitSound></HitSound>
     <DeathSound></DeathSound>
@@ -1405,12 +1405,12 @@
   </Object>
   <Object type="0x370f" id="Priest of the Void">
     <Group>Void Mob</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>4901223264157696</Id>
-      <Animated/>
+      <Animated />
     </RemoteTexture>
     <HitSound></HitSound>
     <DeathSound></DeathSound>
@@ -4273,8 +4273,8 @@
       <Size>220</Size>
       <Speed>180</Speed>
       <LifetimeMS>2500</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
   <Object type="0x1561" id="Knight Generator">
@@ -4368,7 +4368,7 @@
   <Object type="0x1555" id="KingSlime Generator">
     <DisplayId>King Slime</DisplayId>
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <AnimatedTexture>
       <File>chars16x16rEncounters</File>
       <Index>107</Index>
@@ -4377,9 +4377,9 @@
     <Description>A unique creature that is said to have been created in a failed laboratory experiment.</Description>
     <Sound>spell/light_heal</Sound>
     <ScaleValue>3</ScaleValue>
-    <InvUse/>
-    <VaultItem/>
-    <Soulbound/>
+    <InvUse />
+    <VaultItem />
+    <Soulbound />
     <Activate objectId="KingSlime" cooldown="10">PermaPet</Activate>
     <OldSound>use_potion</OldSound>
   </Object>
@@ -4389,7 +4389,7 @@
       <File>chars16x16rEncounters</File>
       <Index>107</Index>
     </AnimatedTexture>
-    <NoMiniMap/>
+    <NoMiniMap />
     <Tag name="HP">
       <Min>75</Min>
       <Max>75</Max>
@@ -5663,9 +5663,9 @@
     </Projectile>
     <NoMiniMap />
   </Object>
-    <Object type="0xc5a" id="Shuriken of the Shining Star">
+  <Object type="0xc5a" id="Shuriken of the Shining Star">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>4615953549623296</Id>
@@ -5681,12 +5681,12 @@
       <MaxDamage>1000</MaxDamage>
       <LifetimeMS>1000</LifetimeMS>
       <Size>120</Size>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
-    <Usable/>
+    <Usable />
     <BagType>2</BagType>
     <MpCost>115</MpCost>
-    <MultiPhase/>
+    <MultiPhase />
     <Activate duration="6.5" objectId="SSubstituteO37">ShurikenAbility</Activate>
     <DisplayId>Shuriken of the Shining Star</DisplayId>
   </Object>
@@ -5712,13 +5712,13 @@
       <MaxDamage>1000</MaxDamage>
       <LifetimeMS>1000</LifetimeMS>
       <Size>120</Size>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
-    <NoMiniMap/>
+    <NoMiniMap />
   </Object>
   <Object type="0xc5b" id="Titanium Shuriken">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>6440020254654464</Id>
@@ -5734,12 +5734,12 @@
       <MaxDamage>1050</MaxDamage>
       <LifetimeMS>1000</LifetimeMS>
       <Size>120</Size>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
-    <Usable/>
+    <Usable />
     <BagType>2</BagType>
     <MpCost>130</MpCost>
-    <MultiPhase/>
+    <MultiPhase />
     <Activate duration="7" objectId="SSubstituteO38">ShurikenAbility</Activate>
     <DisplayId>Titanium Shuriken</DisplayId>
   </Object>
@@ -5765,9 +5765,9 @@
       <MaxDamage>1050</MaxDamage>
       <LifetimeMS>1000</LifetimeMS>
       <Size>120</Size>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
-    <NoMiniMap/>
+    <NoMiniMap />
   </Object>
   <Object type="0x3f01" id="Party Balloons">
     <Class>Equipment</Class>
@@ -6034,7 +6034,7 @@
     <Activate effect="Berserk" duration="3">ConditionEffectSelf</Activate>
     <Activate>BulletNova</Activate>
     <Cooldown>6</Cooldown>
-    <Soulbound/>
+    <Soulbound />
   </Object>
   <Object type="0x0f19" id="Mallard Hide">
     <Class>Equipment</Class>
@@ -6179,7 +6179,7 @@
     <Size>130</Size>
     <Enemy />
     <XpMult>1.5</XpMult>
-    <StasisImmune/>
+    <StasisImmune />
 
     <Projectile id="0">
       <ObjectId>Green Power Wave</ObjectId>
@@ -6214,7 +6214,7 @@
     <Size>130</Size>
     <Enemy />
     <XpMult>1.5</XpMult>
-    <StasisImmune/>
+    <StasisImmune />
 
     <Projectile id="0">
       <ObjectId>Blue Power Wave</ObjectId>
@@ -6249,7 +6249,7 @@
     <Size>130</Size>
     <Enemy />
     <XpMult>1.5</XpMult>
-    <StasisImmune/>
+    <StasisImmune />
 
     <Projectile id="0">
       <ObjectId>Red Power Wave</ObjectId>
@@ -6309,7 +6309,7 @@
 
     <Enemy />
     <God />
-    <StasisImmune/>
+    <StasisImmune />
     <XpMult>4</XpMult>
 
     <Projectile id="0">
@@ -6372,7 +6372,7 @@
 
   <Object type="0x5005" id="Stone Knight">
     <Group>Titanumminions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6398,11 +6398,11 @@
       <Size>140</Size>
       <LifetimeMS>200</LifetimeMS>
       <ConditionEffect duration="4">Stunned</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
   </Object>
   <Object type="0x5006" id="Fire Mage">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6442,7 +6442,7 @@
   </Object>
   <Object type="0x5007" id="Stone Mage">
     <Group>Titanumminions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6528,7 +6528,7 @@
     <Rotation>50</Rotation>
   </Object>
   <Object type="0x5009" id="Ice Mage">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6547,11 +6547,11 @@
       <Size>110</Size>
       <LifetimeMS>2000</LifetimeMS>
       <ConditionEffect duration="2">Slowed</ConditionEffect>
-      <Boomerang/>
+      <Boomerang />
     </Projectile>
   </Object>
   <Object type="0x5011" id="Fire Adept">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6570,8 +6570,8 @@
       <Size>110</Size>
       <LifetimeMS>2000</LifetimeMS>
       <ConditionEffect duration="3">Weak</ConditionEffect>
-      <ArmorPiercing/>
-      <Boomerang/>
+      <ArmorPiercing />
+      <Boomerang />
     </Projectile>
     <Projectile id="1">
       <ObjectId>Fire Missile</ObjectId>
@@ -6589,7 +6589,7 @@
     </Projectile>
   </Object>
   <Object type="0x5012" id="Ice Adept">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6608,8 +6608,8 @@
       <Size>110</Size>
       <LifetimeMS>2000</LifetimeMS>
       <ConditionEffect duration="3">Weak</ConditionEffect>
-      <ArmorPiercing/>
-      <Boomerang/>
+      <ArmorPiercing />
+      <Boomerang />
     </Projectile>
     <Projectile id="1">
       <ObjectId>Blue Star</ObjectId>
@@ -6621,7 +6621,7 @@
     </Projectile>
   </Object>
   <Object type="0x5013" id="Titanum">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6643,7 +6643,7 @@
     </Projectile>
   </Object>
   <Object type="0x5020" id="Stone Paladin">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6664,7 +6664,7 @@
     </Projectile>
   </Object>
   <Object type="0x5022" id="Paladin Obelisk">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6694,7 +6694,7 @@
     </Projectile>
   </Object>
   <Object type="0x5027" id="Archmage of Flame">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6719,8 +6719,8 @@
       <Damage>75</Damage>
       <Size>100</Size>
       <LifetimeMS>2000</LifetimeMS>
-      <ArmorPiercing/>
-      <Boomerang/>
+      <ArmorPiercing />
+      <Boomerang />
     </Projectile>
   </Object>
   <Object type="0x5035" id="Large Blue Shuriken">
@@ -6788,7 +6788,7 @@
     <Rotation>50</Rotation>
   </Object>
   <Object type="0x5034" id="Twilight Archmage">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6813,7 +6813,7 @@
       <Damage>75</Damage>
       <Size>100</Size>
       <LifetimeMS>1000</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
     </Projectile>
     <Projectile id="2">
       <ObjectId>Archmage Shield</ObjectId>
@@ -6837,7 +6837,7 @@
       <Damage>50</Damage>
       <Size>140</Size>
       <LifetimeMS>1000</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
     </Projectile>
     <Projectile id="5">
       <ObjectId>Confuse Shuriken</ObjectId>
@@ -6856,7 +6856,7 @@
     </Projectile>
   </Object>
   <Object type="0x5048" id="The Forgotten King">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6881,7 +6881,7 @@
       <Damage>75</Damage>
       <Size>100</Size>
       <LifetimeMS>1000</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
     </Projectile>
     <Projectile id="2">
       <ObjectId>Archmage Shield</ObjectId>
@@ -6905,7 +6905,7 @@
       <Damage>50</Damage>
       <Size>140</Size>
       <LifetimeMS>1000</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
     </Projectile>
     <Projectile id="5">
       <ObjectId>Confuse Shuriken</ObjectId>
@@ -6925,7 +6925,7 @@
   </Object>
   <Object type="0x5049" id="Shatters Key">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>105357490</Id>
@@ -6933,13 +6933,13 @@
     <SlotType>10</SlotType>
     <Description>Do you dare enter?</Description>
     <Sound>use_key</Sound>
-    <Consumable/>
-    <Soulbound/>
+    <Consumable />
+    <Soulbound />
     <Activate id="Shatters Portal">Create</Activate>
   </Object>
   <Object type="0x5050" id="Shatters Portal">
     <Class>Portal</Class>
-    <IntergamePortal/>
+    <IntergamePortal />
     <DungeonName>The Shatters</DungeonName>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6947,7 +6947,7 @@
     </RemoteTexture>
   </Object>
   <Object type="0x5047" id="Royal Guardian">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -6994,7 +6994,7 @@
     <Size>0</Size>
     <Defense>0</Defense>
     <XpMult>0.0</XpMult>
-    <NoMiniMap/>
+    <NoMiniMap />
   </Object>
   <Object type="0x5042" id="Gate Killer">
     <Class>Character</Class>
@@ -7005,11 +7005,11 @@
     <Size>0</Size>
     <Defense>0</Defense>
     <XpMult>0.0</XpMult>
-    <NoMiniMap/>
+    <NoMiniMap />
   </Object>
   <Object type="0x5043" id="Bow of Forgotten Souls">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>118885414</Id>
@@ -7024,8 +7024,8 @@
       <MinDamage>50</MinDamage>
       <MaxDamage>60</MaxDamage>
       <LifetimeMS>300</LifetimeMS>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
@@ -7035,7 +7035,7 @@
   </Object>
   <Object type="0x5044" id="Quiver of Galactic Impact">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>118891289</Id>
@@ -7051,12 +7051,12 @@
       <LifetimeMS>1000</LifetimeMS>
       <Size>150</Size>
       <ConditionEffect duration="4">Armor Broken</ConditionEffect>
-      <ParticleTrail/>
+      <ParticleTrail />
     </Projectile>
     <ActivateOnEquip stat="0" amount="25">IncrementStat</ActivateOnEquip>
     <ActivateOnEquip stat="28" amount="5">IncrementStat</ActivateOnEquip>
     <ActivateOnEquip stat="27" amount="8">IncrementStat</ActivateOnEquip>
-    <Usable/>
+    <Usable />
     <BagType>4</BagType>
     <FameBonus>6</FameBonus>
     <MpCost>100</MpCost>
@@ -7065,7 +7065,7 @@
   </Object>
   <Object type="0x5045" id="Aegis of the Lost City">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>118880766</Id>
@@ -7080,7 +7080,7 @@
   </Object>
   <Object type="0x5046" id="Amulet of Defense">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>119018178</Id>
@@ -7093,7 +7093,7 @@
     <FameBonus>5</FameBonus>
   </Object>
   <Object type="0x5028" id="Glassier Archmage">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -7118,8 +7118,8 @@
       <Damage>75</Damage>
       <Size>100</Size>
       <LifetimeMS>2000</LifetimeMS>
-      <ArmorPiercing/>
-      <Boomerang/>
+      <ArmorPiercing />
+      <Boomerang />
     </Projectile>
   </Object>
   <Object type="0x5029" id="Bridge Wall">
@@ -7137,17 +7137,17 @@
     <HitSound>monster/wooden_walls_hit</HitSound>
     <DeathSound>monster/wooden_walls_death</DeathSound>
     <MaxHitPoints>999999999</MaxHitPoints>
-    <Static/>
-    <FullOccupy/>
-    <OccupySquare/>
-    <EnemyOccupySquare/>
-    <Enemy/>
+    <Static />
+    <FullOccupy />
+    <OccupySquare />
+    <EnemyOccupySquare />
+    <Enemy />
     <XpMult>0.0</XpMult>
-    <BlocksSight/>
+    <BlocksSight />
   </Object>
   <Object type="0x5026" id="Sword of the Archpaladin">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>35655515</Id>
@@ -7170,7 +7170,7 @@
   </Object>
   <Object type="0x5025" id="Hallowed Shield">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>105850966</Id>
@@ -7186,15 +7186,15 @@
       <LifetimeMS>200</LifetimeMS>
       <Size>140</Size>
       <ConditionEffect duration="3.5">Stunned</ConditionEffect>
-      <MultiHit/>
-      <PassesCover/>
-      <ParticleTrail/>
+      <MultiHit />
+      <PassesCover />
+      <ParticleTrail />
     </Projectile>
     <ActivateOnEquip stat="21" amount="10">IncrementStat</ActivateOnEquip>
     <ActivateOnEquip stat="26" amount="8">IncrementStat</ActivateOnEquip>
     <ActivateOnEquip stat="0" amount="50">IncrementStat</ActivateOnEquip>
     <ConditionEffect duration="3.5">Stunned</ConditionEffect>
-    <Usable/>
+    <Usable />
     <BagType>4</BagType>
     <FameBonus>4</FameBonus>
     <MpCost>100</MpCost>
@@ -7203,7 +7203,7 @@
   </Object>
   <Object type="0x5024" id="Holy Breastplate">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>106542955</Id>
@@ -7218,7 +7218,7 @@
   </Object>
   <Object type="0x5023" id="Amulet of Vitality">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>106827117</Id>
@@ -7229,7 +7229,7 @@
     <ActivateOnEquip stat="0" amount="100">IncrementStat</ActivateOnEquip>
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
-    <Resurrects/>
+    <Resurrects />
   </Object>
   <Object type="0x5030" id="Stone Guardian Anchor Middle">
     <Class>Character</Class>
@@ -7240,10 +7240,10 @@
     <Size>0</Size>
     <Defense>0</Defense>
     <XpMult>0.0</XpMult>
-    <NoMiniMap/>
+    <NoMiniMap />
   </Object>
   <Object type="0x5015" id="Bridge Sentinel">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -7299,16 +7299,16 @@
 
   <Object type="0x2f62" id="Phoenix God">
     <Group>Phoenix God Encounter</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <Hero/>
-    <Quest/>
-    <God/>
-    <Encounter/>
-    <StasisImmune/>
+    <Hero />
+    <Quest />
+    <God />
+    <Encounter />
+    <StasisImmune />
     <Level>20</Level>
     <PerRealmMax>1</PerRealmMax>
-    <KeepDamageRecord/>
+    <KeepDamageRecord />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>4689799044661248</Id>
@@ -7332,9 +7332,9 @@
       <Damage>20</Damage>
       <Speed>95</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="1">
@@ -7342,8 +7342,8 @@
       <Damage>80</Damage>
       <Speed>120</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="2">
@@ -7354,8 +7354,8 @@
       <ConditionEffect duration="3">Slowed</ConditionEffect>
       <ConditionEffect duration="3">Quiet</ConditionEffect>
       <ConditionEffect duration="1.5">ArmorBroken</ConditionEffect>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="3">
@@ -7363,9 +7363,9 @@
       <Damage>40</Damage>
       <Speed>90</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="4">
@@ -7373,9 +7373,9 @@
       <Damage>60</Damage>
       <Speed>40</Speed>
       <LifetimeMS>18000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="5">
@@ -7385,8 +7385,8 @@
       <LifetimeMS>5000</LifetimeMS>
       <ConditionEffect duration="3.5">Slowed</ConditionEffect>
       <ConditionEffect duration="3.5">Quiet</ConditionEffect>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="6">
@@ -7394,9 +7394,9 @@
       <Damage>50</Damage>
       <Speed>80</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
 
   </Object>
@@ -7404,14 +7404,14 @@
   <Object type="0x2f63" id="PhoenixGodPhase1">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Encounter</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -7419,21 +7419,21 @@
       <Damage>95</Damage>
       <Speed>100</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
   </Object>
 
   <Object type="0x2f64" id="PhoenixGodPhase3">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Encounter</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
   </Object>
@@ -7441,14 +7441,14 @@
   <Object type="0x2f65" id="PhoenixGodPhase6Red">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Encounter Phase 6</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -7456,22 +7456,22 @@
       <Damage>95</Damage>
       <Speed>100</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2f66" id="PhoenixGodPhase6Blue">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Encounter Phase 6</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -7479,15 +7479,15 @@
       <Damage>95</Damage>
       <Speed>100</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2f67" id="Unstable Fire Bird">
     <DisplayID>Unstable Fire Bird</DisplayID>
     <Group>Phoenix God Encounter</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <AnimatedTexture>
       <File>chars8x8rHero1</File>
@@ -7502,7 +7502,7 @@
       <Damage>80</Damage>
       <Speed>110</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
     <Projectile id="1">
       <ObjectId>Fire Spinner</ObjectId>
@@ -7510,15 +7510,15 @@
       <Speed>30</Speed>
       <LifetimeMS>8000</LifetimeMS>
       <Size>175</Size>
-      <MultiHit/>
-      <ArmorPiercing/>
-      <PassesCover/>
+      <MultiHit />
+      <ArmorPiercing />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2f68" id="Phoenix Hide Armor">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Texture>
       <File>lofiObj3</File>
       <Index>0x3de</Index>
@@ -7535,7 +7535,7 @@
 
   <Object type="0x2f69" id="Robe of the Fire Bird">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Texture>
       <File>lofiObj3</File>
       <Index>0x3e0</Index>
@@ -7553,7 +7553,7 @@
 
   <Object type="0x2f6a" id="Armor of Everlasting Life">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Texture>
       <File>lofiObj3</File>
       <Index>0x3e1</Index>
@@ -7576,14 +7576,14 @@
       <Id>6322900246200320</Id>
     </RemoteTexture>
     <BlendPriority>6</BlendPriority>
-    <RandomOffset/>
+    <RandomOffset />
     <MinDamage>1</MinDamage>
     <MaxDamage>5</MaxDamage>
   </Ground>
 
   <Object type="0x2f6f" id="Armored Guardian">
     <Group>The Eternal Crucible A</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <AnimatedTexture>
       <File>chars8x8rMid</File><Index>17</Index>
@@ -7599,7 +7599,7 @@
       <Damage>80</Damage>
       <Speed>95</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="1">
@@ -7608,10 +7608,10 @@
       <Speed>50</Speed>
       <LifetimeMS>4500</LifetimeMS>
       <Size>100</Size>
-      <MultiHit/>
-      <ArmorPiercing/>
-      <PassesCover/>
-      <Boomerang/>
+      <MultiHit />
+      <ArmorPiercing />
+      <PassesCover />
+      <Boomerang />
     </Projectile>
 
     <Projectile id="2">
@@ -7619,7 +7619,7 @@
       <Damage>70</Damage>
       <Speed>30</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="3">
@@ -7627,7 +7627,7 @@
       <Damage>70</Damage>
       <Speed>40</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="4">
@@ -7635,7 +7635,7 @@
       <Damage>80</Damage>
       <Speed>50</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="5">
@@ -7643,7 +7643,7 @@
       <Damage>80</Damage>
       <Speed>60</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="6">
@@ -7651,7 +7651,7 @@
       <Damage>80</Damage>
       <Speed>70</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="7">
@@ -7659,7 +7659,7 @@
       <Damage>80</Damage>
       <Speed>80</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="8">
@@ -7667,14 +7667,14 @@
       <Damage>80</Damage>
       <Speed>90</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
   </Object>
 
   <Object type="0x2f70" id="Surprise Carrier">
     <Group>The Eternal Crucible A</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -7688,7 +7688,7 @@
       <Damage>80</Damage>
       <Speed>125</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
   </Object>
 
@@ -7716,11 +7716,11 @@
   <Object type="0x2f75" id="Scorching Crucible Monolith">
     <DisplayID>Scorching Crucible Monolith</DisplayID>
     <Group>Monoliths</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <Quest/>
-    <God/>
-    <StasisImmune/>
+    <Quest />
+    <God />
+    <StasisImmune />
     <Level>1</Level>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -7735,9 +7735,9 @@
       <Damage>50</Damage>
       <Speed>95</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
     <Projectile id="1">
       <ObjectId>Fire Spinner</ObjectId>
@@ -7747,17 +7747,17 @@
       <ConditionEffect duration="3">Slowed</ConditionEffect>
       <ConditionEffect duration="3">Quiet</ConditionEffect>
       <ConditionEffect duration="1.5">ArmorBroken</ConditionEffect>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
     <Projectile id="2">
       <ObjectId>Mute Spell</ObjectId>
       <Damage>80</Damage>
       <Speed>90</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
     <Projectile id="3">
       <ObjectId>Dragon Attack Red Big Fireball</ObjectId>
@@ -7765,31 +7765,31 @@
       <Speed>70</Speed>
       <LifetimeMS>18000</LifetimeMS>
       <Size>180</Size>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
     <Projectile id="4">
       <ObjectId>Fire Bolt</ObjectId>
       <Damage>100</Damage>
       <Speed>80</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
   </Object>
 
   <Object type="0x2f76" id="ScorchMonolithLava">
     <DisplayID>Scorching Crucible Monolith</DisplayID>
     <Group>Monolith Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
   </Object>
@@ -7797,7 +7797,7 @@
   <Object type="0x2f77" id="Lava Creature">
     <DisplayID>Lava Creature</DisplayID>
     <Group>Monolith Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <AnimatedTexture>
       <File>chars8x8rMid</File><Index>27</Index>
@@ -7811,7 +7811,7 @@
       <Damage>140</Damage>
       <Speed>80</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
     <Projectile id="1">
       <ObjectId>Fire Spinner</ObjectId>
@@ -7819,15 +7819,15 @@
       <Speed>60</Speed>
       <LifetimeMS>8000</LifetimeMS>
       <Size>175</Size>
-      <MultiHit/>
-      <ArmorPiercing/>
-      <PassesCover/>
+      <MultiHit />
+      <ArmorPiercing />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2f78" id="Potion of the Inferno">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Texture>
       <File>lofiObj3</File>
       <Index>0x3df</Index>
@@ -7838,22 +7838,22 @@
     <Activate stat="20" amount="3">IncrementStat</Activate>
     <Activate stat="22" amount="3">IncrementStat</Activate>
     <Activate stat="28" amount="3">IncrementStat</Activate>
-    <Consumable/>
-    <Potion/>
+    <Consumable />
+    <Potion />
     <BagType>4</BagType>
   </Object>
 
   <Object type="0x2f79" id="Scorching Voice">
     <DisplayID>Scorching Voice</DisplayID>
     <Group>Monolith Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
   </Object>
@@ -7861,10 +7861,10 @@
   <Object type="0x2f7a" id="Eternal Crucible Monolith Spawn">
     <DisplayID>Scorching Crucible Monolith</DisplayID>
     <Group>Monolith Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <NoMiniMap/>
-    <StasisImmune/>
+    <NoMiniMap />
+    <StasisImmune />
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
@@ -7877,11 +7877,11 @@
   <Object type="0x2f7b" id="Eternal Crucible Monolith">
     <DisplayID>Eternal Crucible Monolith</DisplayID>
     <Group>Monoliths</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <Quest/>
-    <God/>
-    <StasisImmune/>
+    <Quest />
+    <God />
+    <StasisImmune />
     <Level>1</Level>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -7898,8 +7898,8 @@
       <Speed>150</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>110</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
       <ConditionEffect duration="6">Slowed</ConditionEffect>
       <ConditionEffect duration="4">Quiet</ConditionEffect>
       <ConditionEffect duration="2">ArmorBroken</ConditionEffect>
@@ -7912,8 +7912,8 @@
       <Speed>90</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>120</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
       <ConditionEffect duration="1.5">Slowed</ConditionEffect>
     </Projectile>
 
@@ -7923,8 +7923,8 @@
       <Speed>60</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>200</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="3">
@@ -7933,8 +7933,8 @@
       <Speed>120</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>100</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="4">
@@ -7943,22 +7943,22 @@
       <Speed>100</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>100</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
   </Object>
 
   <Object type="0x2f7c" id="Shock Element C">
     <DisplayID>Shock Element</DisplayID>
     <Group>Shock Elements</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
 
@@ -7968,8 +7968,8 @@
       <Speed>110</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>85</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
@@ -7977,14 +7977,14 @@
   <Object type="0x2f7d" id="Shock Element D">
     <DisplayID>Shock Element</DisplayID>
     <Group>Shock Elementss</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
 
@@ -7994,8 +7994,8 @@
       <Speed>60</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>200</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
@@ -8003,14 +8003,14 @@
   <Object type="0x2f7e" id="Shock Element E">
     <DisplayID>Shock Element</DisplayID>
     <Group>Shock Elements</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
 
@@ -8020,8 +8020,8 @@
       <Speed>120</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>100</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
@@ -8029,14 +8029,14 @@
   <Object type="0x2f7f" id="Shock Element F">
     <DisplayID>Shock Element</DisplayID>
     <Group>Shock Elements</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
 
@@ -8046,15 +8046,15 @@
       <Speed>100</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>100</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
 
   <Object type="0x2f80" id="Supreme Guardian">
     <Group>The Eternal Crucible B</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <AnimatedTexture>
       <File>chars8x8rMid</File><Index>18</Index>
@@ -8070,8 +8070,8 @@
       <Damage>90</Damage>
       <Speed>100</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="1">
@@ -8079,15 +8079,15 @@
       <Damage>140</Damage>
       <Speed>75</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
 
   <Object type="0x2f81" id="Potion of the Immortals">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Texture>
       <File>lofiObj3</File>
       <Index>0x3e2</Index>
@@ -8098,22 +8098,22 @@
     <Activate stat="27" amount="3">IncrementStat</Activate>
     <Activate stat="26" amount="3">IncrementStat</Activate>
     <Activate stat="21" amount="3">IncrementStat</Activate>
-    <Consumable/>
-    <Potion/>
+    <Consumable />
+    <Potion />
     <BagType>4</BagType>
   </Object>
 
   <Object type="0x2f82" id="Eternal Voice">
     <DisplayID>Eternal Voice</DisplayID>
     <Group>Monolith Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
   </Object>
@@ -8137,10 +8137,10 @@
   <Object type="0x2f99" id="Phoenix God Spawn">
     <DisplayID>Phoenix God Shielded</DisplayID>
     <Group>Phoenix God Boss Battle</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <NoMiniMap/>
-    <StasisImmune/>
+    <NoMiniMap />
+    <StasisImmune />
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
@@ -8153,13 +8153,13 @@
   <Object type="0x2fa0" id="Phoenix God Shielded">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Boss Battle</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <Quest/>
-    <God/>
-    <StasisImmune/>
+    <Quest />
+    <God />
+    <StasisImmune />
     <Level>20</Level>
-    <KeepDamageRecord/>
+    <KeepDamageRecord />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>6040272188211200</Id>
@@ -8176,9 +8176,9 @@
       <Damage>20</Damage>
       <Speed>175</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
       <ConditionEffect duration="5">Slowed</ConditionEffect>
       <ConditionEffect duration="5">Quiet</ConditionEffect>
       <ConditionEffect duration="1.5">ArmorBroken</ConditionEffect>
@@ -8189,8 +8189,8 @@
       <Damage>200</Damage>
       <Speed>90</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="2">
@@ -8199,8 +8199,8 @@
       <Speed>60</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>80</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="3">
@@ -8209,8 +8209,8 @@
       <Speed>90</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>220</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="4">
@@ -8218,8 +8218,8 @@
       <Damage>150</Damage>
       <Speed>40</Speed>
       <LifetimeMS>18000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="5">
@@ -8228,8 +8228,8 @@
       <Speed>75</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>130</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="6">
@@ -8238,8 +8238,8 @@
       <Speed>40</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>80</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
@@ -8247,14 +8247,14 @@
   <Object type="0x2fa2" id="Red Fiery Vortex">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God E1</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8262,22 +8262,22 @@
       <Damage>120</Damage>
       <Speed>70</Speed>
       <LifetimeMS>7000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2fa3" id="Blue Fiery Vortex">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God E1</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8285,8 +8285,8 @@
       <Damage>120</Damage>
       <Speed>70</Speed>
       <LifetimeMS>7000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
@@ -8301,14 +8301,14 @@
   <Object type="0x2fa5" id="Fiery Streams">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God E2</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8316,8 +8316,8 @@
       <Damage>250</Damage>
       <Speed>65</Speed>
       <LifetimeMS>16000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
       <Size>700</Size>
     </Projectile>
   </Object>
@@ -8325,14 +8325,14 @@
   <Object type="0x2fa6" id="FSA">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God E2</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
   </Object>
@@ -8340,14 +8340,14 @@
   <Object type="0x2fa7" id="FSB">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God E2</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
   </Object>
@@ -8355,14 +8355,14 @@
   <Object type="0x2fa8" id="Fiery Barrage">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God E3</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8370,8 +8370,8 @@
       <Damage>80</Damage>
       <Speed>75</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
@@ -8381,21 +8381,21 @@
       <Index>0x64</Index>
     </Texture>
     <BlendPriority>8</BlendPriority>
-    <RandomOffset/>
-    <NoWalk/>
+    <RandomOffset />
+    <NoWalk />
   </Ground>
 
   <Object type="0x2fa9" id="Phoenix Space Vortex">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God E4</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8403,21 +8403,21 @@
       <Damage>80</Damage>
       <Speed>70</Speed>
       <LifetimeMS>6000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2faa" id="Phoenix God Egg">
     <DisplayID>Phoenix God Egg</DisplayID>
     <Group>Phoenix God Boss Battle</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <Quest/>
-    <God/>
-    <StasisImmune/>
+    <Quest />
+    <God />
+    <StasisImmune />
     <Level>20</Level>
-    <KeepDamageRecord/>
+    <KeepDamageRecord />
     <Texture>
       <File>lofiChar28x8</File>
       <Index>0x54</Index>
@@ -8434,9 +8434,9 @@
       <Damage>20</Damage>
       <Speed>175</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
       <ConditionEffect duration="5">Slowed</ConditionEffect>
       <ConditionEffect duration="5">Quiet</ConditionEffect>
       <ConditionEffect duration="1.5">ArmorBroken</ConditionEffect>
@@ -8448,8 +8448,8 @@
       <Speed>60</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>200</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="2">
@@ -8458,8 +8458,8 @@
       <Speed>60</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>120</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="3">
@@ -8467,8 +8467,8 @@
       <Damage>180</Damage>
       <Speed>40</Speed>
       <LifetimeMS>18000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="4">
@@ -8477,8 +8477,8 @@
       <Speed>75</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>160</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
@@ -8486,13 +8486,13 @@
   <Object type="0x2fab" id="Phoenix God Reborn">
     <DisplayID>Phoenix God Reborn</DisplayID>
     <Group>Phoenix God Boss Battle</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
-    <Quest/>
-    <God/>
-    <StasisImmune/>
+    <Quest />
+    <God />
+    <StasisImmune />
     <Level>20</Level>
-    <KeepDamageRecord/>
+    <KeepDamageRecord />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>6040272188211200</Id>
@@ -8509,9 +8509,9 @@
       <Damage>100</Damage>
       <Speed>175</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <PassesCover />
+      <ArmorPiercing />
+      <MultiHit />
       <ConditionEffect duration="5">Slowed</ConditionEffect>
       <ConditionEffect duration="5">Quiet</ConditionEffect>
       <ConditionEffect duration="3">ArmorBroken</ConditionEffect>
@@ -8524,8 +8524,8 @@
       <Speed>80</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>220</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="2">
@@ -8534,8 +8534,8 @@
       <Speed>60</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>80</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="3">
@@ -8544,8 +8544,8 @@
       <Speed>90</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>220</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="4">
@@ -8553,8 +8553,8 @@
       <Damage>150</Damage>
       <Speed>40</Speed>
       <LifetimeMS>18000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="5">
@@ -8563,8 +8563,8 @@
       <Speed>75</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>130</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="6">
@@ -8573,8 +8573,8 @@
       <Speed>40</Speed>
       <LifetimeMS>5000</LifetimeMS>
       <Size>80</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="7">
@@ -8582,9 +8582,9 @@
       <Damage>55</Damage>
       <Speed>150</Speed>
       <LifetimeMS>6000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
-      <ArmorPiercing/>
+      <PassesCover />
+      <MultiHit />
+      <ArmorPiercing />
     </Projectile>
 
     <Projectile id="8">
@@ -8593,8 +8593,8 @@
       <Speed>50</Speed>
       <LifetimeMS>9000</LifetimeMS>
       <Size>180</Size>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
     <Projectile id="9">
@@ -8602,8 +8602,8 @@
       <Damage>200</Damage>
       <Speed>95</Speed>
       <LifetimeMS>7000</LifetimeMS>
-      <PassesCover/>
-      <MultiHit/>
+      <PassesCover />
+      <MultiHit />
     </Projectile>
 
   </Object>
@@ -8611,14 +8611,14 @@
   <Object type="0x2fac" id="Phoenix God Spell Bomb">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8626,22 +8626,22 @@
       <Damage>80</Damage>
       <Speed>110</Speed>
       <LifetimeMS>6000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2fad" id="Phoenix God Tri-Shot">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8649,22 +8649,22 @@
       <Damage>100</Damage>
       <Speed>80</Speed>
       <LifetimeMS>6000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2fae" id="Phoenix God Mountain Laser">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8672,8 +8672,8 @@
       <Damage>250</Damage>
       <Speed>75</Speed>
       <LifetimeMS>16000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
       <Size>700</Size>
     </Projectile>
   </Object>
@@ -8681,14 +8681,14 @@
   <Object type="0x2faf" id="Phoenix God Nuclear Orb">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8697,8 +8697,8 @@
       <Speed>110</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>50</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
 
     <Projectile id="1">
@@ -8706,8 +8706,8 @@
       <Damage>100</Damage>
       <Speed>80</Speed>
       <LifetimeMS>6000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
 
     <Projectile id="2">
@@ -8716,8 +8716,8 @@
       <Speed>60</Speed>
       <LifetimeMS>7000</LifetimeMS>
       <Size>200</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
 
   </Object>
@@ -8725,14 +8725,14 @@
   <Object type="0x2fb0" id="Phoenix God Fire Stream">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8741,22 +8741,22 @@
       <Speed>85</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>150</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2fb1" id="Phoenix God Fire Burst">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8765,22 +8765,22 @@
       <Speed>55</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>200</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2fb2" id="Phoenix God Spin Beam A">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Spirals A</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8789,21 +8789,21 @@
       <Speed>65</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>110</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
   <Object type="0x2fb3" id="Phoenix God Spin Beam B">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Spirals B</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8812,21 +8812,21 @@
       <Speed>65</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>110</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
   <Object type="0x2fb4" id="Phoenix God Spin Beam C">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Spirals A</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8835,21 +8835,21 @@
       <Speed>65</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>110</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
   <Object type="0x2fb5" id="Phoenix God Spin Beam D">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Spirals B</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8858,21 +8858,21 @@
       <Speed>65</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>110</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
   <Object type="0x2fb6" id="Phoenix God Spin Beam E">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Spirals A</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8881,22 +8881,22 @@
       <Speed>65</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>110</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2fb7" id="Phoenix God Spin Beam F">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Spirals B</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -8905,14 +8905,14 @@
       <Speed>65</Speed>
       <LifetimeMS>6000</LifetimeMS>
       <Size>110</Size>
-      <MultiHit/>
-      <PassesCover/>
+      <MultiHit />
+      <PassesCover />
     </Projectile>
   </Object>
 
   <Object type="0x2fb8" id="Scorching Spirit">
     <Group>Phoenix God Spirits</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -8927,7 +8927,7 @@
       <Damage>120</Damage>
       <Speed>85</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="1">
@@ -8936,9 +8936,9 @@
       <Speed>100</Speed>
       <LifetimeMS>4500</LifetimeMS>
       <Size>80</Size>
-      <MultiHit/>
-      <ArmorPiercing/>
-      <PassesCover/>
+      <MultiHit />
+      <ArmorPiercing />
+      <PassesCover />
     </Projectile>
 
     <Projectile id="2">
@@ -8946,14 +8946,14 @@
       <Damage>200</Damage>
       <Speed>55</Speed>
       <LifetimeMS>6500</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
   </Object>
 
   <Object type="0x2fb9" id="Eternal Spirit">
     <Group>Phoenix God Spirits</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -8968,7 +8968,7 @@
       <Damage>120</Damage>
       <Speed>85</Speed>
       <LifetimeMS>5000</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
     <Projectile id="1">
@@ -8977,9 +8977,9 @@
       <Speed>100</Speed>
       <LifetimeMS>4500</LifetimeMS>
       <Size>80</Size>
-      <MultiHit/>
-      <ArmorPiercing/>
-      <PassesCover/>
+      <MultiHit />
+      <ArmorPiercing />
+      <PassesCover />
     </Projectile>
 
     <Projectile id="2">
@@ -8987,7 +8987,7 @@
       <Damage>200</Damage>
       <Speed>55</Speed>
       <LifetimeMS>6500</LifetimeMS>
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
 
   </Object>
@@ -8995,14 +8995,14 @@
   <Object type="0x2fba" id="Phoenix God Final Divination">
     <DisplayID>Phoenix God</DisplayID>
     <Group>Phoenix God Minions</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <Texture>
       <File>invisible</File>
       <Index>invisible</Index>
     </Texture>
     <ShadowSize>0</ShadowSize>
-    <NoMiniMap/>
+    <NoMiniMap />
     <MaxHitPoints>100000</MaxHitPoints>
     <XpMult>0</XpMult>
     <Projectile id="0">
@@ -9010,15 +9010,15 @@
       <Damage>40</Damage>
       <Speed>60</Speed>
       <LifetimeMS>18000</LifetimeMS>
-      <MultiHit/>
-      <PassesCover/>
-      <ArmorPiercing/>
+      <MultiHit />
+      <PassesCover />
+      <ArmorPiercing />
     </Projectile>
   </Object>
 
   <Object type="0x2fbb" id="The Eternal Crucible Portal">
     <Class>Portal</Class>
-    <IntergamePortal/>
+    <IntergamePortal />
     <DungeonName>The Eternal Crucible</DungeonName>
     <Texture>
       <File>lofiObj5</File>
@@ -9033,19 +9033,19 @@
       <Index>0x3dd</Index>
     </Texture>
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <SlotType>10</SlotType>
     <Description>A key which opens an entrance to the Eternal Crucible.</Description>
     <Sound>use_key</Sound>
-    <Consumable/>
-    <Soulbound/>
+    <Consumable />
+    <Soulbound />
     <Activate id="The Eternal Crucible Portal">Create</Activate>
     <OldSound>use_key</OldSound>
   </Object>
 
 
   <!-- End of The Eternal Crucible (Phoenix Volcano)-->
-  
+
   <Object type="0x0f20" id="Worn Halo">
     <Class>Equipment</Class>
     <Item />
@@ -9493,7 +9493,7 @@
     <MpCost>100</MpCost>
     <Activate objectId="Dragon" duration="90">Summon</Activate>
   </Object>
-<Object type="0x0f3c" id="Dragon Summon">
+  <Object type="0x0f3c" id="Dragon Summon">
     <Class>Character</Class>
     <AnimatedTexture>
       <File>chars16x16dEncounters2</File>
@@ -9684,7 +9684,7 @@
   </Object>
   <Object type="0x5034" id="War Turret Blueprint">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Tier>UR</Tier>
     <Texture>
       <File>lofiObj6</File>
@@ -9711,7 +9711,7 @@
       <Speed>200</Speed>
       <Damage>10</Damage>
       <LifetimeMS>750</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
       <MultiHit />
     </Projectile>
     <Projectile id="1">
@@ -9720,13 +9720,13 @@
       <Damage>220</Damage>
       <LifetimeMS>2000</LifetimeMS>
       <MultiHit />
-      <PassesCover/>
+      <PassesCover />
     </Projectile>
     <NoMiniMap />
   </Object>
   <Object type="0xbe5" id="Turkey Leg of Doom">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>6323904540835840</Id>
@@ -9773,7 +9773,7 @@
 
   <Object type="0x2685" id="Turkey God">
     <Group>Turkey</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -9829,14 +9829,14 @@
       <Damage>160</Damage>
       <Speed>55</Speed>
       <LifetimeMS>3000</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
     </Projectile>
     <Projectile id="7">
       <ObjectId>Turkey Projectile</ObjectId>
       <Damage>15</Damage>
       <Speed>55</Speed>
       <LifetimeMS>3000</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
       <ConditionEffect duration="10">Quiet</ConditionEffect>
     </Projectile>
     <ConditionEffect duration="20">Quiet</ConditionEffect>
@@ -9845,7 +9845,7 @@
       <Damage>15</Damage>
       <Speed>55</Speed>
       <LifetimeMS>3000</LifetimeMS>
-      <ArmorPiercing/>
+      <ArmorPiercing />
       <ConditionEffect duration="10">Quiet</ConditionEffect>
     </Projectile>
     <ConditionEffect duration="60">Weak</ConditionEffect>
@@ -9856,7 +9856,7 @@
       <Damage>1</Damage>
       <LifetimeMS>1800</LifetimeMS>
       <ConditionEffect duration="20">Quiet</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="14">
       <ObjectId>Turkey Leg Projectile</ObjectId>
@@ -9865,14 +9865,14 @@
       <Damage>1</Damage>
       <LifetimeMS>1800</LifetimeMS>
       <ConditionEffect duration="60">Weak</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
 
   </Object>
 
   <Object type="0x2686" id="Pilgrim">
     <Group>Turkey</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -9890,13 +9890,13 @@
       <Damage>50</Damage>
       <LifetimeMS>1800</LifetimeMS>
       <ConditionEffect duration="3">Confused</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
-  </Object >
+  </Object>
 
   <Object type="0x2687" id="Turkey God Minion">
     <Group>Turkey</Group>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -9914,12 +9914,11 @@
       <Damage>10</Damage>
       <LifetimeMS>1800</LifetimeMS>
       <ConditionEffect duration="3">Confused</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
   </Object>
-  
-  
-  
+
+
   <Object type="0x2f6b" id="Luin of Celtchar">
     <Class>Equipment</Class>
     <Item />
@@ -10393,10 +10392,10 @@
   <!-- Start of Frozen Dungeon XML -->
 
   <Object type="0x8601" id="Ice Skeleton Archer">
-    <Enemy/>
+    <Enemy />
     <HitSound>monster/djinn_hit</HitSound>
     <DeathSound>monster/djinn_death</DeathSound>
-    <God/>
+    <God />
     <MaxHitPoints>800</MaxHitPoints>
     <Class>Character</Class>
     <RemoteTexture>
@@ -10411,14 +10410,14 @@
       <Damage>100</Damage>
       <Size>100</Size>
       <LifetimeMS>700</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
   </Object>
   <Object type="0x8602" id="Ice Skeleton Warrior">
-    <Enemy/>
+    <Enemy />
     <HitSound>monster/djinn_hit</HitSound>
     <DeathSound>monster/djinn_death</DeathSound>
-    <God/>
+    <God />
     <MaxHitPoints>1200</MaxHitPoints>
     <Class>Character</Class>
     <RemoteTexture>
@@ -10433,14 +10432,14 @@
       <Damage>180</Damage>
       <Size>100</Size>
       <LifetimeMS>700</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
   </Object>
   <Object type="0x8603" id="Royal Ice Guard">
-    <Enemy/>
+    <Enemy />
     <HitSound>monster/djinn_hit</HitSound>
     <DeathSound>monster/djinn_death</DeathSound>
-    <God/>
+    <God />
     <MaxHitPoints>30000</MaxHitPoints>
     <Class>Character</Class>
     <RemoteTexture>
@@ -10455,7 +10454,7 @@
       <Damage>180</Damage>
       <Size>100</Size>
       <LifetimeMS>700</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="1">
       <ObjectId>White Bolt</ObjectId>
@@ -10466,10 +10465,10 @@
     </Projectile>
   </Object>
   <Object type="0x8604" id="Ice Lich">
-    <Enemy/>
+    <Enemy />
     <HitSound>monster/djinn_hit</HitSound>
     <DeathSound>monster/djinn_death</DeathSound>
-    <God/>
+    <God />
     <MaxHitPoints>50000</MaxHitPoints>
     <Class>Character</Class>
     <RemoteTexture>
@@ -10484,7 +10483,7 @@
       <Damage>150</Damage>
       <Size>100</Size>
       <LifetimeMS>700</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
 
     <Projectile id="1">
@@ -10505,7 +10504,7 @@
   </Object>
 
   <!-- End of Frozen Dungeon XML -->
-  
+
   <Object type="0x269e" id="Oryx the Christmas God">
     <DisplayId>Oryx the Merrifully Mad God</DisplayId>
     <Enemy />
@@ -10541,7 +10540,7 @@
       <ConditionEffect duration="10">Slowed</ConditionEffect>
     </Projectile>
   </Object>
-  
+
   <Object type="0x269f" id="Candy Cane Projectile">
     <Class>Projectile</Class>
     <RemoteTexture>
@@ -10561,7 +10560,7 @@
     <AngleCorrection>1</AngleCorrection>
     <Rotation>90</Rotation>
   </Object>
-  
+
   <Object type="0x4a0e" id="Christmas Blade">
     <Class>Equipment</Class>
     <Item />
@@ -10570,7 +10569,7 @@
       <Id>5446032911499264</Id>
     </RemoteTexture>
     <SlotType>24</SlotType>
-    <Soulbound/>
+    <Soulbound />
     <Description>A katana used by many of Oryx Santa's elf warriors.</Description>
     <RateOfFire>1</RateOfFire>
     <Sound>weapon/long_sword</Sound>
@@ -10586,7 +10585,7 @@
     <FameBonus>5</FameBonus>
     <OldSound>daggerSwing</OldSound>
   </Object>
-  
+
   <Object type="0x4a0f" id="Tree Topper Star">
     <Class>Equipment</Class>
     <Item />
@@ -10597,7 +10596,7 @@
     <SlotType>25</SlotType>
     <Description>This star used to be a tree topper, until a ninja got drunk on eggnog and used it...</Description>
     <Sound>spell/fire_spray</Sound>
-    <Soulbound/>
+    <Soulbound />
     <Projectile>
       <ObjectId>Ninja Star Basic</ObjectId>
       <Speed>100</Speed>
@@ -10616,7 +10615,7 @@
     <Activate effect="Drunk" duration="2">ConditionEffectSelf</Activate>
     <DisplayId>Basic Star</DisplayId>
   </Object>
-  
+
   <Object type="0x4a10" id="SSubstituteChristmas">
     <Class>Character</Class>
     <Model>Tower</Model>
@@ -10635,11 +10634,11 @@
     </Projectile>
     <NoMiniMap />
   </Object>
-  
+
   <Object type="0x4a11" id="Reindeer Skin Armor">
     <Class>Equipment</Class>
     <Item />
-    <Soulbound/>
+    <Soulbound />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>4746370122514432</Id>
@@ -10651,7 +10650,7 @@
     <BagType>8</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-  
+
   <Object type="0x4a12" id="Christmas Popper">
     <Class>Equipment</Class>
     <Item />
@@ -10667,7 +10666,7 @@
     <Potion />
     <BagType>2</BagType>
   </Object>
-  
+
   <Object type="0x4a13" id="Santa Hat">
     <Class>Equipment</Class>
     <Item />
@@ -10675,7 +10674,7 @@
       <Instance>draw</Instance>
       <Id>4833232749068288</Id>
     </RemoteTexture>
-    <Soulbound/>
+    <Soulbound />
     <SlotType>9</SlotType>
     <Description>A pretty santa hat with magical powers.</Description>
     <ActivateOnEquip stat="21" amount="6">IncrementStat</ActivateOnEquip>
@@ -10685,7 +10684,7 @@
     <BagType>8</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-  
+
   <Object type="0x4a14" id="Christmas Miracle">
     <Class>Equipment</Class>
     <Item />
@@ -10914,83 +10913,83 @@
     <NoMiniMap />
     <Size>100</Size>
   </Object>
-    <Object type="0x4a24" id="Dwarf Totem E">
-      <Class>Character</Class>
-      <Texture>
-        <File>lofiObj6</File>
-        <Index>0x134</Index>
-      </Texture>
-      <NoMiniMap />
-      <Size>100</Size>
-    </Object>
-    <Object type="0x4a25" id="Oasis Totem E">
-      <Class>Character</Class>
-      <Texture>
-        <File>lofiObj6</File>
-        <Index>0x135</Index>
-      </Texture>
-      <NoMiniMap />
-      <Size>100</Size>
-    </Object>
-    <Object type="0x4a26" id="Cyclops Totem E">
-      <Class>Character</Class>
-      <Texture>
-        <File>lofiObj6</File>
-        <Index>0x136</Index>
-      </Texture>
-      <NoMiniMap />
-      <Size>100</Size>
-    </Object>
-    <Object type="0x4a27" id="Turkey Hunting Grounds Key">
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-        <File>lofiObj5</File>
-        <Index>0xac</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>You might think this is just a turkey leg with a funny shaped bone, and you'd be right</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Turkey Hunting Grounds Portal">Create</Activate>
-    </Object>
-    <Object type="0x4a28" id="Christmas Cellar Key">
-      <Class>Equipment</Class>
-      <Item/>
-      <Texture>
-        <File>lofiObj5</File>
-        <Index>0xae</Index>
-      </Texture>
-      <SlotType>10</SlotType>
-      <Description>The santa hat has nothing to do with the key, I don't even know how it got there.</Description>
-      <Sound>use_key</Sound>
-      <Consumable/>
-      <Soulbound/>
-      <Activate id="Christmas Cellar Portal">Create</Activate>
-    </Object>
-    <Object type="0x4a29" id="Christmas Cellar Portal">
-      <Class>Portal</Class>
-      <IntergamePortal/>
-      <DungeonName>Christmas Cellar</DungeonName>
-      <Texture>
-        <File>lofiObj5</File>
-        <Index>0xaf</Index>
-      </Texture>
-    </Object>
-    <Object type="0x4a2a" id="Turkey Hunting Grounds Portal">
-      <Class>Portal</Class>
-      <IntergamePortal/>
-      <DungeonName>Turkey Hunting Grounds</DungeonName>
-      <Texture>
-        <File>lofiObj5</File>
-        <Index>0xad</Index>
-      </Texture>
-    </Object>
-  
+  <Object type="0x4a24" id="Dwarf Totem E">
+    <Class>Character</Class>
+    <Texture>
+      <File>lofiObj6</File>
+      <Index>0x134</Index>
+    </Texture>
+    <NoMiniMap />
+    <Size>100</Size>
+  </Object>
+  <Object type="0x4a25" id="Oasis Totem E">
+    <Class>Character</Class>
+    <Texture>
+      <File>lofiObj6</File>
+      <Index>0x135</Index>
+    </Texture>
+    <NoMiniMap />
+    <Size>100</Size>
+  </Object>
+  <Object type="0x4a26" id="Cyclops Totem E">
+    <Class>Character</Class>
+    <Texture>
+      <File>lofiObj6</File>
+      <Index>0x136</Index>
+    </Texture>
+    <NoMiniMap />
+    <Size>100</Size>
+  </Object>
+  <Object type="0x4a27" id="Turkey Hunting Grounds Key">
+    <Class>Equipment</Class>
+    <Item />
+    <Texture>
+      <File>lofiObj5</File>
+      <Index>0xac</Index>
+    </Texture>
+    <SlotType>10</SlotType>
+    <Description>You might think this is just a turkey leg with a funny shaped bone, and you'd be right</Description>
+    <Sound>use_key</Sound>
+    <Consumable />
+    <Soulbound />
+    <Activate id="Turkey Hunting Grounds Portal">Create</Activate>
+  </Object>
+  <Object type="0x4a28" id="Christmas Cellar Key">
+    <Class>Equipment</Class>
+    <Item />
+    <Texture>
+      <File>lofiObj5</File>
+      <Index>0xae</Index>
+    </Texture>
+    <SlotType>10</SlotType>
+    <Description>The santa hat has nothing to do with the key, I don't even know how it got there.</Description>
+    <Sound>use_key</Sound>
+    <Consumable />
+    <Soulbound />
+    <Activate id="Christmas Cellar Portal">Create</Activate>
+  </Object>
+  <Object type="0x4a29" id="Christmas Cellar Portal">
+    <Class>Portal</Class>
+    <IntergamePortal />
+    <DungeonName>Christmas Cellar</DungeonName>
+    <Texture>
+      <File>lofiObj5</File>
+      <Index>0xaf</Index>
+    </Texture>
+  </Object>
+  <Object type="0x4a2a" id="Turkey Hunting Grounds Portal">
+    <Class>Portal</Class>
+    <IntergamePortal />
+    <DungeonName>Turkey Hunting Grounds</DungeonName>
+    <Texture>
+      <File>lofiObj5</File>
+      <Index>0xad</Index>
+    </Texture>
+  </Object>
+
   <Object type="0x4a2b" id="Nexus Defense Portal">
     <Class>Portal</Class>
-    <IntergamePortal/>
+    <IntergamePortal />
     <DungeonName>Nexus Defense</DungeonName>
     <RemoteTexture>
       <Id>testing:4639648387170304</Id>
@@ -11072,12 +11071,12 @@
     <FameBonus>8</FameBonus>
   </Object>
   <Object type="0x3704" id="The Shadow Mage">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>6553420930482176</Id>
-      <Animated/>
+      <Animated />
     </RemoteTexture>
     <HitSound>monster/ghosts_hit</HitSound>
     <DeathSound>monster/ghosts_death</DeathSound>
@@ -11211,9 +11210,9 @@
     <MpCost>95</MpCost>
     <Activate totalDamage="280" maxTargets="10">Lightning</Activate>
   </Object>
-    <Object type="0x7104" id="Kage no Yami">
+  <Object type="0x7104" id="Kage no Yami">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>5810977868087296</Id>
@@ -11229,7 +11228,7 @@
       <MinDamage>145</MinDamage>
       <MaxDamage>175</MaxDamage>
       <LifetimeMS>350</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <BagType>2</BagType>
     <FameBonus>4</FameBonus>
@@ -11237,7 +11236,7 @@
   </Object>
   <Object type="0x7105" id="Bloodswirl Katana">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>6315693433683968</Id>
@@ -11253,7 +11252,7 @@
       <MinDamage>160</MinDamage>
       <MaxDamage>185</MaxDamage>
       <LifetimeMS>350</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <BagType>2</BagType>
     <FameBonus>5</FameBonus>
@@ -11277,7 +11276,7 @@
   </Object>
   <Object type="0x7108" id="Thunderbolt Spear">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>6535580726853632</Id>
@@ -11293,15 +11292,15 @@
       <MinDamage>100</MinDamage>
       <MaxDamage>145</MaxDamage>
       <LifetimeMS>520</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <BagType>2</BagType>
-	<FameBonus>5</FameBonus>
+    <FameBonus>5</FameBonus>
     <OldSound>magicShoot</OldSound>
   </Object>
   <Object type="0x7109" id="Hallowed Spear">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>5423121920163840</Id>
@@ -11317,10 +11316,10 @@
       <MinDamage>90</MinDamage>
       <MaxDamage>135</MaxDamage>
       <LifetimeMS>520</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <BagType>2</BagType>
-	<FameBonus>4</FameBonus>
+    <FameBonus>4</FameBonus>
     <OldSound>magicShoot</OldSound>
   </Object>
   <Object type="0x710a" id="Thunderflash Projectile">
@@ -11339,9 +11338,9 @@
     </RemoteTexture>
     <AngleCorrection>1</AngleCorrection>
   </Object>
-    <Object type="0x710c" id="Flying Brain Totem">
+  <Object type="0x710c" id="Flying Brain Totem">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Tier>7</Tier>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -11350,14 +11349,14 @@
     <SlotType>31</SlotType>
     <Description>A totem that somehow pulses with wisdom and power.</Description>
     <Sound>spell/major_heal</Sound>
-    <Usable/>
+    <Usable />
     <BagType>2</BagType>
-	<FameBonus>5</FameBonus>
+    <FameBonus>5</FameBonus>
     <MpCost>110</MpCost>
     <Activate amount="6000" objectId="Flying Brain Transform" range="7.5" objectId2="Flying Brain Totem E">Totem</Activate>
   </Object>
   <Object type="0x710d" id="Flying Brain Transform">
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
     <AnimatedTexture>
       <File>chars16x16dMountains1</File><Index>0x06</Index>
@@ -11381,12 +11380,12 @@
       <Instance>draw</Instance>
       <Id>6484712610594816</Id>
     </RemoteTexture>
-    <NoMiniMap/>
+    <NoMiniMap />
     <Size>100</Size>
-  </Object>  
+  </Object>
   <Object type="0x710f" id="Birdman Totem">
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <Tier>8</Tier>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -11395,9 +11394,9 @@
     <SlotType>31</SlotType>
     <Description>An intricately carved totem depicting one of the legendary birdmen of the Phoenix.</Description>
     <Sound>spell/major_heal</Sound>
-    <Usable/>
+    <Usable />
     <BagType>2</BagType>
-	<FameBonus>6</FameBonus>
+    <FameBonus>6</FameBonus>
     <MpCost>110</MpCost>
     <Activate amount="7500" objectId="Birdman" range="8" objectId2="Birdman Totem E">Totem</Activate>
   </Object>
@@ -11407,10 +11406,10 @@
       <Instance>draw</Instance>
       <Id>6357315424878592</Id>
     </RemoteTexture>
-    <NoMiniMap/>
+    <NoMiniMap />
     <Size>100</Size>
-  </Object> 
-    <Object type="0x7112" id="Brute Scroll">
+  </Object>
+  <Object type="0x7112" id="Brute Scroll">
     <Class>Equipment</Class>
     <Item />
     <Tier>7</Tier>
@@ -11476,7 +11475,7 @@
     <NoMiniMap />
   </Object>
 
-<!--  <Object type="0x0f3a" id="Wisp Summon">
+  <!--  <Object type="0x0f3a" id="Wisp Summon">
     <Class>Character</Class>
     <RemoteTexture>
       <Instance>draw</Instance>
@@ -11503,126 +11502,126 @@
     <NoMinimap />
   </Object> -->
 
-<Object type="0x7115" id="Forgotten Crown">
-  <Class>Equipment</Class>
-  <Item/>
-  <RemoteTexture>
-    <Instance>draw</Instance>
-    <Id>4610521758171136</Id>
-  </RemoteTexture>
-  <SlotType>9</SlotType>
-  <Description>A pure white crown dropped from The Forgotten King himself.</Description>
-  <ActivateOnEquip stat="0" amount="110">IncrementStat</ActivateOnEquip>
-  <ActivateOnEquip stat="20" amount="6">IncrementStat</ActivateOnEquip>
-  <ActivateOnEquip stat="28" amount="6">IncrementStat</ActivateOnEquip>
-  <BagType>4</BagType>
-  <FameBonus>5</FameBonus>
-</Object>
-<Object type="0x7116" id="Candy-Coated Armor">
-  <Class>Equipment</Class>
-  <Item/>
-  <RemoteTexture>
-    <Instance>draw</Instance>
-    <Id>5511021512884224</Id>
-  </RemoteTexture>
-  <SlotType>7</SlotType>
-  <Description> Reinforced with magical hard candy from the candy forest. Sticky but strong.</Description>
-  <ActivateOnEquip stat="21" amount="30">IncrementStat</ActivateOnEquip>
-  <ActivateOnEquip stat="28" amount="-10">IncrementStat</ActivateOnEquip>
-  <BagType>4</BagType>
-  <FameBonus>4</FameBonus>
-</Object>
-<Object type="0x7117" id="The Halo of Shadows">
-  <Class>Equipment</Class>
-  <Item />
-  <Tier>7</Tier>
-  <RemoteTexture>
-    <Instance>draw</Instance>
-    <Id>5135863769989120</Id>
-  </RemoteTexture>
-  <SlotType>26</SlotType>
-  <Description>A powerful halo which was crafted by the shadows themselves.</Description>
-  <Sound>spell/major_heal</Sound>
-  <Usable />
-  <BagType>3</BagType>
-  <MpCost>110</MpCost>
-  <FameBonus>5</FameBonus>
-  <ActivateOnEquip stat="26" amount="3">IncrementStat</ActivateOnEquip>
-  <ActivateOnEquip stat="27" amount="3">IncrementStat</ActivateOnEquip>
-  <Activate range="8" amount="50" duration="22">Halo</Activate>
-</Object>
-<Object type="0x7118" id="The Unforgotten Halo">
-  <Class>Equipment</Class>
-  <Item />
-  <Tier>8</Tier>
-  <RemoteTexture>
-    <Instance>draw</Instance>
-    <Id>6225504489177088</Id>
-  </RemoteTexture>
-  <SlotType>26</SlotType>
-  <Description>A halo so strong that it will never be forgotten.</Description>
-  <Sound>spell/major_heal</Sound>
-  <Usable />
-  <BagType>3</BagType>
-  <MpCost>120</MpCost>
-  <FameBonus>6</FameBonus>
-  <ActivateOnEquip stat="26" amount="3">IncrementStat</ActivateOnEquip>
-  <ActivateOnEquip stat="27" amount="3">IncrementStat</ActivateOnEquip>
-  <Activate range="9" amount="55" duration="22">Halo</Activate>
-</Object>
-<Object type="0x7119" id="WhirlPool of The Swelling Ocean">
-  <Class>Equipment</Class>
-  <Item />
-  <Tier>7</Tier>
-  <RemoteTexture>
-    <Instance>draw</Instance>
-    <Id>6237710115143680</Id>
-  </RemoteTexture>
-  <SlotType>27</SlotType>
-  <Description>Like a whirlpool this will cause the user to drown their opponents with ease.</Description>
-  <Sound>spell/major_heal</Sound>
-  <Usable />
-  <BagType>3</BagType>
-  <MpCost>130</MpCost>
-  <ActivateOnEquip stat="26" amount="3">IncrementStat</ActivateOnEquip>
-  <ActivateOnEquip stat="27" amount="3">IncrementStat</ActivateOnEquip>
-  <Activate radius="5" totalDamage="2500" duration="8" condEffect="6" condDuration="4">SamuraiAbility</Activate>
-</Object>
-<Object type="0x711a" id="Lightning Scroll">
-  <Class>Equipment</Class>
-  <Item />
-  <Tier>8</Tier>
-  <RemoteTexture>
-    <Instance>draw</Instance>
-    <Id>4687159812423680</Id>
-  </RemoteTexture>
-  <SlotType>27</SlotType>
-  <Description>Like a lightning strike this will strike your foes with a massive force.</Description>
-  <Sound>spell/major_heal</Sound>
-  <Usable />
-  <BagType>3</BagType>
-  <MpCost>160</MpCost>
-  <ActivateOnEquip stat="26" amount="4">IncrementStat</ActivateOnEquip>
-  <ActivateOnEquip stat="27" amount="4">IncrementStat</ActivateOnEquip>
-  <Activate radius="4" totalDamage="3000" duration="8" condEffect="6" condDuration="6">SamuraiAbility</Activate>
-</Object>
+  <Object type="0x7115" id="Forgotten Crown">
+    <Class>Equipment</Class>
+    <Item />
+    <RemoteTexture>
+      <Instance>draw</Instance>
+      <Id>4610521758171136</Id>
+    </RemoteTexture>
+    <SlotType>9</SlotType>
+    <Description>A pure white crown dropped from The Forgotten King himself.</Description>
+    <ActivateOnEquip stat="0" amount="110">IncrementStat</ActivateOnEquip>
+    <ActivateOnEquip stat="20" amount="6">IncrementStat</ActivateOnEquip>
+    <ActivateOnEquip stat="28" amount="6">IncrementStat</ActivateOnEquip>
+    <BagType>4</BagType>
+    <FameBonus>5</FameBonus>
+  </Object>
+  <Object type="0x7116" id="Candy-Coated Armor">
+    <Class>Equipment</Class>
+    <Item />
+    <RemoteTexture>
+      <Instance>draw</Instance>
+      <Id>5511021512884224</Id>
+    </RemoteTexture>
+    <SlotType>7</SlotType>
+    <Description> Reinforced with magical hard candy from the candy forest. Sticky but strong.</Description>
+    <ActivateOnEquip stat="21" amount="30">IncrementStat</ActivateOnEquip>
+    <ActivateOnEquip stat="28" amount="-10">IncrementStat</ActivateOnEquip>
+    <BagType>4</BagType>
+    <FameBonus>4</FameBonus>
+  </Object>
+  <Object type="0x7117" id="The Halo of Shadows">
+    <Class>Equipment</Class>
+    <Item />
+    <Tier>7</Tier>
+    <RemoteTexture>
+      <Instance>draw</Instance>
+      <Id>5135863769989120</Id>
+    </RemoteTexture>
+    <SlotType>26</SlotType>
+    <Description>A powerful halo which was crafted by the shadows themselves.</Description>
+    <Sound>spell/major_heal</Sound>
+    <Usable />
+    <BagType>3</BagType>
+    <MpCost>110</MpCost>
+    <FameBonus>5</FameBonus>
+    <ActivateOnEquip stat="26" amount="3">IncrementStat</ActivateOnEquip>
+    <ActivateOnEquip stat="27" amount="3">IncrementStat</ActivateOnEquip>
+    <Activate range="8" amount="50" duration="22">Halo</Activate>
+  </Object>
+  <Object type="0x7118" id="The Unforgotten Halo">
+    <Class>Equipment</Class>
+    <Item />
+    <Tier>8</Tier>
+    <RemoteTexture>
+      <Instance>draw</Instance>
+      <Id>6225504489177088</Id>
+    </RemoteTexture>
+    <SlotType>26</SlotType>
+    <Description>A halo so strong that it will never be forgotten.</Description>
+    <Sound>spell/major_heal</Sound>
+    <Usable />
+    <BagType>3</BagType>
+    <MpCost>120</MpCost>
+    <FameBonus>6</FameBonus>
+    <ActivateOnEquip stat="26" amount="3">IncrementStat</ActivateOnEquip>
+    <ActivateOnEquip stat="27" amount="3">IncrementStat</ActivateOnEquip>
+    <Activate range="9" amount="55" duration="22">Halo</Activate>
+  </Object>
+  <Object type="0x7119" id="WhirlPool of The Swelling Ocean">
+    <Class>Equipment</Class>
+    <Item />
+    <Tier>7</Tier>
+    <RemoteTexture>
+      <Instance>draw</Instance>
+      <Id>6237710115143680</Id>
+    </RemoteTexture>
+    <SlotType>27</SlotType>
+    <Description>Like a whirlpool this will cause the user to drown their opponents with ease.</Description>
+    <Sound>spell/major_heal</Sound>
+    <Usable />
+    <BagType>3</BagType>
+    <MpCost>130</MpCost>
+    <ActivateOnEquip stat="26" amount="3">IncrementStat</ActivateOnEquip>
+    <ActivateOnEquip stat="27" amount="3">IncrementStat</ActivateOnEquip>
+    <Activate radius="5" totalDamage="2500" duration="8" condEffect="6" condDuration="4">SamuraiAbility</Activate>
+  </Object>
+  <Object type="0x711a" id="Lightning Scroll">
+    <Class>Equipment</Class>
+    <Item />
+    <Tier>8</Tier>
+    <RemoteTexture>
+      <Instance>draw</Instance>
+      <Id>4687159812423680</Id>
+    </RemoteTexture>
+    <SlotType>27</SlotType>
+    <Description>Like a lightning strike this will strike your foes with a massive force.</Description>
+    <Sound>spell/major_heal</Sound>
+    <Usable />
+    <BagType>3</BagType>
+    <MpCost>160</MpCost>
+    <ActivateOnEquip stat="26" amount="4">IncrementStat</ActivateOnEquip>
+    <ActivateOnEquip stat="27" amount="4">IncrementStat</ActivateOnEquip>
+    <Activate radius="4" totalDamage="3000" duration="8" condEffect="6" condDuration="6">SamuraiAbility</Activate>
+  </Object>
 
-<Object type="0x2124" id="Magic Sparkle">
-  <Class>Projectile</Class>
-  <RandomTexture>
-    <Texture>
-      <File>lofiObj3</File>
-      <Index>0x2ad</Index>
-    </Texture>
-    <Texture>
-      <File>lofiObj3</File>
-      <Index>0x2ae</Index>
-    </Texture>
-    <Texture>
-      <File>lofiObj3</File>
-      <Index>0x2af</Index>
-    </Texture>
-  </RandomTexture>
-  <Rotation>90</Rotation>
-</Object>
+  <Object type="0x2124" id="Magic Sparkle">
+    <Class>Projectile</Class>
+    <RandomTexture>
+      <Texture>
+        <File>lofiObj3</File>
+        <Index>0x2ad</Index>
+      </Texture>
+      <Texture>
+        <File>lofiObj3</File>
+        <Index>0x2ae</Index>
+      </Texture>
+      <Texture>
+        <File>lofiObj3</File>
+        <Index>0x2af</Index>
+      </Texture>
+    </RandomTexture>
+    <Rotation>90</Rotation>
+  </Object>
 </Addition>

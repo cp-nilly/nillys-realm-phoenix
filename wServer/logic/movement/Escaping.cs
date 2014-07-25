@@ -43,16 +43,16 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
-            var dist = radius;
-            var entity = GetNearestEntity(ref dist, objType);
+            float dist = radius;
+            Entity entity = GetNearestEntity(ref dist, objType);
             var chr = Host as Character;
             if (entity != null && chr.HP < threshold)
             {
-                var x = Host.Self.X;
-                var y = Host.Self.Y;
-                var vect = new Vector2(entity.X, entity.Y) - new Vector2(Host.Self.X, Host.Self.Y);
+                float x = Host.Self.X;
+                float y = Host.Self.Y;
+                Vector2 vect = new Vector2(entity.X, entity.Y) - new Vector2(Host.Self.X, Host.Self.Y);
                 vect.Normalize();
                 vect *= -1*(speed/1.5f)*(time.thisTickTimes/1000f);
                 ValidateAndMove(Host.Self.X + vect.X, Host.Self.Y + vect.Y);

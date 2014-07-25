@@ -23,7 +23,7 @@
             Time = rdr.ReadInt32();
             Position = Position.Read(rdr);
             Records = new TimedPosition[rdr.ReadInt16()];
-            for (var i = 0; i < Records.Length; i++)
+            for (int i = 0; i < Records.Length; i++)
                 Records[i] = TimedPosition.Read(rdr);
         }
 
@@ -33,7 +33,7 @@
             wtr.Write(Time);
             Position.Write(wtr);
             wtr.Write((short) Records.Length);
-            foreach (var i in Records)
+            foreach (TimedPosition i in Records)
                 i.Write(wtr);
         }
     }

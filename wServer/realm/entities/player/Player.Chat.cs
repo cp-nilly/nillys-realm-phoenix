@@ -17,13 +17,14 @@ namespace wServer.realm.entities.player
     {
         private static Dictionary<string, ICommand> cmds;
         public bool muted;
+
         public void PlayerText(RealmTime time, PlayerTextPacket pkt)
         {
             if (!muted)
             {
                 if (pkt.Text[0] == '/')
                 {
-                    var x = pkt.Text.Trim().Split(' ');
+                    string[] x = pkt.Text.Trim().Split(' ');
                     ProcessCmd(x[0].Trim('/'), x.Skip(1).ToArray());
                     //CommandManager.Execute(this, time, pkt.Text); // Beta Processor
                 }
@@ -40,11 +41,11 @@ namespace wServer.realm.entities.player
                             Encoding.UTF8.GetBytes(pkt.Text)
                         )
                     );*/
-                    var txt = pkt.Text.ToSafeText();
+                    string txt = pkt.Text.ToSafeText();
                     if (txt != "")
                     {
                         //Removing unwanted crashing characters from strings
-                        var chatColor = "";
+                        string chatColor = "";
                         if (Client.Account.Rank > 3)
                             chatColor = "@";
                         else if (Client.Account.Rank == 3)
@@ -61,7 +62,7 @@ namespace wServer.realm.entities.player
                         }, null);
                         foreach (var e in Owner.Enemies)
                         {
-                            foreach (var b in e.Value.CondBehaviors)
+                            foreach (ConditionalBehavior b in e.Value.CondBehaviors)
                             {
                                 if (b.Condition == BehaviorCondition.OnChat)
                                 {
@@ -78,6 +79,7 @@ namespace wServer.realm.entities.player
                 SendError("You are muted!");
             }
         }
+
         public void SendInfo(string text)
         {
             psr.SendPacket(new TextPacket
@@ -200,8 +202,8 @@ namespace wServer.realm.entities.player
             if (cmds == null)
             {
                 cmds = new Dictionary<string, ICommand>();
-                var t = typeof (ICommand);
-                foreach (var i in t.Assembly.GetTypes())
+                Type t = typeof (ICommand);
+                foreach (Type i in t.Assembly.GetTypes())
                     if (t.IsAssignableFrom(i) && i != t)
                     {
                         var instance = (ICommand) Activator.CreateInstance(i);

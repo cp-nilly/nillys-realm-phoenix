@@ -62,22 +62,22 @@ namespace wServer.realm.entities.player
 
         public bool HasPrices(Player p)
         {
-            var ret = false;
+            bool ret = false;
             var removeSlots = new List<int>();
-            foreach (var i in SellSlots)
+            foreach (int i in SellSlots)
                 if (p.Inventory[i] != null && prices.ContainsKey(p.Inventory[i].ObjectType))
                     ret = true;
                 else
                     removeSlots.Add(i);
-            foreach (var i in removeSlots)
+            foreach (int i in removeSlots)
                 SellSlots.Remove(i);
             return ret;
         }
 
         public int GetPrices(Player p)
         {
-            var price = 0;
-            foreach (var i in SellSlots)
+            int price = 0;
+            foreach (int i in SellSlots)
                 if (p.Inventory[i] != null && prices.ContainsKey(p.Inventory[i].ObjectType))
                     price += prices[p.Inventory[i].ObjectType];
             return price;
@@ -85,7 +85,7 @@ namespace wServer.realm.entities.player
 
         public void AddPrice(int price, params string[] items)
         {
-            foreach (var i in items)
+            foreach (string i in items)
                 try
                 {
                     prices.Add(XmlDatas.IdToType[i], price);

@@ -39,13 +39,13 @@ namespace wServer.logic.movement
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
-            var speed = this.speed*GetSpeedMultiplier(Host.Self);
+            float speed = this.speed*GetSpeedMultiplier(Host.Self);
 
             CirclingState state;
             object o;
             if (!Host.StateStorage.TryGetValue(Key, out o))
             {
-                var dist = radius;
+                float dist = radius;
                 Host.StateStorage[Key] = state = new CirclingState
                 {
                     target = WeakReference<Entity>.Create(GetNearestEntityByGroup(ref dist, group)),
@@ -62,14 +62,14 @@ namespace wServer.logic.movement
                     Host.StateStorage.Remove(Key);
                     return false;
                 }
-                var target = state.target.Target;
+                Entity target = state.target.Target;
                 if (target == null || target.Owner == null)
                 {
                     Host.StateStorage.Remove(Key);
                     return false;
                 }
-                var x = target.X + Math.Cos(state.angle)*radius;
-                var y = target.Y + Math.Sin(state.angle)*radius;
+                double x = target.X + Math.Cos(state.angle)*radius;
+                double y = target.Y + Math.Sin(state.angle)*radius;
                 ValidateAndMove((float) x, (float) y);
                 Host.Self.UpdateCount++;
             }

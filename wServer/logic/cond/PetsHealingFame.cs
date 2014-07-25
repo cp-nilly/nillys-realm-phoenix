@@ -2,7 +2,6 @@
 
 using System;
 using wServer.realm;
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.svrPackets;
 
@@ -21,11 +20,11 @@ namespace wServer.logic.cond
             {
                 while (entity != null)
                 {
-                    var fame = entity.Fame;
+                    int fame = entity.Fame;
                     fame = Math.Min(fame + new Random().Next(30, 70), 400000);
                     if (fame != entity.Fame)
                     {
-                        var n = fame - entity.Fame;
+                        int n = fame - entity.Fame;
                         entity.Fame = fame;
                         entity.UpdateCount++;
                         entity.Owner.BroadcastPacket(new ShowEffectPacket

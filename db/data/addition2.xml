@@ -2071,9 +2071,9 @@
     </AnimatedTexture>
     <Static />
   </Object>
-  
-    <!--Unbound Rings-->
-    
+
+  <!--Unbound Rings-->
+
   <Object type="0x7030" id="Ring of Unbound Attack">
     <Class>Equipment</Class>
     <Item />
@@ -2088,7 +2088,7 @@
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-<Object type="0x7031" id="Ring of Unbound Health">
+  <Object type="0x7031" id="Ring of Unbound Health">
     <Class>Equipment</Class>
     <Item />
     <RemoteTexture>
@@ -2102,7 +2102,7 @@
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-<Object type="0x7032" id="Ring of Unbound Speed">
+  <Object type="0x7032" id="Ring of Unbound Speed">
     <Class>Equipment</Class>
     <Item />
     <RemoteTexture>
@@ -2116,7 +2116,7 @@
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-<Object type="0x7033" id="Ring of Unbound Vitality">
+  <Object type="0x7033" id="Ring of Unbound Vitality">
     <Class>Equipment</Class>
     <Item />
     <RemoteTexture>
@@ -2130,7 +2130,7 @@
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-<Object type="0x7034" id="Ring of Unbound Wisdom">
+  <Object type="0x7034" id="Ring of Unbound Wisdom">
     <Class>Equipment</Class>
     <Item />
     <RemoteTexture>
@@ -2144,7 +2144,7 @@
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-<Object type="0x7035" id="Ring of Unbound Defense">
+  <Object type="0x7035" id="Ring of Unbound Defense">
     <Class>Equipment</Class>
     <Item />
     <RemoteTexture>
@@ -2158,7 +2158,7 @@
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-<Object type="0x7036" id="Ring of Unbound Dexterity">
+  <Object type="0x7036" id="Ring of Unbound Dexterity">
     <Class>Equipment</Class>
     <Item />
     <RemoteTexture>
@@ -2172,7 +2172,7 @@
     <BagType>4</BagType>
     <FameBonus>5</FameBonus>
   </Object>
-<Object type="0x7037" id="Ring of Unbound Magic">
+  <Object type="0x7037" id="Ring of Unbound Magic">
     <Class>Equipment</Class>
     <Item />
     <RemoteTexture>
@@ -2188,7 +2188,7 @@
   </Object>
   <Object type="0x7040" id="Locked Void Portal">
     <Class>Portal</Class>
-    <LockedPortal/>
+    <LockedPortal />
     <RemoteTexture>
       <Instance>draw</Instance>
       <Id>4859522352939008</Id>
@@ -2221,7 +2221,7 @@
   <Object type="0x2f85" id="Proph's Bow of the Frozen Winds">
     <DisplayId>Bow of the Frozen Winds</DisplayId>
     <Class>Equipment</Class>
-    <Item/>
+    <Item />
     <RemoteTexture>
       <Id>5120077915488256</Id>
       <Instance>draw</Instance>
@@ -2231,7 +2231,7 @@
     <Description>A bow of eternal ice that summons forth icy shards carried across the Frozen Winds.</Description>
     <Sound>weapon/golden_bow</Sound>
     <RateOfFire>1.25</RateOfFire>
-    <DualShooting/>
+    <DualShooting />
     <Projectile id="0">
       <ObjectId>Blue Bolt</ObjectId>
       <Speed>185</Speed>

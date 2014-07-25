@@ -54,7 +54,7 @@ namespace wServer.logic
             {
                 if (CountEntity(radius, objType) < maxCount)
                 {
-                    var entity = Entity.Resolve(objType);
+                    Entity entity = Entity.Resolve(objType);
                     entity.Move(Host.Self.X, Host.Self.Y);
                     (entity as Enemy).Terrain = (Host as Enemy).Terrain;
                     Host.Self.Owner.EnterWorld(entity);

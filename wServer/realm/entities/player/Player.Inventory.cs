@@ -25,7 +25,7 @@ namespace wServer.realm.entities.player
 
         public bool HasSlot(int slot)
         {
-            var ret = false;
+            bool ret = false;
             try
             {
                 ret = Inventory[3] != null;
@@ -41,9 +41,9 @@ namespace wServer.realm.entities.player
             if (psr.Character.Backpacks.ContainsKey(num))
             {
                 psr.Character.Backpack = num;
-                for (var i = 4; i < 12; i++)
+                for (int i = 4; i < 12; i++)
                 {
-                    var itemId = psr.Character.Backpacks[num][i - 4];
+                    short itemId = psr.Character.Backpacks[num][i - 4];
                     Inventory[i] = itemId == -1 ? null : XmlDatas.ItemDescs[itemId];
                 }
                 return true;
@@ -53,15 +53,15 @@ namespace wServer.realm.entities.player
 
         public void InventorySwap(RealmTime time, InvSwapPacket pkt)
         {
-            var en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
-            var en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
+            Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
+            Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
             //System.Console.Write(en1 == en2);
             var con1 = en1 as IContainer;
             var con2 = en2 as IContainer;
-            
+
             //TODO: locker
-            var item1 = con1.Inventory[pkt.Obj1.SlotId];
-            var item2 = con2.Inventory[pkt.Obj2.SlotId];
+            Item item1 = con1.Inventory[pkt.Obj1.SlotId];
+            Item item2 = con2.Inventory[pkt.Obj2.SlotId];
             if (!AuditItem(con2, item1, pkt.Obj2.SlotId) ||
                 !AuditItem(con1, item2, pkt.Obj1.SlotId))
                 (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 1});
@@ -94,21 +94,24 @@ namespace wServer.realm.entities.player
                 if (en1 is Player)
                 {
                     //if (en1.Owner.Name == "Vault")
-                       //(en1 as Player).Client.Save();
+                    //(en1 as Player).Client.Save();
                     (en1 as Player).CalcBoost();
                     (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
                 }
                 if (en2 is Player)
                 {
                     //if (en2.Owner.Name == "Vault")
-                      // (en2 as Player).Client.Save();
+                    // (en2 as Player).Client.Save();
                     (en2 as Player).CalcBoost();
                     (en2 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
                 }
 
-                if (en1 is Player) {
+                if (en1 is Player)
+                {
                     (en1 as Player).Client.Save();
-                } else if (en2 is Player) {
+                }
+                else if (en2 is Player)
+                {
                     (en2 as Player).Client.Save();
                 }
 
@@ -126,7 +129,8 @@ namespace wServer.realm.entities.player
                     }
                     using (var writer = new StreamWriter(@"logs\DropLog.log", true))
                     {
-                        writer.WriteLine(Name + " placed a " + item1.ObjectId + " in " + (Owner as Vault).psr.Account.Name + "'s vault" +
+                        writer.WriteLine(Name + " placed a " + item1.ObjectId + " in " +
+                                         (Owner as Vault).psr.Account.Name + "'s vault" +
                                          (con.BagOwner != null ? " (Soulbound)" : ""));
                     }
                 }
@@ -142,7 +146,7 @@ namespace wServer.realm.entities.player
             const short DEM_BAG = 0xffe;
             const short SDEM_BAG = 0xfff;
 
-            var entity = Owner.GetEntity(pkt.Slot.ObjectId);
+            Entity entity = Owner.GetEntity(pkt.Slot.ObjectId);
             var con = entity as IContainer;
             if (con.Inventory[pkt.Slot.SlotId] == null) return;
 
@@ -152,7 +156,7 @@ namespace wServer.realm.entities.player
                 return;
             }
 
-            var item = con.Inventory[pkt.Slot.SlotId];
+            Item item = con.Inventory[pkt.Slot.SlotId];
             con.Inventory[pkt.Slot.SlotId] = null;
             entity.UpdateCount++;
 
@@ -177,8 +181,8 @@ namespace wServer.realm.entities.player
             {
                 container = new Container(NORM_BAG, 1000*60, true);
             }
-            var bagx = entity.X + (float) ((invRand.NextDouble()*2 - 1)*0.5);
-            var bagy = entity.Y + (float) ((invRand.NextDouble()*2 - 1)*0.5);
+            float bagx = entity.X + (float) ((invRand.NextDouble()*2 - 1)*0.5);
+            float bagy = entity.Y + (float) ((invRand.NextDouble()*2 - 1)*0.5);
             try
             {
                 container.Inventory[0] = item;
@@ -220,7 +224,7 @@ namespace wServer.realm.entities.player
         public void DropBag(Item i)
         {
             short bagId = 0x0500;
-            var soulbound = false;
+            bool soulbound = false;
             if (i.Soulbound)
             {
                 bagId = 0x0503;

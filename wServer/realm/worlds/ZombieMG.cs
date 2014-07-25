@@ -55,13 +55,13 @@ namespace wServer.realm.worlds
 
         private void InitVars()
         {
-            var w = Map.Width;
-            var h = Map.Height;
-            var addedTower = false;
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            int w = Map.Width;
+            int h = Map.Height;
+            bool addedTower = false;
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = Map[x, y];
+                    WmapTile tile = Map[x, y];
                     if (tile.Region == TileRegion.Defender)
                         zombieSpawns.Add(new IntPoint(x, y));
                     if (tile.Region == TileRegion.Enemy && !addedTower)
@@ -115,15 +115,14 @@ namespace wServer.realm.worlds
             }
         }
 
-        
 
         public void SpawnZombies()
         {
-            for (var i = 0; i < zombieAmount; i++)
+            for (int i = 0; i < zombieAmount; i++)
             {
                 zombieSpawns.Shuffle();
                 spawningZombies.Shuffle();
-                var e = Entity.Resolve(XmlDatas.IdToType[spawningZombies.First()]);
+                Entity e = Entity.Resolve(XmlDatas.IdToType[spawningZombies.First()]);
                 e.Move(zombieSpawns[0].X, zombieSpawns[0].Y);
                 EnterWorld(e);
             }
@@ -139,7 +138,7 @@ namespace wServer.realm.worlds
                     {
                         wave++;
                         zombieAmount += Players.Count;
-                        famePot += wave * 10 / 2;
+                        famePot += wave*10/2;
                         Flags["counting"] = true;
                         Countdown(5);
                     }
@@ -147,7 +146,7 @@ namespace wServer.realm.worlds
 
                 else if (!Flags["started"] && !Flags["counting"])
                 {
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new TextPacket
                         {
                             Stars = -1,
@@ -159,15 +158,14 @@ namespace wServer.realm.worlds
                     Flags["counting"] = true;
                     Countdown(60);
                 }
-                
             }
-            
+
             base.Tick(time);
         }
 
         public override void BehaviorEvent(string type)
         {
-            var typec = type.Split(':');
+            string[] typec = type.Split(':');
             if (typec.Length > 1)
                 if (typec[0] == "dmg")
                 {
@@ -185,7 +183,7 @@ namespace wServer.realm.worlds
                         else
                         {
                             Flags["finished"] = true;
-                            
+
                             BroadcastPacket(new TextPacket
                             {
                                 BubbleTime = 0,
@@ -193,12 +191,13 @@ namespace wServer.realm.worlds
                                 Name = "#Zombies",
                                 Text = "Your tower's been destroyed! You each earn " + famePot + " fame!"
                             }, null);
-                            double golddivider = wave / 15;
-                            int tokens = (int)Math.Floor(golddivider);
+                            double golddivider = wave/15;
+                            var tokens = (int) Math.Floor(golddivider);
                             foreach (var i in Players)
                             {
                                 var db = new Database();
-                                i.Value.CurrentFame = i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, famePot);
+                                i.Value.CurrentFame =
+                                    i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, famePot);
                                 i.Value.UpdateCount++;
                                 i.Value.Client.SendPacket(new NotificationPacket
                                 {
@@ -206,11 +205,11 @@ namespace wServer.realm.worlds
                                     Color = new ARGB(0xFFFF6600),
                                     Text = "+" + famePot + " Fame"
                                 });
-                                i.Value.Credits = i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, tokens);
+                                i.Value.Credits =
+                                    i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, tokens);
                                 i.Value.UpdateCount++;
                                 Flags["counting"] = true;
                                 db.Dispose();
-
                             }
                             foreach (var i in Enemies)
                             {
@@ -220,7 +219,6 @@ namespace wServer.realm.worlds
                                 }
                             }
                             LeaveWorld(tower);
-
                         }
                     }
                     catch

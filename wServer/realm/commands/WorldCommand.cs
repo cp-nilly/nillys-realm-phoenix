@@ -56,8 +56,8 @@ namespace wServer.realm.commands
         public void Execute(Player player, string[] args)
         {
             var sb = new StringBuilder("Players online: ");
-            var copy = player.Owner.Players.Values.ToArray();
-            for (var i = 0; i < copy.Length; i++)
+            Player[] copy = player.Owner.Players.Values.ToArray();
+            for (int i = 0; i < copy.Length; i++)
             {
                 if (i != 0) sb.Append(", ");
                 sb.Append(copy[i].Name);
@@ -112,7 +112,7 @@ namespace wServer.realm.commands
                 }
                 else
                 {
-                    foreach (var i in player.Owner.EnemiesCollision.HitTest(player.X, player.Y, 6).OfType<Enemy>())
+                    foreach (Enemy i in player.Owner.EnemiesCollision.HitTest(player.X, player.Y, 6).OfType<Enemy>())
                     {
                         if (i.ObjectDesc.Enemy)
                         {
@@ -202,7 +202,7 @@ namespace wServer.realm.commands
         {
             try
             {
-                var sindex = 1;
+                int sindex = 1;
 
                 if (!(player.NameChosen))
                 {
@@ -210,7 +210,7 @@ namespace wServer.realm.commands
                     return;
                 }
 
-                List<string> tags = new List<string>();
+                var tags = new List<string>();
                 foreach (var x in RealmManager.Worlds)
                 {
                     foreach (var y in x.Value.Players)
@@ -221,7 +221,7 @@ namespace wServer.realm.commands
                         }
                     }
                 }
-                var playername = args[0].Trim();
+                string playername = args[0].Trim();
                 if (tags.Contains(playername))
                 {
                     playername = args[1];
@@ -234,11 +234,11 @@ namespace wServer.realm.commands
                     return;
                 }
 
-                var saytext = string.Join(" ", args, sindex, args.Length - sindex);
+                string saytext = string.Join(" ", args, sindex, args.Length - sindex);
 
                 foreach (var w in RealmManager.Worlds)
                 {
-                    var world = w.Value;
+                    World world = w.Value;
                     if (w.Key != 0) // 0 is limbo??
                     {
                         foreach (var i in world.Players)
@@ -250,29 +250,26 @@ namespace wServer.realm.commands
                                     player.SendHelp("Usage: /tell <player name> <text>");
                                     return;
                                 }
-                                else
+                                player.Client.SendPacket(new TextPacket //echo to self
                                 {
-                                    player.Client.SendPacket(new TextPacket //echo to self
-                                    {
-                                        BubbleTime = 10,
-                                        Stars = player.Stars,
-                                        Name = player.Name,
-                                        Recipient = i.Value.Name,
-                                        ObjectId = player.Id,
-                                        Text = saytext.ToSafeText()
-                                    });
+                                    BubbleTime = 10,
+                                    Stars = player.Stars,
+                                    Name = player.Name,
+                                    Recipient = i.Value.Name,
+                                    ObjectId = player.Id,
+                                    Text = saytext.ToSafeText()
+                                });
 
-                                    i.Value.Client.SendPacket(new TextPacket //echo to /tell player
-                                    {
-                                        BubbleTime = 10,
-                                        Stars = player.Stars,
-                                        Recipient = i.Value.nName,
-                                        Name = player.Name,
-                                        ObjectId = (i.Value.Owner.Id == player.Owner.Id ? player.Id : 0),
-                                        Text = saytext.ToSafeText()
-                                    });
-                                    return;
-                                }
+                                i.Value.Client.SendPacket(new TextPacket //echo to /tell player
+                                {
+                                    BubbleTime = 10,
+                                    Stars = player.Stars,
+                                    Recipient = i.Value.nName,
+                                    Name = player.Name,
+                                    ObjectId = (i.Value.Owner.Id == player.Owner.Id ? player.Id : 0),
+                                    Text = saytext.ToSafeText()
+                                });
+                                return;
                             }
                         }
                     }
@@ -300,7 +297,7 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var name = string.Join(" ", args.ToArray()).Trim();
+            string name = string.Join(" ", args.ToArray()).Trim();
             short objType;
             if (!XmlDatas.IdToType.TryGetValue(name, out objType))
             {
@@ -311,7 +308,7 @@ namespace wServer.realm.commands
             {
                 if (XmlDatas.TypeToElement[objType].Element("Class").Value == "Dye")
                 {
-                    for (var i = 0; i < player.Inventory.Length; i++)
+                    for (int i = 0; i < player.Inventory.Length; i++)
                         if (player.Inventory[i] == null)
                         {
                             player.Inventory[i] = XmlDatas.ItemDescs[objType];
@@ -322,12 +319,10 @@ namespace wServer.realm.commands
                 else
                 {
                     player.SendInfo("Unknown dye!");
-                    return;
                 }
             }
             catch
             {
-                return;
             }
         }
     }
@@ -346,20 +341,20 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var name = string.Join(" ", args.ToArray()).Trim();
+            string name = string.Join(" ", args.ToArray()).Trim();
             try
             {
-                var PlayerData = PlayerDataList.GetData(player.Client.Account.Name);
+                GlobalPlayerData PlayerData = PlayerDataList.GetData(player.Client.Account.Name);
                 foreach (var w in RealmManager.Worlds)
                 {
-                    var world = w.Value;
+                    World world = w.Value;
                     if (w.Key != 0)
                     {
                         foreach (var i in world.Players)
                         {
                             if (i.Value.Client.Account.Name.ToLower() == name.ToLower())
                             {
-                                var iPlayerData = PlayerDataList.GetData(i.Value.Client.Account.Name);
+                                GlobalPlayerData iPlayerData = PlayerDataList.GetData(i.Value.Client.Account.Name);
                                 if (!(player.Client.Account.Rank > 2))
                                 {
                                     if (world.Name != "Vault")
@@ -369,81 +364,63 @@ namespace wServer.realm.commands
                                             TryJoin(player, iPlayerData, world, i.Value);
                                             return;
                                         }
-                                        else
+                                        if ((world as GuildHall).Guild == player.Guild)
                                         {
-                                            if ((world as GuildHall).Guild == player.Guild)
-                                            {
-                                                TryJoin(player, iPlayerData, world, i.Value);
-                                                return;
-                                            }
-                                            else
-                                            {
-                                                player.SendInfo("Player is in " + i.Value.Guild + "'s guild hall!");
-                                                return;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (world.Name == "Vault")
-                                        {
-                                            player.SendInfo("Player is in Vault!");
+                                            TryJoin(player, iPlayerData, world, i.Value);
                                             return;
                                         }
-                                        else if (world.Name == "Guild Hall")
+                                        player.SendInfo("Player is in " + i.Value.Guild + "'s guild hall!");
+                                        return;
+                                    }
+                                    if (world.Name == "Vault")
+                                    {
+                                        player.SendInfo("Player is in Vault!");
+                                        return;
+                                    }
+                                    if (world.Name == "Guild Hall")
+                                    {
+                                        player.SendInfo("Player is in Guild Hall!");
+                                        return;
+                                    }
+                                    if (!iPlayerData.UsingGroup)
+                                    {
+                                        player.Client.Reconnect(new ReconnectPacket
                                         {
-                                            player.SendInfo("Player is in Guild Hall!");
+                                            Host = "",
+                                            Port = 2050,
+                                            GameId = world.Id,
+                                            Name = i.Value.Name + "'s Vault",
+                                            Key = Empty<byte>.Array,
+                                        });
+                                        return;
+                                    }
+                                    foreach (var o in iPlayerData.JGroup)
+                                    {
+                                        if (o.Value == player.Client.Account.Name.ToLower())
+                                        {
+                                            player.Client.Reconnect(new ReconnectPacket
+                                            {
+                                                Host = "",
+                                                Port = 2050,
+                                                GameId = world.Id,
+                                                Name = i.Value.Name + "'s Vault",
+                                                Key = Empty<byte>.Array,
+                                            });
                                             return;
                                         }
-                                        else
-                                        {
-                                            if (!iPlayerData.UsingGroup)
-                                            {
-                                                player.Client.Reconnect(new ReconnectPacket
-                                                {
-                                                    Host = "",
-                                                    Port = 2050,
-                                                    GameId = world.Id,
-                                                    Name = i.Value.Name + "'s Vault",
-                                                    Key = Empty<byte>.Array,
-                                                });
-                                                return;
-                                            }
-                                            else
-                                            {
-                                                foreach (var o in iPlayerData.JGroup)
-                                                {
-                                                    if (o.Value == player.Client.Account.Name.ToLower())
-                                                    {
-                                                        player.Client.Reconnect(new ReconnectPacket
-                                                        {
-                                                            Host = "",
-                                                            Port = 2050,
-                                                            GameId = world.Id,
-                                                            Name = i.Value.Name + "'s Vault",
-                                                            Key = Empty<byte>.Array,
-                                                        });
-                                                        return;
-                                                    }
-                                                }
-                                                player.SendInfo("Not in " + i.Value.Client.Account.Name + "'s group!");
-                                                return;
-                                            }
-                                        }
                                     }
-                                }
-                                else
-                                {
-                                    player.Client.Reconnect(new ReconnectPacket
-                                    {
-                                        Host = "",
-                                        Port = 2050,
-                                        GameId = world.Id,
-                                        Name = i.Value.Owner.Name,
-                                        Key = Empty<byte>.Array,
-                                    });
+                                    player.SendInfo("Not in " + i.Value.Client.Account.Name + "'s group!");
                                     return;
                                 }
+                                player.Client.Reconnect(new ReconnectPacket
+                                {
+                                    Host = "",
+                                    Port = 2050,
+                                    GameId = world.Id,
+                                    Name = i.Value.Owner.Name,
+                                    Key = Empty<byte>.Array,
+                                });
+                                return;
                             }
                         }
                     }
@@ -479,38 +456,29 @@ namespace wServer.realm.commands
                         });
                         return true;
                     }
-                    else
+                    foreach (var o in iPlayerData.JGroup)
                     {
-                        foreach (var o in iPlayerData.JGroup)
+                        if (o.Value == player.Client.Account.Name.ToLower())
                         {
-                            if (o.Value == player.Client.Account.Name.ToLower())
+                            player.Client.Reconnect(new ReconnectPacket
                             {
-                                player.Client.Reconnect(new ReconnectPacket
-                                {
-                                    Host = "",
-                                    Port = 2050,
-                                    GameId = world.Id,
-                                    Name = world.Name,
-                                    Key = Empty<byte>.Array,
-                                });
-                                return true;
-                            }
+                                Host = "",
+                                Port = 2050,
+                                GameId = world.Id,
+                                Name = world.Name,
+                                Key = Empty<byte>.Array,
+                            });
+                            return true;
                         }
-                        player.SendInfo("Not in " + i.Client.Account.Name + "'s group!");
-                        return true;
                     }
-                }
-                else
-                {
-                    player.SendInfo("Player is going solo!");
+                    player.SendInfo("Not in " + i.Client.Account.Name + "'s group!");
                     return true;
                 }
-            }
-            else
-            {
-                player.SendInfo("Sorry but that user is in a restricted area!");
+                player.SendInfo("Player is going solo!");
                 return true;
             }
+            player.SendInfo("Sorry but that user is in a restricted area!");
+            return true;
         }
     }
 
@@ -530,13 +498,13 @@ namespace wServer.realm.commands
         {
             try
             {
-                var PlayerData = PlayerDataList.GetData(player.Client.Account.Name);
+                GlobalPlayerData PlayerData = PlayerDataList.GetData(player.Client.Account.Name);
                 if (args.Length > 0)
                 {
-                    var subcommand = args[0];
+                    string subcommand = args[0];
                     if (subcommand == "list")
                     {
-                        var glist = "Players in your group: ";
+                        string glist = "Players in your group: ";
                         foreach (var i in PlayerData.JGroup)
                         {
                             if (glist != "Players in your group: ")
@@ -565,7 +533,7 @@ namespace wServer.realm.commands
                     }
                     else if (subcommand == "del" && args.Length > 1)
                     {
-                        var remc = 0;
+                        int remc = 0;
                         foreach (var i in PlayerData.JGroup)
                         {
                             if (i.Value == args[1].ToLower())
@@ -617,7 +585,7 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var PlayerData = PlayerDataList.GetData(player.Client.Account.Name);
+            GlobalPlayerData PlayerData = PlayerDataList.GetData(player.Client.Account.Name);
             if (PlayerData.Solo)
             {
                 PlayerData.Solo = false;
@@ -645,10 +613,10 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var evar = string.Join(" ", args.ToArray()).Trim();
+            string evar = string.Join(" ", args.ToArray()).Trim();
             if (args.Length > 0)
             {
-                var shop = RealmManager.AddWorld(new ShopMap(""));
+                World shop = RealmManager.AddWorld(new ShopMap(""));
                 RealmManager.ShopWorlds.TryGetValue(evar, out shop);
                 player.Client.Reconnect(new ReconnectPacket
                 {
@@ -661,8 +629,8 @@ namespace wServer.realm.commands
             }
             else
             {
-                var shopnames = "";
-                var tname = "";
+                string shopnames = "";
+                string tname = "";
                 foreach (var i in MerchantLists.shopLists)
                 {
                     if (shopnames == "")
@@ -698,16 +666,16 @@ namespace wServer.realm.commands
         public void Execute(Player player, string[] args)
         {
             var cmds = new Dictionary<string, ICommand>();
-            var t = typeof (ICommand);
-            foreach (var i in t.Assembly.GetTypes())
+            Type t = typeof (ICommand);
+            foreach (Type i in t.Assembly.GetTypes())
                 if (t.IsAssignableFrom(i) && i != t)
                 {
                     var instance = (ICommand) Activator.CreateInstance(i);
                     cmds.Add(instance.Command, instance);
                 }
             var sb = new StringBuilder("");
-            var copy = cmds.Values.ToArray();
-            for (var i = 0; i < copy.Length; i++)
+            ICommand[] copy = cmds.Values.ToArray();
+            for (int i = 0; i < copy.Length; i++)
             {
                 if (i != 0) sb.Append("  |  ");
                 sb.Append(copy[i].Command);
@@ -764,7 +732,7 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            foreach (var i in RealmManager.Clients.Values)
+            foreach (ClientProcessor i in RealmManager.Clients.Values)
                 i.SendPacket(new NotificationPacket
                 {
                     Color = new ARGB(0xff00ff00),
@@ -798,8 +766,8 @@ namespace wServer.realm.commands
             }
             else
             {
-                var saytext = string.Join(" ", args);
-                foreach (var i in RealmManager.Clients.Values)
+                string saytext = string.Join(" ", args);
+                foreach (ClientProcessor i in RealmManager.Clients.Values)
                     i.SendPacket(new NotificationPacket
                     {
                         Color = new ARGB(0xff00ff00),
@@ -828,7 +796,7 @@ namespace wServer.realm.commands
             {
                 if (player.HasConditionEffect(ConditionEffects.Paused))
                 {
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new NotificationPacket
                         {
                             Color = new ARGB(0xff00ff00),
@@ -844,7 +812,7 @@ namespace wServer.realm.commands
                 }
                 else
                 {
-                    foreach (var i in player.Owner.EnemiesCollision.HitTest(player.X, player.Y, 8).OfType<Enemy>())
+                    foreach (Enemy i in player.Owner.EnemiesCollision.HitTest(player.X, player.Y, 8).OfType<Enemy>())
                     {
                         if (i.ObjectDesc.Enemy)
                         {
@@ -852,7 +820,7 @@ namespace wServer.realm.commands
                             return;
                         }
                     }
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new NotificationPacket
                         {
                             Color = new ARGB(0xff00ff00),
@@ -895,7 +863,7 @@ namespace wServer.realm.commands
 
             foreach (var w in RealmManager.Worlds)
             {
-                var world = w.Value;
+                World world = w.Value;
                 if (w.Value.Name == "Battle Arena" && w.Value.Players.Count > 0 ||
                     w.Value.Name == "Free Battle Arena" && w.Value.Players.Count > 0)
                 {
@@ -904,11 +872,11 @@ namespace wServer.realm.commands
             }
             if (Arenas.Count > 0)
             {
-                foreach (var w in Arenas)
+                foreach (BattleArenaMap w in Arenas)
                 {
-                    var ctext = "Wave " + w.Wave + " - {0} {1}";
+                    string ctext = "Wave " + w.Wave + " - {0} {1}";
                     var players = new List<string>();
-                    var solo = 0;
+                    int solo = 0;
                     foreach (var p in w.Players)
                     {
                         players.Add(p.Value.Name);
@@ -998,15 +966,14 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var leaderboardInfo = new Database().GetArenaLeaderboards();
-           
+            string[] leaderboardInfo = new Database().GetArenaLeaderboards();
+
             player.Client.SendPacket(new TextBoxPacket
             {
                 Title = "Arena Leaderboard",
                 Message = string.Join("\n", leaderboardInfo),
                 Button1 = "Ok"
             });
-           
         }
     }
 
@@ -1024,15 +991,14 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            var leaderboardInfo = new Database().GetGuildLeaderboards();
-            
+            string[] leaderboardInfo = new Database().GetGuildLeaderboards();
+
             player.Client.SendPacket(new TextBoxPacket
             {
                 Title = "Guilds",
                 Message = string.Join("\n", leaderboardInfo),
                 Button1 = "Ok"
             });
-            
         }
     }
 
@@ -1056,15 +1022,15 @@ namespace wServer.realm.commands
                 player.price = new Prices();
                 var slotList = new List<int>();
                 var slotList2 = new List<int>();
-                for (var i = 0; i < args.Length; i++)
+                for (int i = 0; i < args.Length; i++)
                     if (!slotList.Contains(Convert.ToInt32(args[i])))
                         slotList.Add(Convert.ToInt32(args[i]));
                 if (slotList.Count < 1)
                     throw new Exception();
-                foreach (var i in slotList)
+                foreach (int i in slotList)
                     if (!(i < 0) && !(i > 8))
                     {
-                        var realslot = i + 3;
+                        int realslot = i + 3;
                         if (player.Inventory[realslot] != null)
                         {
                             slotList2.Add(realslot);
@@ -1078,7 +1044,7 @@ namespace wServer.realm.commands
                 else
                 {
                     var msgSlots = new List<int>();
-                    foreach (var i in player.price.SellSlots)
+                    foreach (int i in player.price.SellSlots)
                         try
                         {
                             msgSlots.Add(i - 3);
@@ -1099,9 +1065,6 @@ namespace wServer.realm.commands
         }
     }
 
-    
-
-    
 
     //class ForgeListCommand : ICommand
     //{
@@ -1143,11 +1106,11 @@ namespace wServer.realm.commands
             {
                 try
                 {
-                    var saytext = string.Join(" ", args);
+                    string saytext = string.Join(" ", args);
 
                     foreach (var w in RealmManager.Worlds)
                     {
-                        var world = w.Value;
+                        World world = w.Value;
                         if (w.Key != 0)
                         {
                             foreach (var i in world.Players)
@@ -1255,7 +1218,7 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            player.Client.SendPacket(new NotificationPacket()
+            player.Client.SendPacket(new NotificationPacket
             {
                 Color = new ARGB(0xFFFFFF),
                 ObjectId = player.Id,

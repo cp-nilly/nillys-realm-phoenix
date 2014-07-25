@@ -49,7 +49,7 @@ namespace wServer.realm.worlds
         {
             using (var dbx = new Database())
             {
-                var id = dbx.GetGuildId(Guild);
+                int id = dbx.GetGuildId(Guild);
                 return dbx.GetGuildLevel(id);
             }
         }

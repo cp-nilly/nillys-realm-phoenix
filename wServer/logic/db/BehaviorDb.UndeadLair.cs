@@ -720,7 +720,7 @@ namespace wServer.logic
                     Tuple.Create(800, new LootDef(0, 5, 1, 2,
                         Tuple.Create(0.001, (ILoot) new ItemLoot("Doom Bow")),
                         Tuple.Create(0.001, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.005, (ILoot)new ItemLoot("Wine Cellar Incantation")),
+                        Tuple.Create(0.005, (ILoot) new ItemLoot("Wine Cellar Incantation")),
                         Tuple.Create(1.0, (ILoot) new StatPotionLoot(StatPotion.Wis)),
                         Tuple.Create(0.3, (ILoot) new TierLoot(3, ItemType.Ring)),
                         Tuple.Create(0.2, (ILoot) new TierLoot(4, ItemType.Ring)),

@@ -68,9 +68,9 @@ namespace wServer.realm.terrain
         {
             var stats = new List<KeyValuePair<StatsType, object>>();
             if (!string.IsNullOrEmpty(Name))
-                foreach (var item in Name.Split(';'))
+                foreach (string item in Name.Split(';'))
                 {
-                    var kv = item.Split(':');
+                    string[] kv = item.Split(':');
                     switch (kv[0])
                     {
                         case "name":
@@ -153,7 +153,7 @@ namespace wServer.realm.terrain
 
         public int Load(Stream stream, int idBase)
         {
-            var ver = stream.ReadByte();
+            int ver = stream.ReadByte();
             using (var rdr = new BinaryReader(new ZlibStream(stream, CompressionMode.Decompress)))
             {
                 if (ver == 0) return LoadV0(rdr, idBase);
@@ -166,12 +166,12 @@ namespace wServer.realm.terrain
         private int LoadV0(BinaryReader reader, int idBase)
         {
             var dict = new List<WmapTile>();
-            var c = reader.ReadInt16();
+            short c = reader.ReadInt16();
             for (short i = 0; i < c; i++)
             {
                 var tile = new WmapTile();
                 tile.TileId = (byte) reader.ReadInt16();
-                var obj = reader.ReadString();
+                string obj = reader.ReadString();
                 tile.ObjType = string.IsNullOrEmpty(obj) ? (short) 0 : XmlDatas.IdToType[obj];
                 tile.Name = reader.ReadString();
                 tile.Terrain = (WmapTerrain) reader.ReadByte();
@@ -181,12 +181,12 @@ namespace wServer.realm.terrain
             Width = reader.ReadInt32();
             Height = reader.ReadInt32();
             tiles = new WmapTile[Width, Height];
-            var enCount = 0;
+            int enCount = 0;
             var entities = new List<Tuple<IntPoint, short, string>>();
-            for (var y = 0; y < Height; y++)
-                for (var x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    var tile = dict[reader.ReadInt16()];
+                    WmapTile tile = dict[reader.ReadInt16()];
                     tile.UpdateCount = 1;
 
                     ObjectDesc desc;
@@ -214,12 +214,12 @@ namespace wServer.realm.terrain
         private int LoadV1(BinaryReader reader, int idBase)
         {
             var dict = new List<WmapTile>();
-            var c = reader.ReadInt16();
+            short c = reader.ReadInt16();
             for (short i = 0; i < c; i++)
             {
                 var tile = new WmapTile();
                 tile.TileId = (byte) reader.ReadInt16();
-                var obj = reader.ReadString();
+                string obj = reader.ReadString();
                 tile.ObjType = string.IsNullOrEmpty(obj) ? (short) 0 : XmlDatas.IdToType[obj];
                 tile.Name = reader.ReadString();
                 tile.Terrain = (WmapTerrain) reader.ReadByte();
@@ -230,12 +230,12 @@ namespace wServer.realm.terrain
             Width = reader.ReadInt32();
             Height = reader.ReadInt32();
             tiles = new WmapTile[Width, Height];
-            var enCount = 0;
+            int enCount = 0;
             var entities = new List<Tuple<IntPoint, short, string>>();
-            for (var y = 0; y < Height; y++)
-                for (var x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    var tile = dict[reader.ReadInt16()];
+                    WmapTile tile = dict[reader.ReadInt16()];
                     tile.UpdateCount = 1;
 
                     ObjectDesc desc;
@@ -263,12 +263,12 @@ namespace wServer.realm.terrain
         private int LoadV2(BinaryReader reader, int idBase)
         {
             var dict = new List<WmapTile>();
-            var c = reader.ReadInt16();
+            short c = reader.ReadInt16();
             for (short i = 0; i < c; i++)
             {
                 var tile = new WmapTile();
                 tile.TileId = (byte) reader.ReadInt16();
-                var obj = reader.ReadString();
+                string obj = reader.ReadString();
                 tile.ObjType = string.IsNullOrEmpty(obj) ? (short) 0 : XmlDatas.IdToType[obj];
                 tile.Name = reader.ReadString();
                 tile.Terrain = (WmapTerrain) reader.ReadByte();
@@ -278,12 +278,12 @@ namespace wServer.realm.terrain
             Width = reader.ReadInt32();
             Height = reader.ReadInt32();
             tiles = new WmapTile[Width, Height];
-            var enCount = 0;
+            int enCount = 0;
             var entities = new List<Tuple<IntPoint, short, string>>();
-            for (var y = 0; y < Height; y++)
-                for (var x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
+                for (int x = 0; x < Width; x++)
                 {
-                    var tile = dict[reader.ReadInt16()];
+                    WmapTile tile = dict[reader.ReadInt16()];
                     tile.UpdateCount = 1;
                     tile.Elevation = reader.ReadByte();
 
@@ -313,12 +313,12 @@ namespace wServer.realm.terrain
         {
             foreach (var i in entities)
             {
-                var entity = Entity.Resolve(i.Item2);
+                Entity entity = Entity.Resolve(i.Item2);
                 entity.Move(i.Item1.X + 0.5f, i.Item1.Y + 0.5f);
                 if (i.Item3 != null)
-                    foreach (var item in i.Item3.Split(';'))
+                    foreach (string item in i.Item3.Split(';'))
                     {
-                        var kv = item.Split(':');
+                        string[] kv = item.Split(':');
                         switch (kv[0])
                         {
                             case "name":

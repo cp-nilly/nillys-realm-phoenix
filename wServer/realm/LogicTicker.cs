@@ -20,7 +20,7 @@ namespace wServer.realm
         public LogicTicker()
         {
             pendings = new ConcurrentQueue<Action<RealmTime>>[5];
-            for (var i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
                 pendings[i] = new ConcurrentQueue<Action<RealmTime>>();
         }
 
@@ -45,15 +45,15 @@ namespace wServer.realm
             long xa = 0;
             do
             {
-                var times = dt/MsPT;
+                long times = dt/MsPT;
                 dt -= times*MsPT;
                 times++;
 
-                var b = watch.ElapsedMilliseconds;
+                long b = watch.ElapsedMilliseconds;
 
                 count += times;
-                if (times > 3 && (count / (b / 1000.0)) < 30)
-                  // The additional conditional operand was made to negate the "LAGGED!" spamming unless the TPS goes below 30.
+                if (times > 3 && (count/(b/1000.0)) < 30)
+                    // The additional conditional operand was made to negate the "LAGGED!" spamming unless the TPS goes below 30.
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("LAGGED!| time:" + times + " dt:" + dt + " count:" + count + " time:" + b +
@@ -91,15 +91,15 @@ namespace wServer.realm
         private void TickWorlds1(RealmTime t) //Continous simulation
         {
             CurrentTime = t;
-            foreach (var i in RealmManager.Worlds.Values.Distinct())
+            foreach (World i in RealmManager.Worlds.Values.Distinct())
                 i.Tick(t);
         }
 
         private void TickWorlds2(RealmTime t) //Discrete simulation
         {
             long counter = t.thisTickTimes;
-            var c = t.tickCount - t.thisTickCounts;
-            var x = t.tickTimes - t.thisTickTimes;
+            long c = t.tickCount - t.thisTickCounts;
+            long x = t.tickTimes - t.thisTickTimes;
             while (counter >= MsPT)
             {
                 c++;

@@ -1,7 +1,7 @@
 <Objects>
   <Object type="0x1740" id="Oryx the Mad God 1">
     <DisplayId>Oryx the Mad God</DisplayId>
-    <Enemy/>
+    <Enemy />
     <Class>Character</Class>
 
     <AnimatedTexture>
@@ -11,11 +11,11 @@
 
     <HitSound>monster/oryx_hit</HitSound>
     <DeathSound>monster/oryx_death</DeathSound>
-    <Quest/>
-    <God/>
-    <Oryx/>
-    <StasisImmune/>
-    <NoArticle/>
+    <Quest />
+    <God />
+    <Oryx />
+    <StasisImmune />
+    <NoArticle />
 
     <Size>100</Size>
     <MaxHitPoints>85000</MaxHitPoints>
@@ -29,7 +29,7 @@
       <Size>100</Size>
       <LifetimeMS>2000</LifetimeMS>
       <ConditionEffect duration="10">Quiet</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="1">
       <ObjectId>White Flame</ObjectId>
@@ -37,7 +37,7 @@
       <Damage>60</Damage>
       <Size>20</Size>
       <LifetimeMS>800</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="2">
       <ObjectId>White Bullet</ObjectId>
@@ -46,8 +46,8 @@
       <Size>200</Size>
       <LifetimeMS>1600</LifetimeMS>
       <ConditionEffect duration="7">Slowed</ConditionEffect>
-      <ArmorPiercing/>
-      <MultiHit/>
+      <ArmorPiercing />
+      <MultiHit />
     </Projectile>
     <Projectile id="3">
       <ObjectId>Fire Bolt</ObjectId>
@@ -69,7 +69,7 @@
       <Size>90</Size>
       <LifetimeMS>4000</LifetimeMS>
       <ConditionEffect duration="3">Weak</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="6">
       <ObjectId>White Ball</ObjectId>
@@ -77,7 +77,7 @@
       <Damage>120</Damage>
       <Size>100</Size>
       <LifetimeMS>800</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="7">
       <ObjectId>Silver Shield</ObjectId>
@@ -85,7 +85,7 @@
       <Damage>290</Damage>
       <Size>130</Size>
       <LifetimeMS>500</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="8">
       <ObjectId>White Bullet</ObjectId>
@@ -94,7 +94,7 @@
       <Size>90</Size>
       <LifetimeMS>2500</LifetimeMS>
       <ConditionEffect duration="2">Blind</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="9">
       <ObjectId>White Bullet</ObjectId>
@@ -102,7 +102,7 @@
       <Damage>400</Damage>
       <Size>200</Size>
       <LifetimeMS>2100</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="12">
       <ObjectId>White Bullet</ObjectId>
@@ -118,7 +118,7 @@
       <Damage>1</Damage>
       <LifetimeMS>1800</LifetimeMS>
       <ConditionEffect duration="8">Quiet</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="14">
       <ObjectId>Gray Spinner</ObjectId>
@@ -127,7 +127,7 @@
       <Damage>1</Damage>
       <LifetimeMS>1800</LifetimeMS>
       <ConditionEffect duration="8">Weak</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="15">
 
@@ -136,10 +136,10 @@
       <Size>100</Size>
       <Damage>100</Damage>
       <LifetimeMS>2000</LifetimeMS>
-      <Parametric/>
+      <Parametric />
       <Magnitude>1</Magnitude>
       <ConditionEffect duration="8">Weak</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="16">
       <ObjectId>White Superblast</ObjectId>
@@ -147,7 +147,7 @@
       <Size>240</Size>
       <Damage>210</Damage>
       <LifetimeMS>3000</LifetimeMS>
-      <MultiHit/>
+      <MultiHit />
       <ConditionEffect duration="4">Weak</ConditionEffect>
     </Projectile>
     <Projectile id="17">
@@ -164,7 +164,7 @@
       <Damage>100</Damage>
       <LifetimeMS>3000</LifetimeMS>
       <ConditionEffect duration="4">Dazed</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
     <Projectile id="19">
       <ObjectId>White Ball Blast</ObjectId>
@@ -173,7 +173,7 @@
       <Damage>200</Damage>
       <LifetimeMS>3000</LifetimeMS>
       <ConditionEffect duration="3">Weak</ConditionEffect>
-      <MultiHit/>
+      <MultiHit />
     </Projectile>
   </Object>
 

@@ -101,7 +101,7 @@ namespace wServer.logic
                         Tuple.Create(0.15, (ILoot) new ItemLoot("Potion of Vitality")),
                         Tuple.Create(0.003, (ILoot) new ItemLoot("Staff of Natural Essence")),
                         Tuple.Create(0.0015, (ILoot) new ItemLoot("Void Incantation")),
-                        Tuple.Create(0.003, (ILoot)new ItemLoot("Wine Cellar Incantation"))
+                        Tuple.Create(0.003, (ILoot) new ItemLoot("Wine Cellar Incantation"))
                         )))
                 ))
             .Init(0x2f08, Behaves("Green Forest Wisp",

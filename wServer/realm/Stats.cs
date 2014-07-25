@@ -1,6 +1,4 @@
-﻿using wServer.logic;
-
-namespace wServer.realm
+﻿namespace wServer.realm
 {
     public enum CurrencyType
     {

@@ -19,7 +19,7 @@ namespace wServer.logic.attack
 
         protected override bool TickCore(RealmTime time)
         {
-            var radius = dist;
+            float radius = dist;
             var entity = GetNearestEntityPet(ref radius) as Enemy;
 
             if (entity != null)

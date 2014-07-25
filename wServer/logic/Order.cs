@@ -36,8 +36,8 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var ret = false;
-            foreach (var i in GetNearestEntitiesByGroup(radius, group))
+            bool ret = false;
+            foreach (Entity i in GetNearestEntitiesByGroup(radius, group))
                 ret |= behav.Tick(i, time);
             return ret;
         }
@@ -71,8 +71,8 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var d = radius;
-            var x = GetNearestEntity(ref d, objType);
+            float d = radius;
+            Entity x = GetNearestEntity(ref d, objType);
             if (x != null)
                 return behav.Tick(x, time);
             return false;
@@ -107,9 +107,9 @@ namespace wServer.logic
 
         protected override bool TickCore(RealmTime time)
         {
-            var x = GetNearestEntities(radius, objType);
-            var ret = false;
-            foreach (var i in x)
+            IEnumerable<Entity> x = GetNearestEntities(radius, objType);
+            bool ret = false;
+            foreach (Entity i in x)
             {
                 ret = true;
                 behav.Tick(i, time);

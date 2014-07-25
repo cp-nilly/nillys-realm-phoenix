@@ -13,14 +13,14 @@ using wServer.realm.entities.player;
 
 namespace wServer.realm
 {
-    public class Entity : IBehaviorHost, IProjectileOwner, ICollidable<Entity>
+    public class Entity : IBehaviorHost, IProjectileOwner, ICollidable<Entity>, IDisposable
     {
         private const int EFFECT_COUNT = 28;
         private readonly ObjectDesc desc;
         private readonly int[] effects;
         private readonly bool interactive;
-        private readonly Position[] posHistory;
-        private readonly Projectile[] projectiles;
+        private Position[] posHistory;
+        private Projectile[] projectiles;
         public bool BagDropped;
         public Player PlayerOwner;
         public string State = "idle";
@@ -37,6 +37,12 @@ namespace wServer.realm
         public Entity(short objType)
             : this(objType, true)
         {
+        }
+
+        public void Dispose()
+        {
+            projectiles = null;
+            posHistory = null;
         }
 
         protected Entity(short objType, bool interactive)
@@ -220,7 +226,7 @@ namespace wServer.realm
                     AttackBehavior.Tick(this, time);
                     ReproduceBehavior.Tick(this, time);
                 }
-                foreach (var i in CondBehaviors)
+                foreach (ConditionalBehavior i in CondBehaviors)
                     if ((i.Condition & BehaviorCondition.Other) != 0 &&
                         i.ConditionMeet(this))
                         i.Behave(BehaviorCondition.Other, this, time, null);
@@ -232,7 +238,7 @@ namespace wServer.realm
         public Position? TryGetHistory(long timeAgo)
         {
             if (posHistory == null) return null;
-            var tickPast = timeAgo*LogicTicker.TPS/1000;
+            long tickPast = timeAgo*LogicTicker.TPS/1000;
             if (tickPast > 255) return null;
             return posHistory[(byte) (posIdx - (byte) tickPast)];
         }
@@ -268,8 +274,8 @@ namespace wServer.realm
         public static Entity Resolve(short id)
         {
             var tr = new Random();
-            var node = XmlDatas.TypeToElement[id];
-            var type = node.Element("Class").Value;
+            XElement node = XmlDatas.TypeToElement[id];
+            string type = node.Element("Class").Value;
             switch (type)
             {
                 case "Projectile":
@@ -321,8 +327,7 @@ namespace wServer.realm
 
         public Projectile CreateProjectile(ProjectileDesc desc, short container, int dmg, long time, Position pos,
             float angle)
-            {
-                
+        {
             var ret = new Projectile(desc) //Assume only one
             {
                 ProjectileOwner = this,
@@ -335,13 +340,13 @@ namespace wServer.realm
                 X = pos.X,
                 Y = pos.Y
             };
-            if (this.HasConditionEffect(ConditionEffects.Damaging))
+            if (HasConditionEffect(ConditionEffects.Damaging))
             {
-                ret.Damage = ret.Damage * 2;
+                ret.Damage = ret.Damage*2;
             }
-            if (this.HasConditionEffect(ConditionEffects.Weak))
+            if (HasConditionEffect(ConditionEffects.Weak))
             {
-                ret.Damage = ret.Damage / 2;
+                ret.Damage = ret.Damage/2;
             }
             if (projectiles[ret.ProjectileId] != null)
                 projectiles[ret.ProjectileId].Destroy(true);
@@ -368,7 +373,7 @@ namespace wServer.realm
 
             ConditionEffects newEffects = 0;
             tickingEffects = false;
-            for (var i = 0; i < effects.Length; i++)
+            for (int i = 0; i < effects.Length; i++)
                 if (effects[i] > 0)
                 {
                     effects[i] -= time.thisTickTimes;
@@ -394,7 +399,7 @@ namespace wServer.realm
 
         public void ApplyConditionEffect(params ConditionEffect[] effs)
         {
-            foreach (var i in effs)
+            foreach (ConditionEffect i in effs)
             {
                 if (i.Effect == ConditionEffectIndex.Stunned &&
                     HasConditionEffect(ConditionEffects.StunImmume))

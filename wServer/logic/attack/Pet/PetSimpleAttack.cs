@@ -37,15 +37,15 @@ namespace wServer.logic.attack
         protected override bool TickCore(RealmTime time)
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Stunned)) return false;
-            var dist = radius;
-            var player = GetNearestEntityPet(ref dist);
+            float dist = radius;
+            Entity player = GetNearestEntityPet(ref dist);
             if (player != null)
             {
                 var chr = Host as Character;
-                var angle = Math.Atan2(player.Y - chr.Y, player.X - chr.X);
-                var desc = chr.ObjectDesc.Projectiles[projectileIndex];
+                double angle = Math.Atan2(player.Y - chr.Y, player.X - chr.X);
+                ProjectileDesc desc = chr.ObjectDesc.Projectiles[projectileIndex];
 
-                var prj = chr.CreateProjectile(
+                Projectile prj = chr.CreateProjectile(
                     desc, chr.ObjectType, chr.Random.Next(desc.MinDamage, desc.MaxDamage),
                     time.tickTimes, new Position {X = chr.X, Y = chr.Y}, (float) angle);
                 chr.Owner.EnterWorld(prj);

@@ -22,7 +22,7 @@
             TickTime = rdr.ReadInt32();
 
             UpdateStatuses = new ObjectStats[rdr.ReadInt16()];
-            for (var i = 0; i < UpdateStatuses.Length; i++)
+            for (int i = 0; i < UpdateStatuses.Length; i++)
                 UpdateStatuses[i] = ObjectStats.Read(rdr);
         }
 
@@ -32,7 +32,7 @@
             wtr.Write(TickTime);
 
             wtr.Write((short) UpdateStatuses.Length);
-            foreach (var i in UpdateStatuses)
+            foreach (ObjectStats i in UpdateStatuses)
                 i.Write(wtr);
         }
     }

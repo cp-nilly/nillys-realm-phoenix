@@ -70,7 +70,7 @@ namespace wServer.logic
                         PetChasingEnemy.Instance(8, 10, 0),
                         If.Instance(new PetBehaves(),
                             PetChasing.Instance(8, 20, 0))),
-                    Cooldown.Instance(500, PetMultiAttack.Instance(15, 2.5f * (float)Math.PI / 180, 3, 0, 0))
+                    Cooldown.Instance(500, PetMultiAttack.Instance(15, 2.5f*(float) Math.PI/180, 3, 0, 0))
                     )))
             .Init(0x7114, Behaves("Knight Summon",
                 new RunBehaviors(
@@ -80,7 +80,6 @@ namespace wServer.logic
                             PetChasing.Instance(8, 20, 0))),
                     Cooldown.Instance(300, PetMultiAttack.Instance(15, 0, 1, 0, 0))
                     )))
-
             .Init(0x0f3e, Behaves("Sheep Summon",
                 IfNot.Instance(
                     PetChasingEnemy.Instance(8, 10, 0),

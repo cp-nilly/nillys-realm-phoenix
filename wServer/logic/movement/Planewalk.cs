@@ -36,8 +36,8 @@ namespace wServer.logic.movement
         {
             if (Host.Self.HasConditionEffect(ConditionEffects.Paralyzed)) return true;
 
-            var dist = radius;
-            var entity = GetNearestEntity(ref dist, objType);
+            float dist = radius;
+            Entity entity = GetNearestEntity(ref dist, objType);
             if (entity != null)
                 ValidateAndMove(entity.X, entity.Y);
             return true;

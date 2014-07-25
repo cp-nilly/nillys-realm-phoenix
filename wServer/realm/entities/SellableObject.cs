@@ -60,7 +60,7 @@ namespace wServer.realm.entities
 
         protected bool TryDeduct(Player player)
         {
-            var acc = player.Client.Account;
+            Account acc = player.Client.Account;
             new Database().ReadStats(acc);
             if (!player.NameChosen) return false;
 
@@ -85,7 +85,7 @@ namespace wServer.realm.entities
                 {
                     if (TryDeduct(player))
                     {
-                        var chest = new Database().CreateChest(player.Client.Account);
+                        VaultChest chest = new Database().CreateChest(player.Client.Account);
                         (Owner as Vault).AddChest(chest, this);
                         player.Client.SendPacket(new BuyResultPacket
                         {
@@ -102,7 +102,7 @@ namespace wServer.realm.entities
                 }
                 else if (new Database().ReadVault(player.Client.Account).Chests.Count == player.maxChests)
                 {
-                    foreach (var i in RealmManager.Clients.Values)
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
                         i.SendPacket(new NotificationPacket
                         {
                             Color = new ARGB(0xff00ff00),
@@ -128,7 +128,7 @@ namespace wServer.realm.entities
                 //{
                 if (TryDeduct(player))
                 {
-                    var chest = new Database().CreateChest(player.Client.Account);
+                    VaultChest chest = new Database().CreateChest(player.Client.Account);
                     (Owner as Vault).AddChest(chest, this);
                     player.Client.SendPacket(new BuyResultPacket
                     {

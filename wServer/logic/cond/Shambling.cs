@@ -27,10 +27,10 @@ namespace wServer.logic.cond
                     children = new Entity[5]
                 };
 
-                var angleInc = (2*Math.PI)/5;
-                for (var i = 0; i < 5; i++)
+                double angleInc = (2*Math.PI)/5;
+                for (int i = 0; i < 5; i++)
                 {
-                    var entity = Entity.Resolve(0x0951);
+                    Entity entity = Entity.Resolve(0x0951);
                     entity.Move(
                         Host.Self.X + (float) Math.Cos(angleInc*i)*4,
                         Host.Self.Y + (float) Math.Sin(angleInc*i)*4);
@@ -51,12 +51,12 @@ namespace wServer.logic.cond
                 Host.Self.Owner.Timers.Add(new WorldTimer(1500, (world, t) =>
                 {
                     if (originalChildren != null)
-                        foreach (var i in originalChildren)
+                        foreach (Entity i in originalChildren)
                         {
                             if (i.Owner != null)
                                 i.Owner.LeaveWorld(i);
                         }
-                    foreach (var i in state.children)
+                    foreach (Entity i in state.children)
                         world.EnterWorld(i);
                 }));
                 return false;

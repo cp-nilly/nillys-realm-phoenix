@@ -53,7 +53,7 @@ namespace wServer.logic.attack
             }, null);
             chr.Owner.Timers.Add(new WorldTimer(1500, (world, t) =>
             {
-                var entity = Entity.Resolve(objType);
+                Entity entity = Entity.Resolve(objType);
                 entity.Move(target.X, target.Y);
                 (entity as Enemy).Terrain = (chr as Enemy).Terrain;
                 world.EnterWorld(entity);

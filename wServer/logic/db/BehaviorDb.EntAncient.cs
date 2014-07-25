@@ -205,7 +205,7 @@ namespace wServer.logic
                     IfEqual.Instance(-1, 9,
                         new RunBehaviors(
                             Once.Instance(new SimpleTaunt("YOU WILL DIE!!!")),
-                            Once.Instance(OrderAllEntity.Instance(30, 0x0923, new Transmute(0x0924, 1, 1) )),
+                            Once.Instance(OrderAllEntity.Instance(30, 0x0923, new Transmute(0x0924, 1, 1))),
                             SetSize.Instance(320),
                             new QueuedBehavior(
                                 CooldownExact.Instance(4000,

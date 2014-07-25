@@ -40,11 +40,12 @@
                 }
             }
         }
+
         private void UpdatePortals()
         {
             foreach (var i in RealmManager.Monitor.portals)
             {
-                foreach (var it in RealmManager.allRealmNames)
+                foreach (string it in RealmManager.allRealmNames)
                 {
                     if (i.Value.Name.StartsWith(it))
                     {

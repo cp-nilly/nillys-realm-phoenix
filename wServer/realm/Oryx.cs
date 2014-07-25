@@ -212,10 +212,10 @@ namespace wServer.realm
         public static double GetNormal(Random rand)
         {
             // Use Box-Muller algorithm
-            var u1 = GetUniform(rand);
-            var u2 = GetUniform(rand);
-            var r = Math.Sqrt(-2.0*Math.Log(u1));
-            var theta = 2.0*Math.PI*u2;
+            double u1 = GetUniform(rand);
+            double u2 = GetUniform(rand);
+            double r = Math.Sqrt(-2.0*Math.Log(u1));
+            double theta = 2.0*Math.PI*u2;
             return r*Math.Sin(theta);
         }
 
@@ -226,7 +226,7 @@ namespace wServer.realm
 
         private short GetRandomObjType(Tuple<string, double>[] dat)
         {
-            var p = rand.NextDouble();
+            double p = rand.NextDouble();
             double n = 0;
             short objType = 0;
             foreach (var k in dat)
@@ -244,7 +244,7 @@ namespace wServer.realm
         private int Spawn(ObjectDesc desc, WmapTerrain terrain, int w, int h)
         {
             Entity entity;
-            var ret = 0;
+            int ret = 0;
             var pt = new IntPoint();
             if (desc.Spawn != null)
             {
@@ -260,7 +260,7 @@ namespace wServer.realm
                          world.Obstacles[pt.X, pt.Y] != 0 ||
                          BehaviorBase.HasPlayerNearby(world, pt.X, pt.Y));
 
-                for (var k = 0; k < num; k++)
+                for (int k = 0; k < num; k++)
                 {
                     entity = Entity.Resolve(desc.ObjectType);
                     entity.Move(
@@ -292,27 +292,27 @@ namespace wServer.realm
 
         public void Init()
         {
-            var w = world.Map.Width;
-            var h = world.Map.Height;
+            int w = world.Map.Width;
+            int h = world.Map.Height;
             var stats = new int[13];
-            for (var y = 0; y < h; y++)
-                for (var x = 0; x < w; x++)
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
                 {
-                    var tile = world.Map[x, y];
+                    WmapTile tile = world.Map[x, y];
                     if (tile.Terrain != WmapTerrain.None)
                         stats[(int) tile.Terrain - 1]++;
                 }
 
             foreach (var i in spawn)
             {
-                var terrain = i.Key;
-                var idx = (int) terrain - 1;
-                var enemyCount = stats[idx]/i.Value.Item1;
+                WmapTerrain terrain = i.Key;
+                int idx = (int) terrain - 1;
+                int enemyCount = stats[idx]/i.Value.Item1;
                 enemyMaxCounts[idx] = enemyCount;
                 enemyCounts[idx] = 0;
-                for (var j = 0; j < enemyCount; j++)
+                for (int j = 0; j < enemyCount; j++)
                 {
-                    var objType = GetRandomObjType(i.Value.Item2);
+                    short objType = GetRandomObjType(i.Value.Item2);
                     if (objType == 0) continue;
 
                     enemyCounts[idx] += Spawn(XmlDatas.ObjectDescs[objType], terrain, w, h);
@@ -376,7 +376,7 @@ namespace wServer.realm
         public void InitCloseRealm()
         {
             ClosingStarted = true;
-            foreach (var i in world.Players.Values)
+            foreach (Player i in world.Players.Values)
             {
                 SendMsg(i, "I HAVE CLOSED THIS REALM!", "#Oryx the Mad God");
                 SendMsg(i, "YOU WILL NOT LIVE TO SEE THE LIGHT OF DAY!", "#Oryx the Mad God");
@@ -384,7 +384,7 @@ namespace wServer.realm
             world.Timers.Add(new WorldTimer(20000, (ww, tt) => { CloseRealm(); }));
             world.Timers.Add(new WorldTimer(30000, (w, t) =>
             {
-                foreach (var i in RealmManager.Clients.Values)
+                foreach (ClientProcessor i in RealmManager.Clients.Values)
                 {
                     i.SendPacket(new TextPacket
                     {
@@ -394,7 +394,7 @@ namespace wServer.realm
                         Text = "WARNING: Short lag, please wait!"
                     });
                 }
-                var newworld = GameWorld.AutoName(1, true);
+                GameWorld newworld = GameWorld.AutoName(1, true);
                 RealmManager.AddWorld(newworld);
             }));
             RealmManager.CloseWorld(world);
@@ -405,8 +405,8 @@ namespace wServer.realm
             world.Timers.Add(new WorldTimer(8000, (w, t) =>
             {
                 //var ocWorld = RealmManager.AddWorld(new OryxChamberMap());
-                var ocWorld = RealmManager.AddWorld(new OryxCastleMap());
-                foreach (var i in world.Players.Values)
+                World ocWorld = RealmManager.AddWorld(new OryxCastleMap());
+                foreach (Player i in world.Players.Values)
                 {
                     i.Client.SendPacket(new ReconnectPacket
                     {
@@ -418,7 +418,7 @@ namespace wServer.realm
                     });
                 }
             }));
-            foreach (var i in world.Players.Values)
+            foreach (Player i in world.Players.Values)
             {
                 SendMsg(i, "MY MINIONS HAVE FAILED ME!", "#Oryx the Mad God");
                 SendMsg(i, "BUT NOW YOU SHALL FEEL MY WRATH!", "#Oryx the Mad God");
@@ -439,7 +439,7 @@ namespace wServer.realm
         public int CountEnemies(params string[] enemies)
         {
             var enemyList = new List<short>();
-            foreach (var i in enemies)
+            foreach (string i in enemies)
             {
                 try
                 {
@@ -449,7 +449,7 @@ namespace wServer.realm
                 {
                 }
             }
-            var count = 0;
+            int count = 0;
             foreach (var i in world.Enemies)
             {
                 if (enemyList.Contains(i.Value.ObjectType))
@@ -462,7 +462,7 @@ namespace wServer.realm
 
         public int Liches()
         {
-            var count = 0;
+            int count = 0;
             short lichID;
             XmlDatas.IdToType.TryGetValue("Lich", out lichID);
             foreach (var i in world.Enemies)
@@ -477,7 +477,7 @@ namespace wServer.realm
 
         public int Ents()
         {
-            var count = 0;
+            int count = 0;
             short entID;
             XmlDatas.IdToType.TryGetValue("Ent Ancient", out entID);
             foreach (var i in world.Enemies)
@@ -492,7 +492,7 @@ namespace wServer.realm
 
         public int GhostGods()
         {
-            var count = 0;
+            int count = 0;
             short ghostgodID;
             XmlDatas.IdToType.TryGetValue("Ghost King", out ghostgodID);
             foreach (var i in world.Enemies)
@@ -507,7 +507,7 @@ namespace wServer.realm
 
         public int CyclopsGods()
         {
-            var count = 0;
+            int count = 0;
             short ghostgodID;
             XmlDatas.IdToType.TryGetValue("Cyclops God", out ghostgodID);
             foreach (var i in world.Enemies)
@@ -522,7 +522,7 @@ namespace wServer.realm
 
         public int RedDemons()
         {
-            var count = 0;
+            int count = 0;
             short ghostgodID;
             XmlDatas.IdToType.TryGetValue("Red Demon", out ghostgodID);
             foreach (var i in world.Enemies)
@@ -537,7 +537,7 @@ namespace wServer.realm
 
         public int SkullShines()
         {
-            var count = 0;
+            int count = 0;
             short ID;
             XmlDatas.IdToType.TryGetValue("Skull Shrine", out ID);
             foreach (var i in world.Enemies)
@@ -552,7 +552,7 @@ namespace wServer.realm
 
         public int CubeGods()
         {
-            var count = 0;
+            int count = 0;
             short ID;
             XmlDatas.IdToType.TryGetValue("Cube God", out ID);
             foreach (var i in world.Enemies)
@@ -567,7 +567,7 @@ namespace wServer.realm
 
         public int Sphinxes()
         {
-            var count = 0;
+            int count = 0;
             short ID;
             XmlDatas.IdToType.TryGetValue("Grand Sphinx", out ID);
             foreach (var i in world.Enemies)
@@ -582,7 +582,7 @@ namespace wServer.realm
 
         public int Hermits()
         {
-            var count = 0;
+            int count = 0;
             short ID;
             XmlDatas.IdToType.TryGetValue("Hermit God", out ID);
             foreach (var i in world.Enemies)
@@ -594,9 +594,10 @@ namespace wServer.realm
             }
             return count;
         }
+
         public int PhoenixGods()
         {
-            var count = 0;
+            int count = 0;
             short ID;
             XmlDatas.IdToType.TryGetValue("Phoenix God", out ID);
             foreach (var i in world.Enemies)
@@ -614,8 +615,8 @@ namespace wServer.realm
             RecalculateEnemyCount();
             var state = new int[12];
             var diff = new int[12];
-            var c = 0;
-            for (var i = 0; i < state.Length; i++)
+            int c = 0;
+            for (int i = 0; i < state.Length; i++)
             {
                 if (enemyCounts[i] > enemyMaxCounts[i]*1.5) //Kill some
                 {
@@ -635,7 +636,7 @@ namespace wServer.realm
             }
             foreach (var i in world.Enemies) //Kill
             {
-                var idx = (int) i.Value.Terrain - 1;
+                int idx = (int) i.Value.Terrain - 1;
                 float dist = 10;
                 if (idx == -1 || state[idx] == 0 ||
                     BehaviorBase.GetNearestEntity(i.Value, ref dist, true) != null ||
@@ -653,14 +654,14 @@ namespace wServer.realm
             }
 
             int w = world.Map.Width, h = world.Map.Height;
-            for (var i = 0; i < state.Length; i++) //Add
+            for (int i = 0; i < state.Length; i++) //Add
             {
                 if (state[i] != 2) continue;
-                var x = diff[i];
+                int x = diff[i];
                 var t = (WmapTerrain) (i + 1);
-                for (var j = 0; j < x;)
+                for (int j = 0; j < x;)
                 {
-                    var objType = GetRandomObjType(spawn[t].Item2);
+                    short objType = GetRandomObjType(spawn[t].Item2);
                     if (objType == 0) continue;
 
                     j += Spawn(XmlDatas.ObjectDescs[objType], t, w, h);
@@ -673,7 +674,7 @@ namespace wServer.realm
 
         private void RecalculateEnemyCount()
         {
-            for (var i = 0; i < enemyCounts.Length; i++)
+            for (int i = 0; i < enemyCounts.Length; i++)
                 enemyCounts[i] = 0;
             foreach (var i in world.Enemies)
             {
@@ -712,11 +713,11 @@ namespace wServer.realm
 
         private void HandleAnnouncements()
         {
-            var taunt = criticalEnemies[rand.Next(0, criticalEnemies.Length)];
-            var count = 0;
+            Tuple<string, TauntData> taunt = criticalEnemies[rand.Next(0, criticalEnemies.Length)];
+            int count = 0;
             foreach (var i in world.Enemies)
             {
-                var desc = i.Value.ObjectDesc;
+                ObjectDesc desc = i.Value.ObjectDesc;
                 if (desc == null || (desc.DisplayId ?? desc.ObjectId) != taunt.Item1)
                     continue;
                 count++;
@@ -725,14 +726,14 @@ namespace wServer.realm
             if (count == 0) return;
             if (count == 1 && taunt.Item2.final != null)
             {
-                var arr = taunt.Item2.final;
-                var msg = arr[rand.Next(0, arr.Length)];
+                string[] arr = taunt.Item2.final;
+                string msg = arr[rand.Next(0, arr.Length)];
                 BroadcastMsg(msg);
             }
             else if (taunt.Item2.numberOfEnemies != null)
             {
-                var arr = taunt.Item2.numberOfEnemies;
-                var msg = arr[rand.Next(0, arr.Length)];
+                string[] arr = taunt.Item2.numberOfEnemies;
+                string msg = arr[rand.Next(0, arr.Length)];
                 msg = msg.Replace("{COUNT}", count.ToString());
                 BroadcastMsg(msg);
             }
@@ -778,8 +779,8 @@ namespace wServer.realm
 
                 if (dat.Value.killed != null)
                 {
-                    var arr = dat.Value.killed;
-                    var msg = arr[rand.Next(0, arr.Length)];
+                    string[] arr = dat.Value.killed;
+                    string msg = arr[rand.Next(0, arr.Length)];
                     while (killer == null && msg.Contains("{PLAYER}"))
                         msg = arr[rand.Next(0, arr.Length)];
                     msg = msg.Replace("{PLAYER}", killer.nName);
@@ -788,7 +789,7 @@ namespace wServer.realm
 
                 if (rand.NextDouble() < 0.25)
                 {
-                    var evt = events[rand.Next(0, events.Count)];
+                    Tuple<string, ISetPiece> evt = events[rand.Next(0, events.Count)];
                     if (XmlDatas.ObjectDescs[XmlDatas.IdToType[evt.Item1]].PerRealmMax == 1)
                         events.Remove(evt);
                     SpawnEvent(evt.Item2);
@@ -804,8 +805,8 @@ namespace wServer.realm
 
                     if (dat.Value.spawn != null)
                     {
-                        var arr = dat.Value.spawn;
-                        var msg = arr[rand.Next(0, arr.Length)];
+                        string[] arr = dat.Value.spawn;
+                        string msg = arr[rand.Next(0, arr.Length)];
                         BroadcastMsg(msg);
                     }
                 }

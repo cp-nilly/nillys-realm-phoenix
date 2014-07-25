@@ -271,31 +271,31 @@ namespace wServer.logic
                                 CooldownExact.Instance(100),
                                 Die.Instance
                                 ))),
-                                //condBehaviors: new ConditionalBehavior[]
-                                //    {
-                                //    new DeathPortal(0x5050, 10, 60)
-                                //    },
+                    //condBehaviors: new ConditionalBehavior[]
+                    //    {
+                    //    new DeathPortal(0x5050, 10, 60)
+                    //    },
                     loot: new LootBehavior(LootDef.Empty,
                         Tuple.Create(100, new LootDef(0, 3, 0, 12,
-                            Tuple.Create(0.005, (ILoot)new ItemLoot("Shield of Ogmur")),
-                            Tuple.Create(0.025, (ILoot)new TierLoot(11, ItemType.Weapon)),
-                            Tuple.Create(0.025, (ILoot)new TierLoot(12, ItemType.Armor)),
-                            Tuple.Create(0.03, (ILoot)new TierLoot(11, ItemType.Armor)),
-                            Tuple.Create(0.02, (ILoot)new TierLoot(5, ItemType.Ring)),
-                            Tuple.Create(0.035, (ILoot)new TierLoot(10, ItemType.Weapon)),
-                            Tuple.Create(0.035, (ILoot)new TierLoot(10, ItemType.Armor)),
-                            Tuple.Create(0.045, (ILoot)new TierLoot(9, ItemType.Weapon)),
-                            Tuple.Create(0.055, (ILoot)new TierLoot(5, ItemType.Ability)),
-                            Tuple.Create(0.045, (ILoot)new TierLoot(9, ItemType.Armor)),
-                            Tuple.Create(0.065, (ILoot)new TierLoot(4, ItemType.Ring)),
-                            Tuple.Create(0.15, (ILoot)new TierLoot(4, ItemType.Ability)),
-                            Tuple.Create(0.15, (ILoot)new TierLoot(8, ItemType.Armor)),
-                            Tuple.Create(0.25, (ILoot)new TierLoot(8, ItemType.Weapon)),
-                            Tuple.Create(0.25, (ILoot)new TierLoot(7, ItemType.Armor)),
-                            Tuple.Create(0.25, (ILoot)new TierLoot(3, ItemType.Ring))
+                            Tuple.Create(0.005, (ILoot) new ItemLoot("Shield of Ogmur")),
+                            Tuple.Create(0.025, (ILoot) new TierLoot(11, ItemType.Weapon)),
+                            Tuple.Create(0.025, (ILoot) new TierLoot(12, ItemType.Armor)),
+                            Tuple.Create(0.03, (ILoot) new TierLoot(11, ItemType.Armor)),
+                            Tuple.Create(0.02, (ILoot) new TierLoot(5, ItemType.Ring)),
+                            Tuple.Create(0.035, (ILoot) new TierLoot(10, ItemType.Weapon)),
+                            Tuple.Create(0.035, (ILoot) new TierLoot(10, ItemType.Armor)),
+                            Tuple.Create(0.045, (ILoot) new TierLoot(9, ItemType.Weapon)),
+                            Tuple.Create(0.055, (ILoot) new TierLoot(5, ItemType.Ability)),
+                            Tuple.Create(0.045, (ILoot) new TierLoot(9, ItemType.Armor)),
+                            Tuple.Create(0.065, (ILoot) new TierLoot(4, ItemType.Ring)),
+                            Tuple.Create(0.15, (ILoot) new TierLoot(4, ItemType.Ability)),
+                            Tuple.Create(0.15, (ILoot) new TierLoot(8, ItemType.Armor)),
+                            Tuple.Create(0.25, (ILoot) new TierLoot(8, ItemType.Weapon)),
+                            Tuple.Create(0.25, (ILoot) new TierLoot(7, ItemType.Armor)),
+                            Tuple.Create(0.25, (ILoot) new TierLoot(3, ItemType.Ring))
                             )),
                         Tuple.Create(100, new LootDef(1, 3, 1, 3,
-                            Tuple.Create(0.04, (ILoot)new StatPotionsLoot(1, 2))
+                            Tuple.Create(0.04, (ILoot) new StatPotionsLoot(1, 2))
                             ))
                         )
                     ))

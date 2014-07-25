@@ -28,10 +28,10 @@ namespace wServer.realm.setpieces
 
         public void RenderSetPiece(World world, IntPoint pos)
         {
-            var DarkGrassradiu = 14;
-            var sandRadius = 12;
-            var waterRadius = 9;
-            var deepWaterRadius = 4f;
+            int DarkGrassradiu = 14;
+            int sandRadius = 12;
+            int waterRadius = 9;
+            float deepWaterRadius = 4f;
 
             var border = new List<IntPoint>();
 
@@ -40,31 +40,31 @@ namespace wServer.realm.setpieces
             var t = new int[Size, Size];
 
 
-            for (var x = 0; x < Size; x++) //Flooring
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Flooring
+                for (int y = 0; y < Size; y++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy) + rand.NextDouble()*4 - 2;
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy) + rand.NextDouble()*4 - 2;
                     if (r <= DarkGrassradiu)
                         t[x, y] = 1;
                 }
 
-            for (var y = 0; y < Size; y++) //Outer
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Outer
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= sandRadius)
                         t[x, y] = 2;
                 }
-            for (var y = 0; y < Size; y++) //Water
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Water
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= waterRadius)
                     {
                         t[x, y] = 3;
@@ -72,25 +72,25 @@ namespace wServer.realm.setpieces
                 }
 
 
-            for (var y = 0; y < Size; y++) //Deep Water
-                for (var x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++) //Deep Water
+                for (int x = 0; x < Size; x++)
                 {
-                    var dx = x - (Size/2.0);
-                    var dy = y - (Size/2.0);
-                    var r = Math.Sqrt(dx*dx + dy*dy);
+                    double dx = x - (Size/2.0);
+                    double dy = y - (Size/2.0);
+                    double r = Math.Sqrt(dx*dx + dy*dy);
                     if (r <= deepWaterRadius)
                     {
                         t[x, y] = 4;
                     }
                 }
-            for (var x = 0; x < Size; x++) //Plants
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++) //Plants
+                for (int y = 0; y < Size; y++)
                 {
                     if (((x > 5 && x < bas) || (x < Size - 5 && x > Size - bas) ||
                          (y > 5 && y < bas) || (y < Size - 5 && y > Size - bas)) &&
                         o[x, y] == 0 && t[x, y] == 1)
                     {
-                        var r = rand.NextDouble();
+                        double r = rand.NextDouble();
                         if (r > 0.6) //0.4
                             o[x, y] = 4;
                         else if (r > 0.35) //0.25
@@ -99,12 +99,12 @@ namespace wServer.realm.setpieces
                             o[x, y] = 6;
                     }
                 }
-            for (var x = 0; x < Size; x++)
-                for (var y = 0; y < Size; y++)
+            for (int x = 0; x < Size; x++)
+                for (int y = 0; y < Size; y++)
                 {
                     if (t[x, y] == 1)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = DarkGrass;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -112,7 +112,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 2)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Sand;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -120,7 +120,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 3)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Water;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -128,7 +128,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 4)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = WaterDeep;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -136,7 +136,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (o[x, y] == 5)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.ObjType = Flower;
                         if (tile.ObjId == 0) tile.ObjId = world.GetNextEntityId();
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -144,7 +144,7 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 6)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = BrokenPillar;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
@@ -152,30 +152,30 @@ namespace wServer.realm.setpieces
                     }
                     else if (t[x, y] == 7)
                     {
-                        var tile = world.Map[x + pos.X, y + pos.Y].Clone();
+                        WmapTile tile = world.Map[x + pos.X, y + pos.Y].Clone();
                         tile.TileId = Pillar;
                         tile.ObjType = 0;
                         world.Obstacles[x + pos.X, y + pos.Y] = 0;
                         world.Map[x + pos.X, y + pos.Y] = tile;
                     }
                 }
-            var hermit = Entity.Resolve(0x0d61);
+            Entity hermit = Entity.Resolve(0x0d61);
 
-            var tentacle1 = Entity.Resolve(0x0d65);
+            Entity tentacle1 = Entity.Resolve(0x0d65);
 
-            var tentacle2 = Entity.Resolve(0x0d65);
+            Entity tentacle2 = Entity.Resolve(0x0d65);
 
-            var tentacle3 = Entity.Resolve(0x0d65);
+            Entity tentacle3 = Entity.Resolve(0x0d65);
 
-            var tentacle4 = Entity.Resolve(0x0d65);
+            Entity tentacle4 = Entity.Resolve(0x0d65);
 
-            var tentacle5 = Entity.Resolve(0x0d65);
+            Entity tentacle5 = Entity.Resolve(0x0d65);
 
-            var tentacle6 = Entity.Resolve(0x0d65);
+            Entity tentacle6 = Entity.Resolve(0x0d65);
 
-            var tentacle7 = Entity.Resolve(0x0d65);
+            Entity tentacle7 = Entity.Resolve(0x0d65);
 
-            var tentacle8 = Entity.Resolve(0x0d65);
+            Entity tentacle8 = Entity.Resolve(0x0d65);
 
             hermit.Move(pos.X + 15.5f, pos.Y + 15.5f);
             world.EnterWorld(hermit);

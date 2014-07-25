@@ -8,7 +8,8 @@
             Background = 0;
             AllowTeleport = true;
             SetMusic("Arena");
-            base.FromWorldMap(typeof(RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.shatters.wmap"));
+            base.FromWorldMap(
+                typeof (RealmManager).Assembly.GetManifestResourceStream("wServer.realm.worlds.shatters.wmap"));
         }
 
         public override World GetInstance(ClientProcessor psr)

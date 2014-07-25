@@ -28,9 +28,9 @@ namespace wServer.svrPackets
         protected override void Read(ClientProcessor psr, NReader rdr)
         {
             TargetId = rdr.ReadInt32();
-            var c = rdr.ReadByte();
+            byte c = rdr.ReadByte();
             Effects = 0;
-            for (var i = 0; i < c; i++)
+            for (int i = 0; i < c; i++)
                 Effects |= (ConditionEffects) (1 << rdr.ReadByte());
             Damage = rdr.ReadUInt16();
             Killed = rdr.ReadBoolean();
@@ -46,7 +46,7 @@ namespace wServer.svrPackets
                 if ((Effects & (ConditionEffects) (1 << i)) != 0)
                     eff.Add(i);
             wtr.Write((byte) eff.Count);
-            foreach (var i in eff) wtr.Write(i);
+            foreach (byte i in eff) wtr.Write(i);
             wtr.Write(Damage);
             wtr.Write(Killed);
             wtr.Write(BulletId);

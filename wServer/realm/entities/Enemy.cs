@@ -60,7 +60,7 @@ namespace wServer.realm.entities
                     Effect = ConditionEffectIndex.StasisImmune,
                     DurationMS = -1
                 });
-            foreach (var i in CondBehaviors)
+            foreach (ConditionalBehavior i in CondBehaviors)
                 if ((i.Condition & BehaviorCondition.OnSpawn) != 0)
                     i.Behave(BehaviorCondition.OnSpawn, this, null, null);
         }
@@ -73,11 +73,11 @@ namespace wServer.realm.entities
             if (!HasConditionEffect(ConditionEffects.Paused) &&
                 !HasConditionEffect(ConditionEffects.Stasis))
             {
-                var def = ObjectDesc.Defense;
+                int def = ObjectDesc.Defense;
                 if (noDef)
                     def = 0;
                 dmg = (int) StatsManager.GetDefenseDamage(this, dmg, def);
-                var effDmg = dmg;
+                int effDmg = dmg;
                 if (effDmg > HP)
                     effDmg = HP;
                 if (!HasConditionEffect(ConditionEffects.Invulnerable))
@@ -93,14 +93,14 @@ namespace wServer.realm.entities
                     ObjectId = from.Id
                 }, null);
 
-                foreach (var i in CondBehaviors)
+                foreach (ConditionalBehavior i in CondBehaviors)
                     if ((i.Condition & BehaviorCondition.OnHit) != 0)
                         i.Behave(BehaviorCondition.OnHit, this, time, null);
                 counter.HitBy(from, null, dmg);
 
                 if (HP < 0)
                 {
-                    foreach (var i in CondBehaviors)
+                    foreach (ConditionalBehavior i in CondBehaviors)
                         if ((i.Condition & BehaviorCondition.OnDeath) != 0)
                             i.Behave(BehaviorCondition.OnDeath, this, time, counter);
                     counter.Death();
@@ -120,16 +120,16 @@ namespace wServer.realm.entities
             if (HasConditionEffect(ConditionEffects.Invincible))
                 return false;
 
-            var player = projectile.ProjectileOwner is Player;
-            var pet = projectile.ProjectileOwner.Self.isPet;
+            bool player = projectile.ProjectileOwner is Player;
+            bool pet = projectile.ProjectileOwner.Self.isPet;
 
             if ((player || pet) &&
                 !HasConditionEffect(ConditionEffects.Paused) &&
                 !HasConditionEffect(ConditionEffects.Stasis))
             {
-                var plr = pet ? projectile.ProjectileOwner.Self.PlayerOwner : projectile.ProjectileOwner as Player;
+                Player plr = pet ? projectile.ProjectileOwner.Self.PlayerOwner : projectile.ProjectileOwner as Player;
 
-                var def = ObjectDesc.Defense;
+                int def = ObjectDesc.Defense;
                 if (projectile.Descriptor.ArmorPiercing)
                     def = 0;
                 var dmg = (int) StatsManager.GetDefenseDamage(this, projectile.Damage, def);
@@ -146,14 +146,14 @@ namespace wServer.realm.entities
                     ObjectId = projectile.ProjectileOwner.Self.Id
                 }, pet ? null : plr);
 
-                foreach (var i in CondBehaviors)
+                foreach (ConditionalBehavior i in CondBehaviors)
                     if ((i.Condition & BehaviorCondition.OnHit) != 0)
                         i.Behave(BehaviorCondition.OnHit, this, time, projectile);
                 counter.HitBy(plr, projectile, dmg);
 
                 if (HP < 0)
                 {
-                    foreach (var i in CondBehaviors)
+                    foreach (ConditionalBehavior i in CondBehaviors)
                         if ((i.Condition & BehaviorCondition.OnDeath) != 0)
                             i.Behave(BehaviorCondition.OnDeath, this, time, counter);
                     counter.Death();

@@ -2,6 +2,7 @@
 // the Create factory method is used in place of a constructor
 // to handle the case where target is null, but we want the 
 // reference to still appear to be alive.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -142,10 +143,10 @@ internal sealed class WeakKeyComparer<T> : IEqualityComparer<object>
 /// </summary>
 /// <remarks>
 ///     Provides the plumbing for the portions of IDictionary
-///     <TKey,
-///         TValue>
+///     <TKey>
+///         <TValue>
 ///         which can reasonably be implemented without any
-///         dependency on the underlying representation of the dictionary.
+///         dependency on the underlying representation of the dictionary.</TKey>
 /// </remarks>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(PREFIX + "DictionaryDebugView`2" + SUFFIX)]

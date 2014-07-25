@@ -2,7 +2,6 @@
 
 using System;
 using wServer.realm;
-using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.svrPackets;
 
@@ -19,12 +18,12 @@ namespace wServer.logic.cond
             while (entity != null)
             {
                 if (entity.HasConditionEffect(ConditionEffects.Quiet)) return false;
-                var mp = entity.MP;
-                var maxMp = entity.Stats[1] + entity.Boost[1];
+                int mp = entity.MP;
+                int maxMp = entity.Stats[1] + entity.Boost[1];
                 mp = Math.Min(mp + 100, maxMp);
                 if (mp != entity.MP)
                 {
-                    var n = mp - entity.MP;
+                    int n = mp - entity.MP;
                     entity.MP = mp;
                     entity.UpdateCount++;
                     entity.Owner.BroadcastPacket(new ShowEffectPacket
