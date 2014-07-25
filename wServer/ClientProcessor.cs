@@ -841,8 +841,8 @@ namespace wServer
         {
             RealmManager.Logic.AddPendingAction(t =>
             {
-                if (Player != null)
-                    Player.SaveToCharacter();
+                //if (Player != null) // seems to be too late to save here... maybe player went null?
+                //    Player.SaveToCharacter();
                 //Save();
                 RealmManager.Disconnect(this);
             }, PendingPriority.Destruction);
@@ -852,9 +852,9 @@ namespace wServer
         {
             RealmManager.Logic.AddPendingAction(t =>
             {
-                if (Player != null)
+                if (Player != null) // save player on reconnect
                     Player.SaveToCharacter();
-                //Save();
+                Save();
                 RealmManager.Disconnect(this);
                 SendPacket(pkt);
             }, PendingPriority.Destruction);

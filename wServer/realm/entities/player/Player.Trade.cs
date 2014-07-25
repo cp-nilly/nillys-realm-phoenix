@@ -445,6 +445,10 @@ namespace wServer.realm.entities.player
                             Result = 1,
                             Message = "Trade successful!"
                         });
+                        SaveToCharacter();
+                        psr.Save();
+                        tradeTarget.SaveToCharacter();
+                        tradeTarget.psr.Save();
 
                         const string dir = @"logs";
                         if (!Directory.Exists(dir))

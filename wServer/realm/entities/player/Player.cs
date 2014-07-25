@@ -1204,6 +1204,8 @@ namespace wServer.realm.entities.player
                         Name = "Nexus",
                         Key = Empty<byte>.Array,
                     });
+                    HP = 1;
+                    resurrecting = true;
                     return;
                 case "Zombies":
                     Owner.BroadcastPacket(new TextPacket
@@ -1221,6 +1223,8 @@ namespace wServer.realm.entities.player
                         Name = "Nexus",
                         Key = Empty<byte>.Array,
                     });
+                    HP = 1;
+                    resurrecting = true;
                     return;
                 case "Nexus":
                     Owner.BroadcastPacket(new TextPacket
@@ -1231,12 +1235,16 @@ namespace wServer.realm.entities.player
                         Text = Name + " was saved by the holy powers of the Nexus."
                     }, null);
                     HP = psr.Character.MaxHitPoints;
+                    SaveToCharacter();
+                    psr.Save(); 
                     psr.Disconnect();
                     return;
             }
             if (Client.Account.Rank > 2)
             {
                 HP = psr.Character.MaxHitPoints;
+                SaveToCharacter();
+                psr.Save();
                 psr.Disconnect();
                 return;
             }
@@ -1245,6 +1253,8 @@ namespace wServer.realm.entities.player
 
             if (psr.Character.Dead)
             {
+                SaveToCharacter();
+                psr.Save();
                 psr.Disconnect();
                 return;
             }

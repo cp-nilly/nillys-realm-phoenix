@@ -50,7 +50,7 @@ namespace wServer {
             Console.WriteLine(@"Listening at port 2050...");
 
             //new Thread(AutoBroadCastNews).Start();
-            new Thread(AutoSave).Start();
+            //new Thread(AutoSave).Start();
 
             HostPolicyServer();
 

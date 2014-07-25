@@ -27,7 +27,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 2; }
         }
 
         public void Execute(Player player, string[] args)
@@ -363,7 +363,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -763,7 +763,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 5; }
+            get { return 2; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1522,7 +1522,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 0; }
+            get { return 2; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1557,7 +1557,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1599,7 +1599,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1708,7 +1708,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2077,7 +2077,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 2; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2503,7 +2503,7 @@ namespace wServer.realm.commands
     class Spectate : ICommand
     {
         public string Command { get { return "spectate"; } }
-        public int RequiredRank { get { return 3; } }
+        public int RequiredRank { get { return 2; } }
 
         public void Execute(Player player, string[] args)
         {

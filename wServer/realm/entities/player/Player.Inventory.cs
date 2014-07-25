@@ -55,6 +55,7 @@ namespace wServer.realm.entities.player
         {
             var en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             var en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
+            //System.Console.Write(en1 == en2);
             var con1 = en1 as IContainer;
             var con2 = en2 as IContainer;
             
@@ -92,17 +93,23 @@ namespace wServer.realm.entities.player
 
                 if (en1 is Player)
                 {
-                    if (en1.Owner.Name == "Vault")
-                       // (en1 as Player).Client.Save();
+                    //if (en1.Owner.Name == "Vault")
+                       //(en1 as Player).Client.Save();
                     (en1 as Player).CalcBoost();
                     (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
                 }
                 if (en2 is Player)
                 {
-                    if (en2.Owner.Name == "Vault")
-                       // (en2 as Player).Client.Save();
+                    //if (en2.Owner.Name == "Vault")
+                      // (en2 as Player).Client.Save();
                     (en2 as Player).CalcBoost();
                     (en2 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
+                }
+
+                if (en1 is Player) {
+                    (en1 as Player).Client.Save();
+                } else if (en2 is Player) {
+                    (en2 as Player).Client.Save();
                 }
 
                 if (Owner is Vault)
@@ -186,7 +193,7 @@ namespace wServer.realm.entities.player
                     {
                         Result = 0
                     });
-                    //(entity as Player).Client.Save();
+                    (entity as Player).Client.Save();
                 }
 
                 if (Owner is Vault)
