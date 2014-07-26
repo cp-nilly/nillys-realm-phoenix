@@ -12,7 +12,7 @@ namespace wServer.realm
 {
     public class LogicTicker
     {
-        public const int TPS = 30;
+        public const int TPS = 5; //30
         public const int MsPT = 1000/TPS;
         public static RealmTime CurrentTime;
         private readonly ConcurrentQueue<Action<RealmTime>>[] pendings;
