@@ -835,9 +835,9 @@ namespace wServer
         {
             RealmManager.Logic.AddPendingAction(t =>
             {
-                //if (Player != null) // seems to be too late to save here... maybe player went null?
-                //    Player.SaveToCharacter();
-                //Save();
+                if (Player != null) // might be important to save deaths
+                    Player.SaveToCharacter();
+                Save();
                 RealmManager.Disconnect(this);
             }, PendingPriority.Destruction);
         }
