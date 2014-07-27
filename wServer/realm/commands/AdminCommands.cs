@@ -801,7 +801,7 @@ namespace wServer.realm.commands
             {
                 foreach (var plr in w.Value.Players)
                 {
-                    if (plr.Value.Name != player.Name)
+                    if (plr.Value.Name != player.Name && plr.Value.Owner != player.Owner)
                     {
                         plr.Value.Client.Reconnect(new ReconnectPacket
                         {
@@ -834,7 +834,10 @@ namespace wServer.realm.commands
                 foreach (var plr in player.Owner.Players)
                 {
                     if(plr.Value.Name != player.Name)
-                        plr.Value.Move(player.X, player.Y);
+                        plr.Value.Teleport(new RealmTime(), new TeleportPacket()
+                        {
+                            ObjectId = player.Id
+                        });
                 }
         }
     }
@@ -2137,16 +2140,16 @@ namespace wServer.realm.commands
         }
     }
 
-    internal class LuciferTestingCommand : ICommand
+    internal class AdminRoomCommand : ICommand
     {
         public string Command
         {
-            get { return "lucitest"; }
+            get { return "adminroom"; }
         }
 
         public int RequiredRank
         {
-            get { return 9; }
+            get { return 6; }
         }
 
         public void Execute(Player player, string[] args)
