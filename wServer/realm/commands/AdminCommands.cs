@@ -792,7 +792,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -826,7 +826,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
