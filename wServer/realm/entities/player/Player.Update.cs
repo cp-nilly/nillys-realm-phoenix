@@ -132,7 +132,6 @@ namespace wServer.realm.entities.player
 
                 if (x < 0 || x >= _mapWidth ||
                     y < 0 || y >= _mapHeight ||
-                    map[x, y].TileId == 0xff ||
                     tiles[x, y] >= (tile = map[x, y]).UpdateCount) continue;
 
                 World world = Owner;

@@ -783,6 +783,62 @@ namespace wServer.realm.commands
         }
     }
 
+    internal class SummonAll : ICommand
+    {
+        public string Command
+        {
+            get { return "summonall"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 2; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+            foreach (var w in RealmManager.Worlds)
+            {
+                foreach (var plr in w.Value.Players)
+                {
+                    if (plr.Value.Name != player.Name)
+                    {
+                        plr.Value.Client.Reconnect(new ReconnectPacket
+                        {
+                            Host = "",
+                            Port = 2050,
+                            GameId = player.Owner.Id,
+                            Name = player.Owner.Name,
+                            Key = Empty<byte>.Array,
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    internal class TeleportAll : ICommand
+    {
+        public string Command
+        {
+            get { return "tpall"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 2; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+                foreach (var plr in player.Owner.Players)
+                {
+                    if(plr.Value.Name != player.Name)
+                        plr.Value.Move(player.X, player.Y);
+                }
+        }
+    }
+
     internal class KillCommand : ICommand
     {
         public string Command
