@@ -20,7 +20,7 @@ namespace wServer.realm.entities
         {
             if (objType == 0x0505) //Vault chest
             {
-                Price = 1000;
+                Price = 100;
                 Currency = CurrencyType.Fame;
                 RankReq = 0;
             }
@@ -32,7 +32,7 @@ namespace wServer.realm.entities
             }
             if (objType == 0x195f) //Vault Chest Gold
             {
-                Price = 100;
+                Price = 20;
                 Currency = CurrencyType.Gold;
                 RankReq = 0;
             }
