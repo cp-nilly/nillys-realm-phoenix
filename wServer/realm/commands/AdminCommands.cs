@@ -34,90 +34,136 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            int num;
-            if (args.Length > 0 && int.TryParse(args[0], out num)) //multi
-            {
-                string name = string.Join(" ", args.Skip(1).ToArray());
-                short objType;
-                //creates a new case insensitive dictionary based on the XmlDatas
-                var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
-                if (!icdatas.TryGetValue(name, out objType) ||
-                    !XmlDatas.ObjectDescs.ContainsKey(objType))
-                {
-                    player.SendInfo("Unknown entity!");
-                }
-                else
-                {
-                    int c = int.Parse(args[0]);
-                    if (player.Client.Account.Rank < 5 && c > 50)
-                    {
-                        player.SendError("Maximum spawn count is set to 50!");
-                        return;
-                    }
+            string name;
+            short objType;
+            int amount = 1;
+            int delay = 3000;
 
-
-                    if (player.Client.Account.Rank > 4 && c > 50)
-                    {
-                        player.SendInfo("Bypass made!");
-                    }
-
-                    for (int i = 0; i < num; i++)
-                    {
-                        Entity entity = Entity.Resolve(objType);
-                        entity.Move(player.X, player.Y);
-                        Thread thread = new Thread(() =>
-                        {
-                            Thread.Sleep(3000);
-                            player.Owner.EnterWorld(entity);
-                        });
-                        thread.IsBackground = true;
-                        thread.Start();
-                    }
-                    string dir = @"logs";
-                    if (!Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
-                    using (var writer = new StreamWriter(@"logs\SpawnLog.log", true))
-                    {
-                        writer.WriteLine(player.Name + " spawned " + c + " " + name + "s");
-                    }
-                    player.SendInfo("Success!");
-                }
+            // multiple spawn check
+            if (args.Length > 0 && !int.TryParse(args[0], out amount)) {
+                name = string.Join(" ", args);
+                amount = 1;
             }
             else
             {
-                string name = string.Join(" ", args);
-                short objType;
-                //creates a new case insensitive dictionary based on the XmlDatas
-                var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
-                if (!icdatas.TryGetValue(name, out objType) ||
-                    !XmlDatas.ObjectDescs.ContainsKey(objType))
-                {
-                    player.SendHelp("Usage: /spawn <entity name>");
-                }
-                else
-                {
-                    Entity entity = Entity.Resolve(objType);
-                    entity.Move(player.X, player.Y);
-                    Thread thread = new Thread(() =>
-                    {
-                        Thread.Sleep(3000);
-                        player.Owner.EnterWorld(entity);
-                    });
-                    thread.IsBackground = true;
-                    thread.Start();
-                }
-                string dir = @"logs";
-                if (!Directory.Exists(dir))
-                {
-                    Directory.CreateDirectory(dir);
-                }
-                using (var writer = new StreamWriter(@"logs\SpawnLog.log", true))
-                {
-                    writer.WriteLine(player.Name + " spawned a " + name);
-                }
+                name = string.Join(" ", args.Skip(1).ToArray());
+            }   
+                
+            // check to see if entity exists
+            var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
+                // ^^ creates a new case insensitive dictionary based on the XmlDatas
+            if (!icdatas.TryGetValue(name, out objType) ||
+                !XmlDatas.ObjectDescs.ContainsKey(objType))
+            {
+                player.SendInfo("Unknown entity!");
+                return;
             }
+
+            // check spawn limit
+            if (player.Client.Account.Rank < 5 && amount > 50)
+            {
+                player.SendError("Maximum spawn count is set to 50!");
+                return;
+            }
+
+            // queue up mob spawn
+            Thread thread = new Thread(() =>
+            {
+                Entity entity = Entity.Resolve(objType);
+                foreach (ClientProcessor j in RealmManager.Clients.Values)
+                    j.SendPacket(new NotificationPacket
+                    {
+                        Color = new ARGB(0xffff0000),
+                        ObjectId = player.Id,
+                        Text = "Spawning " + ((amount > 1)? amount + " ": "") + entity.ObjectDesc.ObjectId + "..."
+                    });
+                float x = player.X;
+                float y = player.Y;
+                Thread.Sleep(delay);
+                for (int i = 0; i < amount; i++)
+                {
+                    entity = Entity.Resolve(objType);
+                    entity.Move(x, y);
+                    player.Owner.EnterWorld(entity);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Start();
+            
+            // log event
+            string dir = @"logs";
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            using (var writer = new StreamWriter(@"logs\SpawnLog.log", true))
+            {
+                writer.WriteLine(player.Name + " spawned " + amount + " " + name + "s");
+            }
+
+            player.SendInfo("Success!");
+        }
+    }
+
+    internal class SSpawnCommand : ICommand
+    {
+        public string Command
+        {
+            get { return "sspawn"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 3; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+            string name;
+            short objType;
+            int amount = 1;
+
+            // multiple spawn check
+            if (args.Length > 0 && !int.TryParse(args[0], out amount))
+            {
+                name = string.Join(" ", args);
+                amount = 1;
+            }
+            else
+            {
+                name = string.Join(" ", args.Skip(1).ToArray());
+            }
+
+            // check to see if entity exists
+            var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
+            // ^^ creates a new case insensitive dictionary based on the XmlDatas
+            if (!icdatas.TryGetValue(name, out objType) ||
+                !XmlDatas.ObjectDescs.ContainsKey(objType))
+            {
+                player.SendInfo("Unknown entity!");
+                return;
+            }
+
+            // spawn mob
+            for (int i = 0; i < amount; i++)
+            {
+                Entity entity = Entity.Resolve(objType);
+                entity.Move(player.X, player.Y);
+                player.Owner.EnterWorld(entity);
+            }
+            
+            // log event
+            string dir = @"logs";
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            using (var writer = new StreamWriter(@"logs\SSpawnLog.log", true))
+            {
+                writer.WriteLine(player.Name + " spawned " + amount + " " + name + "s");
+            }
+
+            player.SendInfo("Success!");
         }
     }
 
