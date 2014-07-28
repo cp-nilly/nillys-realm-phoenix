@@ -2674,5 +2674,38 @@ namespace wServer.realm.commands
                     });
             }
         }
+
+        internal class AllOnlineCommand : ICommand
+        {
+            public string Command
+            {
+                get { return "online"; }
+            }
+
+            public int RequiredRank
+            {
+                get { return 3; }
+            }
+
+            public void Execute(Player player, string[] args)
+            {
+                try
+                {
+                    var sb = new StringBuilder("Users online: \r\n");
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
+                    {
+                        if (i.Stage == ProtocalStage.Disconnected || i.Player == null || i.Player.Owner == null) continue;
+                        sb.AppendFormat("{0}#{1}@{2}\r\n",
+                            i.Account.Name,
+                            i.Player.Owner.Name,
+                            i.Socket.RemoteEndPoint);
+                    }
+                }
+                catch
+                {
+                    player.SendError("Error!");
+                }
+            }
+        }
     }
 }

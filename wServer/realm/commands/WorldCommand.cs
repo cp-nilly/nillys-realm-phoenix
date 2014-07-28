@@ -283,6 +283,103 @@ namespace wServer.realm.commands
         }
     }
 
+    internal class TCommand : ICommand
+    {
+        public string Command
+        {
+            get { return "t"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 0; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+            try
+            {
+                int sindex = 1;
+
+                if (!(player.NameChosen))
+                {
+                    player.SendInfo(string.Format("Choose a name!"));
+                    return;
+                }
+
+                var tags = new List<string>();
+                foreach (var x in RealmManager.Worlds)
+                {
+                    foreach (var y in x.Value.Players)
+                    {
+                        if (y.Value.Client.Account.Tag != "" && y.Value.Client.Account.Tag != null)
+                        {
+                            tags.Add("[" + y.Value.Client.Account.Tag + "]");
+                        }
+                    }
+                }
+                string playername = args[0].Trim();
+                if (tags.Contains(playername))
+                {
+                    playername = args[1];
+                    sindex = 2;
+                }
+
+                if (player.nName.ToLower() == playername.ToLower())
+                {
+                    player.SendInfo(string.Format("You canot tell yourself!"));
+                    return;
+                }
+
+                string saytext = string.Join(" ", args, sindex, args.Length - sindex);
+
+                foreach (var w in RealmManager.Worlds)
+                {
+                    World world = w.Value;
+                    if (w.Key != 0) // 0 is limbo??
+                    {
+                        foreach (var i in world.Players)
+                        {
+                            if (i.Value.nName.ToLower() == playername.ToLower().Trim() && i.Value.NameChosen)
+                            {
+                                if (saytext == "" || saytext == null)
+                                {
+                                    player.SendHelp("Usage: /tell <player name> <text>");
+                                    return;
+                                }
+                                player.Client.SendPacket(new TextPacket //echo to self
+                                {
+                                    BubbleTime = 10,
+                                    Stars = player.Stars,
+                                    Name = player.Name,
+                                    Recipient = i.Value.Name,
+                                    ObjectId = player.Id,
+                                    Text = saytext.ToSafeText()
+                                });
+
+                                i.Value.Client.SendPacket(new TextPacket //echo to /tell player
+                                {
+                                    BubbleTime = 10,
+                                    Stars = player.Stars,
+                                    Recipient = i.Value.nName,
+                                    Name = player.Name,
+                                    ObjectId = (i.Value.Owner.Id == player.Owner.Id ? player.Id : 0),
+                                    Text = saytext.ToSafeText()
+                                });
+                                return;
+                            }
+                        }
+                    }
+                }
+                player.SendInfo(string.Format("Cannot tell, {0} not found!", args[sindex - 1].Trim()));
+            }
+            catch
+            {
+                player.SendInfo("Cannot tell!");
+            }
+        }
+    }
+
     internal class DyeCommand : ICommand
     {
         public string Command
