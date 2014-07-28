@@ -37,7 +37,7 @@ namespace wServer.realm.commands
             string name;
             short objType;
             int amount = 1;
-            int delay = 3000;
+            int delay = 3; // in seconds
 
             // multiple spawn check
             if (args.Length > 0 && !int.TryParse(args[0], out amount)) {
@@ -67,28 +67,32 @@ namespace wServer.realm.commands
             }
 
             // queue up mob spawn
-            Thread thread = new Thread(() =>
+            World w = RealmManager.GetWorld(player.Owner.Id);
+            w.BroadcastPacket(new NotificationPacket
             {
-                Entity entity = Entity.Resolve(objType);
-                foreach (ClientProcessor j in RealmManager.Clients.Values)
-                    j.SendPacket(new NotificationPacket
-                    {
-                        Color = new ARGB(0xffff0000),
-                        ObjectId = player.Id,
-                        Text = "Spawning " + ((amount > 1)? amount + " ": "") + entity.ObjectDesc.ObjectId + "..."
-                    });
-                float x = player.X;
-                float y = player.Y;
-                Thread.Sleep(delay);
+                Color = new ARGB(0xffff0000),
+                ObjectId = player.Id,
+                Text = "Spawning " + ((amount > 1) ? amount + " " : "") + name + "..."
+            }, null);
+            w.BroadcastPacket(new TextPacket
+            {
+                Name = player.nName,
+                Stars = player.Stars,
+                BubbleTime = 0,
+                Text =
+                    "Spawning " + ((amount > 1) ? amount + " " : "") + name + "..."
+            }, null);
+            float x = player.X;
+            float y = player.Y;
+            w.Timers.Add(new WorldTimer(delay * 1000, (world, t) => // spawn mob in delay seconds
+            {
                 for (int i = 0; i < amount; i++)
                 {
-                    entity = Entity.Resolve(objType);
+                    Entity entity = Entity.Resolve(objType);
                     entity.Move(x, y);
                     player.Owner.EnterWorld(entity);
                 }
-            });
-            thread.IsBackground = true;
-            thread.Start();
+            }));
             
             // log event
             string dir = @"logs";
