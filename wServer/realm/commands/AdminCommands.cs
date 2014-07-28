@@ -2700,6 +2700,7 @@ namespace wServer.realm.commands
                             i.Player.Owner.Name,
                             i.Socket.RemoteEndPoint);
                     }
+                    player.SendInfo(sb.ToString());
                 }
                 catch
                 {
