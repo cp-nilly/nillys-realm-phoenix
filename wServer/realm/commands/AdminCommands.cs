@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using db;
 using db.data;
 using MySql.Data.MySqlClient;
@@ -64,7 +65,13 @@ namespace wServer.realm.commands
                     {
                         Entity entity = Entity.Resolve(objType);
                         entity.Move(player.X, player.Y);
-                        player.Owner.EnterWorld(entity);
+                        Thread thread = new Thread(() =>
+                        {
+                            Thread.Sleep(3000);
+                            player.Owner.EnterWorld(entity);
+                        });
+                        thread.IsBackground = true;
+                        thread.Start();
                     }
                     string dir = @"logs";
                     if (!Directory.Exists(dir))
@@ -93,7 +100,13 @@ namespace wServer.realm.commands
                 {
                     Entity entity = Entity.Resolve(objType);
                     entity.Move(player.X, player.Y);
-                    player.Owner.EnterWorld(entity);
+                    Thread thread = new Thread(() =>
+                    {
+                        Thread.Sleep(3000);
+                        player.Owner.EnterWorld(entity);
+                    });
+                    thread.IsBackground = true;
+                    thread.Start();
                 }
                 string dir = @"logs";
                 if (!Directory.Exists(dir))
