@@ -12,7 +12,7 @@ namespace wServer.logic
     public class FameCounter
     {
         private readonly Player player;
-        private readonly HashSet<Projectile> projs = new HashSet<Projectile>();
+        //private readonly HashSet<Projectile> projs = new HashSet<Projectile>();
 
         private readonly FameStats stats;
         private int elapsed;
@@ -31,14 +31,19 @@ namespace wServer.logic
         public void Shoot(Projectile proj)
         {
             stats.Shots++;
-            projs.Add(proj);
+            //projs.Add(proj);
         }
 
         public void Hit(Projectile proj, Enemy enemy)
         {
-            if (projs.Contains(proj))
+            /*if (projs.Contains(proj))
             {
                 projs.Remove(proj);
+                stats.ShotsThatDamage++;
+            }*/
+            // assuming shoot function is only called by the player this famecounter is for
+            if (proj.ProjectileOwner.Equals(player))
+            {
                 stats.ShotsThatDamage++;
             }
         }
