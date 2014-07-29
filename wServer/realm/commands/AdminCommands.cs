@@ -59,6 +59,14 @@ namespace wServer.realm.commands
                 return;
             }
 
+            // check for banned objects
+            if (name.ToLower().Equals("white fountain") ||
+                name.ToLower().Equals("blood fountain"))
+            {
+                player.SendInfo("Spawning " + name + " not allowed.");
+                return;
+            }
+
             // check spawn limit
             if (player.Client.Account.Rank < 5 && amount > 50)
             {
@@ -68,19 +76,19 @@ namespace wServer.realm.commands
 
             // queue up mob spawn
             World w = RealmManager.GetWorld(player.Owner.Id);
+            string announce = "Spawning " + ((amount > 1) ? amount + " " : "") + name + "...";
             w.BroadcastPacket(new NotificationPacket
             {
                 Color = new ARGB(0xffff0000),
                 ObjectId = player.Id,
-                Text = "Spawning " + ((amount > 1) ? amount + " " : "") + name + "..."
+                Text = announce
             }, null);
             w.BroadcastPacket(new TextPacket
             {
                 Name = player.nName,
                 Stars = player.Stars,
                 BubbleTime = 0,
-                Text =
-                    "Spawning " + ((amount > 1) ? amount + " " : "") + name + "..."
+                Text = announce
             }, null);
             float x = player.X;
             float y = player.Y;
@@ -2221,7 +2229,7 @@ namespace wServer.realm.commands
             {
                 Host = "",
                 Port = 2050,
-                GameId = World.ADM_ID,
+                GameId = World.ADM_ID, // wtf? guess someone made the command but didn't make the map... TODO
                 Name = "Admin Room",
                 Key = Empty<byte>.Array,
             });
@@ -2568,7 +2576,7 @@ namespace wServer.realm.commands
                         }
                         else
                         {
-                            plr.Name = player.Client.Account.Name;
+                            plr.Name = plr.Client.Account.Name;
                             player.SendInfo("Tag succesfully removed");
                         }
                         db.Dispose();
