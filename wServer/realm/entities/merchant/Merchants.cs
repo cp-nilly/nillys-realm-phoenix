@@ -166,7 +166,7 @@ namespace wServer.realm.entities
                         XElement ist;
                         XmlDatas.TypeToElement.TryGetValue((short) trueMType, out ist);
                         if (player.Inventory[i] == null &&
-                            (player.SlotTypes[i] == 0 ||
+                            (player.SlotTypes[i] == 10 ||
                              player.SlotTypes[i] == Convert.ToInt16(ist.Element("SlotType").Value)))
                             // Exploit fix - No more mnovas as weapons!
                         {

@@ -122,7 +122,7 @@ namespace wServer.realm.entities.player
                 for (int i = 0; i < Inventory.Length; i++) //put items by slotType
                     if (Inventory[i] == null)
                     {
-                        if (SlotTypes[i] == 0 && thisItems[0] != null)
+                        if (SlotTypes[i] == 10 && thisItems[0] != null)
                         {
                             Inventory[i] = thisItems[0];
                             thisItems.RemoveAt(0);

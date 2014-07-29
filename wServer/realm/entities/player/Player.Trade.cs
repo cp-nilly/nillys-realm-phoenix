@@ -324,7 +324,7 @@ namespace wServer.realm.entities.player
                 }
                 for (int i = 0; i != tradeTarget.Inventory.Length; i++)
                 {
-                    if (SlotTypes[i] == 0)
+                    if (SlotTypes[i] == 10)
                     {
                         targetemptyslots++;
                     }
@@ -360,7 +360,7 @@ namespace wServer.realm.entities.player
                     for (int i = 0; i < Inventory.Length; i++) //put items by slotType
                         if (Inventory[i] == null)
                         {
-                            if (SlotTypes[i] == 0)
+                            if (SlotTypes[i] == 10)
                             {
                                 Inventory[i] = targetItems[0];
                                 targetItems.RemoveAt(0);
@@ -404,7 +404,7 @@ namespace wServer.realm.entities.player
                     for (int i = 0; i < tradeTarget.Inventory.Length; i++) //put items by slotType
                         if (tradeTarget.Inventory[i] == null)
                         {
-                            if (tradeTarget.SlotTypes[i] == 0)
+                            if (tradeTarget.SlotTypes[i] == 10)
                             {
                                 tradeTarget.Inventory[i] = thisItems[0];
                                 thisItems.RemoveAt(0);
