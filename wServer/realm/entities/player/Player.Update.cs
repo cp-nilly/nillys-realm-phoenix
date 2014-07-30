@@ -277,18 +277,10 @@ namespace wServer.realm.entities.player
 
             //purge unused entities
             List<Entity> toRemove = new List<Entity>();
-            foreach (Entity i in _lastUpdate.Keys)
-            {
-                if (!_clientEntities.Contains(i))
-                {
-                    toRemove.Add(i);
-                }
-            }
-            foreach (Entity i in toRemove)
-            {
-                _lastUpdate.Remove(i);
-            }
-            
+            foreach (Entity i in _lastUpdate.Keys.Where(i => !_clientEntities.Contains(i)))
+                toRemove.Add(i);
+            toRemove.ForEach(i => _lastUpdate.Remove(i));
+
             foreach (Entity i in sendEntities)
             {
                 _lastUpdate[i] = i.UpdateCount;
