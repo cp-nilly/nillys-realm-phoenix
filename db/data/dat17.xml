@@ -17,7 +17,7 @@
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>4</Damage>
+      <Damage>4000</Damage>
       <Speed>40</Speed>
       <LifetimeMS>600</LifetimeMS>
     </Projectile>
@@ -42,7 +42,7 @@
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>4</Damage>
+      <Damage>4000</Damage>
       <Speed>40</Speed>
       <LifetimeMS>600</LifetimeMS>
     </Projectile>
@@ -70,7 +70,7 @@
 
     <Projectile id="0">
       <ObjectId>Green Magic</ObjectId>
-      <Damage>4</Damage>
+      <Damage>4000</Damage>
       <Speed>40</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -94,7 +94,7 @@
 
     <Projectile id="0">
       <ObjectId>Green Magic</ObjectId>
-      <Damage>7</Damage>
+      <Damage>4000</Damage>
       <Speed>40</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -142,7 +142,7 @@
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>9</Damage>
+      <Damage>4000</Damage>
       <Speed>60</Speed>
       <Size>60</Size>
       <LifetimeMS>800</LifetimeMS>
@@ -167,14 +167,14 @@
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>9</Damage>
+      <Damage>4000</Damage>
       <Speed>60</Speed>
       <Size>60</Size>
       <LifetimeMS>600</LifetimeMS>
     </Projectile>
     <Projectile id="1">
       <ObjectId>Blade</ObjectId>
-      <Damage>8</Damage>
+      <Damage>4000</Damage>
       <Speed>60</Speed>
       <Size>60</Size>
       <LifetimeMS>1000</LifetimeMS>
@@ -206,7 +206,7 @@
 
     <Projectile id="0">
       <ObjectId>Salmon Missile</ObjectId>
-      <Damage>9</Damage>
+      <Damage>4000</Damage>
       <Speed>60</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -236,7 +236,7 @@
 
     <Projectile id="0">
       <ObjectId>Purple Magic</ObjectId>
-      <Damage>12</Damage>
+      <Damage>4000</Damage>
       <Speed>65</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -266,7 +266,7 @@
 
     <Projectile id="0">
       <ObjectId>Green Magic</ObjectId>
-      <Damage>10</Damage>
+      <Damage>4000</Damage>
       <Speed>60</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>

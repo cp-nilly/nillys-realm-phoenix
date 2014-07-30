@@ -75,6 +75,18 @@ namespace wServer.realm.commands
                 lname.Equals("blood fountain") ||
                 lname.Equals("scarab") ||
                 lname.Equals("lair burst trap") ||
+                
+                // beach nightmare restriction
+                lname.Equals("pirate") ||
+                lname.Equals("piratess") ||
+                lname.Equals("snake") ||
+                lname.Equals("poison scorpion") ||
+                lname.Equals("bandit leader") ||
+                lname.Equals("bandit") ||
+                lname.Equals("red gelatinous cube") ||
+                lname.Equals("purple gelatinous cube") ||
+                lname.Equals("green gelatinous cube") ||
+
                 wall.IsMatch(lname))
             {
                 player.SendInfo("Spawning " + name + " not allowed.");
