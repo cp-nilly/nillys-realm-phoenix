@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="FameStats.cs" />
     <Compile Include="Database.Guilds.cs" />
+    <Compile Include="memorystore\MemoryStore.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="NReader.cs" />
     <Compile Include="NWriter.cs" />
