@@ -17,7 +17,7 @@ namespace wServer.realm.entities
 
     public class Projectile : Entity
     {
-        private readonly HashSet<Entity> hitted = new HashSet<Entity>();
+        //private readonly HashSet<Entity> hitted = new HashSet<Entity>();
         private CollisionMap<Entity> collisionMap;
         private Entity hitLast;
 
@@ -177,7 +177,7 @@ namespace wServer.realm.entities
             {
                 if ((entity is Enemy && penetrateEnemy) ||
                     (entity is StaticObject && (entity as StaticObject).Static && !(entity is Wall) && penetrateObsta))
-                    hitted.Add(entity);
+                    ;//hitted.Add(entity);
                 else
                 {
                     Destroy(true);
@@ -197,7 +197,7 @@ namespace wServer.realm.entities
             {
                 if ((entity is Enemy && penetrateEnemy) ||
                     (entity is StaticObject && (entity as StaticObject).Static && !(entity is Wall) && penetrateObsta))
-                    hitted.Add(entity);
+                    ;//hitted.Add(entity);
                 else
                     Destroy(true);
                 ProjectileOwner.Self.ProjectileHit(this, entity);
