@@ -275,8 +275,24 @@ namespace wServer.realm.entities.player
             int[] dropEntities = GetRemovedEntities().Distinct().ToArray();
             _clientEntities.RemoveWhere(_ => Array.IndexOf(dropEntities, _.Id) != -1);
 
+            //purge unused entities
+            List<Entity> toRemove = new List<Entity>();
+            foreach (Entity i in _lastUpdate.Keys)
+            {
+                if (!_clientEntities.Contains(i))
+                {
+                    toRemove.Add(i);
+                }
+            }
+            foreach (Entity i in toRemove)
+            {
+                _lastUpdate.Remove(i);
+            }
+            
             foreach (Entity i in sendEntities)
+            {
                 _lastUpdate[i] = i.UpdateCount;
+            }
 
             ObjectDef[] newStatics = GetNewStatics(_x, _y).ToArray();
             IntPoint[] removeStatics = GetRemovedStatics(_x, _y).ToArray();
