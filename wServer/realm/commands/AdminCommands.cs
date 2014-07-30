@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using db;
 using db.data;
@@ -60,8 +61,10 @@ namespace wServer.realm.commands
             }
 
             // check for banned objects
+            Regex wall = new Regex(@"( |^)wall( |$)", RegexOptions.IgnoreCase);
             if (name.ToLower().Equals("white fountain") ||
-                name.ToLower().Equals("blood fountain"))
+                name.ToLower().Equals("blood fountain") ||
+                wall.IsMatch(name))
             {
                 player.SendInfo("Spawning " + name + " not allowed.");
                 return;
@@ -669,7 +672,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -825,7 +828,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
