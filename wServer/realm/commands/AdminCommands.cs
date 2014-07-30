@@ -40,6 +40,14 @@ namespace wServer.realm.commands
             int amount = 1;
             int delay = 3; // in seconds
 
+            // check map restrictions
+            string mapName = player.Owner.Name;
+            if (mapName.Equals("Nexus"))
+            {
+                player.SendInfo("Spawning in " + mapName + " not allowed.");
+                return;
+            }
+            
             // multiple spawn check
             if (args.Length > 0 && !int.TryParse(args[0], out amount)) {
                 name = string.Join(" ", args);
@@ -61,10 +69,13 @@ namespace wServer.realm.commands
             }
 
             // check for banned objects
-            Regex wall = new Regex(@"( |^)wall( |$)", RegexOptions.IgnoreCase);
-            if (name.ToLower().Equals("white fountain") ||
-                name.ToLower().Equals("blood fountain") ||
-                wall.IsMatch(name))
+            Regex wall = new Regex(@"( |^)wall( |$)");
+            string lname = name.ToLower();
+            if (lname.Equals("white fountain") ||
+                lname.Equals("blood fountain") ||
+                lname.Equals("scarab") ||
+                lname.Equals("lair burst trap") ||
+                wall.IsMatch(lname))
             {
                 player.SendInfo("Spawning " + name + " not allowed.");
                 return;
