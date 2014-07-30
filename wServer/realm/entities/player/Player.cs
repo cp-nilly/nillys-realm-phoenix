@@ -67,7 +67,7 @@ namespace wServer.realm.entities.player
             Fame = psr.Character.CurrentFame;
             ClassStats state = psr.Account.Stats.ClassStates.SingleOrDefault(_ => _.ObjectType == ObjectType);
             FameGoal = GetFameGoal(state != null ? state.BestFame : 0);
-            Glowing = IsUserInLegends() ? psr.Account.Rank == 5 : false;
+            Glowing = IsUserInLegends();
             Guild = psr.Account.Guild.Name;
             GuildRank = psr.Account.Guild.Rank;
             if (psr.Character.HitPoints <= 0)
