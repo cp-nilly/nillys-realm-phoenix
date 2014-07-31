@@ -170,47 +170,55 @@ namespace wServer.logic.loot
 
         private void ProcessSoulBags(Random rand, Tuple<Player, int>[] dat)
         {
-            var items = new Dictionary<Player, HashSet<Item>>();
-            foreach (var i in dat)
-                items.Add(i.Item1, new HashSet<Item>());
-
-            foreach (var i in SoulBag)
+            try
             {
-                Tuple<Player, int>[] eligiblePlayers = dat
-                    .Where(_ => _.Item2 > i.Item1)
-                    .OrderByDescending(_ => _.Item2)
-                    .ToArray();
+                var items = new Dictionary<Player, HashSet<Item>>();
+                foreach (var i in dat)
+                    items.Add(i.Item1, new HashSet<Item>());
 
-                int lootCount = i.Item2.BaseLootCount + i.Item2.PersonMultiplier*eligiblePlayers.Length;
+                foreach (var i in SoulBag)
+                {
+                    Tuple<Player, int>[] eligiblePlayers = dat
+                        .Where(_ => _.Item2 > i.Item1)
+                        .OrderByDescending(_ => _.Item2)
+                        .ToArray();
 
-                var loots = new List<Item>();
-                for (int j = 0;
-                    (j < lootCount || loots.Count < i.Item2.MinLootCount) &&
-                    loots.Count < i.Item2.MaxLootCount;
-                    j++)
-                {
-                    Item loot = i.Item2.GetRandomLoot(rand);
-                    if (loot != null) loots.Add(loot);
-                }
-                int idx = 0, q = -1;
-                for (int j = 0; j < loots.Count;) //Give loots rounds
-                {
-                    if (items[eligiblePlayers[idx].Item1].Add(loots[j]) ||
-                        idx == q)
+                    int lootCount = i.Item2.BaseLootCount + i.Item2.PersonMultiplier * eligiblePlayers.Length;
+
+                    var loots = new List<Item>();
+                    for (int j = 0;
+                        (j < lootCount || loots.Count < i.Item2.MinLootCount) &&
+                        loots.Count < i.Item2.MaxLootCount;
+                        j++)
                     {
-                        j++;
-                        q = -1;
+                        Item loot = i.Item2.GetRandomLoot(rand);
+                        if (loot != null) loots.Add(loot);
                     }
-                    else if (q == -1)
-                        q = idx;
+                    int idx = 0, q = -1;
+                    for (int j = 0; j < loots.Count; ) //Give loots rounds
+                    {
+                        if (items[eligiblePlayers[idx].Item1].Add(loots[j]) ||
+                            idx == q)
+                        {
+                            j++;
+                            q = -1;
+                        }
+                        else if (q == -1)
+                            q = idx;
 
-                    idx++;
-                    if (idx == eligiblePlayers.Length) idx = 0;
+                        idx++;
+                        if (idx == eligiblePlayers.Length) idx = 0;
+                    }
                 }
+                foreach (var i in items)
+                    if (i.Value.Count > 0)
+                        ShowBags(rand, i.Value, i.Key);
             }
-            foreach (var i in items)
-                if (i.Value.Count > 0)
-                    ShowBags(rand, i.Value, i.Key);
+            catch (Exception e)
+            {
+                System.Console.Write(e);
+                System.Console.Write(e.Source + "\n");
+            }
         }
 
         protected override void BehaveCore(BehaviorCondition cond, RealmTime? time, object state)

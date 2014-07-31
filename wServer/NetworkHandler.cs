@@ -235,9 +235,12 @@ namespace wServer
             }
             catch (Exception e)
             {
+                if (e is ObjectDisposedException)
+                    return;
+
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(e);
-                //Console.WriteLine("Error sending packet with ID " + pkt.ID);
+                Console.WriteLine("Error sending packet with ID " + pkt.ID);
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }

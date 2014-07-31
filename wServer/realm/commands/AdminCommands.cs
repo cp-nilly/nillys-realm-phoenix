@@ -39,6 +39,19 @@ namespace wServer.realm.commands
             short objType;
             int amount = 1;
             int delay = 3; // in seconds
+            
+            // multiple spawn check
+            if (args.Length > 0 && !int.TryParse(args[0], out amount)) {
+                name = string.Join(" ", args);
+                amount = 1;
+            }
+            else
+            {
+                name = string.Join(" ", args.Skip(1).ToArray());
+            }
+
+            
+            Console.Write("<" + player.nName + "> Spawning " + ((amount > 1) ? amount + " " : "") + name + "...\n");
 
             // check map restrictions
             string mapName = player.Owner.Name;
@@ -49,16 +62,6 @@ namespace wServer.realm.commands
                 player.SendInfo("Spawning in " + mapName + " not allowed.");
                 return;
             }
-            
-            // multiple spawn check
-            if (args.Length > 0 && !int.TryParse(args[0], out amount)) {
-                name = string.Join(" ", args);
-                amount = 1;
-            }
-            else
-            {
-                name = string.Join(" ", args.Skip(1).ToArray());
-            }   
                 
             // check to see if entity exists
             var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
@@ -78,6 +81,8 @@ namespace wServer.realm.commands
                 lname.Equals("blood fountain") ||
                 lname.Equals("scarab") ||
                 lname.Equals("lair burst trap") ||
+                lname.Equals("lair blast trap") ||
+                lname.Equals("phoenix god final divination") ||
                 
                 // beach nightmare restriction
                 lname.Equals("pirate") ||

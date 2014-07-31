@@ -29,11 +29,14 @@ namespace db
 
         public Database()
         {
+            // possible connection resource leak happening
+            // mysql connection timeout error occurs most likely because all connections are used up
+            // temp solution is to increase pool size so this happens less often and hopefully not at all
             _con = Testing
                 ? new MySqlConnection( /* Testing = true; */
-                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;")
+                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;max pool size=200;")
                 : new MySqlConnection( /* Testing = false; */
-                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;");
+                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=30;max pool size=200;");
             _con.Open();
         }
 
