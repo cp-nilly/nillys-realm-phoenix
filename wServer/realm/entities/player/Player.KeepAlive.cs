@@ -37,7 +37,7 @@ namespace wServer.realm.entities.player
         {
             if (lastTime != null && (pkt.Time - lastTime.Value > 3000 || pkt.Time - lastTime.Value < 0))
 #pragma warning disable 642
-                psr.Disconnect();
+                ; //psr.Disconnect();
 #pragma warning restore 642
             else
                 lastTime = pkt.Time;
