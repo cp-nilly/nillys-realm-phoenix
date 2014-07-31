@@ -11,13 +11,13 @@
     <HitSound>monster/pirates_hit</HitSound>
     <DeathSound>monster/pirates_death</DeathSound>
     <Size>100</Size>
-    <MaxHitPoints>1200</MaxHitPoints>
+    <MaxHitPoints>5</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShoreSand</Terrain>
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>250</Damage>
+      <Damage>4</Damage>
       <Speed>40</Speed>
       <LifetimeMS>600</LifetimeMS>
     </Projectile>
@@ -35,14 +35,14 @@
     <HitSound>monster/pirates_hit</HitSound>
     <DeathSound>monster/pirates_death</DeathSound>
     <Size>100</Size>
-    <MaxHitPoints>1500</MaxHitPoints>
+    <MaxHitPoints>6</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShoreSand</Terrain>
     <SpawnProb>1.0</SpawnProb>
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>250</Damage>
+      <Damage>4</Damage>
       <Speed>40</Speed>
       <LifetimeMS>600</LifetimeMS>
     </Projectile>
@@ -60,7 +60,7 @@
     <HitSound>monster/snakes_hit</HitSound>
     <DeathSound>monster/snakes_death</DeathSound>
     <Size>80</Size>
-    <MaxHitPoints>1800</MaxHitPoints>
+    <MaxHitPoints>5</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShoreSand</Terrain>
     <SpawnProb>1.0</SpawnProb>
@@ -70,7 +70,7 @@
 
     <Projectile id="0">
       <ObjectId>Green Magic</ObjectId>
-      <Damage>250</Damage>
+      <Damage>4</Damage>
       <Speed>40</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -88,13 +88,13 @@
     <HitSound>monster/scorpions_hit</HitSound>
     <DeathSound>monster/scorpions_death</DeathSound>
     <Size>100</Size>
-    <MaxHitPoints>1200</MaxHitPoints>
+    <MaxHitPoints>10</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShoreSand</Terrain>
 
     <Projectile id="0">
       <ObjectId>Green Magic</ObjectId>
-      <Damage>250</Damage>
+      <Damage>7</Damage>
       <Speed>40</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -111,7 +111,7 @@
     <HitSound>monster/scorpions_hit</HitSound>
     <DeathSound>monster/scorpions_death</DeathSound>
     <Size>150</Size>
-    <MaxHitPoints>4000</MaxHitPoints>
+    <MaxHitPoints>100</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShoreSand</Terrain>
     <Quest />
@@ -132,7 +132,7 @@
     <HitSound>monster/elves_hit</HitSound>
     <DeathSound>monster/elves_death</DeathSound>
     <Size>150</Size>
-    <MaxHitPoints>5000</MaxHitPoints>
+    <MaxHitPoints>280</MaxHitPoints>
     <Defense>2</Defense>
     <Terrain>ShoreSand</Terrain>
     <Quest />
@@ -142,7 +142,7 @@
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>250</Damage>
+      <Damage>9</Damage>
       <Speed>60</Speed>
       <Size>60</Size>
       <LifetimeMS>800</LifetimeMS>
@@ -161,20 +161,20 @@
     <HitSound>monster/elves_hit</HitSound>
     <DeathSound>monster/elves_death</DeathSound>
     <Size>100</Size>
-    <MaxHitPoints>1800</MaxHitPoints>
+    <MaxHitPoints>50</MaxHitPoints>
     <Defense>1</Defense>
     <Terrain>ShoreSand</Terrain>
 
     <Projectile id="0">
       <ObjectId>Blade</ObjectId>
-      <Damage>250</Damage>
+      <Damage>9</Damage>
       <Speed>60</Speed>
       <Size>60</Size>
       <LifetimeMS>600</LifetimeMS>
     </Projectile>
     <Projectile id="1">
       <ObjectId>Blade</ObjectId>
-      <Damage>250</Damage>
+      <Damage>8</Damage>
       <Speed>60</Speed>
       <Size>60</Size>
       <LifetimeMS>1000</LifetimeMS>
@@ -194,7 +194,7 @@
     <HitSound>monster/cubes_hit</HitSound>
     <DeathSound>monster/cubes_death</DeathSound>
     <Size>80</Size>
-    <MaxHitPoints>1800</MaxHitPoints>
+    <MaxHitPoints>70</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShorePlains</Terrain>
     <SpawnProb>1.0</SpawnProb>
@@ -206,7 +206,7 @@
 
     <Projectile id="0">
       <ObjectId>Salmon Missile</ObjectId>
-      <Damage>300</Damage>
+      <Damage>9</Damage>
       <Speed>60</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -224,7 +224,7 @@
     <HitSound>monster/cubes_hit</HitSound>
     <DeathSound>monster/cubes_death</DeathSound>
     <Size>80</Size>
-    <MaxHitPoints>1800</MaxHitPoints>
+    <MaxHitPoints>70</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShorePlains</Terrain>
     <SpawnProb>1.0</SpawnProb>
@@ -236,7 +236,7 @@
 
     <Projectile id="0">
       <ObjectId>Purple Magic</ObjectId>
-      <Damage>300</Damage>
+      <Damage>12</Damage>
       <Speed>65</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
@@ -254,7 +254,7 @@
     <HitSound>monster/cubes_hit</HitSound>
     <DeathSound>monster/cubes_death</DeathSound>
     <Size>80</Size>
-    <MaxHitPoints>1800</MaxHitPoints>
+    <MaxHitPoints>70</MaxHitPoints>
     <Defense>0</Defense>
     <Terrain>ShorePlains</Terrain>
     <SpawnProb>1.0</SpawnProb>
@@ -266,7 +266,7 @@
 
     <Projectile id="0">
       <ObjectId>Green Magic</ObjectId>
-      <Damage>300</Damage>
+      <Damage>10</Damage>
       <Speed>60</Speed>
       <LifetimeMS>2000</LifetimeMS>
     </Projectile>
