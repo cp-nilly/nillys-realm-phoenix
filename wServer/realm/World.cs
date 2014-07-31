@@ -341,32 +341,48 @@ namespace wServer.realm
 
         public virtual void Tick(RealmTime time)
         {
-            if (IsLimbo) return;
+            try
+            {
+                Console.Write("Tick");
+                if (IsLimbo) return;
 
-            for (int i = 0; i < Timers.Count; i++)
-                if (Timers[i].Tick(this, time))
+                for (int i = 0; i < Timers.Count; i++)
+                    if (Timers[i].Tick(this, time))
+                    {
+                        Timers.RemoveAt(i);
+                        i--;
+                    }
+                Console.Write("-");
+                foreach (var i in Players)
+                    i.Value.Tick(time);
+                Console.Write("-");
+                if (EnemiesCollision != null)
                 {
-                    Timers.RemoveAt(i);
-                    i--;
+                    Console.Write("a");
+                    foreach (Entity i in EnemiesCollision.GetActiveChunks(PlayersCollision))
+                        i.Tick(time);
+                    Console.Write("a");
+                    foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
+                        i.Value.Tick(time);
+                    Console.Write("a");
                 }
-
-            foreach (var i in Players)
-                i.Value.Tick(time);
-
-            if (EnemiesCollision != null)
-            {
-                foreach (Entity i in EnemiesCollision.GetActiveChunks(PlayersCollision))
-                    i.Tick(time);
-                foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
+                else
+                {
+                    Console.Write("b");
+                    foreach (var i in Enemies)
+                        i.Value.Tick(time);
+                    Console.Write("b");
+                }
+                Console.Write("-");
+                foreach (var i in Projectiles)
                     i.Value.Tick(time);
+                Console.Write("/\n");
             }
-            else
+            catch (Exception e)
             {
-                foreach (var i in Enemies)
-                    i.Value.Tick(time);
+                Console.Write(e);
+                Console.Write(e.Source);
             }
-            foreach (var i in Projectiles)
-                i.Value.Tick(time);
 
             //if (Players.Count == 0 && canBeClosed && IsDungeon())
            //     Manager.RemoveWorld(this);
