@@ -266,9 +266,9 @@ namespace wServer
 
         public void Save()
         {
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write("Saving {0}...\r\n", account.Name);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            //Console.ForegroundColor = ConsoleColor.DarkRed;
+            //Console.Write("Saving {0}...\r\n", account.Name);
+            //Console.ForegroundColor = ConsoleColor.Gray;
             try
             {
                 if (db != null)
@@ -835,9 +835,9 @@ namespace wServer
         {
             RealmManager.Logic.AddPendingAction(t =>
             {
-                if (Player != null) // might be important to save deaths
-                    Player.SaveToCharacter();
-                Save();
+                //if (Player != null)
+                //    Player.SaveToCharacter();
+                //Save();
                 RealmManager.Disconnect(this);
             }, PendingPriority.Destruction);
         }

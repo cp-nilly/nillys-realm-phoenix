@@ -1216,11 +1216,9 @@ namespace wServer.realm.entities.player
 
         public void Death(string killer)
         {
-            Console.Write("Death");
             if (psr.Stage == ProtocalStage.Disconnected || resurrecting)
                 return;
 
-            Console.Write("-");
             if (!dying)
             {
                 dying = true;
@@ -1316,7 +1314,7 @@ namespace wServer.realm.entities.player
                         break;
                 }
             }
-            Console.Write("-");
+
             try
             {
                 List<string> maxed = (from i in XmlDatas.TypeToElement[ObjectType].Elements("LevelIncrease")
@@ -1324,15 +1322,12 @@ namespace wServer.realm.entities.player
                     let idx = StatsManager.StatsNameToIndex(i.Value)
                     where Stats[idx] >= limit
                     select StatsManager.StatsIndexToPotName(idx)).ToList();
-                Console.Write("/" + psr.Character.Dead + " " + psr.Account + " " + psr.Character);
+
                 psr.Character.Dead = true;
                 SaveToCharacter();
-                //psr.Database.SaveCharacter(psr.Account, psr.Character);
-                psr.Save();
-                Console.Write("/");
+                psr.Database.SaveCharacter(psr.Account, psr.Character);
                 if (Owner.Id != -6)
                 {
-                    Console.Write("a");
                     psr.Database.Death(psr.Account, psr.Character, killer);
                     psr.SendPacket(new DeathPacket
                     {
@@ -1343,7 +1338,6 @@ namespace wServer.realm.entities.player
                     Owner.Timers.Add(new WorldTimer(1000, (w, t) => psr.Disconnect()));
                     Owner.LeaveWorld(this);
 
-                    Console.Write("a");
                     int mcount = maxed.Count;
                     if (mcount >= 2)
                     {
@@ -1357,17 +1351,14 @@ namespace wServer.realm.entities.player
                             }
                         }
                     }
-                    Console.Write("a");
                 }
                 else
                     psr.Disconnect();
-                Console.Write("\\");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            Console.Write("-\n");
         }
 
         private void MaxPotionOnDeath(List<string> maxed)
