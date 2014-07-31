@@ -81,6 +81,7 @@ namespace wServer.realm.commands
                 lname.Equals("piratess") ||
                 lname.Equals("snake") ||
                 lname.Equals("poison scorpion") ||
+                lname.Equals("scorpion queen") ||
                 lname.Equals("bandit leader") ||
                 lname.Equals("bandit") ||
                 lname.Equals("red gelatinous cube") ||
