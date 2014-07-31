@@ -12,16 +12,17 @@ namespace wServer.realm.entities.player
         private readonly Queue<Tuple<Packet, Predicate<Player>>> pendingPackets =
             new Queue<Tuple<Packet, Predicate<Player>>>();
 
-        /*
-        void Flush()
+        internal void Flush()
         {
-            foreach (var i in Owner.Players.Values)
-                foreach (var j in pendingPackets)
-                    if (j.Item2(i))
-                        i.client.SendPacket(j.Item1);
+            if (Owner != null)
+            {
+                foreach (Player i in Owner.Players.Values)
+                    foreach (Tuple<Packet, Predicate<Player>> j in pendingPackets)
+                        if (j.Item2(i))
+                            i.Client.SendPacket(j.Item1);
+            }
             pendingPackets.Clear();
         }
-        */
 
         private void BroadcastSync(Packet packet) //sync at Move
         {

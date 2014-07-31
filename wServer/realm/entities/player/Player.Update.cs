@@ -306,7 +306,6 @@ namespace wServer.realm.entities.player
                 };
                 psr.SendPacket(packet);
             }
-            SendNewTick(time);
         }
 
         private void SendNewTick(RealmTime time)

@@ -25,6 +25,7 @@ namespace wServer.realm.entities.player
     public partial class Player : Character, IContainer, IPlayer
     {
         private readonly ClientProcessor psr;
+        private bool dying;
         private readonly StatsManager statsMgr;
         private FameCounter fames;
         private float hpRegenCounter;
@@ -34,6 +35,7 @@ namespace wServer.realm.entities.player
         private bool resurrecting;
         private byte[,] tiles;
         public bool vanished = false;
+        private int pingSerial;
 
         public Player(ClientProcessor psr)
             : base((short) psr.Character.ObjectType, psr.Random)
@@ -508,6 +510,17 @@ namespace wServer.realm.entities.player
                 });
                 psr.Disconnect();
             }
+
+            WorldTimer pingTimer = null;
+            owner.Timers.Add(pingTimer = new WorldTimer(PING_PERIOD, (w, t) =>
+            {
+                if (Client.Stage == ProtocalStage.Ready)
+                {
+                    Client.SendPacket(new PingPacket { Serial = pingSerial++ });
+                    pingTimer.Reset();
+                    RealmManager.Logic.AddPendingAction(_ => w.Timers.Add(pingTimer), PendingPriority.Creation);
+                }
+            }));
         }
 
         public override void Tick(RealmTime time)
@@ -516,7 +529,10 @@ namespace wServer.realm.entities.player
             {
                 if (psr.Stage == ProtocalStage.Disconnected)
                 {
-                    Owner.LeaveWorld(this);
+                    if (Owner != null)
+                        Owner.LeaveWorld(this);
+                    else
+                        Owner.LeaveWorld(this);
                     return;
                 }
             }
@@ -548,13 +564,30 @@ namespace wServer.realm.entities.player
 
             try
             {
-                SendUpdate(time);
+                if (Owner != null)
+                {
+                    SendUpdate(time);
+                    if (!Owner.IsPassable((int)X, (int)Y) && Client.Account.Rank < 2)
+                    {
+                        Console.WriteLine("Player {0} No-Cliped at position: {1}, {2}", Name, X, Y);
+                        Client.Disconnect();
+                    }
+                }
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e);
+            }
+            try
+            {
+                SendNewTick(time);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
-            if (HP < 0)
+            if (HP < 0 && !dying)
             {
                 Death("Unknown");
                 return;
@@ -1185,95 +1218,101 @@ namespace wServer.realm.entities.player
         {
             if (psr.Stage == ProtocalStage.Disconnected || resurrecting)
                 return;
-            switch (Owner.Name)
+
+            if (!dying)
             {
-                case "Free Battle Arena":
-                case "Battle Arena":
-                case "Arena":
-                    Owner.BroadcastPacket(new TextPacket
-                    {
-                        BubbleTime = 0,
-                        Stars = -1,
-                        Name = "",
-                        Text = Name + " was eliminated by " + killer //removed XP as max packet length reached!
-                    }, null);
-                    psr.Reconnect(new ReconnectPacket
-                    {
-                        Host = "",
-                        Port = 2050,
-                        GameId = World.NEXUS_ID,
-                        Name = "Nexus",
-                        Key = Empty<byte>.Array,
-                    });
-                    HP = 1;
-                    resurrecting = true;
-                    return;
-                case "Zombies":
-                    Owner.BroadcastPacket(new TextPacket
-                    {
-                        BubbleTime = 0,
-                        Stars = -1,
-                        Name = "",
-                        Text = Name + " has become one with the infected" //cinematic!
-                    }, null);
-                    psr.Reconnect(new ReconnectPacket
-                    {
-                        Host = "",
-                        Port = 2050,
-                        GameId = World.NEXUS_ID,
-                        Name = "Nexus",
-                        Key = Empty<byte>.Array,
-                    });
-                    HP = 1;
-                    resurrecting = true;
-                    return;
-                case "Nexus":
-                    Owner.BroadcastPacket(new TextPacket
-                    {
-                        BubbleTime = 0,
-                        Stars = -1,
-                        Name = "",
-                        Text = Name + " was saved by the holy powers of the Nexus."
-                    }, null);
+                dying = true;
+                switch (Owner.Name)
+                {
+                    case "Free Battle Arena":
+                    case "Battle Arena":
+                    case "Arena":
+                        Owner.BroadcastPacket(new TextPacket
+                        {
+                            BubbleTime = 0,
+                            Stars = -1,
+                            Name = "",
+                            Text = Name + " was eliminated by " + killer //removed XP as max packet length reached!
+                        }, null);
+                        psr.Reconnect(new ReconnectPacket
+                        {
+                            Host = "",
+                            Port = 2050,
+                            GameId = World.NEXUS_ID,
+                            Name = "Nexus",
+                            Key = Empty<byte>.Array,
+                        });
+                        HP = 1;
+                        resurrecting = true;
+                        return;
+                    case "Zombies":
+                        Owner.BroadcastPacket(new TextPacket
+                        {
+                            BubbleTime = 0,
+                            Stars = -1,
+                            Name = "",
+                            Text = Name + " has become one with the infected" //cinematic!
+                        }, null);
+                        psr.Reconnect(new ReconnectPacket
+                        {
+                            Host = "",
+                            Port = 2050,
+                            GameId = World.NEXUS_ID,
+                            Name = "Nexus",
+                            Key = Empty<byte>.Array,
+                        });
+                        HP = 1;
+                        resurrecting = true;
+                        return;
+                    case "Nexus":
+                        Owner.BroadcastPacket(new TextPacket
+                        {
+                            BubbleTime = 0,
+                            Stars = -1,
+                            Name = "",
+                            Text = Name + " was saved by the holy powers of the Nexus."
+                        }, null);
+                        HP = psr.Character.MaxHitPoints;
+                        SaveToCharacter();
+                        psr.Save();
+                        psr.Disconnect();
+                        return;
+                }
+                if (Client.Account.Rank > 2)
+                {
                     HP = psr.Character.MaxHitPoints;
                     SaveToCharacter();
                     psr.Save();
                     psr.Disconnect();
                     return;
-            }
-            if (Client.Account.Rank > 2)
-            {
-                HP = psr.Character.MaxHitPoints;
-                SaveToCharacter();
-                psr.Save();
-                psr.Disconnect();
-                return;
-            }
-            if (CheckResurrection())
-                return;
+                }
+                if (CheckResurrection())
+                    return;
 
-            if (psr.Character.Dead)
-            {
-                SaveToCharacter();
-                psr.Save();
-                psr.Disconnect();
-                return;
-            }
-            GenerateGravestone();
-            switch (killer)
-            {
-                case "":
-                case "Unknown":
-                    break;
-                default:
-                    Owner.BroadcastPacket(new TextPacket
-                    {
-                        BubbleTime = 0,
-                        Stars = -1,
-                        Name = "",
-                        Text = Name + " died at Level " + Level + ", with " + Fame + " Fame" + ", killed by " + killer
-                    }, null);
-                    break;
+                if (psr.Character.Dead)
+                {
+                    SaveToCharacter();
+                    psr.Save();
+                    psr.Disconnect();
+                    return;
+                }
+                GenerateGravestone();
+                switch (killer)
+                {
+                    case "":
+                    case "Unknown":
+                        break;
+                    default:
+                        Owner.BroadcastPacket(new TextPacket
+                        {
+                            BubbleTime = 0,
+                            Stars = -1,
+                            Name = "",
+                            Text =
+                                Name + " died at Level " + Level + ", with " + Fame + " Fame" + ", killed by " + killer
+                        }, null);
+                        break;
+                }
             }
 
             try

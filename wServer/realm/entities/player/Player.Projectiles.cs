@@ -14,7 +14,6 @@ namespace wServer.realm.entities.player
     {
         public void PlayerShoot(RealmTime time, PlayerShootPacket pkt)
         {
-            Debug.WriteLine(pkt.Position); // Was Commented!
             Item item = XmlDatas.ItemDescs[pkt.ContainerType];
             if (item.ObjectType != Inventory[0].ObjectType && item.ObjectType != Inventory[1].ObjectType) return;
 
@@ -67,7 +66,7 @@ namespace wServer.realm.entities.player
                 projectileId = pkt.BulletId;
                 Projectile prj = CreateProjectile(prjDesc, item.ObjectType,
                     0,
-                    pkt.Time + tickMapping, pkt.Position, pkt.Angle);
+                    pkt.Time, pkt.Position, pkt.Angle);
                 Owner.EnterWorld(prj);
                 Owner.BroadcastPacket(new AllyShootPacket
                 {

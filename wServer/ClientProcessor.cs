@@ -130,8 +130,6 @@ namespace wServer
                     ProcessLoadPacket(pkt as LoadPacket);
                 else if (pkt.ID == PacketID.Broadcast)
                     ProcessBroadcastPacket(pkt as BroadcastPacket);
-                else if (pkt.ID == PacketID.Pong)
-                    entity.Pong(pkt as PongPacket);
                 else if (pkt.ID == PacketID.Move)
                     RealmManager.Logic.AddPendingAction(t => entity.Move(t, pkt as MovePacket),
                         PendingPriority.Networking);
@@ -227,6 +225,8 @@ namespace wServer
                         PendingPriority.Networking);
                 else if (pkt.ID == PacketID.UpdateAck)
                     RealmManager.Logic.AddPendingAction(t => HandleUpdateAck(), PendingPriority.Networking);
+                else if (pkt.ID == PacketID.Pong)
+                    entity.Pong((pkt as PongPacket).Time, pkt as PongPacket);
                 else
                 {
                     Console.WriteLine(@"Unhandled packet: " + pkt);

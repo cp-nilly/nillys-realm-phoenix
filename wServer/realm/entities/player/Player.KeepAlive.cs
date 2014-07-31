@@ -10,40 +10,30 @@ namespace wServer.realm.entities.player
 {
     public partial class Player
     {
-        private readonly Queue<long> ts = new Queue<long>();
-        private long lastPong = -1;
-        private int? lastTime;
+        private const int PING_PERIOD = 1000;
+        private const int DC_THRESOLD = 15000;
 
-        private bool sentPing;
-        private long tickMapping;
+        private int updateLastSeen;
+
+        public WorldTimer PongDCTimer { get; private set; }
 
         private bool KeepAlive(RealmTime time)
         {
-            if (lastPong == -1) lastPong = time.tickTimes - 1500;
-            if (time.tickTimes - lastPong > 1500 && !sentPing)
-            {
-                sentPing = true;
-                ts.Enqueue(time.tickTimes);
-                psr.SendPacket(new PingPacket());
-            }
-            else if (time.tickTimes - lastPong > 3000)
-            {
-                return false;
-            }
             return true;
         }
 
-        public void Pong(PongPacket pkt)
+        internal void Pong(int time, PongPacket pkt)
         {
-            if (lastTime != null && (pkt.Time - lastTime.Value > 3000 || pkt.Time - lastTime.Value < 0))
-#pragma warning disable 642
-                ; //psr.Disconnect();
-#pragma warning restore 642
-            else
-                lastTime = pkt.Time;
-            tickMapping = ts.Dequeue() - pkt.Time;
-            lastPong = pkt.Time + tickMapping;
-            sentPing = false;
+            updateLastSeen++;
+
+            if (Owner.Timers.Contains(PongDCTimer))
+                Owner.Timers.Remove(PongDCTimer);
+
+            Owner.Timers.Add(PongDCTimer = new WorldTimer(DC_THRESOLD, (w, t) =>
+            {
+                SendError("Lost connection to server.");
+                Client.Disconnect();
+            }));
         }
     }
 }
