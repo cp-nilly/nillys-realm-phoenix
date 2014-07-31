@@ -279,8 +279,8 @@ namespace wServer
                         if (entity.Owner.Id != -6)
                             db.SaveCharacter(account, character);
                     }
-                    db.Dispose();
-                    db = null;
+                    //db.Dispose(); // might create resource leak being commented out...
+                    //db = null;
                 }
                 else
                 {
@@ -291,8 +291,8 @@ namespace wServer
                         if (entity.Owner.Id != -6)
                             db.SaveCharacter(account, character);
                     }
-                    db.Dispose();
-                    db = null;
+                    //db.Dispose(); // might create resource leak being commented out...
+                    //db = null;
                 }
             }
             catch
