@@ -343,7 +343,6 @@ namespace wServer.realm
         {
             try
             {
-                Console.Write("Tick");
                 if (IsLimbo) return;
 
                 for (int i = 0; i < Timers.Count; i++)
@@ -352,31 +351,24 @@ namespace wServer.realm
                         Timers.RemoveAt(i);
                         i--;
                     }
-                Console.Write("-");
+
                 foreach (var i in Players)
                     i.Value.Tick(time);
-                Console.Write("-");
+
                 if (EnemiesCollision != null)
                 {
-                    Console.Write("a");
                     foreach (Entity i in EnemiesCollision.GetActiveChunks(PlayersCollision))
                         i.Tick(time);
-                    Console.Write("a");
                     foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
                         i.Value.Tick(time);
-                    Console.Write("a");
                 }
                 else
                 {
-                    Console.Write("b");
                     foreach (var i in Enemies)
                         i.Value.Tick(time);
-                    Console.Write("b");
                 }
-                Console.Write("-");
                 foreach (var i in Projectiles)
                     i.Value.Tick(time);
-                Console.Write("/\n");
             }
             catch (Exception e)
             {
