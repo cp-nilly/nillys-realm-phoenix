@@ -1327,7 +1327,8 @@ namespace wServer.realm.entities.player
                 Console.Write("/" + psr.Character.Dead + " " + psr.Account + " " + psr.Character);
                 psr.Character.Dead = true;
                 SaveToCharacter();
-                psr.Database.SaveCharacter(psr.Account, psr.Character);
+                //psr.Database.SaveCharacter(psr.Account, psr.Character);
+                psr.Save();
                 Console.Write("/");
                 if (Owner.Id != -6)
                 {
