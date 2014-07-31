@@ -279,8 +279,8 @@ namespace wServer
                         if (entity.Owner.Id != -6)
                             db.SaveCharacter(account, character);
                     }
-                    //db.Dispose(); // might create resource leak being commented out...
-                    //db = null;
+                    db.Dispose();
+                    db = null;
                 }
                 else
                 {
@@ -291,8 +291,42 @@ namespace wServer
                         if (entity.Owner.Id != -6)
                             db.SaveCharacter(account, character);
                     }
-                    //db.Dispose(); // might create resource leak being commented out...
-                    //db = null;
+                    db.Dispose();
+                    db = null;
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        public void SaveDeath(string killer) // temp fix
+        {
+            //Console.ForegroundColor = ConsoleColor.DarkRed;
+            //Console.Write("Saving death {0}...\r\n", account.Name);
+            //Console.ForegroundColor = ConsoleColor.Gray;
+            try
+            {
+                if (db != null)
+                {
+                    if (character != null)
+                    {
+                        if (entity.Owner.Id != -6)
+                            db.Death(account, character, killer);
+                    }
+                    db.Dispose();
+                    db = null;
+                }
+                else
+                {
+                    db = new Database();
+                    if (character != null)
+                    {
+                        if (entity.Owner.Id != -6)
+                            db.Death(account, character, killer);
+                    }
+                    db.Dispose();
+                    db = null;
                 }
             }
             catch

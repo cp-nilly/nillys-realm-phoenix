@@ -1325,10 +1325,10 @@ namespace wServer.realm.entities.player
 
                 psr.Character.Dead = true;
                 SaveToCharacter();
-                psr.Database.SaveCharacter(psr.Account, psr.Character);
+                psr.Save();
                 if (Owner.Id != -6)
                 {
-                    psr.Database.Death(psr.Account, psr.Character, killer);
+                    psr.SaveDeath(killer);
                     psr.SendPacket(new DeathPacket
                     {
                         AccountId = AccountId,
