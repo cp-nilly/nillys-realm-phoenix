@@ -905,6 +905,11 @@ namespace wServer.realm.entities.player
             fames.Teleport();
             SetNewbiePeriod();
             UpdateCount++;
+            ((Player)obj).ApplyConditionEffect(new ConditionEffect
+            {
+                Effect = (ConditionEffectIndex)23,
+                DurationMS = 3000
+            });
             Owner.BroadcastPacket(new GotoPacket
             {
                 ObjectId = Id,
