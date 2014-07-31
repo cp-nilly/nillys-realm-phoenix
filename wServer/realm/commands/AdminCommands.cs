@@ -42,7 +42,9 @@ namespace wServer.realm.commands
 
             // check map restrictions
             string mapName = player.Owner.Name;
-            if (mapName.Equals("Nexus"))
+            if (mapName.Equals("Nexus") ||
+                mapName.Equals("Guild Hall") ||
+                mapName.Equals("Vault"))
             {
                 player.SendInfo("Spawning in " + mapName + " not allowed.");
                 return;
