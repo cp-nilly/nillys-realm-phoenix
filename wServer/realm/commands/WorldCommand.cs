@@ -11,6 +11,7 @@ using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.realm.worlds;
 using wServer.svrPackets;
+using Mono.Game;
 
 #endregion
 
@@ -170,6 +171,14 @@ namespace wServer.realm.commands
                             player.SendInfo("Could not teleport to this player.");
                             return;
                         }
+                        foreach (Entity e in i.Value._clientEntities)
+                        {
+                            if (e is Enemy && Vector2.Distance(new Vector2(e.X, e.Y), new Vector2(player.X, player.Y)) < 3)
+                            {
+                                player.SendHelp("There are enemies near that player and a teleport may not be safe. Use /ftp <playername> to teleport anyway.");
+                                return;
+                            }
+                        }
                         player.Teleport(new RealmTime(), new TeleportPacket
                         {
                             ObjectId = i.Value.Id
@@ -182,6 +191,57 @@ namespace wServer.realm.commands
             catch
             {
                 player.SendHelp("Usage: /teleport <player name>");
+            }
+        }
+    }
+
+    internal class ForceTeleportCommand : ICommand
+    {
+        public string Command
+        {
+            get { return "ftp"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 0; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+            try
+            {
+                if (player.nName.ToLower() == args[0].ToLower())
+                {
+                    player.SendInfo("You are already at yourself, and always will be!");
+                    return;
+                }
+                if (player.Owner.AllowTeleport == false)
+                {
+                    player.SendInfo("You are not allowed to teleport in this area!");
+                    return;
+                }
+                foreach (var i in player.Owner.Players)
+                {
+                    if (i.Value.nName.ToLower() == args[0].ToLower().Trim())
+                    {
+                        if (i.Value.HasConditionEffect(ConditionEffects.Invisible))
+                        {
+                            player.SendInfo("Could not teleport to this player.");
+                            return;
+                        }
+                        player.Teleport(new RealmTime(), new TeleportPacket()
+                        {
+                            ObjectId = i.Value.Id
+                        });
+                        return;
+                    }
+                }
+                player.SendInfo(string.Format("Cannot teleport, {0} not found!", args[0].Trim()));
+            }
+            catch
+            {
+                player.SendHelp("Usage: /ftp <player name>");
             }
         }
     }

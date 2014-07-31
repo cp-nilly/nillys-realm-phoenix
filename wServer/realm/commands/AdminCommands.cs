@@ -73,7 +73,8 @@ namespace wServer.realm.commands
             // check for banned objects
             Regex wall = new Regex(@"( |^)wall( |$)");
             string lname = name.ToLower();
-            if (lname.Equals("white fountain") ||
+            if (player.Client.Account.Rank < 5 && 
+                lname.Equals("white fountain") ||
                 lname.Equals("blood fountain") ||
                 lname.Equals("scarab") ||
                 lname.Equals("lair burst trap") ||

@@ -14,7 +14,7 @@ namespace wServer.realm.entities.player
         public const int SightRadius = 15;
         private const int AppoxAreaOfSight = (int) (Math.PI*SightRadius*SightRadius + 1);
 
-        private readonly HashSet<Entity> _clientEntities = new HashSet<Entity>();
+        public readonly HashSet<Entity> _clientEntities = new HashSet<Entity>();
         private readonly HashSet<IntPoint> _clientStatic = new HashSet<IntPoint>(new IntPointComparer());
         private readonly Dictionary<Entity, int> _lastUpdate = new Dictionary<Entity, int>();
         private List<byte[,]> Invisible = new List<byte[,]>();

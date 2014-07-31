@@ -10,6 +10,7 @@ using wServer.cliPackets;
 using wServer.logic;
 using wServer.realm.worlds;
 using wServer.svrPackets;
+using Mono.Game;
 
 #endregion
 
@@ -898,6 +899,7 @@ namespace wServer.realm.entities.player
                 SendError("Cannot teleport to invisible players");
                 return;
             }
+
             SetTPDisabledPeriod();
             if (Pet != null)
                 Pet.Move(X, Y);
@@ -905,11 +907,7 @@ namespace wServer.realm.entities.player
             fames.Teleport();
             SetNewbiePeriod();
             UpdateCount++;
-            ((Player)obj).ApplyConditionEffect(new ConditionEffect
-            {
-                Effect = (ConditionEffectIndex)23,
-                DurationMS = 3000
-            });
+            
             Owner.BroadcastPacket(new GotoPacket
             {
                 ObjectId = Id,
