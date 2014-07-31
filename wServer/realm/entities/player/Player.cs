@@ -1324,7 +1324,7 @@ namespace wServer.realm.entities.player
                     let idx = StatsManager.StatsNameToIndex(i.Value)
                     where Stats[idx] >= limit
                     select StatsManager.StatsIndexToPotName(idx)).ToList();
-                Console.Write("/");
+                Console.Write("/" + psr.Character.Dead + " " + psr.Account + " " + psr.Character);
                 psr.Character.Dead = true;
                 SaveToCharacter();
                 psr.Database.SaveCharacter(psr.Account, psr.Character);
