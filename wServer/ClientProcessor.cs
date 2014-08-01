@@ -420,15 +420,13 @@ namespace wServer
 
             // setup client world
             World world = RealmManager.GetWorld(pkt.GameId);
+            if (world.Id == -6) //Test World
+                (world as Test).LoadJson(pkt.MapInfo);
+            else if (world.IsLimbo)
+                world = world.GetInstance(this);
             uint seed = (uint)((long)Environment.TickCount * pkt.GUID.GetHashCode()) % uint.MaxValue;
             Random = new wRandom(seed);
             targetWorld = world.Id;
-
-            // stuff for development
-            /*if (world.Id == -6) //Test World
-                (world as Test).LoadJson(pkt.MapInfo);
-            else if (world.IsLimbo)
-                world = world.GetInstance(this);*/
 
             // connection successful, send MapInfo packet
             SendPacket(new MapInfoPacket
