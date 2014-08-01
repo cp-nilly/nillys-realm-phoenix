@@ -33,6 +33,15 @@ namespace wServer.realm.commands
             get { return 2; }
         }
 
+        private bool isRealm(string mapName)
+        {
+            foreach (string realmName in RealmManager.allRealmNames)
+            {
+                if (realmName.Equals(mapName)) return true;
+            }
+            return false;
+        }
+
         public void Execute(Player player, string[] args)
         {
             string name;
@@ -50,15 +59,17 @@ namespace wServer.realm.commands
                 name = string.Join(" ", args.Skip(1).ToArray());
             }
 
-            if (player == null) Console.Write("Spawn - Player is null!\n");
+            // check to see if amount is a positive integer > 0
+            if (amount < 1) return;
 
-            Console.Write("<" + player.nName + "> Spawning " + ((amount > 1) ? amount + " " : "") + name + "...\n");
+            if (player == null) Console.Write("Spawn - Player is null!\n");
+            Console.Write("[" + player.Owner.Name + "] <" + player.nName + "> Spawning " + ((amount > 1) ? amount + " " : "") + name + "...\n");
 
             // check map restrictions
             string mapName = player.Owner.Name;
-            if (mapName.Equals("Nexus") ||
-                mapName.Equals("Guild Hall") ||
-                mapName.Equals("Vault"))
+            if (player.Client == null) Console.Write("Spawn - Player.Client is null!\n");
+            if (player.Client.Account == null) Console.Write("Spawn - Player.Client.Account is null!\n");
+            if (player.Client.Account.Rank < 3 && !isRealm(mapName))
             {
                 player.SendInfo("Spawning in " + mapName + " not allowed.");
                 return;
@@ -105,8 +116,6 @@ namespace wServer.realm.commands
             }
 
             // check spawn limit
-            if (player.Client == null) Console.Write("Spawn - Player.Client is null!\n");
-            if (player.Client.Account == null) Console.Write("Spawn - Player.Client.Account is null!\n");
             if (player.Client.Account.Rank < 5 && amount > 50)
             {
                 player.SendError("Maximum spawn count is set to 50!");
