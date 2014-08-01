@@ -33,7 +33,7 @@ namespace wServer
 
         public void BeginHandling()
         {
-            //Console.WriteLine("{0} connected.", skt.RemoteEndPoint);
+            Console.WriteLine("{0} connected.", skt.RemoteEndPoint);
             debug = File.Exists("debug");
 
             skt.NoDelay = true;
