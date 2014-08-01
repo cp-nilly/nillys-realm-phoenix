@@ -334,134 +334,120 @@ namespace wServer
             }
         }
 
-        private void ProcessHelloPacket(HelloPacket pkt)
+        private void connectionFailed(string msg)
         {
-            db = new Database();
-            //Console.Out.WriteLine(pkt.GUID + ": " + pkt.Password);
-            if ((account = db.Verify(pkt.GUID, pkt.Password)) == null)
+            SendPacket(new FailurePacket
             {
-                Console.WriteLine(@"Account not verified.");
-                account = Database.CreateGuestAccount(pkt.GUID);
+                Message = msg
+            });
+        }
 
-                if (account == null)
-                {
-                    Console.WriteLine(@"Account is null!");
-                    SendPacket(new FailurePacket
-                    {
-                        Message = "Invalid account."
-                    });
-                    Disconnect();
-                    db.Dispose();
-                    return;
-                }
-            }
-            if ((ip = db.CheckIp(skt.RemoteEndPoint.ToString().Split(':')[0])) == null)
-            {
-                Console.WriteLine(@"Error checking IP");
-                SendPacket(new FailurePacket
-                {
-                    Message = "Error with IP."
-                });
-                Disconnect();
-                db.Dispose();
-                return;
-            }
-            Console.WriteLine(@"Client trying to connect!");
+        /* Makes various checks to see if client is allowed to connect.
+         * Returns null on success, otherwise return value contains
+         * discription of error.
+         */
+        private string okToConnect(HelloPacket pkt)
+        {
+            string retMsg = null;
             ConnectedBuild = pkt.BuildVersion;
-            if (!RealmManager.TryConnect(this))
+
+            // check client version
+            if (!ConnectedBuild.StartsWith(clientVer))
+                connectionFailed(retMsg = "Wrong build version.");
+
+            // has valid account?
+            else if ((account = db.Verify(pkt.GUID, pkt.Password)) == null)
+                connectionFailed(retMsg = "Invalid account.");
+
+            // ip banned?
+            else if (ip.Banned)
+                connectionFailed(retMsg = "IP banned.");
+
+            // account banned?
+            else if (account.Banned)
+                connectionFailed(retMsg = "Account banned.");
+
+            // account used already on server?
+            else if (CheckAccountInUse(account.AccountId)) 
             {
-                if (CheckAccountInUse(account.AccountId))
+                connectionFailed(retMsg = "Account in use.");
+                try // try and kick account
                 {
-                    Console.WriteLine(@"Account in use: " + account.AccountId + @" " + account.Name);
-                    account = null;
-                    SendPacket(new FailurePacket
-                    {
-                        Message = "Account in use! Retrying..."
-                    });
-                    Disconnect();
-                    db.Dispose();
-                    return;
-                }
-                account = null;
-                SendPacket(new FailurePacket
-                {
-                    Message = "Failed to connect."
-                });
-                Disconnect();
-                Console.WriteLine(@"Failed to connect.");
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(@"Client loading world");
-                Console.ForegroundColor = ConsoleColor.White;
-                World world = RealmManager.GetWorld(pkt.GameId);
-                if (world == null)
-                {
-                    SendPacket(new FailurePacket
-                    {
-                        Message = "Invalid world."
-                    });
-                    Disconnect();
-                    Console.WriteLine(@"Invalid world");
-                }
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                try
-                {
-                    Console.WriteLine(@"Client joined world " + world.Id);
+                    Player target = null;
+                    if ((target = RealmManager.FindPlayer(account.Name)) != null)
+                        target.Client.Disconnect();
                 }
                 catch
                 {
-                    Console.WriteLine(@"Error! World is null");
+                    Console.Write("\tCannot kick " + account.Name + "!");
                 }
-                Console.ForegroundColor = ConsoleColor.White;
-                if (world.Id == -6) //Test World
-                    (world as Test).LoadJson(pkt.MapInfo);
-
-                else if (world.IsLimbo)
-                    world = world.GetInstance(this);
-                uint seed = (uint) ((long) Environment.TickCount*pkt.GUID.GetHashCode())%uint.MaxValue;
-                Random = new wRandom(seed);
-                targetWorld = world.Id;
-                if (!ConnectedBuildStartsWith(clientVer))
-                {
-                    SendPacket(new TextPacket
-                    {
-                        BubbleTime = 1,
-                        Stars = -1,
-                        Name = "",
-                        Text = "Your client is outdated. Visit http://forum.zerorealms.com to get the latest one!"
-                    });
-                    Disconnect();
-                    /*SendPacket(new TextBoxPacket
-                    {
-                        Button1 = "Okay",
-                        Message = "Your client is outdated, Click <font color=\"white\"><b><a href='http://forum.zerorealms.com'>Here</a></b></font> to get the latest one!",
-                        Title = "Outdated Client!",
-                        Type = "NewClient"
-                    });*/
-                }
-                SendPacket(new MapInfoPacket
-                {
-                    Width = world.Map.Width,
-                    Height = world.Map.Height,
-                    Name = world.Name,
-                    Seed = seed,
-                    Background = world.Background,
-                    AllowTeleport = world.AllowTeleport,
-                    ShowDisplays = world.ShowDisplays,
-                    Music = world.GetMusic(Random),
-                    ClientXML = world.ClientXML,
-                    ExtraXML = world.ExtraXML,
-                    SendMusic = ConnectedBuildStartsWith(clientVer)
-                });
-                stage = ProtocalStage.Handshaked;
             }
+
+            // server full?
+            else if (RealmManager.Clients.Count >= RealmManager.MAX_CLIENT)
+                connectionFailed(retMsg = "Server full.");
+
+            // valid gameId?
+            else if (RealmManager.GetWorld(pkt.GameId) == null)
+                connectionFailed(retMsg = "Invalid world.");
+
+            return retMsg;
         }
 
-        private bool ConnectedBuildStartsWith(string clientVer)
+        private void ProcessHelloPacket(HelloPacket pkt)
         {
-            return ConnectedBuild.StartsWith(clientVer);
+            // connect to database
+            db = new Database();
+            account = db.Verify(pkt.GUID, pkt.Password);
+            ip = db.CheckIp(skt.RemoteEndPoint.ToString().Split(':')[0]);
+
+            Console.Write(@"Connecting " + ((account == null)? "null":account.Name) + 
+                                "@" + ip.Address + "... ");
+
+            // check if ok to connect
+            string msg;
+            if ((msg = okToConnect(pkt)) != null)
+            {
+                Console.WriteLine(msg);
+                account = null;
+                ip = null;
+                Disconnect();
+                return;
+            }
+
+            // ok to connect, add client to client list
+            RealmManager.Clients.TryAdd(account.AccountId, this);
+
+            // setup client world
+            World world = RealmManager.GetWorld(pkt.GameId);
+            uint seed = (uint)((long)Environment.TickCount * pkt.GUID.GetHashCode()) % uint.MaxValue;
+            Random = new wRandom(seed);
+            targetWorld = world.Id;
+
+            // stuff for development
+            /*if (world.Id == -6) //Test World
+                (world as Test).LoadJson(pkt.MapInfo);
+            else if (world.IsLimbo)
+                world = world.GetInstance(this);*/
+
+            // connection successful, send MapInfo packet
+            SendPacket(new MapInfoPacket
+            {
+                Width = world.Map.Width,
+                Height = world.Map.Height,
+                Name = world.Name,
+                Seed = seed,
+                Background = world.Background,
+                AllowTeleport = world.AllowTeleport,
+                ShowDisplays = world.ShowDisplays,
+                Music = world.GetMusic(Random),
+                ClientXML = world.ClientXML,
+                ExtraXML = world.ExtraXML,
+                SendMusic = true
+            });
+            stage = ProtocalStage.Handshaked;
+
+            Console.WriteLine("Joined " + world.Name + " (" + world.Id + ").");
         }
 
         private void ProcessCreatePacket(CreatePacket pkt)
