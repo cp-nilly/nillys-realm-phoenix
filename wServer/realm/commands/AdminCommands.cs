@@ -50,7 +50,8 @@ namespace wServer.realm.commands
                 name = string.Join(" ", args.Skip(1).ToArray());
             }
 
-            
+            if (player == null) Console.Write("Spawn - Player is null!\n");
+
             Console.Write("<" + player.nName + "> Spawning " + ((amount > 1) ? amount + " " : "") + name + "...\n");
 
             // check map restrictions
@@ -66,6 +67,7 @@ namespace wServer.realm.commands
             // check to see if entity exists
             var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
                 // ^^ creates a new case insensitive dictionary based on the XmlDatas
+            if (icdatas == null) Console.Write("Spawn - icdatas is null!\n");
             if (!icdatas.TryGetValue(name, out objType) ||
                 !XmlDatas.ObjectDescs.ContainsKey(objType))
             {
@@ -103,6 +105,8 @@ namespace wServer.realm.commands
             }
 
             // check spawn limit
+            if (player.Client == null) Console.Write("Spawn - Player.Client is null!\n");
+            if (player.Client.Account == null) Console.Write("Spawn - Player.Client.Account is null!\n");
             if (player.Client.Account.Rank < 5 && amount > 50)
             {
                 player.SendError("Maximum spawn count is set to 50!");
@@ -111,6 +115,7 @@ namespace wServer.realm.commands
 
             // queue up mob spawn
             World w = RealmManager.GetWorld(player.Owner.Id);
+            if (w == null) Console.Write("Spawn - World is null!\n");
             string announce = "Spawning " + ((amount > 1) ? amount + " " : "") + name + "...";
             w.BroadcastPacket(new NotificationPacket
             {

@@ -341,41 +341,52 @@ namespace wServer.realm
 
         public virtual void Tick(RealmTime time)
         {
-            try
+            if (IsLimbo) return;
+
+            for (int i = 0; i < Timers.Count; i++) 
             {
-                if (IsLimbo) return;
-
-                for (int i = 0; i < Timers.Count; i++)
-                    if (Timers[i].Tick(this, time))
-                    {
-                        Timers.RemoveAt(i);
-                        i--;
-                    }
-
-                foreach (var i in Players)
-                    i.Value.Tick(time);
-
-                if (EnemiesCollision != null)
+                if (Timers[i] == null) Console.Write("Timer is null\n");
+                if (Timers[i].Tick(this, time))
                 {
-                    foreach (Entity i in EnemiesCollision.GetActiveChunks(PlayersCollision))
-                        i.Tick(time);
-                    foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
-                        i.Value.Tick(time);
+                    Timers.RemoveAt(i);
+                    i--;
                 }
-                else
-                {
-                    foreach (var i in Enemies)
-                        i.Value.Tick(time);
-                }
-                foreach (var i in Projectiles)
-                    i.Value.Tick(time);
-            }
-            catch (Exception e)
-            {
-                Console.Write(e);
-                Console.Write(e.Source);
             }
 
+            foreach (var i in Players)
+            {
+                if (i.Value == null) Console.Write("Player is null\n");
+                i.Value.Tick(time);
+            }
+
+            if (EnemiesCollision != null)
+            {
+                foreach (Entity i in EnemiesCollision.GetActiveChunks(PlayersCollision))
+                {
+                    if (i == null) Console.Write("Entity is null\n");
+                    i.Tick(time);
+                }
+                    
+                foreach (var i in StaticObjects.Where(x => x.Value is Decoy))
+                {
+                    if (i.Value == null) Console.Write("StaticObject:Decoy is null\n");
+                    i.Value.Tick(time);
+                } 
+            }
+            else
+            {
+                foreach (var i in Enemies)
+                {
+                    if (i.Value == null) Console.Write("Enemy is null\n");
+                    i.Value.Tick(time);
+                }
+            }
+            foreach (var i in Projectiles)
+            {
+                if (i.Value == null) Console.Write("Projectile is null\n");
+                i.Value.Tick(time);
+            }
+                
             //if (Players.Count == 0 && canBeClosed && IsDungeon())
            //     Manager.RemoveWorld(this);
         }
