@@ -1298,14 +1298,14 @@ namespace wServer.realm.entities.player
                         psr.Disconnect();
                         return;
                 }
-                //if (Client.Account.Rank > 3)
-                //{
-                //    HP = psr.Character.MaxHitPoints;
-                //    SaveToCharacter();
-                //    psr.Save();
-                //    psr.Disconnect();
-                //    return;
-                //}
+                if (Client.Account.Rank > 3)
+                {
+                    HP = psr.Character.MaxHitPoints;
+                    SaveToCharacter();
+                    psr.Save();
+                    psr.Disconnect();
+                    return;
+                }
                 if (CheckResurrection())
                     return;
 
