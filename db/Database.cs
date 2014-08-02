@@ -635,6 +635,7 @@ SELECT MAX(chestId) FROM vaults WHERE accId = @accId;";
 
         public void SaveCharacter(Account acc, Char chr)
         {
+            Console.WriteLine("Saving " + acc.Name + "...");
             MySqlCommand cmd = CreateQuery();
             cmd.CommandText = @"UPDATE characters SET 
 level=@level, 
@@ -737,6 +738,7 @@ items = @items;";
 
         public void Death(Account acc, Char chr, string killer) //Save first
         {
+            Console.Write(acc.Name + " died to " + killer + ".");
             MySqlCommand cmd = CreateQuery();
             cmd.CommandText = @"UPDATE characters SET 
 dead=TRUE, 

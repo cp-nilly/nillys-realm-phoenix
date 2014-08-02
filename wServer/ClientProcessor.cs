@@ -367,22 +367,6 @@ namespace wServer
             else if (account.Banned)
                 connectionFailed(retMsg = "Account banned.");
 
-            // account used already on server?
-            else if (CheckAccountInUse(account.AccountId)) 
-            {
-                connectionFailed(retMsg = "Account in use.");
-                try // try and kick account
-                {
-                    Player target = null;
-                    if ((target = RealmManager.FindPlayer(account.Name)) != null)
-                        target.Client.Disconnect();
-                }
-                catch
-                {
-                    Console.Write("\tCannot kick " + account.Name + "!");
-                }
-            }
-
             // server full?
             else if (RealmManager.Clients.Count >= RealmManager.MAX_CLIENT)
                 connectionFailed(retMsg = "Server full.");
@@ -390,6 +374,14 @@ namespace wServer
             // valid gameId?
             else if (RealmManager.GetWorld(pkt.GameId) == null)
                 connectionFailed(retMsg = "Invalid world.");
+            
+            // account already connected? disconnect if so
+            else if (AccountConnected(account.AccountId))
+            {
+                connectionFailed(retMsg = "Account in use... ");
+                ClientProcessor target = RealmManager.Clients[account.AccountId];
+                target.Disconnect();
+            }
 
             return retMsg;
         }
@@ -410,7 +402,6 @@ namespace wServer
             {
                 Console.WriteLine(msg);
                 account = null;
-                ip = null;
                 Disconnect();
                 return;
             }
@@ -471,7 +462,7 @@ namespace wServer
             if (currChar >= maxChar)
             {
                 Disconnect();
-                db.Dispose();
+                //db.Dispose();
                 return;
             }
             if (CheckAccountInUse(account.AccountId))
@@ -483,7 +474,7 @@ namespace wServer
                 {
                     Message = "Account in use! Retrying..."
                 });
-                db.Dispose();
+                Disconnect();
                 return;
             }
 
@@ -604,10 +595,13 @@ namespace wServer
             if (character != null)
             {
                 if (character.Dead)
+                {
                     SendPacket(new FailurePacket
                     {
                         Message = "Character is dead."
                     });
+                    Disconnect();
+                }
                 else if (CheckAccountInUse(account.AccountId))
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
@@ -617,6 +611,7 @@ namespace wServer
                     {
                         Message = "Account in use! Retrying..."
                     });
+                    Disconnect();
                 }
                 else
                 {
@@ -864,42 +859,30 @@ namespace wServer
         {
             RealmManager.Logic.AddPendingAction(t =>
             {
-                if (Player != null) // save player on reconnect
-                    Player.SaveToCharacter();
-                Save();
-                RealmManager.Disconnect(this);
+                //if (Player != null) // save player on reconnect
+                //    Player.SaveToCharacter();
+                //Save();
+                RealmManager.Disconnect(this); // saves player on exit
                 SendPacket(pkt);
             }, PendingPriority.Destruction);
         }
 
+        public bool AccountConnected(int accId)
+        {
+            if (RealmManager.Clients.ContainsKey(account.AccountId))
+                return true;
+            return false;
+        }
+
         public bool CheckAccountInUse(int accId)
         {
-            try
-            {
-                int count = 0;
-                for (int i = 0; i < RealmManager.Worlds.Values.Count; i++)
+            foreach (World w in RealmManager.Worlds.Values)
+                foreach (Player p in w.Players.Values)
                 {
-                    World w = RealmManager.GetWorld(i);
-                    foreach (Player plr in w.Players.Values)
-                    {
-                        if (plr.AccountId == accId)
-                        {
-                            return true;
-                        }
-                        count = count + 1;
-                    }
-                    if (count == w.Players.Values.ToArray().Length)
-                    {
-                        return false;
-                    }
+                    if (p.AccountId == accId) return true;
                 }
-                return true;
-            }
-            catch
-            {
-                Console.WriteLine("Error checking if account " + accId + " is in use, check ClientProcessor.cs");
-                return false;
-            }
+
+            return false;
         }
 
         public void HandleUpdateAck()

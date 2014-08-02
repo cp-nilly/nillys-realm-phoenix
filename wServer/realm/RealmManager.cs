@@ -103,7 +103,7 @@ namespace wServer.realm
 
         static RealmManager()
         {
-            Console.WriteLine("Initializing Realm Manager..."); ;
+            Console.WriteLine("Initializing Realm Manager...");
             Worlds[World.TUT_ID] = new Tutorial(true);
             Worlds[World.NEXUS_ID] = Worlds[0] = new Nexus();
             Worlds[World.NEXUS_LIMBO] = new NexusLimbo();
@@ -116,13 +116,13 @@ namespace wServer.realm
 
             AddWorld(GameWorld.AutoName(1, true));
 
-            MerchantLists.GetKeys();
+            /*MerchantLists.GetKeys();
             MerchantLists.AddPetShop();
             MerchantLists.AddCustomShops();
             foreach (var i in MerchantLists.shopLists)
             {
                 ShopWorlds.TryAdd(i.Key, AddWorld(new ShopMap(i.Key)));
-            }
+            }*/
 
             Console.WriteLine("Realm Manager initialized.");
         }
@@ -149,6 +149,8 @@ namespace wServer.realm
         public static void Disconnect(ClientProcessor psr)
         {
             psr.Save();
+            if (psr.Player.Owner != null)
+                psr.Player.Owner.LeaveWorld(psr.Player);
             Clients.TryRemove(psr.Account.AccountId, out psr);
         }
 
@@ -253,6 +255,15 @@ namespace wServer.realm
                 from e in i.Value.Players
                 where String.Equals(e.Value.Client.Account.Name, name, StringComparison.CurrentCultureIgnoreCase)
                 select e.Value).FirstOrDefault();
+        }
+
+        public static Player FindPlayer(int accountId)
+        {
+            if (Clients.ContainsKey(accountId))
+            {
+                return Clients[accountId].Player;
+            }
+            return null;
         }
 
         public static Player FindPlayerRough(string name)
