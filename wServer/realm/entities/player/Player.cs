@@ -1184,19 +1184,25 @@ namespace wServer.realm.entities.player
                     }
                     break;
             }
-            Container con = new Container(XmlDatas.TypeToElement[objType]); //equips
-            Container con2 = new Container(XmlDatas.TypeToElement[0x0502]); //inv
-            Item[] equips = { new Item(XmlDatas.TypeToElement[Inventory[0].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[1].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[2].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[3].ObjectType]), null, null, null, null};
-            Item[] inv = { new Item(XmlDatas.TypeToElement[Inventory[4].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[5].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[6].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[7].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[8].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[9].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[10].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[11].ObjectType])};
-            for (int i = 0; i < 8; i++)
+            var con = new Container(objType, null, false);
+            var con2 = new Container(0x0502, null, false);
+            //Item[] equips = { new Item(XmlDatas.TypeToElement[Inventory[0].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[1].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[2].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[3].ObjectType]), null, null, null, null};
+            //Item[] inv = { new Item(XmlDatas.TypeToElement[Inventory[4].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[5].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[6].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[7].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[8].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[9].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[10].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[11].ObjectType])};
+            for (var i = 0; i < 4; i++)
             {
-                con.Inventory[i] = equips[i];
-                con2.Inventory[i] = inv[i];
+                con.Inventory[i] = Inventory[i];
+            }
+
+            for (var i = 4; i < 12; i++)
+            {
+                con2.Inventory[i - 4] = Inventory[i];
             }
 
             con.Move(X, Y);
+            con2.Move(X + 1, Y);
+            con.Name = Name;
+
             Owner.EnterWorld(con);
-            con2.Move(X, Y);
             Owner.EnterWorld(con2);
             //var obj = new StaticObject(objType, time, true, time != null, false);
             //obj.Move(X, Y);
@@ -1292,14 +1298,14 @@ namespace wServer.realm.entities.player
                         psr.Disconnect();
                         return;
                 }
-                if (Client.Account.Rank > 3)
-                {
-                    HP = psr.Character.MaxHitPoints;
-                    SaveToCharacter();
-                    psr.Save();
-                    psr.Disconnect();
-                    return;
-                }
+                //if (Client.Account.Rank > 3)
+                //{
+                //    HP = psr.Character.MaxHitPoints;
+                //    SaveToCharacter();
+                //    psr.Save();
+                //    psr.Disconnect();
+                //    return;
+                //}
                 if (CheckResurrection())
                     return;
 
