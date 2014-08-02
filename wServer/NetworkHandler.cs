@@ -229,15 +229,14 @@ namespace wServer
 
                     sendState = SendState.Sending;
                     send.SetBuffer(dat, 0, dat.Length);
-                    if (!skt.SendAsync(send))
+
+                    // why there are closed sockets being used here is beyond me
+                    if (skt.Connected && !skt.SendAsync(send))
                         IOCompleted(this, send);
                 }
             }
             catch (Exception e)
             {
-                if (e is ObjectDisposedException)
-                    return;
-
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(e);
                 Console.WriteLine("Error sending packet with ID " + pkt.ID);

@@ -242,21 +242,26 @@ namespace wServer
 
         public void Disconnect()
         {
+            if (stage == ProtocalStage.Disconnected)
+                return;
+
             try
             {
-                if (stage == ProtocalStage.Disconnected) 
-                    return;
-
-                ProtocalStage original = stage;
-                stage = ProtocalStage.Disconnected;
                 if (account != null)
+                {
                     DisconnectFromRealm();
-                if (db != null && original != ProtocalStage.Ready)
+                    account = null;
+                }
+
+                if (db != null)
                 {
                     db.Dispose();
                     db = null;
                 }
+
                 skt.Close();
+
+                stage = ProtocalStage.Disconnected;
             }
             catch (Exception e)
             {
@@ -269,27 +274,13 @@ namespace wServer
             try
             {
                 if (db != null)
+                    db = new Database(); // will be disposed on disconnect
+
+                if (character != null)
                 {
-                    if (character != null)
-                    {
-                        entity.SaveToCharacter();
-                        if (entity.Owner.Id != -6)
-                            db.SaveCharacter(account, character);
-                    }
-                    db.Dispose();
-                    db = null;
-                }
-                else
-                {
-                    db = new Database();
-                    if (character != null)
-                    {
-                        entity.SaveToCharacter();
-                        if (entity.Owner.Id != -6)
-                            db.SaveCharacter(account, character);
-                    }
-                    db.Dispose();
-                    db = null;
+                    entity.SaveToCharacter();
+                    if (entity.Owner.Id != -6)
+                        db.SaveCharacter(account, character);
                 }
             }
             catch
@@ -302,25 +293,12 @@ namespace wServer
             try
             {
                 if (db != null)
+                    db = new Database(); // will be disposed on disconnect
+
+                if (character != null)
                 {
-                    if (character != null)
-                    {
-                        if (entity.Owner.Id != -6)
-                            db.Death(account, character, killer);
-                    }
-                    db.Dispose();
-                    db = null;
-                }
-                else
-                {
-                    db = new Database();
-                    if (character != null)
-                    {
-                        if (entity.Owner.Id != -6)
-                            db.Death(account, character, killer);
-                    }
-                    db.Dispose();
-                    db = null;
+                    if (entity.Owner.Id != -6)
+                        db.Death(account, character, killer);
                 }
             }
             catch
@@ -456,8 +434,6 @@ namespace wServer
             if (currChar >= maxChar)
             {
                 Disconnect();
-                db.Dispose();
-                db = null;
                 return;
             }
             if (CheckAccountInUse(account.AccountId))
@@ -470,8 +446,6 @@ namespace wServer
                     Message = "Account in use! Retrying..."
                 });
                 Disconnect();
-                db.Dispose();
-                db = null;
                 return;
             }
 
@@ -598,8 +572,6 @@ namespace wServer
                         Message = "Character is dead."
                     });
                     Disconnect();
-                    db.Dispose();
-                    db = null;
                 }
                 else if (CheckAccountInUse(account.AccountId))
                 {
@@ -611,8 +583,6 @@ namespace wServer
                         Message = "Account in use! Retrying..."
                     });
                     Disconnect();
-                    db.Dispose();
-                    db = null;
                 }
                 else
                 {
@@ -815,8 +785,6 @@ namespace wServer
                     Key = Empty<byte>.Array,
                 });*/
                 Disconnect();
-                db.Dispose();
-                db = null;
             }
             catch
             {
