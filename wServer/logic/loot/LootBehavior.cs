@@ -212,7 +212,7 @@ namespace wServer.logic.loot
                 }
                 foreach (var i in items)
                     if (i.Value.Count > 0)
-                        ShowBags(rand, i.Value, null);//i.Key);
+                        ShowBags(rand, i.Value, i.Key);
             }
             catch (Exception e)
             {
@@ -231,7 +231,7 @@ namespace wServer.logic.loot
                     Tuple<Player, int>[] dat = counter.GetPlayerData();
                     var items = new Dictionary<Player, List<Item>>();
                     ProcessPublicBags(rand, dat);
-                    /*if (Host.Self.Owner.Name == "Battle Arena")
+                    if (Host.Self.Owner.Name == "Battle Arena")
                     {
                         if (rand.Next(1, 5) == 1)
                         {
@@ -251,7 +251,7 @@ namespace wServer.logic.loot
                     else if (Host.Self.Owner.Name == "Nexus")
                     {
                     }
-                    else*/
+                    else
                         ProcessSoulBags(rand, dat);
                     Host.Self.BagDropped = true;
                 }
