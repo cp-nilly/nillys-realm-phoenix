@@ -1184,10 +1184,24 @@ namespace wServer.realm.entities.player
                     }
                     break;
             }
-            var obj = new StaticObject(objType, time, true, time != null, false);
-            obj.Move(X, Y);
-            obj.Name = Name;
-            Owner.EnterWorld(obj);
+            Container con = new Container(XmlDatas.TypeToElement[objType]); //equips
+            Container con2 = new Container(XmlDatas.TypeToElement[0x0502]); //inv
+            Item[] equips = { new Item(XmlDatas.TypeToElement[Inventory[0].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[1].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[2].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[3].ObjectType]), null, null, null, null};
+            Item[] inv = { new Item(XmlDatas.TypeToElement[Inventory[4].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[5].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[6].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[7].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[8].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[9].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[10].ObjectType]), new Item(XmlDatas.TypeToElement[Inventory[11].ObjectType])};
+            for (int i = 0; i < 8; i++)
+            {
+                con.Inventory[i] = equips[i];
+                con2.Inventory[i] = inv[i];
+            }
+
+            con.Move(X, Y);
+            Owner.EnterWorld(con);
+            con2.Move(X, Y);
+            Owner.EnterWorld(con2);
+            //var obj = new StaticObject(objType, time, true, time != null, false);
+            //obj.Move(X, Y);
+            //obj.Name = Name;
+            //Owner.EnterWorld(obj);
         }
 
         public void GivePet(short petId)

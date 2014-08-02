@@ -515,7 +515,10 @@
   </Object>
 
   <Object type="0x0723" id="Gravestone 1">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar28x8</File><Index>0x6c</Index>
@@ -523,7 +526,10 @@
   </Object>
 
   <Object type="0x0724" id="Gravestone 2">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar28x8</File><Index>0x6d</Index>
@@ -531,7 +537,10 @@
   </Object>
 
   <Object type="0x0725" id="Gravestone 3">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar28x8</File><Index>0x6e</Index>
@@ -539,7 +548,10 @@
   </Object>
 
   <Object type="0x0726" id="Gravestone 4">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar28x8</File><Index>0x6f</Index>
@@ -547,7 +559,10 @@
   </Object>
 
   <Object type="0x0727" id="Gravestone 5">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar216x16</File><Index>0x13</Index>
@@ -555,7 +570,10 @@
   </Object>
 
   <Object type="0x0728" id="Gravestone 6">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar216x16</File><Index>0x14</Index>
@@ -563,7 +581,10 @@
   </Object>
 
   <Object type="0x0729" id="Gravestone 7">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar216x16</File><Index>0x15</Index>
@@ -571,7 +592,10 @@
   </Object>
 
   <Object type="0x072a" id="Gravestone 8">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar216x16</File><Index>0x16</Index>
@@ -579,7 +603,10 @@
   </Object>
 
   <Object type="0x072b" id="Gravestone 9">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar216x16</File><Index>0x17</Index>
@@ -587,7 +614,10 @@
   </Object>
 
   <Object type="0x0734" id="Gravestone 10">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar216x16</File><Index>0x27</Index>
@@ -595,7 +625,10 @@
   </Object>
 
   <Object type="0x0735" id="Gravestone 11">
-    <Class>GameObject</Class>
+    <Class>Container</Class>
+    <Container/>
+    <CanPutNormalObjects/>
+    <SlotTypes>0, 0, 0, 0, 0, 0, 0, 0</SlotTypes>
     <ShowName />
     <Texture>
       <File>lofiChar216x16</File><Index>0x3d</Index>
