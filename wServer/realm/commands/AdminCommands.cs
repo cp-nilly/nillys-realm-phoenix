@@ -175,7 +175,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public void Execute(Player player, string[] args)
@@ -285,7 +285,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public void Execute(Player player, string[] args)
@@ -408,7 +408,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public void Execute(Player player, string[] args)
@@ -447,7 +447,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public void Execute(Player player, string[] args)
@@ -484,7 +484,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -622,7 +622,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 5; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1021,7 +1021,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1386,7 +1386,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1425,7 +1425,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1489,7 +1489,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1543,7 +1543,7 @@ namespace wServer.realm.commands
             if (args.Length < 2)
             {
                 player.SendHelp(
-                    "Usage: /rank <username> <number>\n0: Player\n1: Donator\n2: Game Master\n3: Developer\n4: Head Developer\n5: Admin");
+                    "Usage: /rank <username> <number>\n0: Player\n1: Donator\n2: Spawner\n3: Perm Spawner\n4: GM\n5: Devs");
             }
             else
             {
@@ -1590,7 +1590,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1726,7 +1726,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1804,7 +1804,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1842,7 +1842,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1876,7 +1876,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1911,7 +1911,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -1965,7 +1965,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2078,7 +2078,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2115,7 +2115,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2152,7 +2152,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2296,7 +2296,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2321,7 +2321,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2419,7 +2419,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2459,7 +2459,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2485,7 +2485,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2511,7 +2511,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 5; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2583,7 +2583,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 5; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2648,7 +2648,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2671,7 +2671,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2689,7 +2689,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 3; }
+            get { return 5; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2741,7 +2741,7 @@ namespace wServer.realm.commands
 
             public int RequiredRank
             {
-                get { return 3; }
+                get { return 5; }
             }
 
             public void Execute(Player player, string[] args)
