@@ -244,7 +244,9 @@ namespace wServer
         {
             try
             {
-                if (stage == ProtocalStage.Disconnected) return;
+                if (stage == ProtocalStage.Disconnected) 
+                    return;
+
                 ProtocalStage original = stage;
                 stage = ProtocalStage.Disconnected;
                 if (account != null)
@@ -258,17 +260,12 @@ namespace wServer
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.DarkBlue;
                 Console.WriteLine(e);
-                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
         public void Save()
         {
-            //Console.ForegroundColor = ConsoleColor.DarkRed;
-            //Console.Write("Saving {0}...\r\n", account.Name);
-            //Console.ForegroundColor = ConsoleColor.Gray;
             try
             {
                 if (db != null)
@@ -302,9 +299,6 @@ namespace wServer
 
         public void SaveDeath(string killer) // temp fix
         {
-            //Console.ForegroundColor = ConsoleColor.DarkRed;
-            //Console.Write("Saving death {0}...\r\n", account.Name);
-            //Console.ForegroundColor = ConsoleColor.Gray;
             try
             {
                 if (db != null)
@@ -462,7 +456,8 @@ namespace wServer
             if (currChar >= maxChar)
             {
                 Disconnect();
-                //db.Dispose();
+                db.Dispose();
+                db = null;
                 return;
             }
             if (CheckAccountInUse(account.AccountId))
@@ -475,6 +470,8 @@ namespace wServer
                     Message = "Account in use! Retrying..."
                 });
                 Disconnect();
+                db.Dispose();
+                db = null;
                 return;
             }
 
@@ -601,6 +598,8 @@ namespace wServer
                         Message = "Character is dead."
                     });
                     Disconnect();
+                    db.Dispose();
+                    db = null;
                 }
                 else if (CheckAccountInUse(account.AccountId))
                 {
@@ -612,6 +611,8 @@ namespace wServer
                         Message = "Account in use! Retrying..."
                     });
                     Disconnect();
+                    db.Dispose();
+                    db = null;
                 }
                 else
                 {
@@ -805,14 +806,17 @@ namespace wServer
                     });
                     return;
                 }
-                Reconnect(new ReconnectPacket
+                /*Reconnect(new ReconnectPacket
                 {
                     Host = "",
                     Port = 2050,
                     GameId = World.NEXUS_ID,
                     Name = "Nexus",
                     Key = Empty<byte>.Array,
-                });
+                });*/
+                Disconnect();
+                db.Dispose();
+                db = null;
             }
             catch
             {

@@ -1278,7 +1278,7 @@ namespace wServer.realm.entities.player
                         psr.Disconnect();
                         return;
                 }
-                if (Client.Account.Rank > 2)
+                if (Client.Account.Rank > 3)
                 {
                     HP = psr.Character.MaxHitPoints;
                     SaveToCharacter();
