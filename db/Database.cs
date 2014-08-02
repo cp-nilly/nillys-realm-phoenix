@@ -738,7 +738,7 @@ items = @items;";
 
         public void Death(Account acc, Char chr, string killer) //Save first
         {
-            Console.Write(acc.Name + " died to " + killer + ".");
+            Console.WriteLine(acc.Name + " died to " + killer + ".");
             MySqlCommand cmd = CreateQuery();
             cmd.CommandText = @"UPDATE characters SET 
 dead=TRUE, 
