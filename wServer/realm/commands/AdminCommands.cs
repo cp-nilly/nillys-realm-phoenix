@@ -96,18 +96,19 @@ namespace wServer.realm.commands
                 lname.Equals("lair burst trap") ||
                 lname.Equals("lair blast trap") ||
                 lname.Equals("phoenix god final divination") ||
-                
+                lname.Equals("vault portal") ||
+
                 // beach nightmare restriction
-                lname.Equals("pirate") ||
-                lname.Equals("piratess") ||
-                lname.Equals("snake") ||
-                lname.Equals("poison scorpion") ||
-                lname.Equals("scorpion queen") ||
-                lname.Equals("bandit leader") ||
-                lname.Equals("bandit") ||
-                lname.Equals("red gelatinous cube") ||
-                lname.Equals("purple gelatinous cube") ||
-                lname.Equals("green gelatinous cube") ||
+                //lname.Equals("pirate") ||
+                //lname.Equals("piratess") ||
+                //lname.Equals("snake") ||
+                //lname.Equals("poison scorpion") ||
+                //lname.Equals("scorpion queen") ||
+                //lname.Equals("bandit leader") ||
+                //lname.Equals("bandit") ||
+                //lname.Equals("red gelatinous cube") ||
+                //lname.Equals("purple gelatinous cube") ||
+                //lname.Equals("green gelatinous cube") ||
 
                 wall.IsMatch(lname))
             {
