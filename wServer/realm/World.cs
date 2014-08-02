@@ -345,7 +345,13 @@ namespace wServer.realm
 
             for (int i = 0; i < Timers.Count; i++) 
             {
-                if (Timers[i] == null) Console.Write("Timer is null\n");
+                if (Timers[i] == null)
+                {
+                    Console.Write("Timer is null\n");
+                    Timers.RemoveAt(i);
+                    continue;
+                }
+
                 if (Timers[i].Tick(this, time))
                 {
                     Timers.RemoveAt(i);
