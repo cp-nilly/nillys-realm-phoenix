@@ -133,9 +133,9 @@ namespace wServer.realm.entities.player
 
         public static void ActivateHealHp(Player player, int amount, List<Packet> pkts)
         {
-            if (player == null) Console.Write("Player.ActivateHealHp: player = null");
-            if (player.Stats == null) Console.Write("Player.ActivateHealHp: player.Stats = null");
-            if (player.Boost == null) Console.Write("Player.ActivateHealHp: player.Boost = null");
+            if (player == null)
+                return;
+
             int maxHp = player.Stats[0] + player.Boost[0];
             int newHp = Math.Min(maxHp, player.HP + amount);
             if (newHp != player.HP)
@@ -159,6 +159,9 @@ namespace wServer.realm.entities.player
 
         private static void ActivateHealMp(Player player, int amount, List<Packet> pkts)
         {
+            if (player == null)
+                return;
+
             int maxMp = player.Stats[1] + player.Boost[1];
             int newMp = Math.Min(maxMp, player.MP + amount);
             if (newMp != player.MP)
@@ -182,6 +185,9 @@ namespace wServer.realm.entities.player
 
         private static void ActivateBoostStat(Player player, int idxnew, List<Packet> pkts)
         {
+            if (player == null)
+                return;
+
             int OriginalStat = 0;
             OriginalStat = player.Stats[idxnew] + OriginalStat;
             oldstat = OriginalStat;
