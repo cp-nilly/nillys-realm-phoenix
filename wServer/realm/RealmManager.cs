@@ -108,7 +108,7 @@ namespace wServer.realm
             Worlds[World.NEXUS_ID] = Worlds[0] = new Nexus();
             Worlds[World.NEXUS_LIMBO] = new NexusLimbo();
             Worlds[World.VAULT_ID] = new Vault(true);
-            Worlds[World.TEST_ID] = new Test();
+            //Worlds[World.TEST_ID] = new Test();
             Worlds[World.RAND_REALM] = new RandomRealm();
 
 
