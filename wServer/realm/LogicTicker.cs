@@ -76,8 +76,9 @@ namespace wServer.realm
                         {
                             callback(t);
                         }
-                        catch
+                        catch (Exception e)
                         {
+                            Console.WriteLine(e);
                         }
                     }
                 }

@@ -15,7 +15,7 @@ namespace wServer.realm
 {
     public class Entity : IBehaviorHost, IProjectileOwner, ICollidable<Entity>, IDisposable
     {
-        private const int EFFECT_COUNT = 28;
+        private const int EFFECT_COUNT = 29;
         private readonly ObjectDesc desc;
         private readonly int[] effects;
         private readonly bool interactive;

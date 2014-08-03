@@ -34,6 +34,7 @@ public enum ConditionEffects
     Invulnerable = 1 << 24,
     Armored = 1 << 25,
     ArmorBroken = 1 << 26,
+	Hexed = 1 << 27,
     Blessed = 1 << 28
 }
 
