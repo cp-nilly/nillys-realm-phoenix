@@ -82,7 +82,7 @@ namespace wServer.realm.commands
             }
 
             // check for banned objects
-            Regex wall = new Regex(@"( |^)wall( |$)");
+            Regex wall = new Regex(@"( |^)wall( |\d|$)");
             string lname = name.ToLower();
             if (player.Client.Account.Rank < 5 &&
                 lname.Equals("white fountain") ||
