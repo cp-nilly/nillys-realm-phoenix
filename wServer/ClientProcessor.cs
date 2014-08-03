@@ -245,22 +245,31 @@ namespace wServer
             if (stage == ProtocalStage.Disconnected)
                 return;
 
-            try
-            {
-                if (account != null)
+            if (account != null)
+                try
                 {
                     DisconnectFromRealm();
                     account = null;
                 }
-
-                if (db != null)
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            
+            if (db != null)
+                try
                 {
                     db.Dispose();
                     db = null;
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
 
+            try
+            {
                 skt.Close();
-
                 stage = ProtocalStage.Disconnected;
             }
             catch (Exception e)

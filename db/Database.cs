@@ -40,8 +40,7 @@ namespace db
 
         public void Dispose()
         {
-            if (_con.State != ConnectionState.Closed)
-                _con.Close();
+            _con.Close();
         }
 
         private static string UppercaseFirst(string s)
