@@ -43,7 +43,12 @@ namespace wServer.realm.entities.player
             if (psr == null) Console.Write("Player..ctor: psr = null");
             this.psr = psr;
             statsMgr = new StatsManager(this);
-            if (psr.Account == null) Console.Write("Player..ctor: psr.Account = null");
+            if (psr.Account == null)
+            {
+                Console.Write("Player..ctor: psr.Account = null");
+                psr.Disconnect();
+                return;
+            }
             nName = psr.Account.Name;
             AccountId = psr.Account.AccountId;
             if (psr.Account.Tag != "")
