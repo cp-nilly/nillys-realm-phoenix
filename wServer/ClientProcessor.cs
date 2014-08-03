@@ -345,7 +345,7 @@ namespace wServer
 
             // valid gameId?
             else if (RealmManager.GetWorld(pkt.GameId) == null)
-                connectionFailed(retMsg = "Invalid world.");
+                connectionFailed(retMsg = "Invalid world (" + pkt.GameId + ").");
             
             // account already connected? disconnect if so
             else if (AccountConnected(account.AccountId))
