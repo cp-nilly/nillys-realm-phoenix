@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -39,7 +40,8 @@ namespace db
 
         public void Dispose()
         {
-            _con.Close();
+            if (_con.State != ConnectionState.Closed)
+                _con.Close();
         }
 
         private static string UppercaseFirst(string s)
