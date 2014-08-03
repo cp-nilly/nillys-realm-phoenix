@@ -42,6 +42,7 @@ namespace wServer.realm.entities.player
         {
             this.psr = psr;
             statsMgr = new StatsManager(this);
+            if (psr.Account == null) Console.Write("Player..ctor: psr.Account = null");
             nName = psr.Account.Name;
             AccountId = psr.Account.AccountId;
             if (psr.Account.Tag != "")
@@ -52,6 +53,7 @@ namespace wServer.realm.entities.player
             {
                 Name = psr.Account.Name;
             }
+            if (psr.Character == null) Console.Write("Player..ctor: psr.Character = null");
             Level = psr.Character.Level;
             Experience = psr.Character.Exp;
             ExperienceGoal = GetExpGoal(psr.Character.Level);
@@ -68,9 +70,12 @@ namespace wServer.realm.entities.player
             NameChosen = psr.Account.NameChosen;
             CurrentFame = psr.Account.Stats.Fame;
             Fame = psr.Character.CurrentFame;
+            if (psr.Account.Stats == null) Console.Write("Player..ctor: psr.Account.Stats = null");
+            if (psr.Account.Stats.ClassStates == null) Console.Write("Player..ctor: psr.Account.Stats.ClassStates = null");
             ClassStats state = psr.Account.Stats.ClassStates.SingleOrDefault(_ => _.ObjectType == ObjectType);
             FameGoal = GetFameGoal(state != null ? state.BestFame : 0);
             Glowing = IsUserInLegends();
+            if (psr.Account.Guild == null) Console.Write("Player..ctor: psr.Account.Guild = null");
             Guild = psr.Account.Guild.Name;
             GuildRank = psr.Account.Guild.Rank;
             if (psr.Character.HitPoints <= 0)
@@ -87,22 +92,29 @@ namespace wServer.realm.entities.player
             Decision = 0;
             price = new Prices();
 
-            Locked = psr.Account.Locked ?? new List<int>();
-            Ignored = psr.Account.Ignored ?? new List<int>();
+            //Locked = psr.Account.Locked ?? new List<int>();
+            //Ignored = psr.Account.Ignored ?? new List<int>();
             try
             {
-                using (var dbx = new Database())
+                if (psr.Database != null)
                 {
-                    Locked = dbx.GetLockeds(AccountId);
-                    Ignored = dbx.GetIgnoreds(AccountId);
-
-                    dbx.Dispose();
+                    Locked = psr.Database.GetLockeds(AccountId);
+                    Ignored = psr.Database.GetIgnoreds(AccountId);
+                }
+                else
+                {
+                    using (var dbx = new Database())
+                    { // auto dispose so don't need to dispose here
+                        Locked = dbx.GetLockeds(AccountId);
+                        Ignored = dbx.GetIgnoreds(AccountId);
+                    }
                 }
             }
             catch
             {
             }
 
+            if (psr.Character.Equipment == null) Console.Write("Player..ctor: psr.Character.Equipment = null");
             Inventory =
                 psr.Character.Equipment.Select(
                     _ => _ == -1 ? null : (XmlDatas.ItemDescs.ContainsKey(_) ? XmlDatas.ItemDescs[_] : null)).ToArray();
