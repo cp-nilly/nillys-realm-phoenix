@@ -439,7 +439,7 @@ namespace wServer
             if (CheckAccountInUse(account.AccountId))
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine(@"Account in use: " + account.AccountId);
+                Console.WriteLine("CreatePacket: " + account.Name + ", account in use.");
                 Console.ForegroundColor = ConsoleColor.White;
                 SendPacket(new FailurePacket
                 {
@@ -576,7 +576,7 @@ namespace wServer
                 else if (CheckAccountInUse(account.AccountId))
                 {
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("Account in use: " + account.AccountId);
+                    Console.WriteLine("LoadPacket: " + account.Name + ", account in use.");
                     Console.ForegroundColor = ConsoleColor.White;
                     SendPacket(new FailurePacket
                     {
