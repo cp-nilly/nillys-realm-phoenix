@@ -729,10 +729,7 @@
     <SlotType>10</SlotType>
     <Description>A pet received by donating to the server!</Description>
     <Sound>spell/light_heal</Sound>
-    <InvUse />
-    <VaultItem />
-    <Soulbound />
-    <ScaleValue>3</ScaleValue>
+    <Consumable />
     <Activate objectId="Versified's Pirate" cooldown="10">PermaPet</Activate>
     <OldSound>use_potion</OldSound>
   </Object>
