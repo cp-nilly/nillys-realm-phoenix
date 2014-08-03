@@ -48,7 +48,10 @@ namespace wServer.realm.commands
             short objType;
             int amount = 1;
             int delay = 3; // in seconds
-            
+
+            if (player == null) Console.Write("AdminCommands.Spawn: player = null");
+            if (args == null) Console.Write("AdminCommands.Spawn: args = null");
+
             // multiple spawn check
             if (args.Length > 0 && !int.TryParse(args[0], out amount)) {
                 name = string.Join(" ", args);
