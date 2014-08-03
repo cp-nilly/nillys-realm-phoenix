@@ -49,124 +49,123 @@ namespace wServer.realm.commands
             int amount = 1;
             int delay = 3; // in seconds
 
-            if (player == null) Console.Write("AdminCommands.Spawn: player = null");
-            if (args == null) Console.Write("AdminCommands.Spawn: args = null");
-
-            // multiple spawn check
-            if (args.Length > 0 && !int.TryParse(args[0], out amount)) {
-                name = string.Join(" ", args);
-                amount = 1;
-            }
-            else
+            try
             {
-                name = string.Join(" ", args.Skip(1).ToArray());
-            }
-
-            // check to see if amount is a positive integer > 0
-            if (amount < 1) return;
-
-            if (player == null) Console.Write("Spawn - Player is null!\n");
-            Console.Write("[" + player.Owner.Name + "] <" + player.nName + "> Spawning " + ((amount > 1) ? amount + " " : "") + name + "...\n");
-
-            // check map restrictions
-            string mapName = player.Owner.Name;
-            if (player.Client == null) Console.Write("Spawn - Player.Client is null!\n");
-            if (player.Client.Account == null) Console.Write("Spawn - Player.Client.Account is null!\n");
-            if (player.Client.Account.Rank < 3 && !isRealm(mapName))
-            {
-                player.SendInfo("Spawning in " + mapName + " not allowed.");
-                return;
-            }
-                
-            // check to see if entity exists
-            var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
-                // ^^ creates a new case insensitive dictionary based on the XmlDatas
-            if (icdatas == null) Console.Write("Spawn - icdatas is null!\n");
-            if (!icdatas.TryGetValue(name, out objType) ||
-                !XmlDatas.ObjectDescs.ContainsKey(objType))
-            {
-                player.SendInfo("Unknown entity!");
-                return;
-            }
-
-            // check for banned objects
-            Regex wall = new Regex(@"( |^)wall( |$)");
-            string lname = name.ToLower();
-            if (player.Client.Account.Rank < 5 && 
-                lname.Equals("white fountain") ||
-                lname.Equals("blood fountain") ||
-                lname.Equals("scarab") ||
-                lname.Equals("lair burst trap") ||
-                lname.Equals("lair blast trap") ||
-                lname.Equals("phoenix god final divination") ||
-                lname.Equals("vault portal") ||
-
-                // beach nightmare restriction
-                //lname.Equals("pirate") ||
-                //lname.Equals("piratess") ||
-                //lname.Equals("snake") ||
-                //lname.Equals("poison scorpion") ||
-                //lname.Equals("scorpion queen") ||
-                //lname.Equals("bandit leader") ||
-                //lname.Equals("bandit") ||
-                //lname.Equals("red gelatinous cube") ||
-                //lname.Equals("purple gelatinous cube") ||
-                //lname.Equals("green gelatinous cube") ||
-
-                wall.IsMatch(lname))
-            {
-                player.SendInfo("Spawning " + name + " not allowed.");
-                return;
-            }
-
-            // check spawn limit
-            if (player.Client.Account.Rank < 5 && amount > 50)
-            {
-                player.SendError("Maximum spawn count is set to 50!");
-                return;
-            }
-
-            // queue up mob spawn
-            World w = RealmManager.GetWorld(player.Owner.Id);
-            if (w == null) Console.Write("Spawn - World is null!\n");
-            string announce = "Spawning " + ((amount > 1) ? amount + " " : "") + name + "...";
-            w.BroadcastPacket(new NotificationPacket
-            {
-                Color = new ARGB(0xffff0000),
-                ObjectId = player.Id,
-                Text = announce
-            }, null);
-            w.BroadcastPacket(new TextPacket
-            {
-                Name = player.nName,
-                Stars = player.Stars,
-                BubbleTime = 0,
-                Text = announce
-            }, null);
-            float x = player.X;
-            float y = player.Y;
-            w.Timers.Add(new WorldTimer(delay * 1000, (world, t) => // spawn mob in delay seconds
-            {
-                for (int i = 0; i < amount; i++)
+                // multiple spawn check
+                if (args.Length > 0 && !int.TryParse(args[0], out amount))
                 {
-                    Entity entity = Entity.Resolve(objType);
-                    entity.Move(x, y);
-                    player.Owner.EnterWorld(entity);
+                    name = string.Join(" ", args);
+                    amount = 1;
                 }
-            }));
-            
-            // log event
-            string dir = @"logs";
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            using (var writer = new StreamWriter(@"logs\SpawnLog.log", true))
-            {
-                writer.WriteLine(player.Name + " spawned " + amount + " " + name + "s");
-            }
+                else
+                {
+                    name = string.Join(" ", args.Skip(1).ToArray());
+                }
 
-            player.SendInfo("Success!");
+                // check to see if amount is a positive integer > 0
+                if (amount < 1) return;
+
+                // check map restrictions
+                string mapName = player.Owner.Name;
+                if (player.Client.Account.Rank < 3 && !isRealm(mapName))
+                {
+                    player.SendInfo("Spawning in " + mapName + " not allowed.");
+                    return;
+                }
+
+                // check to see if entity exists
+                var icdatas = new Dictionary<string, short>(XmlDatas.IdToType, StringComparer.OrdinalIgnoreCase);
+                // ^^ creates a new case insensitive dictionary based on the XmlDatas
+                if (!icdatas.TryGetValue(name, out objType) ||
+                    !XmlDatas.ObjectDescs.ContainsKey(objType))
+                {
+                    player.SendInfo("Unknown entity!");
+                    return;
+                }
+
+                // check for banned objects
+                Regex wall = new Regex(@"( |^)wall( |$)");
+                string lname = name.ToLower();
+                if (player.Client.Account.Rank < 5 &&
+                    lname.Equals("white fountain") ||
+                    lname.Equals("blood fountain") ||
+                    lname.Equals("scarab") ||
+                    lname.Equals("lair burst trap") ||
+                    lname.Equals("lair blast trap") ||
+                    lname.Equals("phoenix god final divination") ||
+                    lname.Equals("vault portal") ||
+
+                    // beach nightmare restriction
+                    //lname.Equals("pirate") ||
+                    //lname.Equals("piratess") ||
+                    //lname.Equals("snake") ||
+                    //lname.Equals("poison scorpion") ||
+                    //lname.Equals("scorpion queen") ||
+                    //lname.Equals("bandit leader") ||
+                    //lname.Equals("bandit") ||
+                    //lname.Equals("red gelatinous cube") ||
+                    //lname.Equals("purple gelatinous cube") ||
+                    //lname.Equals("green gelatinous cube") ||
+
+                    wall.IsMatch(lname))
+                {
+                    player.SendInfo("Spawning " + name + " not allowed.");
+                    return;
+                }
+
+                // check spawn limit
+                if (player.Client.Account.Rank < 5 && amount > 50)
+                {
+                    player.SendError("Maximum spawn count is set to 50!");
+                    return;
+                }
+
+                // queue up mob spawn
+                World w = RealmManager.GetWorld(player.Owner.Id);
+                string announce = "Spawning " + ((amount > 1) ? amount + " " : "") + name + "...";
+                w.BroadcastPacket(new NotificationPacket
+                {
+                    Color = new ARGB(0xffff0000),
+                    ObjectId = player.Id,
+                    Text = announce
+                }, null);
+                w.BroadcastPacket(new TextPacket
+                {
+                    Name = player.nName,
+                    Stars = player.Stars,
+                    BubbleTime = 0,
+                    Text = announce
+                }, null);
+                float x = player.X;
+                float y = player.Y;
+                w.Timers.Add(new WorldTimer(delay * 1000, (world, t) => // spawn mob in delay seconds
+                {
+                    for (int i = 0; i < amount; i++)
+                    {
+                        Entity entity = Entity.Resolve(objType);
+                        entity.Move(x, y);
+                        player.Owner.EnterWorld(entity);
+                    }
+                }));
+
+                // log event
+                string dir = @"logs";
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                using (var writer = new StreamWriter(@"logs\SpawnLog.log", true))
+                {
+                    writer.WriteLine(player.Name + " spawned " + amount + " " + name + "s");
+                }
+
+                player.SendInfo("Success!");
+                Console.Write("[" + player.Owner.Name + "] <" + player.nName + "> Spawning " + ((amount > 1) ? amount + " " : "") + name + "...\n");
+            }
+            catch (Exception e)
+            {
+                Console.Write(e);
+            }
         }
     }
 
