@@ -650,12 +650,18 @@ namespace wServer
                     }
 
                     World target = RealmManager.Worlds[targetWorld];
-                    //Delay to let client load remote texture
-                    target.Timers.Add(new WorldTimer(2000, (w, t) => SendPacket(new CreateResultPacket
+                    //Delay to let client load remote texture <-- remote textures will be embedded at some point so this isn't necessary
+                    /*target.Timers.Add(new WorldTimer(2000, (w, t) => SendPacket(new CreateResultPacket
                     {
                         CharacterID = character.CharacterId,
                         ObjectID = RealmManager.Worlds[targetWorld].EnterWorld(entity = new Player(this))
-                    })));
+                    })));*/
+                    // the previous delay was also taken out to fix a null account variable that happens on occation
+                    SendPacket(new CreateResultPacket
+                    {
+                        CharacterID = character.CharacterId,
+                        ObjectID = RealmManager.Worlds[targetWorld].EnterWorld(entity = new Player(this))
+                    });
                     stage = ProtocalStage.Ready;
                 }
             }
