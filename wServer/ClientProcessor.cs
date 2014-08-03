@@ -546,11 +546,17 @@ namespace wServer
             {
                 World target = RealmManager.Worlds[targetWorld];
                 //Delay to let client load remote texture
-                target.Timers.Add(new WorldTimer(2000, (w, t) => SendPacket(new CreateResultPacket
+                /*target.Timers.Add(new WorldTimer(2000, (w, t) => SendPacket(new CreateResultPacket
                 {
                     CharacterID = character.CharacterId,
                     ObjectID = RealmManager.Worlds[targetWorld].EnterWorld(entity = new Player(this))
-                })));
+                })));*/
+                // ^^ above can cause a crash. textures will be embedded at some point so this isn't necessary
+                SendPacket(new CreateResultPacket
+                {
+                    CharacterID = character.CharacterId,
+                    ObjectID = RealmManager.Worlds[targetWorld].EnterWorld(entity = new Player(this))
+                });
                 stage = ProtocalStage.Ready;
             }
             else
