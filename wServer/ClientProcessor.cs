@@ -249,7 +249,6 @@ namespace wServer
                 try
                 {
                     DisconnectFromRealm();
-                    account = null;
                 }
                 catch (Exception e)
                 {
