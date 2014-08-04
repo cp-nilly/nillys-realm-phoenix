@@ -889,6 +889,9 @@ namespace wServer.realm.entities.player
                 }
             }
 
+            if (world == null)
+                return;
+
             //used to match up player to last realm they were in, to return them to it. Sometimes is odd, like from Vault back to Vault...
 
             if (RealmManager.PlayerWorldMapping.ContainsKey(AccountId))
@@ -897,16 +900,14 @@ namespace wServer.realm.entities.player
                 RealmManager.PlayerWorldMapping.TryRemove(AccountId, out tempWorld);
             }
             RealmManager.PlayerWorldMapping.TryAdd(AccountId, Owner);
-
-            if (world != null)
-                psr.Reconnect(new ReconnectPacket
-                {
-                    Host = "",
-                    Port = 2050,
-                    GameId = world.Id,
-                    Name = world.Name,
-                    Key = Empty<byte>.Array,
-                });
+            psr.Reconnect(new ReconnectPacket
+            {
+                Host = "",
+                Port = 2050,
+                GameId = world.Id,
+                Name = world.Name,
+                Key = Empty<byte>.Array,
+            });
         }
 
         public void Teleport(RealmTime time, TeleportPacket pkt)
