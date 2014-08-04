@@ -672,6 +672,7 @@ namespace wServer.realm.entities.player
         public void UsePortal(RealmTime time, UsePortalPacket pkt)
         {
             Entity entity = Owner.GetEntity(pkt.ObjectId);
+            Console.WriteLine("[usePortal:" + nName + "] " + pkt.ObjectId + " -> " + entity);
             if (entity == null || !entity.Usable) return;
             World world = null;
             Player player = this;
@@ -801,9 +802,6 @@ namespace wServer.realm.entities.player
                             case 0x1923:
                                 world = RealmManager.AddWorld(new ZombieMap());
                                 break;
-                            default:
-                                SendError("Portal Not Implemented!");
-                                break;
                             case 0x195d:
                                 world = RealmManager.AddWorld(new MarketMap());
                                 break;
@@ -875,6 +873,9 @@ namespace wServer.realm.entities.player
                                 break;
                             case 0x0d7b:
                                 world = RealmManager.AddWorld(new OryxChamberMap());
+                                break;
+                            default:
+                                SendError("Portal Not Implemented!");
                                 break;
                         }
                     }
