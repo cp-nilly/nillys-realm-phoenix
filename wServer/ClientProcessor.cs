@@ -353,8 +353,11 @@ namespace wServer
                 connectionFailed(retMsg = "Server full.");
 
             // valid gameId?
-            else if (RealmManager.GetWorld(pkt.GameId) == null)
-                connectionFailed(retMsg = "Invalid world (" + pkt.GameId + ").");
+            else if (RealmManager.GetWorld(pkt.GameId) == null) 
+            {
+                // invalid world... send to nexus instead
+                pkt.GameId = World.NEXUS_ID;
+            }
             
             // account already connected? disconnect if so
             else if (AccountConnected(account.AccountId))
