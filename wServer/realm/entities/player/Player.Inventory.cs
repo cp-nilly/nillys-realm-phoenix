@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using db.data;
 using wServer.cliPackets;
+using wServer.logic;
 using wServer.realm.worlds;
 using wServer.svrPackets;
 
@@ -51,9 +52,34 @@ namespace wServer.realm.entities.player
             return false;
         }
 
-        public void InventorySwap(RealmTime time, InvSwapPacket pkt)
+        private void logInvSwap(InvSwapPacket pkt)
         {
             Console.WriteLine(pkt);
+
+            Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
+            Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
+
+            var con1 = en1 as IContainer;
+            var con2 = en2 as IContainer;
+
+            Item item1 = con1.Inventory[pkt.Obj1.SlotId];
+            Item item2 = con2.Inventory[pkt.Obj2.SlotId];
+
+            if (en1 != null && en2 != null)
+            {
+                Console.WriteLine("[InvSwap]" +
+                    " [" + en1.nName + "(" + en1.ObjectType + ")" + ", " + pkt.Obj1.SlotId + ", " + ((item1 == null) ? "Nothing" : item1.ObjectId) + "] <->" +
+                    " [" + en2.nName + "(" + en2.ObjectType + ")" + ", " + pkt.Obj2.SlotId + ", " + ((item2 == null)?"Nothing":item2.ObjectId) + "]");
+            }
+            else
+            {
+                Console.WriteLine("InvSwap: Invalid entity.");
+            }
+        }
+
+        public void InventorySwap(RealmTime time, InvSwapPacket pkt)
+        {
+            logInvSwap(pkt);
             Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
             
