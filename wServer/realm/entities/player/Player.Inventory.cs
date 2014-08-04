@@ -53,6 +53,7 @@ namespace wServer.realm.entities.player
 
         public void InventorySwap(RealmTime time, InvSwapPacket pkt)
         {
+            Console.Write(pkt);
             Console.Write("invSwap");
             Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
@@ -88,12 +89,14 @@ namespace wServer.realm.entities.player
                 Console.Write("-");
                 if (publicbags.Contains(en1.ObjectType) && (item2.Soulbound || item2.Undead || item2.SUndead))
                 {
+                    Console.Write("x");
                     DropBag(item2);
                     con1.Inventory[pkt.Obj1.SlotId] = null;
                 }
                 Console.Write("-");
                 if (publicbags.Contains(en2.ObjectType) && (item1.Soulbound || item1.Undead || item1.SUndead))
                 {
+                    Console.Write("y");
                     DropBag(item1);
                     con2.Inventory[pkt.Obj2.SlotId] = null;
                 }
