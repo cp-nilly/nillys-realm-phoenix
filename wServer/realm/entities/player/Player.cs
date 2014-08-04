@@ -697,7 +697,6 @@ namespace wServer.realm.entities.player
                         switch (entity.ObjectType) //handling default case for not found. Add more as implemented
                         {
                             case 0x0703: //portal of cowardice
-                            {
                                 if (RealmManager.PlayerWorldMapping.ContainsKey(AccountId))
                                     //may not be valid, realm recycled?
                                     world = RealmManager.PlayerWorldMapping[AccountId];
@@ -706,10 +705,8 @@ namespace wServer.realm.entities.player
                                     world = RealmManager.GetWorld(World.NEXUS_ID);
                                 else
                                     world = RealmManager.GetWorld(World.NEXUS_ID);
-                            }
                                 break;
                             case 0x0d40:
-                            {
                                 if (RealmManager.PlayerWorldMapping.ContainsKey(AccountId))
                                     //may not be valid, realm recycled?
                                     world = RealmManager.PlayerWorldMapping[AccountId];
@@ -718,7 +715,6 @@ namespace wServer.realm.entities.player
                                     world = RealmManager.GetWorld(World.NEXUS_ID);
                                 else
                                     world = RealmManager.GetWorld(World.NEXUS_ID);
-                            }
                                 break;
                             case 0x0712:
                                 world = RealmManager.GetWorld(World.NEXUS_ID);
@@ -765,7 +761,6 @@ namespace wServer.realm.entities.player
                                 world = RealmManager.AddWorld(new TombMap());
                                 break;
                             case 0x1905:
-                            {
                                 psr.SendPacket(new TextBoxPacket
                                 {
                                     Button1 = "Enter",
@@ -774,10 +769,8 @@ namespace wServer.realm.entities.player
                                     Title = "Arena Confirmation",
                                     Type = "EnterArena1"
                                 });
-                            }
                                 break;
                             case 0x1908:
-
                                 psr.SendPacket(new TextBoxPacket
                                 {
                                     Button1 = "Enter",
@@ -821,7 +814,6 @@ namespace wServer.realm.entities.player
                                 world = RealmManager.AddWorld(new PartyCellarMap());
                                 break;
                             case 0x701c:
-                            {
                                 psr.SendPacket(new TextBoxPacket
                                 {
                                     Button1 = "Enter",
@@ -830,10 +822,8 @@ namespace wServer.realm.entities.player
                                     Title = "Sheep Herding",
                                     Type = "SheepHerding"
                                 });
-                            }
                                 break;
                             case 0x7024:
-                            {
                                 psr.SendPacket(new TextBoxPacket
                                 {
                                     Button1 = "Yes",
@@ -842,10 +832,8 @@ namespace wServer.realm.entities.player
                                     Title = "Zombies",
                                     Type = "Zombies"
                                 });
-                            }
                                 break;
                             case 0x4a2b:
-                            {
                                 psr.SendPacket(new TextBoxPacket
                                 {
                                     Button1 = "Yes",
@@ -854,7 +842,6 @@ namespace wServer.realm.entities.player
                                     Title = "Nexus Defense",
                                     Type = "Nexus Defense"
                                 });
-                            }
                                 break;
                             case 0x7025:
                                 world = RealmManager.AddWorld(new ForestMap());
@@ -910,14 +897,16 @@ namespace wServer.realm.entities.player
                 RealmManager.PlayerWorldMapping.TryRemove(AccountId, out tempWorld);
             }
             RealmManager.PlayerWorldMapping.TryAdd(AccountId, Owner);
-            psr.Reconnect(new ReconnectPacket
-            {
-                Host = "",
-                Port = 2050,
-                GameId = world.Id,
-                Name = world.Name,
-                Key = Empty<byte>.Array,
-            });
+
+            if (world != null)
+                psr.Reconnect(new ReconnectPacket
+                {
+                    Host = "",
+                    Port = 2050,
+                    GameId = world.Id,
+                    Name = world.Name,
+                    Key = Empty<byte>.Array,
+                });
         }
 
         public void Teleport(RealmTime time, TeleportPacket pkt)
