@@ -14,7 +14,6 @@ namespace wServer.realm.entities.player
     {
         public void PlayerShoot(RealmTime time, PlayerShootPacket pkt)
         {
-            Console.WriteLine("[playerShoot:" + nName + "] " + pkt);
             Item item = XmlDatas.ItemDescs[pkt.ContainerType];
             if (item.ObjectType != Inventory[0].ObjectType && item.ObjectType != Inventory[1].ObjectType) return;
 
