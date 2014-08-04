@@ -193,24 +193,23 @@ namespace wServer.realm.entities.player
 
         public void CancelTrade(RealmTime time, CancelTradePacket pkt)
         {
+            Console.WriteLine("[cancelTrade:" + nName + "] " + pkt);
+            psr.SendPacket(new TradeDonePacket
             {
-                psr.SendPacket(new TradeDonePacket
-                {
-                    Result = 1,
-                    Message = "Trade cancelled."
-                });
-                tradeTarget.psr.SendPacket(new TradeDonePacket
-                {
-                    Result = 1,
-                    Message = "Trade cancelled."
-                });
-                tradeTarget.tradeTarget = null;
-                tradeTarget.trade = null;
-                tradeTarget.tradeAccepted = false;
-                tradeTarget = null;
-                trade = null;
-                tradeAccepted = false;
-            }
+                Result = 1,
+                Message = "Trade cancelled."
+            });
+            tradeTarget.psr.SendPacket(new TradeDonePacket
+            {
+                Result = 1,
+                Message = "Trade cancelled."
+            });
+            tradeTarget.tradeTarget = null;
+            tradeTarget.trade = null;
+            tradeTarget.tradeAccepted = false;
+            tradeTarget = null;
+            trade = null;
+            tradeAccepted = false;
         }
 
         private void TradeTick(RealmTime time)
