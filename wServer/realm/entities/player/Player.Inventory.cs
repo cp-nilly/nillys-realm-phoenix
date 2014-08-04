@@ -53,6 +53,7 @@ namespace wServer.realm.entities.player
 
         public void InventorySwap(RealmTime time, InvSwapPacket pkt)
         {
+            Console.WriteLine(pkt);
             Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
             
