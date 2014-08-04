@@ -128,7 +128,8 @@ namespace wServer.realm.entities.player
                     }
                     using (var writer = new StreamWriter(@"logs\DropLog.log", true))
                     {
-                        writer.WriteLine(Name + " placed a " + item1.ObjectId + " in " +
+                        writer.WriteLine(Name + " placed a " + 
+                                         ((item1 == null)?"null":item1.ObjectId) + " in " +
                                          (Owner as Vault).psr.Account.Name + "'s vault" +
                                          (con.BagOwner != null ? " (Soulbound)" : ""));
                     }
