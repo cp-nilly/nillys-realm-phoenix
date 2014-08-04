@@ -135,7 +135,7 @@ namespace wServer.realm.entities.player
                     (en2 as Player).Client.Save();
                     Console.Write("-");
                 }
-
+                if (Owner == null) Console.WriteLine("owner is void!");
                 if (Owner is Vault)
                 {
                     Console.Write("g");
