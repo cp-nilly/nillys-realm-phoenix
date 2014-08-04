@@ -14,7 +14,9 @@ namespace wServer.realm.entities.player
     {
         public void PlayerShoot(RealmTime time, PlayerShootPacket pkt)
         {
+            if (pkt == null) Console.WriteLine("PlayerShoot: pkt = null");
             Item item = XmlDatas.ItemDescs[pkt.ContainerType];
+            if (item == null) Console.WriteLine("PlayerShoot: item = null");
             if (item.ObjectType != Inventory[0].ObjectType && item.ObjectType != Inventory[1].ObjectType) return;
 
             if (item.DualShooting)
@@ -28,6 +30,9 @@ namespace wServer.realm.entities.player
                 ProjectileDesc prjDesc1 = item.Projectiles[0];
                 ProjectileDesc prjDesc2 = item.Projectiles[1]; //Assume only two
 
+                if (statsMgr == null) Console.WriteLine("PlayerShoot: statsMgr = null");
+                if (Owner == null) Console.WriteLine("PlayerShoot: owner = null");
+                if (fames == null) Console.WriteLine("PlayerShoot: fames = null");
                 for (int i = 0; i < item.NumProjectiles1; i++)
                 {
                     Projectile proj = CreateProjectile(prjDesc1, item.ObjectType,

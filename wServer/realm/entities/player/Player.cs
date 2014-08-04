@@ -523,6 +523,7 @@ namespace wServer.realm.entities.player
                 if (Client.Stage == ProtocalStage.Ready)
                 {
                     Client.SendPacket(new PingPacket { Serial = pingSerial++ });
+                    if (pingTimer == null) Console.WriteLine("Wow, pingTimer is null...");
                     pingTimer.Reset();
                     RealmManager.Logic.AddPendingAction(_ => w.Timers.Add(pingTimer), PendingPriority.Creation);
                 }
@@ -671,6 +672,9 @@ namespace wServer.realm.entities.player
 
         public void UsePortal(RealmTime time, UsePortalPacket pkt)
         {
+            Console.WriteLine(pkt);
+            if (pkt == null) Console.WriteLine("UsePortal: pkt = null");
+            if (Owner == null) Console.WriteLine("UsePortal: Owner = null");
             Entity entity = Owner.GetEntity(pkt.ObjectId);
             if (entity == null || !entity.Usable) return;
             World world = null;
@@ -979,6 +983,7 @@ namespace wServer.realm.entities.player
 
         public void VisibulletHit(VisibulletPacket pkt)
         {
+            Console.WriteLine(pkt);
             //Possible bug I can see right now:
             //  If enemy does not exist, no condition effects can be applied.
             if (pkt.EnemyId == -2)

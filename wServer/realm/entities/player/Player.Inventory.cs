@@ -53,12 +53,16 @@ namespace wServer.realm.entities.player
 
         public void InventorySwap(RealmTime time, InvSwapPacket pkt)
         {
+            if (pkt == null) Console.WriteLine("InventorySwap: pkt = null");
+            Console.WriteLine(pkt);
             Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
             //System.Console.Write(en1 == en2);
             var con1 = en1 as IContainer;
             var con2 = en2 as IContainer;
 
+            if ((en1 as Player).Client == null) Console.WriteLine("InventorySwap: en1.Client = null");
+            if ((en2 as Player).Client == null) Console.WriteLine("InventorySwap: en2.Client = null");
             //TODO: locker
             Item item1 = con1.Inventory[pkt.Obj1.SlotId];
             Item item2 = con2.Inventory[pkt.Obj2.SlotId];
@@ -116,8 +120,13 @@ namespace wServer.realm.entities.player
                 }
 
                 if (Owner is Vault)
+                {
+                    if ((Owner as Vault).psr == null) Console.WriteLine("InventorySwap: (Owner as Vault).psr = null");
+                    if ((Owner as Vault).psr.Account == null) Console.WriteLine("InventorySwap: (Owner as Vault).psr.Account = null");
                     if ((Owner as Vault).psr.Account.Name == psr.Account.Name)
                         return;
+                }
+                    
 
                 if (!(en2 is Player))
                 {
