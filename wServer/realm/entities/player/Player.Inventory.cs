@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using db.data;
 using wServer.cliPackets;
 using wServer.logic;
@@ -15,6 +16,7 @@ namespace wServer.realm.entities.player
 {
     public partial class Player
     {
+        private static readonly List<short> Publicbags = new List<short> { 0x0500, 0xffd, 0x0501 };
         private readonly Random invRand = new Random();
 
         private bool AuditItem(IContainer container, Item item, int slot)
@@ -52,96 +54,111 @@ namespace wServer.realm.entities.player
             return false;
         }
 
+        /*
+         * returns true if packet input is valid
+         */
+        private bool VerifyInvSwap(InvSwapPacket pkt)
+        {
+            try
+            {
+                // get target objects
+                Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
+                Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
+
+                // check to see if targets are valid
+                if ((!(en1 is Player) && !(en1 is Container)) ||
+                    (!(en2 is Player) && !(en2 is Container)) || // must be a player or container entity
+                    (en1 is Player && en1 != this) ||
+                    (en2 is Player && en2 != this)) // if player, must be this player
+                {
+                    Console.WriteLine("[invSwap:" + nName + "] Targets not valid (" + en1.nName + ", " + en2.nName + ").");
+                    return false;
+                }
+                if (en1 is Container && en2 is Container &&
+                    en1 != en2)
+                {
+                    Console.WriteLine("[invSwap:" + nName + "] Trade between two different containers detected.");
+                    return false;
+                }
+
+                // check target distance (must be within 1 tile range)
+                if (MathsUtils.DistSqr(this.X, this.Y, en1.X, en1.Y) > 1 ||
+                    MathsUtils.DistSqr(this.X, this.Y, en2.X, en2.Y) > 1)
+                {
+                    Console.WriteLine("[invSwap:" + nName + "] Target distance to far from player.");
+                    return false;
+                }
+
+                // check trade items
+                var con1 = en1 as IContainer;
+                var con2 = en2 as IContainer;
+                Item item1 = con1.Inventory[pkt.Obj1.SlotId]; //TODO: locker
+                Item item2 = con2.Inventory[pkt.Obj2.SlotId];
+                if (!AuditItem(con2, item1, pkt.Obj2.SlotId) ||
+                    !AuditItem(con1, item2, pkt.Obj1.SlotId))
+                {
+                    Console.WriteLine("[invSwap:" + nName + "] Invalid item swap.");
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[invSwap:" + nName + "] Invalid input.");
+                return false;
+            }
+        }
         public void InventorySwap(RealmTime time, InvSwapPacket pkt)
         {
+            // verify packet details
+            if (!VerifyInvSwap(pkt))
+            {
+                this.Client.SendPacket(new InvResultPacket { Result = 1 });
+                return;
+            }
+
+            // get target objects
             Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
-            
             var con1 = en1 as IContainer;
             var con2 = en2 as IContainer;
 
-            //TODO: locker
-            Item item1 = con1.Inventory[pkt.Obj1.SlotId];
+            // get items
+            Item item1 = con1.Inventory[pkt.Obj1.SlotId]; //TODO: locker
             Item item2 = con2.Inventory[pkt.Obj2.SlotId];
 
-            if (!AuditItem(con2, item1, pkt.Obj2.SlotId) ||
-                !AuditItem(con1, item2, pkt.Obj1.SlotId))
-                (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 1});
-            else
+            // swap items
+            con1.Inventory[pkt.Obj1.SlotId] = item2;
+            con2.Inventory[pkt.Obj2.SlotId] = item1;
+
+            // check soulbound drop
+            if (Publicbags.Contains(en1.ObjectType) && (item2 != null) && (item2.Soulbound || item2.Undead || item2.SUndead))
             {
-                var publicbags = new List<short>
-                {
-                    0x0500,
-                    0xffd,
-                    0x0501
-                };
-
-                con1.Inventory[pkt.Obj1.SlotId] = item2;
-                con2.Inventory[pkt.Obj2.SlotId] = item1;
-
-                // log successful swap
-                Console.WriteLine("[InvSwap] [" + en1.nName + "," + pkt.Obj1.SlotId + "," + ((item1 == null) ? "" : item1.ObjectId) + "] <-> " +
-                                            "[" + en2.nName + "," + pkt.Obj2.SlotId + "," + ((item2 == null) ? "" : item2.ObjectId) + "]");
-                
-                if (publicbags.Contains(en1.ObjectType) && (item2 != null) && (item2.Soulbound || item2.Undead || item2.SUndead))
-                {
-                    DropBag(item2);
-                    con1.Inventory[pkt.Obj1.SlotId] = null;
-                }
-                if (publicbags.Contains(en2.ObjectType) && (item1 != null) && (item1.Soulbound || item1.Undead || item1.SUndead))
-                {
-                    DropBag(item1);
-                    con2.Inventory[pkt.Obj2.SlotId] = null;
-                }
-                en1.UpdateCount++;
-                en2.UpdateCount++;
-
-                if (en1 is Player)
-                {
-                    //if (en1.Owner.Name == "Vault")
-                    //(en1 as Player).Client.Save();
-                    (en1 as Player).CalcBoost();
-                    (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
-                }
-                if (en2 is Player)
-                {
-                    //if (en2.Owner.Name == "Vault")
-                    // (en2 as Player).Client.Save();
-                    (en2 as Player).CalcBoost();
-                    (en2 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
-                }
-
-                // if en1 and en2 are player classes
-                // they will be the same player
-                // thus we only need to save for one
-                // player
-                if (en1 is Player)
-                    (en1 as Player).Client.Save();
-                else if (en2 is Player)
-                    (en2 as Player).Client.Save();
-
-                if (Owner is Vault)
-                    if ((Owner as Vault).psr.Account.Name == psr.Account.Name)
-                        return;
-                
-                // the code below is somewhat buggy, removed for now
-                /*if (!(en2 is Player))
-                {
-                    var con = en2 as Container;
-                    const string dir = @"logs";
-                    if (!Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
-                    using (var writer = new StreamWriter(@"logs\DropLog.log", true))
-                    {
-                        writer.WriteLine(Name + " placed a " + 
-                                         ((item1 == null)?"null":item1.ObjectId) + " in " +
-                                         (Owner as Vault).psr.Account.Name + "'s vault" +
-                                         (con.BagOwner != null ? " (Soulbound)" : ""));
-                    }
-                }*/
+                DropBag(item2);
+                con1.Inventory[pkt.Obj1.SlotId] = null;
             }
+            if (Publicbags.Contains(en2.ObjectType) && (item1 != null) && (item1.Soulbound || item1.Undead || item1.SUndead))
+            {
+                DropBag(item1);
+                con2.Inventory[pkt.Obj2.SlotId] = null;
+            }
+
+            // update
+            en1.UpdateCount++;
+            en2.UpdateCount++;
+
+            // update player
+            if (en1 is Player || en2 is Player)
+            {
+                this.CalcBoost();
+                this.Client.Save();
+                this.Client.SendPacket(new InvResultPacket {Result = 0});
+            }
+
+            // log event (needs improvement)
+            Console.WriteLine("[InvSwap:" + nName + "] [" + en1.nName + "," + pkt.Obj1.SlotId + "," + ((item1 == null) ? "" : item1.ObjectId) + "] <-> " +
+                                        "[" + en2.nName + "," + pkt.Obj2.SlotId + "," + ((item2 == null) ? "" : item2.ObjectId) + "]");
         }
 
         public void InventoryDrop(RealmTime time, InvDropPacket pkt)
