@@ -672,7 +672,6 @@ namespace wServer.realm.entities.player
         public void UsePortal(RealmTime time, UsePortalPacket pkt)
         {
             Entity entity = Owner.GetEntity(pkt.ObjectId);
-            Console.WriteLine("[usePortal:" + nName + "] " + pkt + " -> " + entity.ObjectType);
             if (entity == null || !entity.Usable) return;
             World world = null;
             Player player = this;
