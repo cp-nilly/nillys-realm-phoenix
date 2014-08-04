@@ -2521,6 +2521,13 @@ namespace wServer.realm.commands
             {
                 if (args.Length == 1)
                 {
+                    Regex tag = new Regex(@"^\w{1,8}$");
+                    if (!tag.IsMatch(args[0]))
+                    {
+                        player.SendError("Invalid tag name.");
+                        return;
+                    }
+
                     using (var db = new Database())
                     {
                         MySqlCommand cmd = db.CreateQuery();
@@ -2544,6 +2551,13 @@ namespace wServer.realm.commands
                     Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
                     if (plr != null)
                     {
+                        Regex tag = new Regex(@"^\w{1,8}$");
+                        if (!tag.IsMatch(args[1]))
+                        {
+                            player.SendError("Invalid tag name.");
+                            return;
+                        }
+
                         using (var db = new Database())
                         {
                             MySqlCommand cmd = db.CreateQuery();
