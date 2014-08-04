@@ -53,30 +53,20 @@ namespace wServer.realm.entities.player
 
         public void InventorySwap(RealmTime time, InvSwapPacket pkt)
         {
-            Console.Write(pkt);
-            Console.Write("invSwap");
             Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
-            //System.Console.Write(en1 == en2);
+            
             var con1 = en1 as IContainer;
             var con2 = en2 as IContainer;
 
-            Console.Write("-");
             //TODO: locker
             Item item1 = con1.Inventory[pkt.Obj1.SlotId];
             Item item2 = con2.Inventory[pkt.Obj2.SlotId];
             if (!AuditItem(con2, item1, pkt.Obj2.SlotId) ||
                 !AuditItem(con1, item2, pkt.Obj1.SlotId))
-            {
-                Console.Write("a");
                 (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 1});
-                Console.Write("-");
-            }
-
-                
             else
             {
-                Console.Write("b");
                 var publicbags = new List<short>
                 {
                     0x0500,
@@ -86,64 +76,48 @@ namespace wServer.realm.entities.player
 
                 con1.Inventory[pkt.Obj1.SlotId] = item2;
                 con2.Inventory[pkt.Obj2.SlotId] = item1;
-                Console.Write("-");
-                if (publicbags.Contains(en1.ObjectType) && (item2.Soulbound || item2.Undead || item2.SUndead))
+                
+                if (publicbags.Contains(en1.ObjectType) && (item2 != null) && (item2.Soulbound || item2.Undead || item2.SUndead))
                 {
-                    Console.Write("x");
                     DropBag(item2);
                     con1.Inventory[pkt.Obj1.SlotId] = null;
                 }
-                Console.Write("-");
-                if (publicbags.Contains(en2.ObjectType) && (item1.Soulbound || item1.Undead || item1.SUndead))
+                if (publicbags.Contains(en2.ObjectType) && (item1 != null) && (item1.Soulbound || item1.Undead || item1.SUndead))
                 {
-                    Console.Write("y");
                     DropBag(item1);
                     con2.Inventory[pkt.Obj2.SlotId] = null;
                 }
-                Console.Write("-");
                 en1.UpdateCount++;
                 en2.UpdateCount++;
 
                 if (en1 is Player)
                 {
-                    Console.Write("c");
                     //if (en1.Owner.Name == "Vault")
                     //(en1 as Player).Client.Save();
                     (en1 as Player).CalcBoost();
                     (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
-                    Console.Write("-");
                 }
                 if (en2 is Player)
                 {
-                    Console.Write("d");
                     //if (en2.Owner.Name == "Vault")
                     // (en2 as Player).Client.Save();
                     (en2 as Player).CalcBoost();
                     (en2 as Player).Client.SendPacket(new InvResultPacket {Result = 0});
-                    Console.Write("-");
                 }
 
+                // if en1 and en2 are player classes
+                // they will be the same player
+                // thus we only need to save for one
+                // player
                 if (en1 is Player)
-                {
-                    Console.Write("e");
                     (en1 as Player).Client.Save();
-                    Console.Write("-");
-                }
                 else if (en2 is Player)
-                {
-                    Console.Write("f");
                     (en2 as Player).Client.Save();
-                    Console.Write("-");
-                }
 
                 if (Owner is Vault)
-                {
-                    Console.Write("g");
                     if ((Owner as Vault).psr.Account.Name == psr.Account.Name)
                         return;
-                    Console.Write("-");
-                }
-                    
+                
                 if (!(en2 is Player))
                 {
                     var con = en2 as Container;
