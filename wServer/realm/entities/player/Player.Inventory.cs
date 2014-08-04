@@ -52,34 +52,8 @@ namespace wServer.realm.entities.player
             return false;
         }
 
-        private void logInvSwap(InvSwapPacket pkt)
-        {
-            Console.WriteLine(pkt);
-
-            Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
-            Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
-
-            var con1 = en1 as IContainer;
-            var con2 = en2 as IContainer;
-
-            Item item1 = con1.Inventory[pkt.Obj1.SlotId];
-            Item item2 = con2.Inventory[pkt.Obj2.SlotId];
-
-            if (en1 != null && en2 != null)
-            {
-                Console.WriteLine("[InvSwap]" +
-                    " [" + en1.nName + "(" + en1.ObjectType + ")" + ", " + pkt.Obj1.SlotId + ", " + ((item1 == null) ? "Nothing" : item1.ObjectId) + "] <->" +
-                    " [" + en2.nName + "(" + en2.ObjectType + ")" + ", " + pkt.Obj2.SlotId + ", " + ((item2 == null)?"Nothing":item2.ObjectId) + "]");
-            }
-            else
-            {
-                Console.WriteLine("InvSwap: Invalid entity.");
-            }
-        }
-
         public void InventorySwap(RealmTime time, InvSwapPacket pkt)
         {
-            logInvSwap(pkt);
             Entity en1 = Owner.GetEntity(pkt.Obj1.ObjectId);
             Entity en2 = Owner.GetEntity(pkt.Obj2.ObjectId);
             
@@ -89,6 +63,7 @@ namespace wServer.realm.entities.player
             //TODO: locker
             Item item1 = con1.Inventory[pkt.Obj1.SlotId];
             Item item2 = con2.Inventory[pkt.Obj2.SlotId];
+
             if (!AuditItem(con2, item1, pkt.Obj2.SlotId) ||
                 !AuditItem(con1, item2, pkt.Obj1.SlotId))
                 (en1 as Player).Client.SendPacket(new InvResultPacket {Result = 1});
@@ -103,6 +78,10 @@ namespace wServer.realm.entities.player
 
                 con1.Inventory[pkt.Obj1.SlotId] = item2;
                 con2.Inventory[pkt.Obj2.SlotId] = item1;
+
+                // log successful swap
+                Console.WriteLine("[InvSwap] [" + en1.nName + "," + pkt.Obj1.SlotId + "," + ((item1 == null) ? "" : item1.ObjectId) + "] <-> " +
+                                            "[" + en2.nName + "," + pkt.Obj2.SlotId + "," + ((item2 == null) ? "" : item2.ObjectId) + "]");
                 
                 if (publicbags.Contains(en1.ObjectType) && (item2 != null) && (item2.Soulbound || item2.Undead || item2.SUndead))
                 {
@@ -145,7 +124,8 @@ namespace wServer.realm.entities.player
                     if ((Owner as Vault).psr.Account.Name == psr.Account.Name)
                         return;
                 
-                if (!(en2 is Player))
+                // the code below is somewhat buggy, removed for now
+                /*if (!(en2 is Player))
                 {
                     var con = en2 as Container;
                     const string dir = @"logs";
@@ -160,7 +140,7 @@ namespace wServer.realm.entities.player
                                          (Owner as Vault).psr.Account.Name + "'s vault" +
                                          (con.BagOwner != null ? " (Soulbound)" : ""));
                     }
-                }
+                }*/
             }
         }
 
