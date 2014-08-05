@@ -148,6 +148,12 @@ namespace wServer.realm
 
         public static void Disconnect(ClientProcessor psr)
         {
+            if (psr != null) // happens sometimes, not sure why
+            {
+                Console.WriteLine("RealmManager.Disconnect() -> psr = null");
+                return;
+            }
+                
             psr.Save();
             if (psr.Player.Owner != null)
                 psr.Player.Owner.LeaveWorld(psr.Player);
