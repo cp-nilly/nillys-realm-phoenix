@@ -281,14 +281,13 @@ namespace wServer
         {
             try
             {
-                if (db != null)
-                    db = new Database(); // will be disposed on disconnect
-
-                if (character != null)
+                if (character == null) return;
+                using (var dbx = new Database())
                 {
                     entity.SaveToCharacter();
                     if (entity.Owner.Id != -6)
-                        db.SaveCharacter(account, character);
+                        dbx.SaveCharacter(account, character);
+                    dbx.Dispose();
                 }
             }
             catch
@@ -300,13 +299,12 @@ namespace wServer
         {
             try
             {
-                if (db != null)
-                    db = new Database(); // will be disposed on disconnect
-
-                if (character != null)
+                if (character == null) return;
+                using (var dbx = new Database())
                 {
                     if (entity.Owner.Id != -6)
-                        db.Death(account, character, killer);
+                        dbx.Death(account, character, killer);
+                    dbx.Dispose();
                 }
             }
             catch

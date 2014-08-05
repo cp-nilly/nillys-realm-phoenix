@@ -148,7 +148,7 @@ namespace wServer.realm
 
         public static void Disconnect(ClientProcessor psr)
         {
-            if (psr != null) // happens sometimes, not sure why
+            if (psr == null) // happens sometimes, not sure why
             {
                 Console.WriteLine("RealmManager.Disconnect() -> psr = null");
                 return;
