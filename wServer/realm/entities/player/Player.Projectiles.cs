@@ -14,10 +14,13 @@ namespace wServer.realm.entities.player
     {
         public void PlayerShoot(RealmTime time, PlayerShootPacket pkt)
         {
-            if (dying) return;
+            if (dying || Inventory[0] == null || Inventory[1] == null)
+                return;
 
             Item item = XmlDatas.ItemDescs[pkt.ContainerType];
-            if (item.ObjectType != Inventory[0].ObjectType && item.ObjectType != Inventory[1].ObjectType) return;
+            if (item.ObjectType != Inventory[0].ObjectType &&
+                item.ObjectType != Inventory[1].ObjectType)
+                return;
 
             if (item.DualShooting)
             {

@@ -107,12 +107,13 @@ namespace wServer.realm.entities.player
             var container = Owner.GetEntity(pkt.Slot.ObjectId) as IContainer;
 
             if (container == null)
-            {
-                Console.WriteLine("[useItem:" + nName + "] Container is null.");
                 return;
-            }
 
             Item item = container.Inventory[pkt.Slot.SlotId];
+
+            if (item == null)
+                return;
+            
             Activate(time, item, pkt.Position);
             if (item.Consumable)
             {
