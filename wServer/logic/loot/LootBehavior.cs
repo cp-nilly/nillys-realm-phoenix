@@ -212,7 +212,7 @@ namespace wServer.logic.loot
                 }
                 foreach (var i in items)
                     if (i.Value.Count > 0)
-                        ShowBags(rand, i.Value, i.Key);
+                        ShowBags(rand, i.Value, ((Host.Self.Owner.Name.Equals("Battle Arena"))?null:i.Key));
             }
             catch (Exception e)
             {
@@ -233,10 +233,11 @@ namespace wServer.logic.loot
                     ProcessPublicBags(rand, dat);
                     if (Host.Self.Owner.Name == "Battle Arena")
                     {
-                        if (rand.Next(1, 5) == 1)
-                        {
-                            ProcessSoulBags(rand, dat);
-                        }
+                        //if (rand.Next(1, 5) == 1)
+                        //{
+                        //    ProcessSoulBags(rand, dat);
+                        //}
+                        ProcessSoulBags(rand, dat);
                     }
                     else if (Host.Self.Owner.Name == "Free Battle Arena")
                     {
