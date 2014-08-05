@@ -153,11 +153,13 @@ namespace wServer.realm
                 Console.WriteLine("RealmManager.Disconnect() -> psr = null");
                 return;
             }
-                
+            
             psr.Save();
             if (psr.Player.Owner != null)
                 psr.Player.Owner.LeaveWorld(psr.Player);
-            Clients.TryRemove(psr.Account.AccountId, out psr);
+            psr.Stage = ProtocalStage.Disconnected; 
+            // network ticker will remove client so the following line isn't needed
+            //Clients.TryRemove(psr.Account.AccountId, out psr);
         }
 
         public static Vault PlayerVault(ClientProcessor processor)

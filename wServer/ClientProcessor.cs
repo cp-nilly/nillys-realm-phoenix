@@ -77,6 +77,7 @@ namespace wServer
         public ProtocalStage Stage
         {
             get { return stage; }
+            set { stage = value; } // bad practice?
         }
 
         public Player Player
@@ -245,31 +246,18 @@ namespace wServer
             if (stage == ProtocalStage.Disconnected)
                 return;
 
-            if (account != null)
-                try
-                {
-                    DisconnectFromRealm();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            
-            if (db != null)
-                try
+            try
+            {
+                skt.Close();
+
+                if (db != null)
                 {
                     db.Dispose();
                     db = null;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
 
-            try
-            {
-                skt.Close();
-                stage = ProtocalStage.Disconnected;
+                if (account != null)
+                    DisconnectFromRealm();
             }
             catch (Exception e)
             {
@@ -839,20 +827,17 @@ namespace wServer
         //Following must execute, network loop will discard disconnected client, so logic loop
         private void DisconnectFromRealm()
         {
-            //RealmManager.Logic.AddPendingAction(t => RealmManager.Disconnect(this), PendingPriority.Destruction);
-            RealmManager.Disconnect(this);
+            RealmManager.Logic.AddPendingAction(t => 
+                RealmManager.Disconnect(this), PendingPriority.Destruction);
         }
 
         public void Reconnect(ReconnectPacket pkt)
         {
-            //RealmManager.Logic.AddPendingAction(t =>
-            //{
-                //if (Player != null) // save player on reconnect
-                //    Player.SaveToCharacter();
-                //Save();
+            RealmManager.Logic.AddPendingAction(t =>
+            {
                 RealmManager.Disconnect(this); // saves player on exit
                 SendPacket(pkt);
-            //}, PendingPriority.Destruction);
+            }, PendingPriority.Destruction);
         }
 
         public bool AccountConnected(int accId)
