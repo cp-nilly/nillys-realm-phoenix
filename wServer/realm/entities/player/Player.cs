@@ -673,7 +673,7 @@ namespace wServer.realm.entities.player
         {
             if (Owner == null)
             {
-                Console.WriteLine("[usePortal:" + nName + "] " + pkt + " -> owner = null");
+                Console.WriteLine("[usePortal:" + nName + "] owner = null");
                 return;
             }
 
@@ -978,6 +978,12 @@ namespace wServer.realm.entities.player
 
         public void VisibulletHit(VisibulletPacket pkt)
         {
+            if (Owner == null)
+            {
+                Console.WriteLine("[visibulletHit:" + nName + "] Owner is null.");
+                return;
+            }
+
             //Possible bug I can see right now:
             //  If enemy does not exist, no condition effects can be applied.
             if (pkt.EnemyId == -2)

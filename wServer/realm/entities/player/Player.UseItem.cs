@@ -105,6 +105,13 @@ namespace wServer.realm.entities.player
         public void UseItem(RealmTime time, UseItemPacket pkt)
         {
             var container = Owner.GetEntity(pkt.Slot.ObjectId) as IContainer;
+
+            if (container == null)
+            {
+                Console.WriteLine("[useItem:" + nName + "] Container is null.");
+                return;
+            }
+
             Item item = container.Inventory[pkt.Slot.SlotId];
             Activate(time, item, pkt.Position);
             if (item.Consumable)

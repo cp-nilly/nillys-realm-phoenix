@@ -16,7 +16,7 @@ namespace wServer.realm.entities.player
         {
             if (Owner == null)
             {
-                Console.WriteLine("[playerShoot:" + nName + "] " + pkt + " -> owner = null");
+                Console.WriteLine("[playerShoot:" + nName + "] Owner is null.");
                 return;
             }
 
