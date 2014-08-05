@@ -79,18 +79,15 @@ namespace wServer.realm.entities.player
                         SendError("You cannot ban someone higher than you!");
                         return;
                     }
+                    MySqlCommand cmd;
                     using (var db = new Database())
+                        cmd = db.CreateQuery();
+                    cmd.CommandText = "UPDATE accounts SET banned=1, rank=0 WHERE name=@name";
+                    cmd.Parameters.AddWithValue("@name", target.Client.Account.Name);
+                    if (cmd.ExecuteNonQuery() == 0)
                     {
-                        MySqlCommand cmd = db.CreateQuery();
-                        cmd.CommandText = "UPDATE accounts SET banned=1, rank=0 WHERE name=@name";
-                        cmd.Parameters.AddWithValue("@name", target.Client.Account.Name);
-                        if (cmd.ExecuteNonQuery() == 0)
-                        {
-                            SendError("Ban failed for some reason");
-                            db.Dispose();
-                            return;
-                        }
-                        db.Dispose();
+                        SendError("Ban failed for some reason");
+                        return;
                     }
                     target.Client.Disconnect();
                     SendInfo(pName + " successfully banned!");
@@ -114,20 +111,19 @@ namespace wServer.realm.entities.player
                         SendError("You cannot ban someone higher than you!");
                         return;
                     }
+                    
+                    string address = target.Client.IP.Address;
+                    MySqlCommand cmd;
                     using (var db = new Database())
+                        cmd = db.CreateQuery();
+                    cmd.CommandText = "UPDATE ips SET banned=1 WHERE ip=@Adress";
+                    cmd.Parameters.AddWithValue("Adress", target.Client.IP.Address);
+                    if (cmd.ExecuteNonQuery() == 0)
                     {
-                        string address = target.Client.IP.Address;
-                        MySqlCommand cmd = db.CreateQuery();
-                        cmd.CommandText = "UPDATE ips SET banned=1 WHERE ip=@Adress";
-                        cmd.Parameters.AddWithValue("Adress", target.Client.IP.Address);
-                        if (cmd.ExecuteNonQuery() == 0)
-                        {
-                            SendInfo("Could not ban");
-                            db.Dispose();
-                            return;
-                        }
-                        db.Dispose();
+                        SendInfo("Could not ban");
+                        return;
                     }
+
                     target.Client.Disconnect();
                     SendInfo("IP successfully Banned");
                 }
@@ -168,10 +164,7 @@ namespace wServer.realm.entities.player
                     if (Client.Account.Stats.Fame >= 150)
                     {
                         using (var db = new Database())
-                        {
                             db.UpdateFame(psr.Account, -150);
-                            db.Dispose();
-                        }
 
                         World world = RealmManager.GetWorld(World.NEXUS_ID);
                         bool fworld = false;
@@ -243,10 +236,7 @@ namespace wServer.realm.entities.player
                     if (Client.Account.Stats.Fame >= 500)
                     {
                         using (var db = new Database())
-                        {
                             db.UpdateFame(psr.Account, -500);
-                            db.Dispose();
-                        }
 
                         World world = RealmManager.GetWorld(World.NEXUS_ID);
                         bool fworld = false;
@@ -287,10 +277,7 @@ namespace wServer.realm.entities.player
                     if (Client.Account.Stats.Fame >= 100)
                     {
                         using (var db = new Database())
-                        {
                             db.UpdateFame(psr.Account, -100);
-                            db.Dispose();
-                        }
 
                         World world = RealmManager.GetWorld(World.NEXUS_ID);
                         bool fworld = false;

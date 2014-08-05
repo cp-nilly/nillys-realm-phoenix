@@ -275,7 +275,6 @@ namespace wServer
                     entity.SaveToCharacter();
                     if (entity.Owner.Id != -6)
                         dbx.SaveCharacter(account, character);
-                    dbx.Dispose();
                 }
             }
             catch
@@ -292,7 +291,6 @@ namespace wServer
                 {
                     if (entity.Owner.Id != -6)
                         dbx.Death(account, character, killer);
-                    dbx.Dispose();
                 }
             }
             catch
@@ -805,11 +803,12 @@ namespace wServer
 
         private void ProcessBroadcastPacket(BroadcastPacket pkt)
         {
-            Account acc;
             string msg = pkt.Message;
 
-            if ((acc = new Database().Verify(pkt.Username, pkt.Password)) != null)
+            using (var dbx = new Database())
             {
+                var acc = dbx.Verify(pkt.Username, pkt.Password);
+                if (acc == null) return;
                 if (acc.Rank >= 5)
                 {
                     foreach (ClientProcessor i in RealmManager.Clients.Values)

@@ -196,39 +196,40 @@ namespace wServer.realm.worlds
                                 "Tomb Attacker", "Oryx the Mad God 2", "Phoenix Wright", "Bridge Sentinel"
                             };
                         }
-                        var db = new Database();
                         //FamePot = (Wave/2)*10/(Players.Count == 1 ? 1 : 2);
                         if (Players.Count == 1)
                         {
-                            FamePot = (Wave/2)*10;
+                            FamePot = (Wave / 2) * 10;
                         }
-                        else if (Wave%2 == 1)
+                        else if (Wave % 2 == 1)
                         {
-                            FamePot = ((Wave + 1)/4)*10;
+                            FamePot = ((Wave + 1) / 4) * 10;
                         }
                         else
                         {
-                            FamePot = (Wave/4)*10;
+                            FamePot = (Wave / 4) * 10;
                         }
-                        foreach (var i in Players)
+                        using (var db = new Database())
                         {
-                            i.Value.CurrentFame =
-                                i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, FamePot);
-                            i.Value.UpdateCount++;
-                            i.Value.Client.SendPacket(new NotificationPacket
+                            foreach (var i in Players)
                             {
-                                Color = new ARGB(0xFFFF6600),
-                                ObjectId = i.Value.Id,
-                                Text = "+" + FamePot + " Fame"
-                            });
-                            if (Math.IEEERemainder(Wave, 15) == 0)
-                            {
-                                i.Value.Credits =
-                                    i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                i.Value.CurrentFame =
+                                    i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, FamePot);
                                 i.Value.UpdateCount++;
+                                i.Value.Client.SendPacket(new NotificationPacket
+                                {
+                                    Color = new ARGB(0xFFFF6600),
+                                    ObjectId = i.Value.Id,
+                                    Text = "+" + FamePot + " Fame"
+                                });
+                                if (Math.IEEERemainder(Wave, 15) == 0)
+                                {
+                                    i.Value.Credits =
+                                        i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                    i.Value.UpdateCount++;
+                                }
                             }
                         }
-                        db.Dispose();
                         var Invincible = new ConditionEffect();
                         Invincible.Effect = ConditionEffectIndex.Invulnerable;
                         Invincible.DurationMS = 6000;
@@ -277,7 +278,8 @@ namespace wServer.realm.worlds
             {
                 if (Participants.Count > 0)
                 {
-                    new Database().AddToArenaLb(Wave, Participants);
+                    using (var db = new Database())
+                        db.AddToArenaLb(Wave, Participants);
                     Participants.Clear();
                 }
             }

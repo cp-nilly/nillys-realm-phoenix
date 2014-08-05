@@ -1392,7 +1392,8 @@ namespace wServer.realm.entities.player
         {
             maxed.Shuffle();
             psr.Account.Bonuses.Add(XmlDatas.IdToType["Potion of Max " + maxed[0]]);
-            new Database().SetBonuses(psr.Account.AccountId, psr.Account.Bonuses);
+            using (var dbx = new Database())
+                dbx.SetBonuses(psr.Account.AccountId, psr.Account.Bonuses);
             maxed.RemoveAt(0);
         }
     }

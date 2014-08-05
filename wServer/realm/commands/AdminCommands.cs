@@ -1364,7 +1364,6 @@ namespace wServer.realm.commands
                             writer.WriteLine("[" + DateTime.Now + "]" + player.nName + " Has Whitelisted " + args[0]);
                         }
                     }
-                    dbx.Dispose();
                 }
             }
             catch
@@ -1466,7 +1465,6 @@ namespace wServer.realm.commands
                             }
                             player.SendInfo("Account successfully Banned");
                         }
-                        dbx.Dispose();
                     }
                 }
                 catch
@@ -1513,7 +1511,6 @@ namespace wServer.realm.commands
                         Console.Out.WriteLine(args[1] + " was Unbanned.");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                    dbx.Dispose();
                 }
             }
             catch
@@ -1562,7 +1559,6 @@ namespace wServer.realm.commands
                             {
                                 player.SendInfo("Account rank successfully changed");
                             }
-                            dbx.Dispose();
                         }
                     }
                     catch
@@ -1617,7 +1613,6 @@ namespace wServer.realm.commands
                             Console.Out.WriteLine(args[1] + "'s guild rank has been changed");
                             Console.ForegroundColor = ConsoleColor.White;
                         }
-                        dbx.Dispose();
                     }
                 }
                 catch
@@ -1667,7 +1662,6 @@ namespace wServer.realm.commands
                             Console.Out.WriteLine(args[1] + "'s guild has been changed");
                             Console.ForegroundColor = ConsoleColor.White;
                         }
-                        dbx.Dispose();
                     }
                 }
                 catch
@@ -1921,20 +1915,20 @@ namespace wServer.realm.commands
             {
                 using (var db = new Database())
                 {
-                    MySqlCommand db1 = db.CreateQuery();
-                    db1.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
-                    db1.Parameters.AddWithValue("@name", args[0]);
-                    if ((int) (long) db1.ExecuteScalar() > 0)
+                    MySqlCommand cmd = db.CreateQuery();
+                    cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
+                    cmd.Parameters.AddWithValue("@name", args[0]);
+                    if ((int) (long) cmd.ExecuteScalar() > 0)
                     {
                         player.SendError("Name Already In Use.");
                     }
                     else
                     {
-                        db1 = db.CreateQuery();
-                        db1.CommandText = "UPDATE accounts SET name=@name WHERE id=@accId";
-                        db1.Parameters.AddWithValue("@name", args[0]);
-                        db1.Parameters.AddWithValue("@accId", player.Client.Account.AccountId.ToString());
-                        if (db1.ExecuteNonQuery() > 0)
+                        cmd = db.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET name=@name WHERE id=@accId";
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        cmd.Parameters.AddWithValue("@accId", player.Client.Account.AccountId.ToString());
+                        if (cmd.ExecuteNonQuery() > 0)
                         {
                             player.Client.Player.Credits = db.UpdateCredit(player.Client.Account, -0);
                             player.Client.Player.Name = args[0];
@@ -1947,7 +1941,6 @@ namespace wServer.realm.commands
                             player.SendError("Internal Server Error Occurred.");
                         }
                     }
-                    db1.Dispose();
                 }
             }
         }
@@ -1975,29 +1968,29 @@ namespace wServer.realm.commands
             {
                 using (var db = new Database())
                 {
-                    MySqlCommand db1 = db.CreateQuery();
-                    db1.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
-                    db1.Parameters.AddWithValue("@name", args[1]);
-                    if ((int) (long) db1.ExecuteScalar() > 0)
+                    MySqlCommand cmd = db.CreateQuery();
+                    cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
+                    cmd.Parameters.AddWithValue("@name", args[1]);
+                    if ((int) (long) cmd.ExecuteScalar() > 0)
                     {
                         player.SendError("Name Already In Use.");
                     }
                     else
                     {
-                        db1 = db.CreateQuery();
-                        db1.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name";
-                        db1.Parameters.AddWithValue("@name", args[0]);
-                        if ((int) (long) db1.ExecuteScalar() < 1)
+                        cmd = db.CreateQuery();
+                        cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        if ((int) (long) cmd.ExecuteScalar() < 1)
                         {
                             player.SendError("Name Not Found.");
                         }
                         else
                         {
-                            db1 = db.CreateQuery();
-                            db1.CommandText = "UPDATE accounts SET name=@newName, namechosen=TRUE WHERE name=@oldName;";
-                            db1.Parameters.AddWithValue("@newName", args[1]);
-                            db1.Parameters.AddWithValue("@oldName", args[0]);
-                            if (db1.ExecuteNonQuery() > 0)
+                            cmd = db.CreateQuery();
+                            cmd.CommandText = "UPDATE accounts SET name=@newName, namechosen=TRUE WHERE name=@oldName;";
+                            cmd.Parameters.AddWithValue("@newName", args[1]);
+                            cmd.Parameters.AddWithValue("@oldName", args[0]);
+                            if (cmd.ExecuteNonQuery() > 0)
                             {
                                 foreach (var playerX in RealmManager.Worlds)
                                 {
@@ -2026,7 +2019,6 @@ namespace wServer.realm.commands
                             }
                         }
                     }
-                    db.Dispose();
                 }
             }
         }
@@ -2092,7 +2084,6 @@ namespace wServer.realm.commands
                     {
                         player.Credits = db.UpdateCredit(player.Client.Account, int.Parse(args[0]));
                         player.UpdateCount++;
-                        db.Dispose();
                     }
                 }
             }
@@ -2129,7 +2120,6 @@ namespace wServer.realm.commands
                     {
                         player.zTokens = db.UpdateCredit(player.Client.Account, int.Parse(args[0]));
                         player.UpdateCount++;
-                        db.Dispose();
                     }
                 }
             }
@@ -2166,7 +2156,6 @@ namespace wServer.realm.commands
                     {
                         player.CurrentFame = db.UpdateFame(player.Client.Account, int.Parse(args[0]));
                         player.UpdateCount++;
-                        db.Dispose();
                     }
                 }
             }
@@ -2204,7 +2193,6 @@ namespace wServer.realm.commands
                     {
                         plr.zTokens = db.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
                         plr.UpdateCount++;
-                        db.Dispose();
                     }
                 }
                 else if (args[0] == "gold")
@@ -2214,7 +2202,6 @@ namespace wServer.realm.commands
                         Player plr = RealmManager.FindPlayer(args[1]);
                         plr.Credits = db.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
                         plr.UpdateCount++;
-                        db.Dispose();
                     }
                 }
                 else if (args[0] == "fame")
@@ -2224,7 +2211,6 @@ namespace wServer.realm.commands
                     {
                         plr.CurrentFame = db.UpdateFame(plr.Client.Account, int.Parse(args[2]));
                         plr.UpdateCount++;
-                        db.Dispose();
                     }
                 }
             }
@@ -2543,7 +2529,6 @@ namespace wServer.realm.commands
                             player.Name = "[" + args[0] + "] " + player.Client.Account.Name;
                             player.SendInfo("Tag succesfully changed");
                         }
-                        db.Dispose();
                     }
                 }
                 else if (args.Length == 2)
@@ -2573,7 +2558,6 @@ namespace wServer.realm.commands
                                 plr.Name = "[" + args[1] + "] " + plr.Client.Account.Name;
                                 player.SendInfo("Tag succesfully changed");
                             }
-                            db.Dispose();
                         }
                     }
                     else
@@ -2616,7 +2600,6 @@ namespace wServer.realm.commands
                         player.Name = player.Client.Account.Name;
                         player.SendInfo("Tag succesfully removed");
                     }
-                    db.Dispose();
                 }
             }
             else if (args.Length == 1)
@@ -2639,7 +2622,6 @@ namespace wServer.realm.commands
                             plr.Name = plr.Client.Account.Name;
                             player.SendInfo("Tag succesfully removed");
                         }
-                        db.Dispose();
                     }
                 }
                 else

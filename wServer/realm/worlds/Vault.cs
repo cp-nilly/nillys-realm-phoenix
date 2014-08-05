@@ -120,7 +120,8 @@ namespace wServer.realm.worlds
                         i.Key.Item2._Items =
                             Utils.GetCommaSepString(
                                 i.Key.Item1.Inventory.Take(8).Select(_ => _ == null ? -1 : _.ObjectType).ToArray());
-                        new Database().SaveChest(acc, i.Key.Item2);
+                        using (var db = new Database())
+                            db.SaveChest(acc, i.Key.Item2);
                         _vaultChests[i.Key] = i.Key.Item1.UpdateCount;
                     }
                     catch

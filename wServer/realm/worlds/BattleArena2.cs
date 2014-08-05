@@ -187,17 +187,18 @@ namespace wServer.realm.worlds
                                 "Tomb Attacker", "Oryx the Mad God 2"
                             };
                         }
-                        var db = new Database();
-                        foreach (var i in Players)
+                        using (var db = new Database())
                         {
-                            if (Math.IEEERemainder(Wave, 25) == 0)
+                            foreach (var i in Players)
                             {
-                                i.Value.Credits =
-                                    i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
-                                i.Value.UpdateCount++;
+                                if (Math.IEEERemainder(Wave, 25) == 0)
+                                {
+                                    i.Value.Credits =
+                                        i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                    i.Value.UpdateCount++;
+                                }
                             }
                         }
-                        db.Dispose();
                         var invincible = new ConditionEffect
                         {
                             Effect = ConditionEffectIndex.Invulnerable,
@@ -246,7 +247,8 @@ namespace wServer.realm.worlds
             {
                 if (Participants.Count > 0)
                 {
-                    new Database().AddToArenaLb(Wave, Participants);
+                    using (var db = new Database())
+                        db.AddToArenaLb(Wave, Participants);
                     Participants.Clear();
                 }
             }

@@ -1123,14 +1123,16 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            string[] leaderboardInfo = new Database().GetArenaLeaderboards();
-
-            player.Client.SendPacket(new TextBoxPacket
+            using (var db = new Database())
             {
-                Title = "Arena Leaderboard",
-                Message = string.Join("\n", leaderboardInfo),
-                Button1 = "Ok"
-            });
+                string[] leaderboardInfo = db.GetArenaLeaderboards();
+                player.Client.SendPacket(new TextBoxPacket
+                {
+                    Title = "Arena Leaderboard",
+                    Message = string.Join("\n", leaderboardInfo),
+                    Button1 = "Ok"
+                });
+            }
         }
     }
 
@@ -1148,14 +1150,16 @@ namespace wServer.realm.commands
 
         public void Execute(Player player, string[] args)
         {
-            string[] leaderboardInfo = new Database().GetGuildLeaderboards();
-
-            player.Client.SendPacket(new TextBoxPacket
+            using (var db = new Database())
             {
-                Title = "Guilds",
-                Message = string.Join("\n", leaderboardInfo),
-                Button1 = "Ok"
-            });
+                string[] leaderboardInfo = db.GetGuildLeaderboards();
+                player.Client.SendPacket(new TextBoxPacket
+                {
+                    Title = "Guilds",
+                    Message = string.Join("\n", leaderboardInfo),
+                    Button1 = "Ok"
+                });
+            }
         }
     }
 
