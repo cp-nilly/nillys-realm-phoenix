@@ -14,6 +14,7 @@ namespace wServer.realm.entities.player
     {
         public void PlayerShoot(RealmTime time, PlayerShootPacket pkt)
         {
+            if (this.dying) return;
             if (Owner == null)
             {
                 Console.WriteLine("[playerShoot:" + nName + "] Owner is null.");

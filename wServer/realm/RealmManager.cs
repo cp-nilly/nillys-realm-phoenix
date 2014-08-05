@@ -155,8 +155,6 @@ namespace wServer.realm
             }
             
             psr.Save();
-            //if (psr.Player.Owner != null)
-            //    psr.Player.Owner.LeaveWorld(psr.Player);
             psr.Stage = ProtocalStage.Disconnected; 
             // network ticker will remove client so the following line isn't needed
             //Clients.TryRemove(psr.Account.AccountId, out psr);

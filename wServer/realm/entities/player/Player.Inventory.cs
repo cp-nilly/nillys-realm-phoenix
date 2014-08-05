@@ -157,8 +157,8 @@ namespace wServer.realm.entities.player
             }
 
             // log event (needs improvement)
-            Console.WriteLine("[InvSwap:" + nName + "] [" + en1.nName + "," + pkt.Obj1.SlotId + "," + ((item1 == null) ? "" : item1.ObjectId) + "] <-> " +
-                                        "[" + en2.nName + "," + pkt.Obj2.SlotId + "," + ((item2 == null) ? "" : item2.ObjectId) + "]");
+            //Console.WriteLine("[InvSwap:" + nName + "] [" + en1.nName + "," + pkt.Obj1.SlotId + "," + ((item1 == null) ? "" : item1.ObjectId) + "] <-> " +
+            //                            "[" + en2.nName + "," + pkt.Obj2.SlotId + "," + ((item2 == null) ? "" : item2.ObjectId) + "]");
         }
 
         public void InventoryDrop(RealmTime time, InvDropPacket pkt)
