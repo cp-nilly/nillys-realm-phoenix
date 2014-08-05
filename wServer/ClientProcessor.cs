@@ -312,7 +312,7 @@ namespace wServer
             }
         }
 
-        private void connectionFailed(string msg)
+        private void ConnectionFailed(string msg)
         {
             SendPacket(new FailurePacket
             {
@@ -324,30 +324,30 @@ namespace wServer
          * Returns null on success, otherwise return value contains
          * discription of error.
          */
-        private string okToConnect(HelloPacket pkt)
+        private string OkToConnect(HelloPacket pkt)
         {
             string retMsg = null;
             ConnectedBuild = pkt.BuildVersion;
 
             // check client version
             if (!ConnectedBuild.StartsWith(clientVer))
-                connectionFailed(retMsg = "Wrong build version.");
+                ConnectionFailed(retMsg = "Wrong build version.");
 
             // has valid account?
             else if ((account = db.Verify(pkt.GUID, pkt.Password)) == null)
-                connectionFailed(retMsg = "Invalid account.");
+                ConnectionFailed(retMsg = "Invalid account.");
 
             // ip banned?
             else if (ip.Banned)
-                connectionFailed(retMsg = "IP banned.");
+                ConnectionFailed(retMsg = "IP banned.");
 
             // account banned?
             else if (account.Banned)
-                connectionFailed(retMsg = "Account banned.");
+                ConnectionFailed(retMsg = "Account banned.");
 
             // server full?
             else if (RealmManager.Clients.Count >= RealmManager.MAX_CLIENT)
-                connectionFailed(retMsg = "Server full.");
+                ConnectionFailed(retMsg = "Server full.");
 
             // valid gameId?
             else if (RealmManager.GetWorld(pkt.GameId) == null) 
@@ -359,7 +359,7 @@ namespace wServer
             // account already connected? disconnect if so
             else if (AccountConnected(account.AccountId))
             {
-                connectionFailed(retMsg = "Account in use... ");
+                ConnectionFailed(retMsg = "Account in use... ");
                 ClientProcessor target = RealmManager.Clients[account.AccountId];
                 target.Disconnect();
             }
@@ -379,7 +379,7 @@ namespace wServer
 
             // check if ok to connect
             string msg;
-            if ((msg = okToConnect(pkt)) != null)
+            if ((msg = OkToConnect(pkt)) != null)
             {
                 Console.WriteLine(msg);
                 account = null;
@@ -839,25 +839,20 @@ namespace wServer
         //Following must execute, network loop will discard disconnected client, so logic loop
         private void DisconnectFromRealm()
         {
-            RealmManager.Logic.AddPendingAction(t =>
-            {
-                //if (Player != null)
-                //    Player.SaveToCharacter();
-                //Save();
-                RealmManager.Disconnect(this);
-            }, PendingPriority.Destruction);
+            //RealmManager.Logic.AddPendingAction(t => RealmManager.Disconnect(this), PendingPriority.Destruction);
+            RealmManager.Disconnect(this);
         }
 
         public void Reconnect(ReconnectPacket pkt)
         {
-            RealmManager.Logic.AddPendingAction(t =>
-            {
+            //RealmManager.Logic.AddPendingAction(t =>
+            //{
                 //if (Player != null) // save player on reconnect
                 //    Player.SaveToCharacter();
                 //Save();
                 RealmManager.Disconnect(this); // saves player on exit
                 SendPacket(pkt);
-            }, PendingPriority.Destruction);
+            //}, PendingPriority.Destruction);
         }
 
         public bool AccountConnected(int accId)
