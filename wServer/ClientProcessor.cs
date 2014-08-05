@@ -243,7 +243,7 @@ namespace wServer
 
         public void Disconnect()
         {
-            if (stage == ProtocalStage.Disconnected)
+            if (!skt.Connected || stage == ProtocalStage.Disconnected)
                 return;
 
             try

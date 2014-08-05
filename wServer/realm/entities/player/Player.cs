@@ -978,11 +978,7 @@ namespace wServer.realm.entities.player
 
         public void VisibulletHit(VisibulletPacket pkt)
         {
-            if (Owner == null)
-            {
-                Console.WriteLine("[visibulletHit:" + nName + "] Owner is null.");
-                return;
-            }
+            if (dying) return;
 
             //Possible bug I can see right now:
             //  If enemy does not exist, no condition effects can be applied.
