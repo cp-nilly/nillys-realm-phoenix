@@ -91,18 +91,10 @@ namespace wServer.realm.entities.player
             //Ignored = psr.Account.Ignored ?? new List<int>();
             try
             {
-                if (psr.Database != null)
-                {
-                    Locked = psr.Database.GetLockeds(AccountId);
-                    Ignored = psr.Database.GetIgnoreds(AccountId);
-                }
-                else
-                {
-                    using (var dbx = new Database())
-                    { // auto dispose so don't need to dispose here
-                        Locked = dbx.GetLockeds(AccountId);
-                        Ignored = dbx.GetIgnoreds(AccountId);
-                    }
+                using (var dbx = new Database())
+                { // auto dispose so don't need to dispose here
+                    Locked = dbx.GetLockeds(AccountId);
+                    Ignored = dbx.GetIgnoreds(AccountId);
                 }
             }
             catch
