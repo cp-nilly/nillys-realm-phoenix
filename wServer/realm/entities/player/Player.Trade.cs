@@ -156,6 +156,19 @@ namespace wServer.realm.entities.player
 
         public void ChangeTrade(RealmTime time, ChangeTradePacket pkt)
         {
+            // validate input
+            if (tradeTarget == null)
+            {
+                this.Client.SendPacket(new TradeDonePacket
+                {
+                    Result = 1,
+                    Message = "Trade cancelled."
+                });
+                trade = null;
+                tradeAccepted = false;
+                return;
+            }
+
             if (trade != pkt.Offers)
             {
                 tradeAccepted = false;
@@ -193,7 +206,6 @@ namespace wServer.realm.entities.player
 
         public void CancelTrade(RealmTime time, CancelTradePacket pkt)
         {
-            Console.WriteLine("[cancelTrade:" + nName + "] " + pkt);
             psr.SendPacket(new TradeDonePacket
             {
                 Result = 1,

@@ -671,9 +671,18 @@ namespace wServer.realm.entities.player
 
         public void UsePortal(RealmTime time, UsePortalPacket pkt)
         {
+            if (Owner == null)
+            {
+                Console.WriteLine("[usePortal:" + nName + "] " + pkt + " -> owner = null");
+                return;
+            }
+
             Entity entity = Owner.GetEntity(pkt.ObjectId);
-            Console.WriteLine("[usePortal:" + nName + "] " + pkt + " -> " + entity.ObjectType);
-            if (entity == null || !entity.Usable) return;
+            
+            // validate input
+            if (entity == null || !entity.Usable)
+                return;
+            
             World world = null;
             Player player = this;
             Portal p = null;
@@ -701,8 +710,6 @@ namespace wServer.realm.entities.player
                                     //may not be valid, realm recycled?
                                     world = RealmManager.PlayerWorldMapping[AccountId];
                                     //also reconnecting to vault is a little unexpected
-                                else if (world.Id == -5 || world.Id == -11)
-                                    world = RealmManager.GetWorld(World.NEXUS_ID);
                                 else
                                     world = RealmManager.GetWorld(World.NEXUS_ID);
                                 break;
@@ -711,8 +718,6 @@ namespace wServer.realm.entities.player
                                     //may not be valid, realm recycled?
                                     world = RealmManager.PlayerWorldMapping[AccountId];
                                     //also reconnecting to vault is a little unexpected
-                                else if (world.Id == -5 || world.Id == -11)
-                                    world = RealmManager.GetWorld(World.NEXUS_ID);
                                 else
                                     world = RealmManager.GetWorld(World.NEXUS_ID);
                                 break;
@@ -889,6 +894,9 @@ namespace wServer.realm.entities.player
                 }
             }
 
+            // make sure world is set
+            // if textboxpacket was set
+            // world would be null still
             if (world == null)
                 return;
 
