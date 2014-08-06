@@ -1340,26 +1340,29 @@ namespace wServer.realm.commands
             }
             try
             {
-                MySqlCommand cmd = player.Client.Database.CreateQuery();
-                cmd.CommandText = "UPDATE accounts SET rank=1 WHERE name=@name";
-                cmd.Parameters.AddWithValue("@name", args[0]);
-                if (cmd.ExecuteNonQuery() == 0)
+                using (var dbx = new Database())
                 {
-                    player.SendInfo("Could not whitelist!");
-                }
-                else
-                {
-                    player.SendInfo("Account successfully whitelisted!");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Out.WriteLine(player.nName + " Has Whitelisted " + args[0]);
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    string dir = @"logs";
-                    if (!Directory.Exists(dir))
-                        Directory.CreateDirectory(dir);
-                    using (var writer = new StreamWriter(@"logs\WhitelistLog.log", true))
+                    MySqlCommand cmd = dbx.CreateQuery();
+                    cmd.CommandText = "UPDATE accounts SET rank=1 WHERE name=@name";
+                    cmd.Parameters.AddWithValue("@name", args[0]);
+                    if (cmd.ExecuteNonQuery() == 0)
                     {
-                        writer.WriteLine("[" + DateTime.Now + "]" + player.nName + " Has Whitelisted " + args[0]);
+                        player.SendInfo("Could not whitelist!");
+                    }
+                    else
+                    {
+                        player.SendInfo("Account successfully whitelisted!");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Out.WriteLine(player.nName + " Has Whitelisted " + args[0]);
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        string dir = @"logs";
+                        if (!Directory.Exists(dir))
+                            Directory.CreateDirectory(dir);
+                        using (var writer = new StreamWriter(@"logs\WhitelistLog.log", true))
+                        {
+                            writer.WriteLine("[" + DateTime.Now + "]" + player.nName + " Has Whitelisted " + args[0]);
+                        }
                     }
                 }
             }
@@ -1431,34 +1434,37 @@ namespace wServer.realm.commands
             {
                 try
                 {
-                    string dir = @"logs";
-                    MySqlCommand cmd = player.Client.Database.CreateQuery();
-                    cmd.CommandText = "UPDATE accounts SET banned=1, rank=0 WHERE name=@name";
-                    cmd.Parameters.AddWithValue("@name", args[0]);
-                    if (cmd.ExecuteNonQuery() == 0)
+                    using (var dbx = new Database())
                     {
-                        player.SendInfo("Could not ban");
-                    }
-                    else
-                    {
-                        string reason = string.Join(" ", args.Skip(1).ToArray()).Trim();
-                        Player target = null;
-                        if ((target = RealmManager.FindPlayer(string.Join(" ", args[0]))) != null)
+                        string dir = @"logs";
+                        MySqlCommand cmd = dbx.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET banned=1, rank=0 WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        if (cmd.ExecuteNonQuery() == 0)
                         {
-                            target.Client.Disconnect();
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.Out.WriteLine(string.Join(" ", args) + " was Banned.");
-                            Console.ForegroundColor = ConsoleColor.White;
+                            player.SendInfo("Could not ban");
                         }
-                        if (!Directory.Exists(dir))
+                        else
                         {
-                            Directory.CreateDirectory(dir);
+                            string reason = string.Join(" ", args.Skip(1).ToArray()).Trim();
+                            Player target = null;
+                            if ((target = RealmManager.FindPlayer(string.Join(" ", args[0]))) != null)
+                            {
+                                target.Client.Disconnect();
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.Out.WriteLine(string.Join(" ", args) + " was Banned.");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            if (!Directory.Exists(dir))
+                            {
+                                Directory.CreateDirectory(dir);
+                            }
+                            using (var writer = new StreamWriter(@"logs\Bans.log", true))
+                            {
+                                writer.WriteLine(player.Name + " Banned " + args[0] + ". " + "Reason: " + reason);
+                            }
+                            player.SendInfo("Account successfully Banned");
                         }
-                        using (var writer = new StreamWriter(@"logs\Bans.log", true))
-                        {
-                            writer.WriteLine(player.Name + " Banned " + args[0] + ". " + "Reason: " + reason);
-                        }
-                        player.SendInfo("Account successfully Banned");
                     }
                 }
                 catch
@@ -1489,19 +1495,22 @@ namespace wServer.realm.commands
             }
             try
             {
-                MySqlCommand cmd = player.Client.Database.CreateQuery();
-                cmd.CommandText = "UPDATE accounts SET banned=0 WHERE name=@name";
-                cmd.Parameters.AddWithValue("@name", args[0]);
-                if (cmd.ExecuteNonQuery() == 0)
+                using (var dbx = new Database())
                 {
-                    player.SendInfo("Could not unban");
-                }
-                else
-                {
-                    player.SendInfo("Account successfully Unbanned");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Out.WriteLine(args[1] + " was Unbanned.");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    MySqlCommand cmd = dbx.CreateQuery();
+                    cmd.CommandText = "UPDATE accounts SET banned=0 WHERE name=@name";
+                    cmd.Parameters.AddWithValue("@name", args[0]);
+                    if (cmd.ExecuteNonQuery() == 0)
+                    {
+                        player.SendInfo("Could not unban");
+                    }
+                    else
+                    {
+                        player.SendInfo("Account successfully Unbanned");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Out.WriteLine(args[1] + " was Unbanned.");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
             }
             catch
@@ -1536,17 +1545,20 @@ namespace wServer.realm.commands
                 {
                     try
                     {
-                        MySqlCommand cmd = player.Client.Database.CreateQuery();
-                        cmd.CommandText = "UPDATE accounts SET rank=@rank WHERE name=@name";
-                        cmd.Parameters.AddWithValue("@rank", args[1]);
-                        cmd.Parameters.AddWithValue("@name", args[0]);
-                        if (cmd.ExecuteNonQuery() == 0)
+                        using (var dbx = new Database())
                         {
-                            player.SendInfo("Could not change rank");
-                        }
-                        else
-                        {
-                            player.SendInfo("Account rank successfully changed");
+                            MySqlCommand cmd = dbx.CreateQuery();
+                            cmd.CommandText = "UPDATE accounts SET rank=@rank WHERE name=@name";
+                            cmd.Parameters.AddWithValue("@rank", args[1]);
+                            cmd.Parameters.AddWithValue("@name", args[0]);
+                            if (cmd.ExecuteNonQuery() == 0)
+                            {
+                                player.SendInfo("Could not change rank");
+                            }
+                            else
+                            {
+                                player.SendInfo("Account rank successfully changed");
+                            }
                         }
                     }
                     catch
@@ -1584,20 +1596,23 @@ namespace wServer.realm.commands
             {
                 try
                 {
-                    MySqlCommand cmd = player.Client.Database.CreateQuery();
-                    cmd.CommandText = "UPDATE accounts SET guildRank=@guildRank WHERE name=@name";
-                    cmd.Parameters.AddWithValue("@guildRank", args[1]);
-                    cmd.Parameters.AddWithValue("@name", args[0]);
-                    if (cmd.ExecuteNonQuery() == 0)
+                    using (var dbx = new Database())
                     {
-                        player.SendInfo("Could not change guild rank. Use 10, 20, 30, 40, or 50 (invisible)");
-                    }
-                    else
-                    {
-                        player.SendInfo("Guild rank successfully changed");
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Out.WriteLine(args[1] + "'s guild rank has been changed");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        MySqlCommand cmd = dbx.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET guildRank=@guildRank WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@guildRank", args[1]);
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        if (cmd.ExecuteNonQuery() == 0)
+                        {
+                            player.SendInfo("Could not change guild rank. Use 10, 20, 30, 40, or 50 (invisible)");
+                        }
+                        else
+                        {
+                            player.SendInfo("Guild rank successfully changed");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Out.WriteLine(args[1] + "'s guild rank has been changed");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
                     }
                 }
                 catch
@@ -1630,20 +1645,23 @@ namespace wServer.realm.commands
             {
                 try
                 {
-                    MySqlCommand cmd = player.Client.Database.CreateQuery();
-                    cmd.CommandText = "UPDATE accounts SET guild=@guild WHERE name=@name";
-                    cmd.Parameters.AddWithValue("@guild", args[1]);
-                    cmd.Parameters.AddWithValue("@name", args[0]);
-                    if (cmd.ExecuteNonQuery() == 0)
+                    using (var dbx = new Database())
                     {
-                        player.SendInfo("Could not change guild.");
-                    }
-                    else
-                    {
-                        player.SendInfo("Guild successfully changed");
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Out.WriteLine(args[1] + "'s guild has been changed");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        MySqlCommand cmd = dbx.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET guild=@guild WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@guild", args[1]);
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        if (cmd.ExecuteNonQuery() == 0)
+                        {
+                            player.SendInfo("Could not change guild.");
+                        }
+                        else
+                        {
+                            player.SendInfo("Guild successfully changed");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Out.WriteLine(args[1] + "'s guild has been changed");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
                     }
                 }
                 catch
@@ -1895,30 +1913,33 @@ namespace wServer.realm.commands
             }
             else if (args.Length == 1)
             {
-                MySqlCommand cmd = player.Client.Database.CreateQuery();
-                cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
-                cmd.Parameters.AddWithValue("@name", args[0]);
-                if ((int) (long) cmd.ExecuteScalar() > 0)
+                using (var db = new Database())
                 {
-                    player.SendError("Name Already In Use.");
-                }
-                else
-                {
-                    cmd = player.Client.Database.CreateQuery();
-                    cmd.CommandText = "UPDATE accounts SET name=@name WHERE id=@accId";
+                    MySqlCommand cmd = db.CreateQuery();
+                    cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
                     cmd.Parameters.AddWithValue("@name", args[0]);
-                    cmd.Parameters.AddWithValue("@accId", player.Client.Account.AccountId.ToString());
-                    if (cmd.ExecuteNonQuery() > 0)
+                    if ((int) (long) cmd.ExecuteScalar() > 0)
                     {
-                        player.Client.Player.Credits = player.Client.Database.UpdateCredit(player.Client.Account, -0);
-                        player.Client.Player.Name = args[0];
-                        player.Client.Player.NameChosen = true;
-                        player.Client.Player.UpdateCount++;
-                        player.SendInfo("Success!");
+                        player.SendError("Name Already In Use.");
                     }
                     else
                     {
-                        player.SendError("Internal Server Error Occurred.");
+                        cmd = db.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET name=@name WHERE id=@accId";
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        cmd.Parameters.AddWithValue("@accId", player.Client.Account.AccountId.ToString());
+                        if (cmd.ExecuteNonQuery() > 0)
+                        {
+                            player.Client.Player.Credits = db.UpdateCredit(player.Client.Account, -0);
+                            player.Client.Player.Name = args[0];
+                            player.Client.Player.NameChosen = true;
+                            player.Client.Player.UpdateCount++;
+                            player.SendInfo("Success!");
+                        }
+                        else
+                        {
+                            player.SendError("Internal Server Error Occurred.");
+                        }
                     }
                 }
             }
@@ -1945,54 +1966,57 @@ namespace wServer.realm.commands
             }
             else if (args.Length == 2)
             {
-                MySqlCommand cmd = player.Client.Database.CreateQuery();
-                cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
-                cmd.Parameters.AddWithValue("@name", args[1]);
-                if ((int) (long) cmd.ExecuteScalar() > 0)
+                using (var db = new Database())
                 {
-                    player.SendError("Name Already In Use.");
-                }
-                else
-                {
-                    cmd = player.Client.Database.CreateQuery();
-                    cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name";
-                    cmd.Parameters.AddWithValue("@name", args[0]);
-                    if ((int) (long) cmd.ExecuteScalar() < 1)
+                    MySqlCommand cmd = db.CreateQuery();
+                    cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
+                    cmd.Parameters.AddWithValue("@name", args[1]);
+                    if ((int) (long) cmd.ExecuteScalar() > 0)
                     {
-                        player.SendError("Name Not Found.");
+                        player.SendError("Name Already In Use.");
                     }
                     else
                     {
-                        cmd = player.Client.Database.CreateQuery();
-                        cmd.CommandText = "UPDATE accounts SET name=@newName, namechosen=TRUE WHERE name=@oldName;";
-                        cmd.Parameters.AddWithValue("@newName", args[1]);
-                        cmd.Parameters.AddWithValue("@oldName", args[0]);
-                        if (cmd.ExecuteNonQuery() > 0)
+                        cmd = db.CreateQuery();
+                        cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        if ((int) (long) cmd.ExecuteScalar() < 1)
                         {
-                            foreach (var playerX in RealmManager.Worlds)
-                            {
-                                if (playerX.Key != 0)
-                                {
-                                    World world = playerX.Value;
-                                    foreach (var p in world.Players)
-                                    {
-                                        Player Client = p.Value;
-                                        if ((player.Name.ToLower() == args[0].ToLower()) && player.NameChosen)
-                                        {
-                                            player.Name = args[1];
-                                            player.NameChosen = true;
-                                            player.UpdateCount++;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            player.SendInfo("Success!");
-                            //
+                            player.SendError("Name Not Found.");
                         }
                         else
                         {
-                            player.SendError("Internal Server Error Occurred.");
+                            cmd = db.CreateQuery();
+                            cmd.CommandText = "UPDATE accounts SET name=@newName, namechosen=TRUE WHERE name=@oldName;";
+                            cmd.Parameters.AddWithValue("@newName", args[1]);
+                            cmd.Parameters.AddWithValue("@oldName", args[0]);
+                            if (cmd.ExecuteNonQuery() > 0)
+                            {
+                                foreach (var playerX in RealmManager.Worlds)
+                                {
+                                    if (playerX.Key != 0)
+                                    {
+                                        World world = playerX.Value;
+                                        foreach (var p in world.Players)
+                                        {
+                                            Player Client = p.Value;
+                                            if ((player.Name.ToLower() == args[0].ToLower()) && player.NameChosen)
+                                            {
+                                                player.Name = args[1];
+                                                player.NameChosen = true;
+                                                player.UpdateCount++;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                player.SendInfo("Success!");
+                                //
+                            }
+                            else
+                            {
+                                player.SendError("Internal Server Error Occurred.");
+                            }
                         }
                     }
                 }
@@ -2056,8 +2080,11 @@ namespace wServer.realm.commands
                 }
                 else
                 {
-                    player.Credits = player.Client.Database.UpdateCredit(player.Client.Account, int.Parse(args[0]));
-                    player.UpdateCount++;
+                    using (var db = new Database())
+                    {
+                        player.Credits = db.UpdateCredit(player.Client.Account, int.Parse(args[0]));
+                        player.UpdateCount++;
+                    }
                 }
             }
             catch
@@ -2089,8 +2116,11 @@ namespace wServer.realm.commands
                 }
                 else
                 {
-                    player.zTokens = player.Client.Database.UpdateCredit(player.Client.Account, int.Parse(args[0]));
-                    player.UpdateCount++;
+                    using (var db = new Database())
+                    {
+                        player.zTokens = db.UpdateCredit(player.Client.Account, int.Parse(args[0]));
+                        player.UpdateCount++;
+                    }
                 }
             }
             catch
@@ -2122,8 +2152,11 @@ namespace wServer.realm.commands
                 }
                 else
                 {
-                    player.CurrentFame = player.Client.Database.UpdateFame(player.Client.Account, int.Parse(args[0]));
-                    player.UpdateCount++;
+                    using (var db = new Database())
+                    {
+                        player.CurrentFame = db.UpdateFame(player.Client.Account, int.Parse(args[0]));
+                        player.UpdateCount++;
+                    }
                 }
             }
             catch
@@ -2156,20 +2189,29 @@ namespace wServer.realm.commands
                 else if (args[0] == "ztokens")
                 {
                     Player plr = RealmManager.FindPlayer(args[1]);
-                    plr.zTokens = player.Client.Database.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
-                    plr.UpdateCount++;
+                    using (var db = new Database())
+                    {
+                        plr.zTokens = db.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
+                        plr.UpdateCount++;
+                    }
                 }
                 else if (args[0] == "gold")
                 {
-                    Player plr = RealmManager.FindPlayer(args[1]);
-                    plr.Credits = player.Client.Database.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
-                    plr.UpdateCount++;
+                    using (var db = new Database())
+                    {
+                        Player plr = RealmManager.FindPlayer(args[1]);
+                        plr.Credits = db.UpdateCredit(plr.Client.Account, int.Parse(args[2]));
+                        plr.UpdateCount++;
+                    }
                 }
                 else if (args[0] == "fame")
                 {
                     Player plr = RealmManager.FindPlayer(args[1]);
-                    plr.CurrentFame = player.Client.Database.UpdateFame(plr.Client.Account, int.Parse(args[2]));
-                    plr.UpdateCount++;
+                    using (var db = new Database())
+                    {
+                        plr.CurrentFame = db.UpdateFame(plr.Client.Account, int.Parse(args[2]));
+                        plr.UpdateCount++;
+                    }
                 }
             }
             catch
@@ -2280,32 +2322,35 @@ namespace wServer.realm.commands
                         Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
                         if (plr != null)
                         {
-                            string address = plr.Client.IP.Address;
-                            MySqlCommand cmd = player.Client.Database.CreateQuery();
-                            cmd.CommandText = "UPDATE ips SET banned=1 WHERE ip=@Adress";
-                            cmd.Parameters.AddWithValue("Adress", plr.Client.IP.Address);
-                            string reason = string.Join(" ", args.Skip(1).ToArray()).Trim();
-                            if (cmd.ExecuteNonQuery() == 0)
+                            using (var db = new Database())
                             {
-                                player.SendInfo("Could not ban");
-                            }
-                            else
-                            {
-                                if (plr != null)
+                                string address = plr.Client.IP.Address;
+                                MySqlCommand cmd = db.CreateQuery();
+                                cmd.CommandText = "UPDATE ips SET banned=1 WHERE ip=@Adress";
+                                cmd.Parameters.AddWithValue("Adress", plr.Client.IP.Address);
+                                string reason = string.Join(" ", args.Skip(1).ToArray()).Trim();
+                                if (cmd.ExecuteNonQuery() == 0)
                                 {
-                                    plr.Client.Disconnect();
+                                    player.SendInfo("Could not ban");
                                 }
-                                string dir = @"logs";
-                                if (!Directory.Exists(dir))
+                                else
                                 {
-                                    Directory.CreateDirectory(dir);
+                                    if (plr != null)
+                                    {
+                                        plr.Client.Disconnect();
+                                    }
+                                    string dir = @"logs";
+                                    if (!Directory.Exists(dir))
+                                    {
+                                        Directory.CreateDirectory(dir);
+                                    }
+                                    using (var writer = new StreamWriter(@"logs\Bans.log", true))
+                                    {
+                                        writer.WriteLine(player.Name + " IP-Banned " + args[0] + " (" + address + "). " +
+                                                         "Reason: " + reason);
+                                    }
+                                    player.SendInfo("IP successfully Banned");
                                 }
-                                using (var writer = new StreamWriter(@"logs\Bans.log", true))
-                                {
-                                    writer.WriteLine(player.Name + " IP-Banned " + args[0] + " (" + address + "). " +
-                                                        "Reason: " + reason);
-                                }
-                                player.SendInfo("IP successfully Banned");
                             }
                         }
                     }
@@ -2469,18 +2514,21 @@ namespace wServer.realm.commands
                         return;
                     }
 
-                    MySqlCommand cmd = player.Client.Database.CreateQuery();
-                    cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
-                    cmd.Parameters.AddWithValue("@name", player.nName);
-                    cmd.Parameters.AddWithValue("@tag", args[0]);
-                    if (cmd.ExecuteNonQuery() == 0)
+                    using (var db = new Database())
                     {
-                        player.SendInfo("Could not set tag");
-                    }
-                    else
-                    {
-                        player.Name = "[" + args[0] + "] " + player.Client.Account.Name;
-                        player.SendInfo("Tag succesfully changed");
+                        MySqlCommand cmd = db.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", player.nName);
+                        cmd.Parameters.AddWithValue("@tag", args[0]);
+                        if (cmd.ExecuteNonQuery() == 0)
+                        {
+                            player.SendInfo("Could not set tag");
+                        }
+                        else
+                        {
+                            player.Name = "[" + args[0] + "] " + player.Client.Account.Name;
+                            player.SendInfo("Tag succesfully changed");
+                        }
                     }
                 }
                 else if (args.Length == 2)
@@ -2495,18 +2543,21 @@ namespace wServer.realm.commands
                             return;
                         }
 
-                        MySqlCommand cmd = player.Client.Database.CreateQuery();
-                        cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
-                        cmd.Parameters.AddWithValue("@name", args[0]);
-                        cmd.Parameters.AddWithValue("@tag", args[1]);
-                        if (cmd.ExecuteNonQuery() == 0)
+                        using (var db = new Database())
                         {
-                            player.SendInfo("Could not set tag");
-                        }
-                        else
-                        {
-                            plr.Name = "[" + args[1] + "] " + plr.Client.Account.Name;
-                            player.SendInfo("Tag succesfully changed");
+                            MySqlCommand cmd = db.CreateQuery();
+                            cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
+                            cmd.Parameters.AddWithValue("@name", args[0]);
+                            cmd.Parameters.AddWithValue("@tag", args[1]);
+                            if (cmd.ExecuteNonQuery() == 0)
+                            {
+                                player.SendInfo("Could not set tag");
+                            }
+                            else
+                            {
+                                plr.Name = "[" + args[1] + "] " + plr.Client.Account.Name;
+                                player.SendInfo("Tag succesfully changed");
+                            }
                         }
                     }
                     else
@@ -2534,28 +2585,11 @@ namespace wServer.realm.commands
         {
             if (args.Length == 0)
             {
-                MySqlCommand cmd = player.Client.Database.CreateQuery();
-                cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
-                cmd.Parameters.AddWithValue("@name", player.nName);
-                cmd.Parameters.AddWithValue("@tag", "");
-                if (cmd.ExecuteNonQuery() == 0)
+                using (var db = new Database())
                 {
-                    player.SendInfo("Could not remove tag");
-                }
-                else
-                {
-                    player.Name = player.Client.Account.Name;
-                    player.SendInfo("Tag succesfully removed");
-                }
-            }
-            else if (args.Length == 1)
-            {
-                Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
-                if (plr != null)
-                {
-                    MySqlCommand cmd = player.Client.Database.CreateQuery();
+                    MySqlCommand cmd = db.CreateQuery();
                     cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
-                    cmd.Parameters.AddWithValue("@name", args[0]);
+                    cmd.Parameters.AddWithValue("@name", player.nName);
                     cmd.Parameters.AddWithValue("@tag", "");
                     if (cmd.ExecuteNonQuery() == 0)
                     {
@@ -2563,8 +2597,31 @@ namespace wServer.realm.commands
                     }
                     else
                     {
-                        plr.Name = plr.Client.Account.Name;
+                        player.Name = player.Client.Account.Name;
                         player.SendInfo("Tag succesfully removed");
+                    }
+                }
+            }
+            else if (args.Length == 1)
+            {
+                Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
+                if (plr != null)
+                {
+                    using (var db = new Database())
+                    {
+                        MySqlCommand cmd = db.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        cmd.Parameters.AddWithValue("@tag", "");
+                        if (cmd.ExecuteNonQuery() == 0)
+                        {
+                            player.SendInfo("Could not remove tag");
+                        }
+                        else
+                        {
+                            plr.Name = plr.Client.Account.Name;
+                            player.SendInfo("Tag succesfully removed");
+                        }
                     }
                 }
                 else

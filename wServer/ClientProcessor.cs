@@ -61,14 +61,7 @@ namespace wServer
 
         public Database Database
         {
-            get { return GetDb(); }
-        }
-
-        private Database GetDb()
-        {
-            if (db == null)
-                return new Database();
-            return db;
+            get { return db; }
         }
 
         public Char Character
@@ -253,18 +246,22 @@ namespace wServer
             if (stage == ProtocalStage.Disconnected)
                 return;
 
-            skt.Close();
-
-            if (account != null)
-                DisconnectFromRealm();
-        }
-
-        public void Dispose()
-        { // NetworkTicker will call this when it removes this from RealmManager.Clients
-            if (db != null)
+            try
             {
-                db.Dispose();
-                db = null;
+                skt.Close();
+
+                if (db != null)
+                {
+                    db.Dispose();
+                    db = null;
+                }
+
+                if (account != null)
+                    DisconnectFromRealm();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
@@ -273,9 +270,12 @@ namespace wServer
             try
             {
                 if (character == null) return;
-                entity.SaveToCharacter();
-                if (entity.Owner.Id != -6)
-                    Database.SaveCharacter(account, character);
+                using (var dbx = new Database())
+                {
+                    entity.SaveToCharacter();
+                    if (entity.Owner.Id != -6)
+                        dbx.SaveCharacter(account, character);
+                }
             }
             catch
             {
@@ -287,8 +287,11 @@ namespace wServer
             try
             {
                 if (character == null) return;
-                if (entity.Owner.Id != -6)
-                    Database.Death(account, character, killer);
+                using (var dbx = new Database())
+                {
+                    if (entity.Owner.Id != -6)
+                        dbx.Death(account, character, killer);
+                }
             }
             catch
             {
@@ -317,7 +320,7 @@ namespace wServer
                 ConnectionFailed(retMsg = "Wrong build version.");
 
             // has valid account?
-            else if ((account = Database.Verify(pkt.GUID, pkt.Password)) == null)
+            else if ((account = db.Verify(pkt.GUID, pkt.Password)) == null)
                 ConnectionFailed(retMsg = "Invalid account.");
 
             // ip banned?
@@ -352,8 +355,10 @@ namespace wServer
 
         private void ProcessHelloPacket(HelloPacket pkt)
         {
-            account = Database.Verify(pkt.GUID, pkt.Password);
-            ip = Database.CheckIp(skt.RemoteEndPoint.ToString().Split(':')[0]);
+            // connect to database
+            db = new Database();
+            account = db.Verify(pkt.GUID, pkt.Password);
+            ip = db.CheckIp(skt.RemoteEndPoint.ToString().Split(':')[0]);
 
             Console.Write(@"Connecting " + ((account == null)? "null":account.Name) + 
                                 "@" + ip.Address + "... ");
@@ -363,6 +368,7 @@ namespace wServer
             if ((msg = OkToConnect(pkt)) != null)
             {
                 Console.WriteLine(msg);
+                account = null;
                 Disconnect();
                 return;
             }
@@ -372,10 +378,9 @@ namespace wServer
 
             // setup client world
             World world = RealmManager.GetWorld(pkt.GameId);
-            //if (world.Id == -6) //Test World
-            //    (world as Test).LoadJson(pkt.MapInfo);
-            //else 
-            if (world.IsLimbo)
+            if (world.Id == -6) //Test World
+                (world as Test).LoadJson(pkt.MapInfo);
+            else if (world.IsLimbo)
                 world = world.GetInstance(this);
             uint seed = (uint)((long)Environment.TickCount * pkt.GUID.GetHashCode()) % uint.MaxValue;
             Random = new wRandom(seed);
@@ -405,8 +410,8 @@ namespace wServer
         {
             int nextCharId = 1;
             int maxChar = 2;
-            nextCharId = Database.GetNextCharId(account);
-            MySqlCommand cmd = Database.CreateQuery();
+            nextCharId = db.GetNextCharId(account);
+            MySqlCommand cmd = db.CreateQuery();
             cmd.CommandText = "SELECT maxCharSlot FROM accounts WHERE id=@accId;";
             cmd.Parameters.AddWithValue("@accId", account.AccountId);
             try
@@ -416,7 +421,7 @@ namespace wServer
             catch
             {
             }
-            cmd = Database.CreateQuery();
+            cmd = db.CreateQuery();
             cmd.CommandText = "SELECT COUNT(id) FROM characters WHERE accId=@accId AND dead = FALSE;";
             cmd.Parameters.AddWithValue("@accId", account.AccountId);
             var currChar = (int) (long) cmd.ExecuteScalar();
@@ -453,7 +458,7 @@ namespace wServer
             };
 
             bool ok = true;
-            cmd = Database.CreateQuery();
+            cmd = db.CreateQuery();
             cmd.Parameters.AddWithValue("@accId", account.AccountId);
             cmd.Parameters.AddWithValue("@charId", nextCharId);
             cmd.Parameters.AddWithValue("@charType", pkt.ObjectType);
@@ -488,7 +493,7 @@ namespace wServer
                                     break;
                             }
                         }
-                        Database.SetBonuses(account.AccountId, account.Bonuses);
+                        db.SetBonuses(account.AccountId, account.Bonuses);
                         character.Equipment = chrEquip;
                     }
                     else
@@ -519,7 +524,7 @@ namespace wServer
                                     break;
                             }
                         }
-                        Database.SetBonuses(IP.Address, IP.Gifts);
+                        db.SetBonuses(IP.Address, IP.Gifts);
                         character.Equipment = chrEquip;
                     }
                     else
@@ -529,7 +534,7 @@ namespace wServer
                 {
                     IP.Gifts = new List<short>();
                 }
-                Database.SaveBackpacks(character, account);
+                db.SaveBackpacks(character, account);
             }
 
             if (ok)
@@ -558,7 +563,7 @@ namespace wServer
 
         private void ProcessLoadPacket(LoadPacket pkt)
         {
-            character = Database.LoadCharacter(account, pkt.CharacterId);
+            character = db.LoadCharacter(account, pkt.CharacterId);
             if (character != null)
             {
                 if (character.Dead)
@@ -603,7 +608,7 @@ namespace wServer
                                         break;
                                 }
                             }
-                            Database.SetBonuses(account.AccountId, account.Bonuses);
+                            db.SetBonuses(account.AccountId, account.Bonuses);
                             character.Equipment = chrEquip;
                         }
                         else
@@ -634,7 +639,7 @@ namespace wServer
                                         break;
                                 }
                             }
-                            Database.SetBonuses(IP.Address, IP.Gifts);
+                            db.SetBonuses(IP.Address, IP.Gifts);
                             character.Equipment = chrEquip;
                         }
                         else
@@ -670,7 +675,7 @@ namespace wServer
 
         private void ProcessChooseNamePacket(ChooseNamePacket pkt)
         {
-            MySqlCommand cmdx = Database.CreateQuery();
+            MySqlCommand cmdx = db.CreateQuery();
             cmdx.CommandText = "SELECT namechosen FROM accounts WHERE id=@accId";
             cmdx.Parameters.AddWithValue("@accId", account.AccountId);
             object execx = cmdx.ExecuteScalar();
@@ -687,7 +692,7 @@ namespace wServer
             }
             else
             {
-                MySqlCommand cmd = Database.CreateQuery();
+                MySqlCommand cmd = db.CreateQuery();
                 cmd.CommandText = "SELECT COUNT(name) FROM accounts WHERE name=@name;";
                 cmd.Parameters.AddWithValue("@name", pkt.Name);
                 object x = cmd.ExecuteScalar();
@@ -699,7 +704,7 @@ namespace wServer
                     });
                 else
                 {
-                    Database.ReadStats(account);
+                    db.ReadStats(account);
                     if (account.Credits < 1000 && namechosen)
                         SendPacket(new NameResultPacket
                         {
@@ -710,7 +715,7 @@ namespace wServer
                     {
                         if (account.NameChosen == false)
                         {
-                            cmd = Database.CreateQuery();
+                            cmd = db.CreateQuery();
                             cmd.CommandText = "UPDATE accounts SET name=@name, namechosen=TRUE WHERE id=@accId;";
                             cmd.Parameters.AddWithValue("@accId", account.AccountId);
                             cmd.Parameters.AddWithValue("@name", pkt.Name);
@@ -734,13 +739,13 @@ namespace wServer
                         }
                         else
                         {
-                            cmd = Database.CreateQuery();
+                            cmd = db.CreateQuery();
                             cmd.CommandText = "UPDATE accounts SET name=@name, namechosen=TRUE WHERE id=@accId;";
                             cmd.Parameters.AddWithValue("@accId", account.AccountId);
                             cmd.Parameters.AddWithValue("@name", pkt.Name);
                             if (cmd.ExecuteNonQuery() > 0)
                             {
-                                entity.Credits = Database.UpdateCredit(account, -1000);
+                                entity.Credits = db.UpdateCredit(account, -1000);
                                 entity.Name = pkt.Name;
                                 entity.NameChosen = true;
                                 entity.UpdateCount++;
@@ -800,18 +805,21 @@ namespace wServer
         {
             string msg = pkt.Message;
 
-            var acc = Database.Verify(pkt.Username, pkt.Password);
-            if (acc == null) return;
-            if (acc.Rank >= 5)
+            using (var dbx = new Database())
             {
-                foreach (ClientProcessor i in RealmManager.Clients.Values)
-                    i.SendPacket(new TextPacket
-                    {
-                        BubbleTime = 0,
-                        Stars = -1,
-                        Name = "#" + acc.Name,
-                        Text = " " + msg
-                    });
+                var acc = dbx.Verify(pkt.Username, pkt.Password);
+                if (acc == null) return;
+                if (acc.Rank >= 5)
+                {
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
+                        i.SendPacket(new TextPacket
+                        {
+                            BubbleTime = 0,
+                            Stars = -1,
+                            Name = "#" + acc.Name,
+                            Text = " " + msg
+                        });
+                }
             }
         }
 

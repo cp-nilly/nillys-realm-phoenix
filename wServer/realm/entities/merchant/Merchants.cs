@@ -125,34 +125,36 @@ namespace wServer.realm.entities
 
         protected bool TryDeduct(Player player)
         {
-            var dbx = player.Client.Database;
-            Account acc = player.Client.Account;
-            dbx.ReadStats(acc);
-            if (!player.NameChosen) return false;
-            if (player.Stars < RankReq) return false;
+            using (var db = new Database())
+            {
+                Account acc = player.Client.Account;
+                db.ReadStats(acc);
+                if (!player.NameChosen) return false;
+                if (player.Stars < RankReq) return false;
 
-            if (truePrice.Item2 == CurrencyType.Fame)
-            {
-                if (acc.Stats.Fame < truePrice.Item1) return false;
-                player.CurrentFame = acc.Stats.Fame = dbx.UpdateFame(acc, -truePrice.Item1);
-                player.UpdateCount++;
+                if (truePrice.Item2 == CurrencyType.Fame)
+                {
+                    if (acc.Stats.Fame < truePrice.Item1) return false;
+                    player.CurrentFame = acc.Stats.Fame = db.UpdateFame(acc, -truePrice.Item1);
+                    player.UpdateCount++;
+                    return true;
+                }
+                if (truePrice.Item2 == CurrencyType.Gold)
+                {
+                    if (acc.Credits < truePrice.Item1) return false;
+                    player.Credits = acc.Credits = db.UpdateCredit(acc, -truePrice.Item1);
+                    player.UpdateCount++;
+                    return true;
+                }
+                if (truePrice.Item2 == CurrencyType.zToken)
+                {
+                    if (acc.zTokens < truePrice.Item1) return false;
+                    player.zTokens = acc.zTokens = db.UpdateZToken(acc, -truePrice.Item1);
+                    player.UpdateCount++;
+                    return true;
+                }
                 return true;
             }
-            if (truePrice.Item2 == CurrencyType.Gold)
-            {
-                if (acc.Credits < truePrice.Item1) return false;
-                player.Credits = acc.Credits = dbx.UpdateCredit(acc, -truePrice.Item1);
-                player.UpdateCount++;
-                return true;
-            }
-            if (truePrice.Item2 == CurrencyType.zToken)
-            {
-                if (acc.zTokens < truePrice.Item1) return false;
-                player.zTokens = acc.zTokens = dbx.UpdateZToken(acc, -truePrice.Item1);
-                player.UpdateCount++;
-                return true;
-            }
-            return true;
         }
 
         public override void Buy(Player player)

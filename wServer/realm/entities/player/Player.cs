@@ -91,8 +91,11 @@ namespace wServer.realm.entities.player
             //Ignored = psr.Account.Ignored ?? new List<int>();
             try
             {
-                Locked = Client.Database.GetLockeds(AccountId);
-                Ignored = Client.Database.GetIgnoreds(AccountId);
+                using (var dbx = new Database())
+                { // auto dispose so don't need to dispose here
+                    Locked = dbx.GetLockeds(AccountId);
+                    Ignored = dbx.GetIgnoreds(AccountId);
+                }
             }
             catch
             {
@@ -1380,8 +1383,9 @@ namespace wServer.realm.entities.player
         private void MaxPotionOnDeath(List<string> maxed)
         {
             maxed.Shuffle();
-            Client.Account.Bonuses.Add(XmlDatas.IdToType["Potion of Max " + maxed[0]]);
-            Client.Database.SetBonuses(psr.Account.AccountId, psr.Account.Bonuses);
+            psr.Account.Bonuses.Add(XmlDatas.IdToType["Potion of Max " + maxed[0]]);
+            using (var dbx = new Database())
+                dbx.SetBonuses(psr.Account.AccountId, psr.Account.Bonuses);
             maxed.RemoveAt(0);
         }
     }

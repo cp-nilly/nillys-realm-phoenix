@@ -1192,7 +1192,8 @@ namespace wServer.realm.entities.player
                                 bps = i.Key;
                         }
                         psr.Character.Backpacks.Add(bps + 1, new short[] {-1, -1, -1, -1, -1, -1, -1, -1});
-                        Client.Database.SaveBackpacks(psr.Character, psr.Account);
+                        using (var db = new Database())
+                            db.SaveBackpacks(psr.Character, psr.Account);
                         SendInfo("Added backpack #" + (bps + 1));
                     }
                         break;
@@ -1264,7 +1265,8 @@ namespace wServer.realm.entities.player
                         break;
                     case ActivateEffects.Fame:
                     {
-                        CurrentFame = psr.Account.Stats.Fame = Client.Database.UpdateFame(psr.Account, eff.Amount);
+                        using (var db = new Database())
+                            CurrentFame = psr.Account.Stats.Fame = db.UpdateFame(psr.Account, eff.Amount);
                     }
                         break;
                     case ActivateEffects.SamuraiAbility:

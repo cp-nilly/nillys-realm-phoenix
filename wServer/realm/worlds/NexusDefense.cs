@@ -415,23 +415,26 @@ namespace wServer.realm.worlds
                     {
                         if (monstervalue != 0)
                         {
-                            foreach (var i in Players)
+                            using (var db = new Database())
                             {
-                                i.Value.CurrentFame =
-                                    i.Value.Client.Account.Stats.Fame =
-                                        i.Value.Client.Database.UpdateFame(i.Value.Client.Account, (int)monstervalue);
-                                i.Value.UpdateCount++;
-                                i.Value.Client.SendPacket(new NotificationPacket
+                                foreach (var i in Players)
                                 {
-                                    Color = new ARGB(0xFFFF6600),
-                                    ObjectId = i.Value.Id,
-                                    Text = "+" + (int)monstervalue + " Fame"
-                                });
-                                if (Math.IEEERemainder(monstervalue, 1000) == 0)
-                                {
-                                    i.Value.Credits =
-                                        i.Value.Client.Account.Credits = i.Value.Client.Database.UpdateCredit(i.Value.Client.Account, 1);
+                                    i.Value.CurrentFame =
+                                        i.Value.Client.Account.Stats.Fame =
+                                            db.UpdateFame(i.Value.Client.Account, (int)monstervalue);
                                     i.Value.UpdateCount++;
+                                    i.Value.Client.SendPacket(new NotificationPacket
+                                    {
+                                        Color = new ARGB(0xFFFF6600),
+                                        ObjectId = i.Value.Id,
+                                        Text = "+" + (int)monstervalue + " Fame"
+                                    });
+                                    if (Math.IEEERemainder(monstervalue, 1000) == 0)
+                                    {
+                                        i.Value.Credits =
+                                            i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                        i.Value.UpdateCount++;
+                                    }
                                 }
                             }
                             Countdown(5);

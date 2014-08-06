@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using db;
 using db.data;
-using wServer.realm.entities.player;
 using wServer.svrPackets;
 
 #endregion
@@ -210,23 +209,25 @@ namespace wServer.realm.worlds
                         {
                             FamePot = (Wave / 4) * 10;
                         }
-                        foreach (var i in Players)
+                        using (var db = new Database())
                         {
-                            var db = i.Value.Client.Database;
-                            i.Value.CurrentFame =
-                                i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, FamePot);
-                            i.Value.UpdateCount++;
-                            i.Value.Client.SendPacket(new NotificationPacket
+                            foreach (var i in Players)
                             {
-                                Color = new ARGB(0xFFFF6600),
-                                ObjectId = i.Value.Id,
-                                Text = "+" + FamePot + " Fame"
-                            });
-                            if (Math.IEEERemainder(Wave, 15) == 0)
-                            {
-                                i.Value.Credits =
-                                    i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                i.Value.CurrentFame =
+                                    i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, FamePot);
                                 i.Value.UpdateCount++;
+                                i.Value.Client.SendPacket(new NotificationPacket
+                                {
+                                    Color = new ARGB(0xFFFF6600),
+                                    ObjectId = i.Value.Id,
+                                    Text = "+" + FamePot + " Fame"
+                                });
+                                if (Math.IEEERemainder(Wave, 15) == 0)
+                                {
+                                    i.Value.Credits =
+                                        i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, 1);
+                                    i.Value.UpdateCount++;
+                                }
                             }
                         }
                         var Invincible = new ConditionEffect();
