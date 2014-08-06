@@ -41,24 +41,22 @@ namespace wServer.realm.entities.player
             //    list.Add(accId);
             //else
             //    list.Remove(accId);
-            using (var dbx = new Database())
+            var dbx = Client.Database;
+            if (pkt.Add)
             {
-                if (pkt.Add)
-                {
-                    list.Add(accId);
-                    if (pkt.AccountListId == LOCKED_LIST_ID)
-                        dbx.AddLock(psr.Account.AccountId, accId);
-                    if (pkt.AccountListId == IGNORED_LIST_ID)
-                        dbx.AddIgnore(psr.Account.AccountId, accId);
-                }
-                else
-                {
-                    list.Remove(accId);
-                    if (pkt.AccountListId == LOCKED_LIST_ID)
-                        dbx.RemoveLock(psr.Account.AccountId, accId);
-                    if (pkt.AccountListId == IGNORED_LIST_ID)
-                        dbx.RemoveIgnore(psr.Account.AccountId, accId);
-                }
+                list.Add(accId);
+                if (pkt.AccountListId == LOCKED_LIST_ID)
+                    dbx.AddLock(psr.Account.AccountId, accId);
+                if (pkt.AccountListId == IGNORED_LIST_ID)
+                    dbx.AddIgnore(psr.Account.AccountId, accId);
+            }
+            else
+            {
+                list.Remove(accId);
+                if (pkt.AccountListId == LOCKED_LIST_ID)
+                    dbx.RemoveLock(psr.Account.AccountId, accId);
+                if (pkt.AccountListId == IGNORED_LIST_ID)
+                    dbx.RemoveIgnore(psr.Account.AccountId, accId);
             }
             
             SendAccountList(list, pkt.AccountListId);
@@ -67,9 +65,8 @@ namespace wServer.realm.entities.player
         public bool IsUserInLegends()
         {
             //Week
-            using (var db = new Database())
+            using (var cmd = Client.Database.CreateQuery())
             {
-                var cmd = db.CreateQuery();
                 cmd.CommandText = "SELECT * FROM death WHERE (time >= DATE_SUB(NOW(), INTERVAL 1 WEEK)) ORDER BY totalFame DESC LIMIT 10;";
                 using (var rdr = cmd.ExecuteReader())
                     while (rdr.Read())
@@ -77,18 +74,17 @@ namespace wServer.realm.entities.player
             }
 
             //Month
-            using (var db = new Database())
+            using (var cmd = Client.Database.CreateQuery())
             {
-                var cmd = db.CreateQuery();
                 cmd.CommandText = "SELECT * FROM death WHERE (time >= DATE_SUB(NOW(), INTERVAL 1 MONTH)) ORDER BY totalFame DESC LIMIT 10;";
                 using (var rdr = cmd.ExecuteReader())
                     while (rdr.Read())
                         if (rdr.GetInt32("accId") == AccountId) return true;
             }
+
             //All Time
-            using (var db = new Database())
+            using (var cmd = Client.Database.CreateQuery())
             {
-                var cmd = db.CreateQuery();
                 cmd.CommandText = "SELECT * FROM death WHERE TRUE ORDER BY totalFame DESC LIMIT 10;";
                 using (var rdr = cmd.ExecuteReader())
                     while (rdr.Read())

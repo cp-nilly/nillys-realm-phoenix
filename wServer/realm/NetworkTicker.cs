@@ -36,8 +36,9 @@ namespace wServer.realm
                 foreach (var i in RealmManager.Clients.Where(
                     i => i.Value.Stage == ProtocalStage.Disconnected))
                 {
-                    ClientProcessor dummyPsr;
-                    RealmManager.Clients.TryRemove(i.Key, out dummyPsr);
+                    ClientProcessor psr;
+                    RealmManager.Clients.TryRemove(i.Key, out psr);
+                    psr.Dispose();
                 }
 
                 Tuple<ClientProcessor, Packet> work; //Action<RealmTime>> work;

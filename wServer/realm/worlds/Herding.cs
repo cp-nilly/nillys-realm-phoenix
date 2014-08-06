@@ -129,30 +129,27 @@ namespace wServer.realm.worlds
                     var div = (int) Math.Ceiling((double) (FamePot/Players.Count));
                     double golddivider = HerdedSheep/20;
                     var tokens = (int) Math.Floor(golddivider);
-                    using (var db = new Database())
+                    BroadcastPacket(new TextPacket
                     {
-                        BroadcastPacket(new TextPacket
+                        BubbleTime = 0,
+                        Stars = -1,
+                        Name = "#Sheep Herding",
+                        Text = "Time's up! You each win " + div + " fame!"
+                    }, null);
+                    foreach (var i in Players)
+                    {
+                        i.Value.CurrentFame =
+                            i.Value.Client.Account.Stats.Fame = i.Value.Client.Database.UpdateFame(i.Value.Client.Account, div);
+                        i.Value.UpdateCount++;
+                        i.Value.Client.SendPacket(new NotificationPacket
                         {
-                            BubbleTime = 0,
-                            Stars = -1,
-                            Name = "#Sheep Herding",
-                            Text = "Time's up! You each win " + div + " fame!"
-                        }, null);
-                        foreach (var i in Players)
-                        {
-                            i.Value.CurrentFame =
-                                i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, div);
-                            i.Value.UpdateCount++;
-                            i.Value.Client.SendPacket(new NotificationPacket
-                            {
-                                ObjectId = i.Value.Id,
-                                Color = new ARGB(0xFFFF6600),
-                                Text = "+" + div + " Fame"
-                            });
-                            i.Value.Credits =
-                                i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, tokens);
-                            i.Value.UpdateCount++;
-                        }
+                            ObjectId = i.Value.Id,
+                            Color = new ARGB(0xFFFF6600),
+                            Text = "+" + div + " Fame"
+                        });
+                        i.Value.Credits =
+                            i.Value.Client.Account.Credits = i.Value.Client.Database.UpdateCredit(i.Value.Client.Account, tokens);
+                        i.Value.UpdateCount++;
                     }
                     foreach (var i in Enemies)
                         if (!i.Value.isPet)

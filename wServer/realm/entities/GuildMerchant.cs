@@ -43,25 +43,23 @@ namespace wServer.realm.entities
 
         public override void Buy(Player player)
         {
-            using (var dbx = new Database())
+            var dbx = player.Client.Database;
+            if (dbx.GetGuild(dbx.GetGuildId(player.Guild)).GuildFame >= Price)
             {
-                if (dbx.GetGuild(dbx.GetGuildId(player.Guild)).GuildFame >= Price)
+                dbx.DetractGuildFame(dbx.GetGuildId(player.Guild), Price);
+                dbx.ChangeGuildLevel(dbx.GetGuildId(player.Guild), nextLevel);
+                player.Client.SendPacket(new BuyResultPacket
                 {
-                    dbx.DetractGuildFame(dbx.GetGuildId(player.Guild), Price);
-                    dbx.ChangeGuildLevel(dbx.GetGuildId(player.Guild), nextLevel);
-                    player.Client.SendPacket(new BuyResultPacket
-                    {
-                        Message = "Upgrade successful! Please leave the Guild Hall to have it upgraded",
-                        Result = 0
-                    });
-                }
-                else
-                    player.Client.SendPacket(new BuyResultPacket
-                    {
-                        Message = "Not enough Guild Fame!",
-                        Result = 9
-                    });
+                    Message = "Upgrade successful! Please leave the Guild Hall to have it upgraded",
+                    Result = 0
+                });
             }
+            else
+                player.Client.SendPacket(new BuyResultPacket
+                {
+                    Message = "Not enough Guild Fame!",
+                    Result = 9
+                });
         }
     }
 }

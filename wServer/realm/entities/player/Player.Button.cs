@@ -79,9 +79,7 @@ namespace wServer.realm.entities.player
                         SendError("You cannot ban someone higher than you!");
                         return;
                     }
-                    MySqlCommand cmd;
-                    using (var db = new Database())
-                        cmd = db.CreateQuery();
+                    MySqlCommand cmd = Client.Database.CreateQuery();
                     cmd.CommandText = "UPDATE accounts SET banned=1, rank=0 WHERE name=@name";
                     cmd.Parameters.AddWithValue("@name", target.Client.Account.Name);
                     if (cmd.ExecuteNonQuery() == 0)
@@ -113,9 +111,7 @@ namespace wServer.realm.entities.player
                     }
                     
                     string address = target.Client.IP.Address;
-                    MySqlCommand cmd;
-                    using (var db = new Database())
-                        cmd = db.CreateQuery();
+                    MySqlCommand cmd = Client.Database.CreateQuery();
                     cmd.CommandText = "UPDATE ips SET banned=1 WHERE ip=@Adress";
                     cmd.Parameters.AddWithValue("Adress", target.Client.IP.Address);
                     if (cmd.ExecuteNonQuery() == 0)
@@ -163,8 +159,7 @@ namespace wServer.realm.entities.player
                 {
                     if (Client.Account.Stats.Fame >= 150)
                     {
-                        using (var db = new Database())
-                            db.UpdateFame(psr.Account, -150);
+                        Client.Database.UpdateFame(psr.Account, -150);
 
                         World world = RealmManager.GetWorld(World.NEXUS_ID);
                         bool fworld = false;
@@ -235,8 +230,7 @@ namespace wServer.realm.entities.player
                 {
                     if (Client.Account.Stats.Fame >= 500)
                     {
-                        using (var db = new Database())
-                            db.UpdateFame(psr.Account, -500);
+                        Client.Database.UpdateFame(psr.Account, -500);
 
                         World world = RealmManager.GetWorld(World.NEXUS_ID);
                         bool fworld = false;
@@ -276,8 +270,7 @@ namespace wServer.realm.entities.player
                 {
                     if (Client.Account.Stats.Fame >= 100)
                     {
-                        using (var db = new Database())
-                            db.UpdateFame(psr.Account, -100);
+                        Client.Database.UpdateFame(psr.Account, -100);
 
                         World world = RealmManager.GetWorld(World.NEXUS_ID);
                         bool fworld = false;

@@ -60,77 +60,31 @@ namespace wServer.realm.entities
 
         protected bool TryDeduct(Player player)
         {
-            using (var db = new Database())
-            {
-                Account acc = player.Client.Account;
-                db.ReadStats(acc);
-                if (!player.NameChosen) return false;
+            var db = player.Client.Database;
+            Account acc = player.Client.Account;
+            db.ReadStats(acc);
+            if (!player.NameChosen) return false;
 
-                if (Currency == CurrencyType.Fame)
-                {
-                    if (acc.Stats.Fame < Price) return false;
-                    player.CurrentFame = acc.Stats.Fame = db.UpdateFame(acc, -Price);
-                    player.UpdateCount++;
-                    return true;
-                }
-                if (acc.Credits < Price) return false;
-                player.Credits = acc.Credits = db.UpdateCredit(acc, -Price);
+            if (Currency == CurrencyType.Fame)
+            {
+                if (acc.Stats.Fame < Price) return false;
+                player.CurrentFame = acc.Stats.Fame = db.UpdateFame(acc, -Price);
                 player.UpdateCount++;
                 return true;
             }
+            if (acc.Credits < Price) return false;
+            player.Credits = acc.Credits = db.UpdateCredit(acc, -Price);
+            player.UpdateCount++;
+            return true;
         }
 
         public virtual void Buy(Player player)
         {
-            using (var db = new Database())
+            var db = player.Client.Database;
+            if (ObjectType == 0x0505) //Vault chest
             {
-                if (ObjectType == 0x0505) //Vault chest
+                if (db.ReadVault(player.Client.Account).Chests.Count < player.maxChests)
                 {
-                    if (db.ReadVault(player.Client.Account).Chests.Count < player.maxChests)
-                    {
-                        if (TryDeduct(player))
-                        {
-                            VaultChest chest = db.CreateChest(player.Client.Account);
-                            (Owner as Vault).AddChest(chest, this);
-                            player.Client.SendPacket(new BuyResultPacket
-                            {
-                                Result = 0,
-                                Message = "Vault Chest Bought!"
-                            });
-                        }
-                        else
-                            player.Client.SendPacket(new BuyResultPacket
-                            {
-                                Result = BUY_NO_FAME,
-                                Message = "Not enough fame!"
-                            });
-                    }
-                    else if (db.ReadVault(player.Client.Account).Chests.Count == player.maxChests)
-                    {
-                        foreach (ClientProcessor i in RealmManager.Clients.Values)
-                            i.SendPacket(new NotificationPacket
-                            {
-                                Color = new ARGB(0xff00ff00),
-                                ObjectId = player.Id,
-                                Text = "Vault is Full"
-                            });
-                    }
-                }
-                if (ObjectType == 0x700a) //Slots Machine
-                {
-                    player.Client.SendPacket(new TextBoxPacket
-                    {
-                        Button1 = "Yes",
-                        Button2 = "No",
-                        Message = "Do you want to put 10 fame into the slot machine?",
-                        Title = "Slot Machine Confirmation",
-                        Type = "SlotMachine1"
-                    });
-                }
-                else if (ObjectType == 0x195f) //Vault Chest Gold
-                {
-                    //if (db.ReadVault(player.Client.Account).Chests.Count < 64)
-                    //{
                     if (TryDeduct(player))
                     {
                         VaultChest chest = db.CreateChest(player.Client.Account);
@@ -144,19 +98,61 @@ namespace wServer.realm.entities
                     else
                         player.Client.SendPacket(new BuyResultPacket
                         {
-                            Result = BUY_NO_GOLD,
-                            Message = "Not enough gold!"
+                            Result = BUY_NO_FAME,
+                            Message = "Not enough fame!"
                         });
-                    /*}
-                    else
-                    {
-                        player.Client.SendPacket(new BuyResultPacket()
-                        {
-                            Result = 0,
-                            Message = "You have a full vault!"
-                        });
-                    }*/
                 }
+                else if (db.ReadVault(player.Client.Account).Chests.Count == player.maxChests)
+                {
+                    foreach (ClientProcessor i in RealmManager.Clients.Values)
+                        i.SendPacket(new NotificationPacket
+                        {
+                            Color = new ARGB(0xff00ff00),
+                            ObjectId = player.Id,
+                            Text = "Vault is Full"
+                        });
+                }
+            }
+            if (ObjectType == 0x700a) //Slots Machine
+            {
+                player.Client.SendPacket(new TextBoxPacket
+                {
+                    Button1 = "Yes",
+                    Button2 = "No",
+                    Message = "Do you want to put 10 fame into the slot machine?",
+                    Title = "Slot Machine Confirmation",
+                    Type = "SlotMachine1"
+                });
+            }
+            else if (ObjectType == 0x195f) //Vault Chest Gold
+            {
+                //if (db.ReadVault(player.Client.Account).Chests.Count < 64)
+                //{
+                if (TryDeduct(player))
+                {
+                    VaultChest chest = db.CreateChest(player.Client.Account);
+                    (Owner as Vault).AddChest(chest, this);
+                    player.Client.SendPacket(new BuyResultPacket
+                    {
+                        Result = 0,
+                        Message = "Vault Chest Bought!"
+                    });
+                }
+                else
+                    player.Client.SendPacket(new BuyResultPacket
+                    {
+                        Result = BUY_NO_GOLD,
+                        Message = "Not enough gold!"
+                    });
+                /*}
+                else
+                {
+                    player.Client.SendPacket(new BuyResultPacket()
+                    {
+                        Result = 0,
+                        Message = "You have a full vault!"
+                    });
+                }*/
             }
         }
     }

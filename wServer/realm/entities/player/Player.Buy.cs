@@ -17,7 +17,7 @@ namespace wServer.realm.entities.player
 
         public void CheckCredits(RealmTime t, CheckCreditsPacket pkt)
         {
-            psr.Database.ReadStats(psr.Account);
+            Client.Database.ReadStats(psr.Account);
             Credits = psr.Account.Credits;
             UpdateCount++;
         }

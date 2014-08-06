@@ -195,22 +195,20 @@ namespace wServer.realm.worlds
                             var tokens = (int) Math.Floor(golddivider);
                             foreach (var i in Players)
                             {
-                                using (var db = new Database())
+                                var db = i.Value.Client.Database;
+                                i.Value.CurrentFame =
+                                i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, famePot);
+                                i.Value.UpdateCount++;
+                                i.Value.Client.SendPacket(new NotificationPacket
                                 {
-                                    i.Value.CurrentFame =
-                                    i.Value.Client.Account.Stats.Fame = db.UpdateFame(i.Value.Client.Account, famePot);
-                                    i.Value.UpdateCount++;
-                                    i.Value.Client.SendPacket(new NotificationPacket
-                                    {
-                                        ObjectId = i.Value.Id,
-                                        Color = new ARGB(0xFFFF6600),
-                                        Text = "+" + famePot + " Fame"
-                                    });
-                                    i.Value.Credits =
-                                        i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, tokens);
-                                    i.Value.UpdateCount++;
-                                    Flags["counting"] = true;
-                                }
+                                    ObjectId = i.Value.Id,
+                                    Color = new ARGB(0xFFFF6600),
+                                    Text = "+" + famePot + " Fame"
+                                });
+                                i.Value.Credits =
+                                    i.Value.Client.Account.Credits = db.UpdateCredit(i.Value.Client.Account, tokens);
+                                i.Value.UpdateCount++;
+                                Flags["counting"] = true;
                             }
                             foreach (var i in Enemies)
                             {
