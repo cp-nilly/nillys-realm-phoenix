@@ -32,9 +32,9 @@ namespace db
         {
             _con = Testing
                 ? new MySqlConnection( /* Testing = true; */
-                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=15;max pool size=100;")
+                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=15;max pool size=500;")
                 : new MySqlConnection( /* Testing = false; */
-                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=15;max pool size=100;");
+                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=15;max pool size=500;");
             _con.Open();
         }
 
