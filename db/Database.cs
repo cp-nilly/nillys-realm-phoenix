@@ -26,7 +26,7 @@ namespace db
             "Vorck", "Vorv", "Yangu", "Yimi", "Zhiar"
         };
 
-        private MySqlConnection _con;
+        private readonly MySqlConnection _con;
 
         public Database()
         {
@@ -40,11 +40,20 @@ namespace db
 
         public void Dispose()
         {
-            if (_con != null)
+            Dispose(true);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                _con.Close();
-                _con = null;
+                if (_con.State == ConnectionState.Open)
+                {
+                    _con.Close();
+                    _con.Dispose();
+                }
             }
+            //GC.SuppressFinalize(this);//Updated
         }
 
         private static string UppercaseFirst(string s)
