@@ -9,7 +9,6 @@ C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\db.pdb
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\Ionic.Zlib.dll
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\MySql.Data.dll
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.pdb
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.csprojResolveAssemblyReference.cache
 C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_boned_dagger.png
 C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_double_doom_bow.png
 C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_red_demon_blade.png
@@ -22,3 +21,4 @@ C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\MySql.Data.d
 C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\obj\Debug\db.csprojResolveAssemblyReference.cache
 C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\obj\Debug\db.dll
 C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\obj\Debug\db.pdb
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.csprojResolveAssemblyReference.cache
