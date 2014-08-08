@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server", "server\server.csproj", "{205FBF65-3677-4A3F-A0F2-3D0C4C647184}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wServer", "wServer\wServer.csproj", "{D791B2A2-F79D-4872-B6FF-EF5B4FE52ADA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "db", "db\db.csproj", "{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}"
@@ -17,16 +19,16 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{205FBF65-3677-4A3F-A0F2-3D0C4C647184}.Release|x86.ActiveCfg = Release|Any CPU
 		{D791B2A2-F79D-4872-B6FF-EF5B4FE52ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D791B2A2-F79D-4872-B6FF-EF5B4FE52ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D791B2A2-F79D-4872-B6FF-EF5B4FE52ADA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -37,13 +39,21 @@ Global
 		{D791B2A2-F79D-4872-B6FF-EF5B4FE52ADA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D791B2A2-F79D-4872-B6FF-EF5B4FE52ADA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D791B2A2-F79D-4872-B6FF-EF5B4FE52ADA}.Release|x86.ActiveCfg = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = wServer\wServer.csproj
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = wServer\wServer.csproj
 	EndGlobalSection
 EndGlobal
