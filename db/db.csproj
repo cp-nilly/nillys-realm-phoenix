@@ -68,15 +68,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
-    <Compile Include="data\Descriptors.cs">
+    <Compile Include="Descriptors.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="data\XmlDatas.cs">
+    <Compile Include="XmlDatas.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FameStats.cs" />
     <Compile Include="Database.Guilds.cs" />
-    <Compile Include="memorystore\MemoryStore.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="NReader.cs" />
     <Compile Include="NWriter.cs" />
@@ -85,32 +84,14 @@
     <Compile Include="WeakDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="data\donatorpets.xml">
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="data\*.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="texture\_boned_dagger.png">
+    <EmbeddedResource Include="texture\*.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="texture\_double_doom_bow.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="texture\_red_demon_blade.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EmbeddedResource Include="data\addition2.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\item.xml">
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="struct.sql" />
     <Content Include="objects.txt" />
-    <Content Include="texture\_beer_god.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="texture\_dark_fire.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -128,99 +109,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="data\addition.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat0.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat1.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat10.xml" />
-    <EmbeddedResource Include="data\dat11.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat12.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat13.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat14.xml" />
-    <EmbeddedResource Include="data\dat15.xml" />
-    <EmbeddedResource Include="data\dat16.xml" />
-    <EmbeddedResource Include="data\dat17.xml" />
-    <EmbeddedResource Include="data\dat18.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat19.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat2.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat20.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat21.xml" />
-    <EmbeddedResource Include="data\dat22.xml" />
-    <EmbeddedResource Include="data\dat23.xml" />
-    <EmbeddedResource Include="data\dat24.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat25.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat26.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat27.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat28.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat29.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat3.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat30.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat31.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat32.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat33.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat34.xml" />
-    <EmbeddedResource Include="data\dat35.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat4.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat5.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat6.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat7.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat8.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="data\dat9.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

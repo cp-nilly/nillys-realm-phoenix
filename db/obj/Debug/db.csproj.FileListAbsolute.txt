@@ -1,24 +1,53 @@
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.dll
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_boned_dagger.png
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_double_doom_bow.png
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_red_demon_blade.png
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_beer_god.png
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_dark_fire.png
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\db.dll
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\db.pdb
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\Ionic.Zlib.dll
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\MySql.Data.dll
-C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.pdb
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_boned_dagger.png
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_double_doom_bow.png
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_red_demon_blade.png
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_beer_god.png
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\texture\_dark_fire.png
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\db.dll
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\db.pdb
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\Ionic.Zlib.dll
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\bin\Debug\MySql.Data.dll
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\obj\Debug\db.csprojResolveAssemblyReference.cache
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\obj\Debug\db.dll
-C:\Users\Alec\Google Drive\Projects\rotmg_world_server\db\obj\Debug\db.pdb
 C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.csprojResolveAssemblyReference.cache
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.dll
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\obj\Debug\db.pdb
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\addition.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\addition2.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat0.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat1.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat10.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat11.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat12.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat13.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat14.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat15.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat16.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat17.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat18.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat19.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat2.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat20.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat21.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat22.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat23.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat24.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat25.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat26.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat27.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat28.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat29.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat3.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat30.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat31.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat32.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat33.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat34.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat35.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat4.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat5.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat6.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat7.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat8.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\dat9.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\donatorpets.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\data\item.xml
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\BeerGod.png
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_beer_god.png
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_boned_dagger.png
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_dark_fire.png
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_double_doom_bow.png
+C:\Users\cjpee_000\Dropbox\workspaces\git\rotmg_world_server\db\bin\Debug\texture\_red_demon_blade.png
