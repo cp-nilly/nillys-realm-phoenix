@@ -3,9 +3,9 @@ using System.Text;
 
 namespace server.account
 {
-    internal class forgotPassword : IRequestHandler
+    internal class forgotPassword : RequestHandler
     {
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             byte[] status =
                 Encoding.UTF8.GetBytes("<Error>This function has been disabled, please contact a server admin.</Error>");

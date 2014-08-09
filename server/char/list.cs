@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -10,9 +11,9 @@ using common;
 
 namespace server.@char
 {
-    internal class list : IRequestHandler
+    internal class list : RequestHandler
     {
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             NameValueCollection query;
             using (var rdr = new StreamReader(context.Request.InputStream))
@@ -25,13 +26,9 @@ namespace server.@char
                 if (a != null)
                 {
                     if (a.Banned)
-                    {
                         filteredServers = YoureBanned();
-                    }
                     else
-                    {
                         filteredServers = GetServersForRank(a.Rank);
-                    }
                 }
                 else
                 {
@@ -73,14 +70,10 @@ namespace server.@char
             }
         }
 
-        public static List<ServerItem> GetServersForRank(int r)
+        static List<ServerItem> GetServersForRank(int r)
         {
-            List<ServerItem> slist = GetServers();
-            var removedServers = new List<ServerItem>();
-
-            foreach (ServerItem i in slist)
-                if (i.RankRequired > r)
-                    removedServers.Add(i);
+            List<ServerItem> slist = GetServerList();
+            var removedServers = slist.Where(i => i.RankRequired > r).ToList();
 
             foreach (ServerItem i in removedServers)
                 slist.Remove(i);
@@ -88,38 +81,27 @@ namespace server.@char
             return slist;
         }
 
-        public static List<ServerItem> GetServers()
+        static List<ServerItem> GetServerList()
         {
-            var Servers
-                = new List<ServerItem>
+            var ret = new List<ServerItem>();
+            int num = Program.Settings.GetValue<int>("svrNum");
+            for (int i = 0; i < num; i++)
+                ret.Add(new ServerItem()
                 {
-                    new ServerItem
-                    {
-                        Name = "Frisco",
-                        Lat = 22.28,
-                        Long = 114.16,
-                        DNS = "104.131.128.4",
-                        Usage = 0.2,
-                        AdminOnly = false,
-                        RankRequired = 0
-                    },
-					new ServerItem
-                    {
-                        Name = "localhost",
-                        Lat = 22.28,
-                        Long = 114.16,
-                        DNS = "127.0.0.1",
-                        Usage = 0.2,
-                        AdminOnly = false,
-                        RankRequired = 0
-                    }
-                };
-            return Servers;
+                    Name = Program.Settings.GetValue("svr" + i + "Name"),
+                    Lat = Program.Settings.GetValue<int>("svr" + i + "Lat", "0"),
+                    Long = Program.Settings.GetValue<int>("svr" + i + "Long", "0"),
+                    DNS = Program.Settings.GetValue("svr" + i + "Adr", "127.0.0.1"),
+                    Usage = 0.2,
+                    AdminOnly = Program.Settings.GetValue<bool>("svr" + i + "Admin", "false"),
+                    RankRequired = Program.Settings.GetValue<int>("svr" + i + "Rank", "0")
+                });
+            return ret;
         }
 
-        public static List<ServerItem> YoureBanned()
+        static List<ServerItem> YoureBanned()
         {
-            var Servers
+            var servers
                 = new List<ServerItem>
                 {
                     new ServerItem
@@ -132,7 +114,7 @@ namespace server.@char
                         AdminOnly = false
                     }
                 };
-            return Servers;
+            return servers;
         }
     }
 }

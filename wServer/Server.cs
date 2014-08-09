@@ -16,15 +16,18 @@ namespace wServer
         static ILog log = LogManager.GetLogger(typeof(Server));
 
         public Socket Socket { get; private set; }
+        private int _port;
+
         public Server(int port)
         {
+            _port = port;
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
         public void Start()
         {
             log.Info("Starting server...");
-            Socket.Bind(new IPEndPoint(IPAddress.Any, 2050));
+            Socket.Bind(new IPEndPoint(IPAddress.Any, _port));
             Socket.Listen(0xff);
             Socket.BeginAccept(Listen, null);
         }

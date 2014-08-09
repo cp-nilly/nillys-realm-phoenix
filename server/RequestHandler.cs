@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Net;
+using common;
 using server.account;
 using server.@char;
 using server.credits;
@@ -8,14 +12,19 @@ using server.picture;
 
 namespace server
 {
-    internal interface IRequestHandler
+    abstract class RequestHandler
     {
-        void HandleRequest(HttpListenerContext context);
+        public abstract void HandleRequest(HttpListenerContext context);
+        protected void Write(HttpListenerContext txt, string val)
+        {
+            var buff = Encoding.UTF8.GetBytes(val);
+            txt.Response.OutputStream.Write(buff, 0, buff.Length);
+        }
     }
 
-    internal static class RequestHandlers
+    static class RequestHandlers
     {
-        public static readonly Dictionary<string, IRequestHandler> Handlers = new Dictionary<string, IRequestHandler>
+        public static readonly Dictionary<string, RequestHandler> Handlers = new Dictionary<string, RequestHandler>()
         {
             {"/crossdomain.xml", new crossdomain()},
             {"/char/list", new list()},

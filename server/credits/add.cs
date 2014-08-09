@@ -7,9 +7,9 @@ using MySql.Data.MySqlClient;
 
 namespace server.credits
 {
-    internal class add : IRequestHandler
+    internal class add : RequestHandler
     {
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             string status;
             using (var db = new Database())

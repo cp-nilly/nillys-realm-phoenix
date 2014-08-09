@@ -11,7 +11,7 @@ using MySql.Data.MySqlClient;
 
 namespace server.account
 {
-    internal class register : IRequestHandler
+    internal class register : RequestHandler
     {
         public static bool IsUsername(string username)
         {
@@ -23,7 +23,7 @@ namespace server.account
             return regex.IsMatch(username);
         }
 
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             NameValueCollection query;
             using (var rdr = new StreamReader(context.Request.InputStream))

@@ -7,11 +7,11 @@ using common.data;
 
 namespace server.picture
 {
-    internal class get : IRequestHandler
+    internal class get : RequestHandler
     {
         private readonly byte[] buff = new byte[0x10000];
 
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             NameValueCollection query;
             using (var rdr = new StreamReader(context.Request.InputStream))

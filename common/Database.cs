@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,12 @@ namespace common
 {
     public partial class Database : IDisposable
     {
-        private const bool Testing = false;
-
+        private static string _host = "nillysrealm.com";
+        private static string _port = "3306";
+        private static string _name = "rotmg";
+        private static string _user = "";
+        private static string _pass = "botmaker";
+        
         private static readonly string[] Names =
         {
             "Darq", "Deyst", "Drac", "Drol",
@@ -27,15 +32,28 @@ namespace common
         };
 
         private MySqlConnection _con;
-
         public Database()
         {
-            _con = Testing
-                ? new MySqlConnection( /* Testing = true; */
-                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=15;max pool size=500;")
-                : new MySqlConnection( /* Testing = false; */
-                    "Server=104.131.131.72;Database=rotmg;uid=beachin;password=xf7pCgk4uJk0;Pooling=true;Connection Timeout=15;max pool size=500;");
+            _con = new MySqlConnection(
+                "Server=" +  _host + ";" +
+                "Port=" + _port + ";" +
+                "Database=" + _name + ";" +
+                "uid=" + _user + ";" +
+                "password=" + _pass + ";" +
+                "Pooling=true;" +
+                "Connection Timeout=15;" +
+                "max pool size=200;");
             _con.Open();
+        }
+
+        public static void Init(string host, string port, 
+            string name, string user, string pass)
+        {
+            _host = host;
+            _port = port;
+            _name = name;
+            _user = user;
+            _pass = pass;
         }
 
         public void Dispose()

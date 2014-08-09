@@ -33,6 +33,12 @@ namespace wServer
 
             Settings = new SimpleSettings("wServer");
 
+            Database.Init(Settings.GetValue<string>("db_host", "nillysrealm.com"),
+                          Settings.GetValue<string>("db_port", "3306"),
+                          Settings.GetValue<string>("db_name", "rotmg"),
+                          Settings.GetValue<string>("db_user", ""),
+                          Settings.GetValue<string>("db_pass", "botmaker"));
+
             var manager = new RealmManager();
 
             manager.Initialize();

@@ -8,9 +8,9 @@ using MySql.Data.MySqlClient;
 
 namespace server.account
 {
-    internal class setName : IRequestHandler
+    internal class setName : RequestHandler
     {
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             NameValueCollection query;
             using (var rdr = new StreamReader(context.Request.InputStream))

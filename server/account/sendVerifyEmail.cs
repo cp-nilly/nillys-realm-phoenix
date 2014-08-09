@@ -3,9 +3,9 @@ using System.Text;
 
 namespace server.account
 {
-    internal class sendVerifyEmail : IRequestHandler
+    internal class sendVerifyEmail : RequestHandler
     {
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             byte[] status = Encoding.UTF8.GetBytes("<Error>Nope.</Error>");
             context.Response.OutputStream.Write(status, 0, status.Length);

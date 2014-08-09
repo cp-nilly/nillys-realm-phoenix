@@ -1,96 +1,73 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
+using common;
+using log4net;
+using log4net.Config;
 
 namespace server
 {
     internal class Program
     {
-        private const int port = 8888;
-        private static HttpListener listener;
-        private static Thread listen;
-        private static readonly Thread[] workers = new Thread[5];
-        private static readonly Queue<HttpListenerContext> contextQueue = new Queue<HttpListenerContext>();
-        private static readonly object queueLock = new object();
-        private static readonly ManualResetEvent queueReady = new ManualResetEvent(false);
+        private static readonly ILog Log = LogManager.GetLogger("Server");
+        internal static SimpleSettings Settings;
+        private static HttpListener _listener;
 
         private static void Main(string[] args)
         {
-            listener = new HttpListener();
-            listener.Prefixes.Add("http://*:" + port + "/");
-            listener.Start();
+            XmlConfigurator.ConfigureAndWatch(new FileInfo("log4net.config"));
 
-            listen = new Thread(ListenerCallback);
-            listen.Start();
-            for (int i = 0; i < workers.Length; i++)
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.Name = "Entry";
+
+            Settings = new SimpleSettings("server");
+
+            Database.Init(Settings.GetValue<string>("db_host", "nillysrealm.com"),
+                          Settings.GetValue<string>("db_port", "3306"),
+                          Settings.GetValue<string>("db_name", "rotmg"),
+                          Settings.GetValue<string>("db_user", ""),
+                          Settings.GetValue<string>("db_pass", "botmaker"));
+
+            var port = Settings.GetValue<int>("port", "8888");
+
+            _listener = new HttpListener();
+            _listener.Prefixes.Add("http://*:" + port + "/");
+            _listener.Start();
+
+            _listener.BeginGetContext(ListenerCallback, null);
+            Log.Info("Listening at port " + port + "...");
+
+            Console.CancelKeyPress += delegate
             {
-                workers[i] = new Thread(Worker);
-                workers[i].Start();
-            }
-            Console.CancelKeyPress += (sender, e) =>
-            {
-                Console.WriteLine("Terminating...");
-                listener.Stop();
-                while (contextQueue.Count > 0)
-                    Thread.Sleep(100);
+                Log.Info("Terminating...");
+                _listener.Stop();
+                Settings.Dispose();
                 Environment.Exit(0);
             };
-            Console.WriteLine("Listening at port " + port + "...");
-            Thread.CurrentThread.Join();
-        }
 
-        private static void ListenerCallback()
-        {
-            try
+            while (true)
             {
-                do
-                {
-                    HttpListenerContext context = listener.GetContext();
-                    lock (queueLock)
-                    {
-                        contextQueue.Enqueue(context);
-                        queueReady.Set();
-                    }
-                } while (true);
-            }
-            catch
-            {
+                Thread.Sleep(500);
             }
         }
 
-        private static void Worker()
+        private static void ListenerCallback(IAsyncResult ar)
         {
-            while (queueReady.WaitOne())
-            {
-                HttpListenerContext context;
-                lock (queueLock)
-                {
-                    if (contextQueue.Count > 0)
-                        context = contextQueue.Dequeue();
-                    else
-                    {
-                        queueReady.Reset();
-                        continue;
-                    }
-                }
-
-                try
-                {
-                    ProcessRequest(context);
-                }
-                catch
-                {
-                }
-            }
+            if (!_listener.IsListening) return;
+            var context = _listener.EndGetContext(ar);
+            _listener.BeginGetContext(ListenerCallback, null);
+            ProcessRequest(context);
         }
 
         private static void ProcessRequest(HttpListenerContext context)
         {
             try
             {
-                IRequestHandler handler;
+                Log.InfoFormat("Dispatching request '{0}'@{1}",
+                    context.Request.Url.LocalPath, context.Request.RemoteEndPoint);
+                RequestHandler handler;
 
                 if (!RequestHandlers.Handlers.TryGetValue(context.Request.Url.LocalPath, out handler))
                 {
@@ -106,7 +83,7 @@ namespace server
             {
                 using (var wtr = new StreamWriter(context.Response.OutputStream))
                     wtr.Write("<Error>Internal Server Error</Error>");
-                Console.Error.WriteLine(e);
+                Log.Error("Error when dispatching request", e);
             }
 
             context.Response.Close();

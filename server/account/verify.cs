@@ -9,9 +9,9 @@ using common;
 
 namespace server.account
 {
-    internal class verify : IRequestHandler
+    internal class verify : RequestHandler
     {
-        public void HandleRequest(HttpListenerContext context)
+        public override void HandleRequest(HttpListenerContext context)
         {
             NameValueCollection query;
             using (var rdr = new StreamReader(context.Request.InputStream))
