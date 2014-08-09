@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +30,7 @@ namespace common
             "Vorck", "Vorv", "Yangu", "Yimi", "Zhiar"
         };
 
-        private MySqlConnection _con;
+        private readonly MySqlConnection _con;
         public Database()
         {
             _con = new MySqlConnection(
@@ -58,11 +57,17 @@ namespace common
 
         public void Dispose()
         {
-            if (_con != null)
-            {
-                _con.Close();
-                _con = null;
-            }
+            Dispose(true);
+        }
+
+        public void Dispose(bool disposing)
+        {
+            if (disposing)
+                if (_con.State == ConnectionState.Open)
+                {
+                    _con.Close();
+                    _con.Dispose();
+                }
         }
 
         private static string UppercaseFirst(string s)
