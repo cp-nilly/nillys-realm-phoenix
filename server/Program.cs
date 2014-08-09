@@ -43,7 +43,7 @@ namespace server
             {
                 Log.Info("Terminating...");
                 _listener.Stop();
-                Settings.Dispose();
+                //Settings.Dispose();
                 Environment.Exit(0);
             };
 

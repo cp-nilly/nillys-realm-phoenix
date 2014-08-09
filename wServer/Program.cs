@@ -56,7 +56,7 @@ namespace wServer
                 log.Info("Terminating...");
                 server.Stop();
                 policy.Stop();
-                Settings.Dispose();
+                //Settings.Dispose();
                 log.Info("Server terminated.");
                 Thread.Sleep(500);
                 Environment.Exit(0);
