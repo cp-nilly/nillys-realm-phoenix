@@ -7,7 +7,11 @@ namespace server
     {
         public override void HandleRequest(HttpListenerContext context)
         {
-            byte[] status = Encoding.UTF8.GetBytes(@"<cross-domain-policy><allow-access-from domain=""*""/></cross-domain-policy>");
+            byte[] status = Encoding.UTF8.GetBytes(@"<cross-domain-policy>
+	<site-control permitted-cross-domain-policies=""master-only""/>
+	<allow-access-from domain=""*"" secure=""false""/>
+	<allow-http-request-headers-from domain=""*"" headers=""*"" secure=""false""/>
+</cross-domain-policy>");
             context.Response.ContentType = "text/*";
             context.Response.OutputStream.Write(status, 0, status.Length);
         }
