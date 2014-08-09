@@ -113,9 +113,9 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\db\db.csproj">
+    <ProjectReference Include="..\common\common.csproj">
       <Project>{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}</Project>
-      <Name>db</Name>
+      <Name>common</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

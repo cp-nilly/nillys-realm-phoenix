@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using db;
-using db.data;
+using common;
+using common.data;
 using wServer.realm.entities.player;
 using wServer.svrPackets;
 

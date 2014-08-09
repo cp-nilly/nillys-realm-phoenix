@@ -141,7 +141,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int XX = _x; XX > x; XX--)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, _y].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, _y].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)
@@ -155,7 +155,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int XX = _x; XX < x; XX++)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, _y].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, _y].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)
@@ -169,7 +169,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int YY = _y; YY > y; YY--)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[_x, YY].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[_x, YY].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)
@@ -183,7 +183,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int YY = _y; YY < y; YY++)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[_x, YY].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[_x, YY].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)
@@ -197,7 +197,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int XX = _x; XX > x; XX--)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, y].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, y].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)
@@ -211,7 +211,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int XX = _x; XX < x; XX++)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, y].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[XX, y].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)
@@ -226,7 +226,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int YY = _y; YY > y; YY--)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[x, YY].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[x, YY].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)
@@ -240,7 +240,7 @@ namespace wServer.realm.entities.player
                     {
                         for (int YY = _y; YY < y; YY++)
                         {
-                            db.data.XmlDatas.ObjectDescs.TryGetValue(map[x, YY].ObjType, out desc);
+                            common.data.XmlDatas.ObjectDescs.TryGetValue(map[x, YY].ObjType, out desc);
                             if (desc != null)
                             {
                                 if (desc.BlocksSight)

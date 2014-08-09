@@ -1,7 +1,7 @@
 ﻿#region
 
 using System;
-using db.data;
+using common.data;
 using wServer.realm.entities;
 
 #endregion

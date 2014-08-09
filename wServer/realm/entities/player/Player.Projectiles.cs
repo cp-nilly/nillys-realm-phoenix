@@ -2,7 +2,7 @@
 
 using System;
 using System.Diagnostics;
-using db.data;
+using common.data;
 using wServer.cliPackets;
 using wServer.svrPackets;
 

@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using db;
+using common;
 using MySql.Data.MySqlClient;
 
 namespace server.account

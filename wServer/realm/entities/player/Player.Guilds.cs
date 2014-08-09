@@ -1,5 +1,5 @@
 ﻿using System;
-using db;
+using common;
 using wServer.cliPackets;
 using wServer.svrPackets;
 

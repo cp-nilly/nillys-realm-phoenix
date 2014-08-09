@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using db;
+using common;
 using MySql.Data.MySqlClient;
 using wServer.cliPackets;
 using wServer.logic.loot;

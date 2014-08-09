@@ -1,7 +1,7 @@
 ﻿#region
 
 using System.Linq;
-using db.data;
+using common.data;
 using wServer.cliPackets;
 
 #endregion

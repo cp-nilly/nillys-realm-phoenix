@@ -1,7 +1,7 @@
 ﻿#region
 
 using System.Collections.Generic;
-using db;
+using common;
 using wServer.cliPackets;
 using wServer.svrPackets;
 

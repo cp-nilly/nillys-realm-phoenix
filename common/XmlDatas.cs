@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
-namespace db.data
+namespace common.data
 {
     public class XmlDatas
     {
@@ -61,20 +61,20 @@ namespace db.data
             Stream stream;
             for (int i = 0; i < XmlCount; i++)
             {
-                stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("db.data.dat" + i + ".xml");
+                stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("common.data.dat" + i + ".xml");
                 ProcessXmlStream(stream);
             }
 
-            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("db.data.item.xml");
+            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("common.data.item.xml");
             ProcessXmlStream(stream);
 
-            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("db.data.addition2.xml");
+            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("common.data.addition2.xml");
             ProcessXmlStream(stream);
 
-            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("db.data.addition.xml");
+            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("common.data.addition.xml");
             ProcessXmlStream(stream);
 
-            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("db.data.donatorpets.xml");
+            stream = typeof (XmlDatas).Assembly.GetManifestResourceStream("common.data.donatorpets.xml");
             ProcessXmlStream(stream);
         }
 

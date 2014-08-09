@@ -147,6 +147,7 @@
     <Compile Include="networking\acPackets\BroadcastPacket.cs" />
     <Compile Include="logic\travoos\CheckRegion.cs" />
     <Compile Include="logic\travoos\WorldEvent.cs" />
+    <Compile Include="networking\PolicyServer.cs" />
     <Compile Include="realm\ChatManager.cs" />
     <Compile Include="networking\ClientProcessor.cs" />
     <Compile Include="networking\cliPackets\ClientPacket.cs" />
@@ -426,6 +427,7 @@
     <Compile Include="realm\worlds\Tutorial.cs" />
     <Compile Include="realm\worlds\Test.cs" />
     <Compile Include="realm\worlds\Nexus.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Structures.cs" />
     <Compile Include="networking\cliPackets\EscapePacket.cs" />
     <Compile Include="networking\svrPackets\AOEPacket.cs" />
@@ -499,7 +501,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="realm\worlds\*.wmap" />
-    <None Include="app.config" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="wServer.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -511,9 +518,9 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\db\db.csproj">
+    <ProjectReference Include="..\common\common.csproj">
       <Project>{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}</Project>
-      <Name>db</Name>
+      <Name>common</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

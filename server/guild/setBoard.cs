@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
-using db;
+using common;
 
 namespace server.guild
 {

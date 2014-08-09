@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using db.data;
+using common.data;
 
 [Serializable, XmlRoot("Fame"), XmlType(TypeName = "Fame")]
 public class FameStats

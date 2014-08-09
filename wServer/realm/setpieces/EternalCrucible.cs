@@ -1,5 +1,5 @@
 ﻿using System;
-using db.data;
+using common.data;
 
 namespace wServer.realm.setpieces
 {

@@ -2,8 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using db;
-using db.data;
+using common;
+using common.data;
 using wServer.svrPackets;
 
 #endregion

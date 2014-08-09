@@ -6,7 +6,7 @@ using System.Text;
 using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
-using db;
+using common;
 
 namespace server.@char
 {

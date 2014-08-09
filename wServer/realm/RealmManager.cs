@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using db.data;
+using common.data;
+using log4net;
 using wServer.realm.entities;
 using wServer.realm.entities.player;
 using wServer.realm.worlds;
@@ -44,6 +45,8 @@ namespace wServer.realm
 
     public class RealmManager
     {
+        static ILog log = LogManager.GetLogger(typeof(RealmManager));
+
         public const int MAX_CLIENT = 200;
         public const int MAX_INREALM = 85;
 
@@ -103,7 +106,7 @@ namespace wServer.realm
 
         static RealmManager()
         {
-            Console.WriteLine("Initializing Realm Manager...");
+            /*log.Info("Initializing Realm Manager...");
             Worlds[World.TUT_ID] = new Tutorial(true);
             Worlds[World.NEXUS_ID] = Worlds[0] = new Nexus();
             Worlds[World.NEXUS_LIMBO] = new NexusLimbo();
@@ -122,9 +125,26 @@ namespace wServer.realm
             foreach (var i in MerchantLists.shopLists)
             {
                 ShopWorlds.TryAdd(i.Key, AddWorld(new ShopMap(i.Key)));
-            }*/
+            }
 
-            Console.WriteLine("Realm Manager initialized.");
+            log.Info("Realm Manager initialized.");*/
+        }
+
+        public void Initialize()
+        {
+            log.Info("Initializing Realm Manager...");
+            AddWorld(World.NEXUS_ID, Worlds[0] = new Nexus());
+            Monitor = new RealmPortalMonitor(Worlds[World.NEXUS_ID] as Nexus);
+
+            AddWorld(World.TUT_ID, new Tutorial(true));
+            AddWorld(World.NEXUS_LIMBO, new NexusLimbo());
+            AddWorld(World.VAULT_ID, new Vault(true));
+            AddWorld(World.TEST_ID, new Test());
+            AddWorld(World.RAND_REALM, new RandomRealm());
+
+            AddWorld(GameWorld.AutoName(1, true));
+
+            log.Info("Realm Manager initialized.");
         }
 
         public static RealmPortalMonitor Monitor { get; private set; }
@@ -150,7 +170,7 @@ namespace wServer.realm
         {
             if (psr == null) // happens sometimes, not sure why
             {
-                Console.WriteLine("RealmManager.Disconnect() -> psr = null");
+                log.Info("RealmManager.Disconnect() -> psr = null");
                 return;
             }
             
@@ -218,7 +238,7 @@ namespace wServer.realm
             world.Manager = null;
             if (world is GameWorld)
                 Monitor.WorldRemoved(world);
-            Console.WriteLine("World {0}({1}) removed.", world.Id, world.Name);
+            log.InfoFormat("{1} ({0}) removed.", world.Id, world.Name);
         }
 
         public static void CloseWorld(World world)
@@ -226,13 +246,28 @@ namespace wServer.realm
             Monitor.WorldRemoved(world);
         }
 
+        public static World AddWorld(int id, World world)
+        {
+            if (world.Manager != null)
+                throw new InvalidOperationException("World already added.");
+            world.Id = id;
+            Worlds[id] = world;
+            OnWorldAdded(world);
+            return world;
+        }
         public static World AddWorld(World world)
         {
-            world.Id = Interlocked.Increment(ref nextWorldId);
-            Worlds[world.Id] = world;
+            if (world.Manager != null)
+                throw new InvalidOperationException("World already added.");
+            AddWorld(Interlocked.Increment(ref nextWorldId), world);
+            return world;
+        }
+        static void OnWorldAdded(World world)
+        {
+            //world.Manager = this;
             if (world is GameWorld)
                 Monitor.WorldAdded(world);
-            return world;
+            log.InfoFormat("{1} ({0}) added.", world.Id, world.Name);
         }
 
         public static World GetWorld(int id)
@@ -284,24 +319,27 @@ namespace wServer.realm
 
         //public CommandManager Commands { get; private set; }
 
-        public static void CoreTickLoop()
+        public void Run()
         {
+            log.Info("Starting Realm Manager...");
+
             Network = new NetworkTicker();
             Logic = new LogicTicker();
             network = new Thread(Network.TickLoop)
             {
-                Name = "Network Process Thread",
+                Name = "Network",
                 CurrentCulture = CultureInfo.InvariantCulture
             };
             logic = new Thread(Logic.TickLoop)
             {
-                Name = "Logic Ticking Thread",
+                Name = "Logic",
                 CurrentCulture = CultureInfo.InvariantCulture
             };
             //Start logic loop first
             logic.Start();
             network.Start();
-            Thread.CurrentThread.Join();
+
+            log.Info("Realm Manager started.");
         }
     }
 }

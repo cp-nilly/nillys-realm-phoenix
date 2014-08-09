@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using db.data;
+using common.data;
 using log4net;
 using terrain;
 using wServer.realm.entities;
@@ -148,7 +148,7 @@ namespace wServer.realm
 
         protected void FromWorldMap(Stream dat)
         {
-            log.InfoFormat("Loading map for world {0}({1})...", Id, Name);
+            log.InfoFormat("Loading map for {1} ({0})...", Id, Name);
 
             var map = new Wmap();
             Map = map;

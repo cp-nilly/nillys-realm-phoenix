@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using db.data;
+using common.data;
 using wServer.svrPackets;
 
 #endregion

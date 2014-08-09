@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
-using db.data;
+using common.data;
 using wServer.cliPackets;
 using wServer.logic;
 using wServer.realm.worlds;

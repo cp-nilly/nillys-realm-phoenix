@@ -3,11 +3,11 @@ using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using db.data;
+using common.data;
 using Ionic.Zlib;
 using MySql.Data.MySqlClient;
 
-namespace db
+namespace common
 {
     public partial class Database : IDisposable
     {

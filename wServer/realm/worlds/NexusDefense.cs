@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using db;
-using db.data;
+using common;
+using common.data;
 using wServer.realm.entities;
 using wServer.svrPackets;
 

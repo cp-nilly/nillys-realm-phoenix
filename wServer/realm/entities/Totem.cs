@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using db.data;
+using common.data;
 using wServer.logic;
 using wServer.realm.entities.player;
 using wServer.svrPackets;

@@ -1,7 +1,7 @@
 ﻿#region
 
 using System.Collections.Generic;
-using db.data;
+using common.data;
 using Ionic.Zlib;
 using Newtonsoft.Json;
 

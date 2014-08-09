@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using db.data;
+using common.data;
 using wServer.logic;
 using wServer.realm.entities;
 using wServer.realm.entities.player;

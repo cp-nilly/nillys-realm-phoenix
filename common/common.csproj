@@ -6,7 +6,7 @@
     <ProjectGuid>{D5D0743E-5120-4D35-8EBE-9B063C7A73CE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>db</RootNamespace>
+    <RootNamespace>common</RootNamespace>
     <AssemblyName>db</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -56,6 +56,9 @@
     <Reference Include="Ionic.Zlib">
       <HintPath>..\Ionic.Zlib.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,6 +74,7 @@
     <Compile Include="Descriptors.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SimpleSettings.cs" />
     <Compile Include="XmlDatas.cs">
       <SubType>Code</SubType>
     </Compile>
