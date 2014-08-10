@@ -34,7 +34,7 @@ namespace server.account
                     else
                     {
                         cmd = db.CreateQuery();
-                        cmd.CommandText = "UPDATE stats SET fame = fame - 5000 WHERE accId=@accId";
+                        cmd.CommandText = "UPDATE stats SET fame = fame - 1000 WHERE accId=@accId";
                         cmd.Parameters.AddWithValue("@accId", acc.AccountId);
                         if (cmd.ExecuteNonQuery() > 0)
                         {

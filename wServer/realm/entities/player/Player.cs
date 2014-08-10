@@ -971,7 +971,7 @@ namespace wServer.realm.entities.player
 
         public void VisibulletHit(VisibulletPacket pkt)
         {
-            if (dying) return;
+            if (dying || spectate) return;
 
             //Possible bug I can see right now:
             //  If enemy does not exist, no condition effects can be applied.
