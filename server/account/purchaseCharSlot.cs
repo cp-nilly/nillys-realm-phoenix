@@ -29,7 +29,7 @@ namespace server.account
                     MySqlCommand cmd = db.CreateQuery();
                     cmd.CommandText = "SELECT fame FROM stats WHERE accId=@accId;";
                     cmd.Parameters.AddWithValue("@accId", acc.AccountId);
-                    if ((int) cmd.ExecuteScalar() < 5000)
+                    if ((int) cmd.ExecuteScalar() < 1000)
                         status = Encoding.UTF8.GetBytes("<Error>Not enough fame</Error>");
                     else
                     {

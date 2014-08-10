@@ -14,7 +14,7 @@ namespace wServer.realm.entities.player
     {
         public void PlayerShoot(RealmTime time, PlayerShootPacket pkt)
         {
-            if (dying)
+            if (dying || spectate)
                 return;
             
             Item item = XmlDatas.ItemDescs[pkt.ContainerType];

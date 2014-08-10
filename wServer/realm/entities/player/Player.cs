@@ -35,6 +35,7 @@ namespace wServer.realm.entities.player
         private bool resurrecting;
         private byte[,] tiles;
         public bool vanished = false;
+        public bool spectate = false;
         private int pingSerial;
 
         public Player(ClientProcessor psr)

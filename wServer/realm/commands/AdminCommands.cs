@@ -10,6 +10,7 @@ using System.Threading;
 using common;
 using common.data;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Asn1.X509;
 using wServer.cliPackets;
 using wServer.realm.entities;
 using wServer.realm.entities.player;
@@ -1554,11 +1555,19 @@ namespace wServer.realm.commands
                             if (cmd.ExecuteNonQuery() == 0)
                             {
                                 player.SendInfo("Could not change rank");
+                                return;
                             }
-                            else
-                            {
-                                player.SendInfo("Account rank successfully changed");
-                            }
+
+                            // update player info is currently playing
+                            var target = from client in RealmManager.Clients
+                                         where client.Value.Account.Name.Equals(
+                                                args[0], StringComparison.InvariantCultureIgnoreCase)
+                                         select client;
+                            foreach (var client in target)
+                                if (client.Value.Player != null)
+                                    client.Value.Account.Rank = Int16.Parse(args[1]);
+                                    
+                            player.SendInfo("Account rank successfully changed");
                         }
                     }
                     catch
@@ -1570,6 +1579,219 @@ namespace wServer.realm.commands
                 {
                     player.SendError("You cannot set someone's rank higher than your own");
                 }
+            }
+        }
+    }
+
+    internal class Spawner : ICommand
+    {
+        public string Command
+        {
+            get { return "spawner"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 3; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+            if (args.Length < 1)
+            {
+                player.SendHelp(
+                    "Usage: /spawner <username>");
+            }
+            else
+            {
+                try
+                {
+                    using (var dbx = new Database())
+                    {
+                        MySqlCommand cmd = dbx.CreateQuery();
+                        var name = args[0];
+
+                        // get username rank
+                        cmd.CommandText = "SELECT rank FROM accounts WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", name);
+                        object result = cmd.ExecuteScalar();
+                        if (result == null)
+                        {
+                            player.SendInfo("Cannot locate player in database.");
+                        }
+                        var currentRank = Convert.ToUInt16(result);
+
+                        // rank check
+                        if (currentRank > 2)
+                        {
+                            player.SendInfo(name + " is of rank " + currentRank + ". Cannot set as spawner.");
+                            return;
+                        }
+
+                        // set rank/tag
+                        cmd.Dispose();
+                        cmd = dbx.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET rank=@rank, tag=@tag WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@rank", "2");
+                        cmd.Parameters.AddWithValue("@tag", "Spawner");
+                        cmd.Parameters.AddWithValue("@name", name);
+                        if (cmd.ExecuteNonQuery() == 0)
+                        {
+                            player.SendInfo("Failed to set " + name + " as spawner.");
+                            return;
+                        }
+
+                        // update player info is currently playing
+                        var spawner = RealmManager.FindPlayer(name);
+                        if (spawner != null)
+                            spawner.Name = "[Spawner] " + spawner.Client.Account.Name;
+
+                        // announce change
+                        foreach (ClientProcessor i in RealmManager.Clients.Values)
+                            i.SendPacket(new TextPacket
+                            {
+                                BubbleTime = 0,
+                                Stars = -1,
+                                Name = "#Announcement",
+                                Text = " " + name + " has been promoted to Spawner!"
+                            });
+                    }
+                }
+                catch
+                {
+                    player.SendInfo("Error happened while setting spawner. Check database.");
+                }
+            }
+        }
+    }
+
+    internal class RSpawner : ICommand
+    {
+        public string Command
+        {
+            get { return "rspawner"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 3; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+            if (args.Length < 1)
+            {
+                player.SendHelp(
+                    "Usage: /rspawner <username>");
+            }
+            else
+            {
+                try
+                {
+                    using (var dbx = new Database())
+                    {
+                        MySqlCommand cmd = dbx.CreateQuery();
+                        var name = args[0];
+
+                        // get username rank
+                        cmd.CommandText = "SELECT rank FROM accounts WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", name);
+                        object result = cmd.ExecuteScalar();
+                        if (result == null)
+                        {
+                            player.SendInfo("Cannot locate player in database.");
+                        }
+                        var currentRank = Convert.ToUInt16(result);
+                        cmd.Dispose();
+
+                        // rank check
+                        if (currentRank != 2)
+                        {
+                            player.SendInfo(name + " is not a spawner.");
+                            return;
+                        }
+
+                        // set rank/tag
+                        cmd = dbx.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET rank=@rank, tag=@tag WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@rank", "0");
+                        cmd.Parameters.AddWithValue("@tag", "");
+                        cmd.Parameters.AddWithValue("@name", name);
+                        if (cmd.ExecuteNonQuery() == 0)
+                        {
+                            player.SendInfo("Failed to remove spawner from " + name + ".");
+                            return;
+                        }
+
+                        // update player info is currently playing
+                        var spawner = RealmManager.FindPlayer(name);
+                        if (spawner != null)
+                            spawner.Name = spawner.Client.Account.Name;
+
+                        // announce change
+                        foreach (ClientProcessor i in RealmManager.Clients.Values)
+                            i.SendPacket(new TextPacket
+                            {
+                                BubbleTime = 0,
+                                Stars = -1,
+                                Name = "#Announcement",
+                                Text = " " + name + " is no longer a Spawner."
+                            });
+                    }
+                }
+                catch
+                {
+                    player.SendInfo("Error happened while removing spawner. Check database.");
+                }
+            }
+        }
+    }
+
+    internal class RAllSpawner : ICommand
+    {
+        public string Command
+        {
+            get { return "rallspawner"; }
+        }
+
+        public int RequiredRank
+        {
+            get { return 3; }
+        }
+
+        public void Execute(Player player, string[] args)
+        {
+            try
+            {
+                using (var dbx = new Database())
+                {
+                    MySqlCommand cmd = dbx.CreateQuery();
+                    cmd.CommandText = "UPDATE accounts SET rank=@rank, tag=@tag WHERE rank='2'";
+                    cmd.Parameters.AddWithValue("@rank", "0");
+                    cmd.Parameters.AddWithValue("@tag", "");
+                    if (cmd.ExecuteNonQuery() == 0)
+                    {
+                        player.SendInfo("Failed to remove spawners.");
+                        return;
+                    }
+
+                    // update player info is currently playing
+                    var spawners = from client in RealmManager.Clients
+                        where client.Value.Account.Rank == 2
+                        select client;
+                    foreach (var client in spawners)
+                        if (client.Value.Player != null)
+                        {
+                            client.Value.Player.Name = client.Value.Account.Name;
+                            client.Value.Account.Rank = 0;
+                        }
+
+                    player.SendInfo("All spawners are no more.");
+                }
+            }
+            catch
+            {
+                player.SendInfo("Error happened while removing spawner. Check database.");
             }
         }
     }
@@ -2533,36 +2755,35 @@ namespace wServer.realm.commands
                 }
                 else if (args.Length == 2)
                 {
-                    Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
-                    if (plr != null)
+                    Regex tag = new Regex(@"^\w{1,8}$");
+                    if (!tag.IsMatch(args[1]))
                     {
-                        Regex tag = new Regex(@"^\w{1,8}$");
-                        if (!tag.IsMatch(args[1]))
-                        {
-                            player.SendError("Invalid tag name.");
-                            return;
-                        }
-
-                        using (var db = new Database())
-                        {
-                            MySqlCommand cmd = db.CreateQuery();
-                            cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
-                            cmd.Parameters.AddWithValue("@name", args[0]);
-                            cmd.Parameters.AddWithValue("@tag", args[1]);
-                            if (cmd.ExecuteNonQuery() == 0)
-                            {
-                                player.SendInfo("Could not set tag");
-                            }
-                            else
-                            {
-                                plr.Name = "[" + args[1] + "] " + plr.Client.Account.Name;
-                                player.SendInfo("Tag succesfully changed");
-                            }
-                        }
+                        player.SendError("Invalid tag name.");
+                        return;
                     }
-                    else
+
+                    using (var db = new Database())
                     {
-                        player.SendError("Could not find player");
+                        MySqlCommand cmd = db.CreateQuery();
+                        cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
+                        cmd.Parameters.AddWithValue("@name", args[0]);
+                        cmd.Parameters.AddWithValue("@tag", args[1]);
+                        if (cmd.ExecuteNonQuery() == 0)
+                        {
+                            player.SendInfo("Could not set tag");
+                        }
+                        else
+                        {
+                            // set tag if player is currently playing
+                            var target = (from client in RealmManager.Clients
+                                            where client.Value.Account.Name.Equals(
+                                                args[0], StringComparison.InvariantCultureIgnoreCase)
+                                            select client).Single().Value;
+                            if (target != null && target.Player != null)
+                                target.Player.Name = "[" + args[1] + "] " + target.Account.Name;
+
+                            player.SendInfo("Tag succesfully changed");
+                        }
                     }
                 }
             }
@@ -2604,29 +2825,27 @@ namespace wServer.realm.commands
             }
             else if (args.Length == 1)
             {
-                Player plr = player.Owner.GetUniqueNamedPlayerRough(string.Join(" ", args[0]));
-                if (plr != null)
+                using (var db = new Database())
                 {
-                    using (var db = new Database())
+                    MySqlCommand cmd = db.CreateQuery();
+                    cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
+                    cmd.Parameters.AddWithValue("@name", args[0]);
+                    cmd.Parameters.AddWithValue("@tag", "");
+                    if (cmd.ExecuteNonQuery() == 0)
                     {
-                        MySqlCommand cmd = db.CreateQuery();
-                        cmd.CommandText = "UPDATE accounts SET tag=@tag WHERE name=@name";
-                        cmd.Parameters.AddWithValue("@name", args[0]);
-                        cmd.Parameters.AddWithValue("@tag", "");
-                        if (cmd.ExecuteNonQuery() == 0)
-                        {
-                            player.SendInfo("Could not remove tag");
-                        }
-                        else
-                        {
-                            plr.Name = plr.Client.Account.Name;
-                            player.SendInfo("Tag succesfully removed");
-                        }
+                        player.SendInfo("Could not remove tag");
+                        return;
                     }
-                }
-                else
-                {
-                    player.SendError("Could not find player");
+
+                    // remove tag if player is currently playing
+                    var target = (from client in RealmManager.Clients
+                                  where client.Value.Account.Name.Equals(
+                                        args[0], StringComparison.InvariantCultureIgnoreCase)
+                                  select client).Single().Value;
+                    if (target != null && target.Player != null)
+                        target.Player.Name = target.Account.Name;
+
+                    player.SendInfo("Tag succesfully removed.");
                 }
             }
         }
@@ -2682,7 +2901,7 @@ namespace wServer.realm.commands
 
         public int RequiredRank
         {
-            get { return 5; }
+            get { return 3; }
         }
 
         public void Execute(Player player, string[] args)
@@ -2700,6 +2919,7 @@ namespace wServer.realm.commands
                     Effect = ConditionEffectIndex.Invisible,
                     DurationMS = 0
                 });
+                player.spectate = false;
                 player.SendInfo("Spectate Off");
             }
             else
@@ -2714,6 +2934,7 @@ namespace wServer.realm.commands
                     Effect = ConditionEffectIndex.Invisible,
                     DurationMS = -1
                 });
+                player.spectate = true;
                 player.SendInfo("Spectate On");
                 foreach (ClientProcessor i in RealmManager.Clients.Values)
                     i.SendPacket(new NotificationPacket
