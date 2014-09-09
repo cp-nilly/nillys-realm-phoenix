@@ -93,6 +93,18 @@ namespace wServer.realm.commands
                 lname.Equals("lair blast trap") ||
                 lname.Equals("phoenix god final divination") ||
                 lname.Equals("vault portal") ||
+                lname.Equals("mega sheep minion") ||
+                lname.Equals("zombie") ||
+                lname.Equals("crawler") ||
+                lname.Equals("coral gift") ||
+                lname.Equals("masked party god") ||
+                lname.Equals("davy jones") ||
+                lname.Equals("gray blob") ||
+                lname.Equals("horrid reaper") ||
+                lname.Equals("the shadow mage") ||
+                lname.Equals("giant herding sheep") ||
+                lname.Equals("herding sheep") ||
+                lname.Equals("black herding sheep") ||
 
                 // beach nightmare restriction
                 //lname.Equals("pirate") ||
@@ -2729,7 +2741,7 @@ namespace wServer.realm.commands
             {
                 if (args.Length == 1)
                 {
-                    Regex tag = new Regex(@"^\w{1,8}$");
+                    Regex tag = new Regex(@"^\w{1,10}$");
                     if (!tag.IsMatch(args[0]))
                     {
                         player.SendError("Invalid tag name.");
