@@ -77,6 +77,7 @@
     <Compile Include="char\fame.cs" />
     <Compile Include="char\list.cs" />
     <Compile Include="char\delete.cs" />
+    <Compile Include="client.cs" />
     <Compile Include="guild\listMembers.cs" />
     <Compile Include="guild\setBoard.cs" />
     <Compile Include="guild\getBoard.cs" />

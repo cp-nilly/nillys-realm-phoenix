@@ -43,7 +43,10 @@ namespace server
             {"/picture/get", new get()},
             {"/guild/getBoard", new getBoard()},
             {"/guild/setBoard", new setBoard()},
-            {"/guild/listMembers", new listMembers()}
+            {"/guild/listMembers", new listMembers()},
+            {"/index.html", new client()},
+            {"/realm.swf", new swf()},
+            {"/", new client()}
         };
     }
 }
